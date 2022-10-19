@@ -1,0 +1,35 @@
+{% include 'components/header.html' %}
+
+{% include 'components/sideBar.html' %}
+
+<h5>Detalle una Facultad</h5>
+
+{% if f.codigo %}
+<form data-toggle="validator" class="jumbotron w-75 mh-75 p-4 bg-light">
+    <div class="form-group row">
+        <div class="col-sm-2">
+            <label>Codigo</label>
+            <input type="number" class="form-control" value="{{f.codigo}}" required maxlength="30" disabled>
+        </div>
+        <div class="col-sm-9">
+            <label>Nombre</label>
+            <input type="text" class="form-control input-sm" maxlength="200" required value="{{f.nombre}}" disabled>
+        </div>
+    </div>
+
+    <!--Boton para validar campos-->
+<br>
+    <div class="text-center">
+        <a href="{{url_for('Facultad.listar')}}" class="btn btn-outline-dark">Atras</a>
+    </div>
+
+</form>
+{% else %}
+
+<div class="alert alert-danger" role="alert">
+    <h5 class="alert-heading">Aviso!!</h5>
+    <p>No se pudo encontrar la facultad</p>
+    <hr>
+</div>
+
+{% endif %}

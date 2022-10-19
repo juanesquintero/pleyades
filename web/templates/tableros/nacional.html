@@ -1,0 +1,211 @@
+{% include 'components/header.html' %}
+
+
+{% with menu='tableros' %}
+{% include 'components/sideBar.html' %}
+{% endwith %}
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+
+
+<div class="container m-0 py-2 px-4 w-100 border my-secondary">
+    <div class="row">
+        <h2 class="m-2 text-white">Nivel País</h2>
+        <!-- Controles -->
+        <div class="row ml-auto mr-3">
+            <div class="col-12">
+                <label for="periodo_select" class="text-white">Selecciona un período:</label>
+                <br>
+                <select id="periodo_select" class="form-control-sm w-75">
+                    {% for p in periodos_list %}
+                    <option value="{{p}}" {% if p|string==periodo|string %} selected {% endif %}>{{p}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </div>
+    <script>
+        var periodo = '{{ periodo }}';
+        $('#periodo_select').on('change', function () {
+            openModal();
+            window.location.href = "{{url_for('Tablero.pais_dashboard')}}" + "?periodo=" + this.value; //relative to domain
+        })
+    </script>
+</div>
+
+<br>
+
+<!-- Contenedor Dasboard -->
+<div class="container m-0 p-0 w-100 {% if session['user'] %} {% if session['user']['rol'] == 'Admin' %} h-75 {% else %} h-100 {% endif %} {% else %} h-dashboard {% endif %}">
+
+    <!-- Fila 1 -->
+    {% if indicadores_plot and indicadores2_plot %}
+    <div class="row m-0 p-0 w-100" style="height: 10%;">
+        <!-- INDICADORES  -->
+        <div class="col-4 h-100">
+            <div class="h-100" id="indicadores"></div>
+        </div>
+        <div class="col-1 h-100">
+        </div>
+        <div class="col-7 h-100">
+            <div class="h-100" id="indicadores2"></div>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="row m-0 p-0 w-100" style="height: 3%;"></div>
+
+    <!-- Fila 2 -->
+    <div class="row m-0 p-0 w-100" style="height: 75%;">
+
+        <!-- MAPA -->
+        <div class="col-5 w-100 h-100 m-0 p-0">
+                {% if mapa_plot %}
+                <p class="m-0 p-0 text-black">
+                    <b> Mapa del país</b>
+                    <br>
+                    <small>(Matrícula, Cobertura y Deserción por región del país <b>{{periodo}}</b>)</small>
+                </p>
+                {% endif %}
+            <div id="mapa" style="width:100%; height: 95%;"></div>
+        </div>
+
+        <!-- BARRAS Y MINI GRAFICOS  -->
+        <div class="col-7 w-100 m-0 p-0 h-100">
+            <!-- <div class="container w-100 h-100 m-0 p-0 "> -->
+
+            <div class="row d-flex justify-content-end m-0 p-0 pt-2" style="height: 55%;">
+                <!-- BARRAS -->
+                <div class="col-11 h-100 m-0 p-0">
+                    {% if barras_plot %}
+                    <p class="m-0 p-0 ml-4 text-black">
+                        <b>Matrícula, Poblacion Joven y Cobertura del país</b>
+                        <br>
+                        <small>(Cantidad de estudiantes matriculados, poblacion joven 17-21 y cobertura
+                            <b>{{periodo}}</b>)</small>
+                    </p>
+                    {% endif %}
+                    <div class="h-100" id="barras"></div>
+                </div>
+            </div>
+
+            <div class="row m-0 p-0 w-100" style="height: 8%;"></div>
+
+            <div class="row d-flex justify-content-center m-0 p-0" style="height: 30%;">
+                <!-- PASTEL -->
+                <div class="col-6 h-100 m-0 p-0" style="height: 80%;">
+                    {% if pastel_plot %}
+                    <center>
+                        <p class="m-0 p-0 pl-3 text-black">
+                            <b>Matrícula por sector</b>
+                            <br>
+                            <small>(Cantidad de estudiantes matriculados por sector educativo <b>{{periodo}}</b>)</small>
+                        </p>
+                    </center>
+                    {% endif %}
+                    <div class="h-100 pt-1" id="pastel"></div>
+                </div>
+                <!-- BARRAS GENERO -->
+                <div class="col-5 h-100 m-0 p-0">
+                    {% if pastel_plot %}
+                    <center>
+                        <p class="m-0 p-0 ml-3 text-black">
+                            <b>Matrícula por género</b>
+                            <br>
+                            <small>(Cantidad de estudiantes matriculados por género masculino/femenino <b>{{periodo}}</b>)</small></small>
+                        </p>
+                    </center>
+                    {% endif %}
+                    <div class="h-100 w-100 m-0 p-0" id="genero"></div>
+                </div>
+            </div>
+
+            <!-- </div> -->
+        </div>
+    </div>
+
+</div>
+
+
+
+<script>
+    $("#barras").find("g.pointtext").find("text").css("visibility", "hidden");
+    $("#barras").find("g.pointtext").find("text").css("display", "none");
+    $(".pointtext").css('display', 'none');
+</script>
+<style>
+    g.pointtext {
+        display: none !important;
+    }
+</style>
+<!-- Scripts para añadir los graficos al los respectivos contenedores -->
+<script>
+    var graphs = {{ mapa_plot | safe}};
+    if (graphs) {
+        Plotly.newPlot('mapa', graphs.data, graphs.layout,
+            {
+                displaylogo: false,
+                responsive: true
+            })
+    }
+</script>
+<script>
+    var graphs = {{ barras_plot | safe}};
+    if (graphs) {
+        Plotly.newPlot('barras', graphs.data, graphs.layout,
+            {
+                displaylogo: false,
+                responsive: true
+            })
+    }
+</script>
+<script>
+    var graphs = {{ genero_plot | safe}};
+    if (graphs) {
+        Plotly.newPlot('genero', graphs.data, graphs.layout,
+            {
+                displayModeBar: false,
+                responsive: true
+            })
+    }
+</script>
+<script>
+    var graphs = {{ pastel_plot | safe}};
+    if (graphs) {
+        Plotly.newPlot('pastel', graphs.data, graphs.layout,
+            {
+                displayModeBar: false,
+                responsive: true
+            })
+    }
+</script>
+<script>
+    var graphs = {{ indicadores_plot | safe}};
+    if (graphs) {
+        Plotly.newPlot('indicadores', graphs.data, graphs.layout,
+            {
+                displayModeBar: false,
+                responsive: true
+            })
+    }
+
+</script>
+<script>
+    var graphs = {{ indicadores2_plot | safe}};
+    if (graphs) {
+        Plotly.newPlot('indicadores2', graphs.data, graphs.layout,
+            {
+                displayModeBar: false,
+                responsive: true
+            })
+    }
+
+</script>
+
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+
+
+{% include 'components/footer.html' %}

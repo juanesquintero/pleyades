@@ -1,0 +1,211 @@
+{% include 'components/header.html' %}
+
+{% include 'components/sideBar.html' %}
+
+<h4>Editar un Conjunto</h4>
+<br>
+
+{% if c.nombre %}
+<form action="{{url_for('ConjuntoAdmin.actualizar')}}" method="POST" data-toggle="validator" class="jumbotron py-4 pr-2 bg-light" style="width:70%;">
+    <div class="container">
+        <div class="form-group row">
+            <div class="col-sm-7">
+                <label>Nombre</label>
+                <input type="text" class="form-control" maxlength="200" value="{{c.nombre}}" disabled>
+                <input type="text" name="nombre" class="form-control" maxlength="200" value="{{c.nombre}}" hidden>
+            </div>
+            <div class="col-sm-4">
+                <label>Estado de datos</label>
+                <select name="estado" id="id_estado" class="form-control">
+                    
+                    {% if c.estado=='Crudos' %}
+                    <option value="Crudos" selected> Crudos </option>
+                    {% else %}
+                    <option value="Crudos"> Crudos </option>
+                    {% endif %}
+
+                    {% if c.estado=='Procesados' %}
+                    <option value="Procesados" selected> Procesados </option>
+                    {% else %}
+                    <option value="Procesados"> Procesados </option>
+                    {% endif %}
+
+                    {% if c.estado=='En Proceso' %}
+                    <option value="En Proceso" selected> En Proceso </option>
+                    {% else %}
+                    <option value="En Proceso"> En Proceso </option>
+                    {% endif %}
+
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-2">
+                <label>Numero</label>
+                <input type="text" class="form-control" maxlength="30" value="{{c.numero}}" disabled>
+            </div>
+            <div class="col-sm-3">
+                <label>Periodo Inicial</label>
+                <input type="text" class="form-control" maxlength="6" value="{{c.periodoInicial}}" disabled>
+            </div>
+            <div class="col-sm-3">
+                <label>Periodo Final</label>
+                <input type="text" class="form-control" maxlength="6" value="{{c.periodoFinal}}" disabled>
+            </div>
+            <div class="col-sm-3 mr-0 pr-0">
+                <label>Tipo</label>
+                <br>
+                <div class="container">
+                    <div class="row">
+                        <span class="mr-2" style="white-space: nowrap;">
+                            {% if c.tipo=='consulta' %}
+                            <input type="radio" name="tipo" checked disabled>
+                            &nbsp;<small><b>Consulta</b></small>
+                            {% else %}
+                            <input type="radio" name="tipo" disabled>
+                            &nbsp;<small>Consulta</small>
+                            {% endif %}
+                        </span>
+                        <br>
+                        <span>
+                            {% if c.tipo=='excel' %}
+                            <input type="radio" name="tipo" checked disabled>
+                            &nbsp;<small><b>Excel</b></small>
+                            {% else %}
+                            <input type="radio" name="tipo" disabled>
+                            &nbsp;<small>Excel</small>
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-11">
+                <label>Programa</label>
+                {% for p in programas %}
+                {% if c.programa==p.codigo %}
+                <input type="text" class="form-control" maxlength="250" value="{{c.programa}}   {{p.nombre}}" disabled>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-11">
+                <label>Encargado</label>
+                
+                <input type="email" name="encargado" class="form-control" maxlength="200" value="{{c.encargado}}">
+            </div>
+        </div>
+
+        {% if c.estado=='Crudos' %}
+        <br>
+        <div class="form-group row ">
+            <div class="col-sm-11 d-flex justify-content-center align-items-center">
+                <i class="fa fa-download" aria-hidden="true"></i>
+                &nbsp;
+                <strong class="mr-2 d-flex ">Descargar: </strong>
+                &nbsp;&nbsp;
+                <a class="btn bg-white btn-sm border text-dark" type="button" href="{{url_for('Conjunto.descargar',estado='crudos',nombre=c.nombre) }}">
+                    <i class="fas fa-file-excel mr-1"></i>
+                    Crudo
+                </a>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if c.estado=='Procesados' %}
+
+        <br>
+        <div class="form-group row ">
+            <div class="col-sm-6 d-flex justify-content-center">
+                <!-- RESULTADOS -->
+                <div class="dropdown dropdown-costum">
+                    <button type="button" class="btn bg-white btn-sm border" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-list" aria-hidden="true"></i>
+                        &nbsp;
+                        <strong class="mr-2">Resultados</strong>
+                        <i class="fas fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-menu r-menu border">
+
+                        <!-- PREPARACIONES-->
+                        <a class="dropdown-item" type="button" href="{{url_for('ResultadoAdmin.preparaciones', conjunto=c.nombre) }}">
+                            <small>&#9881;
+                                Preparaciones</small>
+                        </a>
+                        <!-- EJECUCIONES-->
+                        <a class="dropdown-item" type="button" href="{{url_for('ResultadoAdmin.ejecuciones', conjunto=c.nombre) }}">
+                            <small>&#9654;
+                                Ejecuciones
+                            </small>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 ">
+                <!-- DESCARGAS -->
+                <div class="dropdown dropdown-costum ml-5">
+                    <button type="button" class="btn bg-white btn-sm border" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-download" aria-hidden="true"></i>
+                        &nbsp;
+                        <strong class="mr-2">Descargar</strong>
+                        <i class="fas fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-menu d-menu border">
+
+                        <!-- ARCHIVO CRUDOS-->
+                        <a class="dropdown-item w-100" type="button" href="{{url_for('Conjunto.descargar',estado='crudos',nombre=c.nombre) }}">
+                            <small>
+                                <i class="fas fa-file-excel mr-1"></i>
+                                Crudo
+                            </small>
+                        </a>
+                        <!-- ARCHIVO PROCESADOS-->
+                        <a class="dropdown-item" type="button"  href="{{url_for('Conjunto.descargar', estado='procesados' ,nombre=c.nombre) }}">
+                            <small><i class="fas fa-file-excel mr-1"></i>
+                                Procesado
+                            </small>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $(document).ready(function ($) {
+                $('.dropdown-costum').click(function () {
+                    var dropdownMenu = $(this).children(".dropdown-menu");
+                    if (dropdownMenu.is(":visible")) {
+                        dropdownMenu.hide();
+                    } else {
+                        dropdownMenu.show();
+                    }
+                });
+            })
+
+        </script>
+        <br>
+        {% endif %}
+
+        <br> 
+        <div class="text-center ml-0 mr-5">
+            <input type="submit" value="Actualizar" class="btn btn-dark text-white my-primary" />
+            &nbsp;
+            <a href="#" class="btn btn-outline-dark" onclick="window.history.go(-1)">Atras</a>
+        </div>
+</form>
+
+
+{% else %}
+
+
+<div class="alert alert-danger" role="alert">
+    <h5 class="alert-heading">Aviso!!</h5>
+    <p>No se pudo encontrar el Conjunto</p>
+    <hr>
+</div>
+
+{% endif %}
+
+{% include 'components/footer.html' %}

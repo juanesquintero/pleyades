@@ -1,0 +1,7 @@
+Flask==1.1.1
+Flask-Cors==3.0.8
+jsonschema==3.2.0
+mysql-connector-python==8.0.18
+pyodbc==4.0.30
+python-dotenv==0.12.0
+Flask-JWT-Extended==3.24.1

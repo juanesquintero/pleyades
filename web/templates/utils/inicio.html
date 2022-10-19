@@ -1,0 +1,43 @@
+{% include 'components/header.html' %}
+<center>
+  <div class="bg-light m-5 p-5" style="max-width: 900px;">
+
+    <h2> <strong> Bienvenido a PLEYADES </strong> </h2>
+
+    {% if session['user'] %}
+    {{session['user']['nombre']}}
+    {% endif %}
+
+    <br><br><br>
+
+    <div class="mx-5 lead text-justify " style="font-size: 16px;">
+
+      La deserción estudiantil de las instituciones de educación superior es un problema que ha afectado de distintas
+      formas a todos y preocupa tanto a sus directivos como a las autoridades educativas de la región.
+      Actualmente se viene adelantando proyectos que pretenden implementar modelos de predicción de deserción de estudiantil;
+      sin embargo, es necesario que estos tipos de proyectos y modelos de predicción se articulén a los procesos de las instituciones 
+      para facilitar su ejecución y manejo de la desercion dentro de el contexto de cada una.
+
+      <br><br>
+
+      <em>PLEYADES (PLataforma de Exploración Y Analítica de Deserción EStudiantil)</em> es un sistema de información
+      que apoya el análisis del modelo de predicción de deserción estudiantil.
+
+      <br>
+
+      Por medio de Inteligencia Artificial, <em>PLEYADES</em> es capaz de predecir, identificar y analizar
+      los posibles desertores entre un conjunto de estudiantes pertenecientes a un programa.
+
+    </div>
+
+    <br><br><br>
+
+    {% if session['user'] %}
+    <center><a type="button" class="btn btn-dark text-white my-primary" href="{{url_for('Conjunto.crudos') }}"> Empezar <i class="fa fa-arrow-alt-circle-right ml-1"></i> </a>
+    </center>
+    {% endif %}
+
+  </div>
+</center>
+
+{% include 'components/footer.html' %}

@@ -1,0 +1,44 @@
+{% include 'components/header.html' %}
+
+{% with menu='tableros' %}
+    {% include 'components/sideBar.html' %}
+{% endwith %}
+
+<br>
+<div class="d-flex justify-content-center">
+    <h3>Tableros</h3>
+</div>
+<br>
+<br>
+<div class="d-flex justify-content-center">
+    <div class="jumbotron jumbotron p-3 w-25">
+        <div class="vertical-menu m-0 p-0">
+            <ol class="my-0">
+                {% for nivel in niveles %}
+
+                <li class="my-4">
+                    <a class="text-dark submit" href="{{url_for(nivel.ruta)}}">
+                        {{nivel.nombre}}
+                    </a>
+                    <br>
+                </li>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('.submit').on('click', function () {
+        openModal();
+    })
+</script>
+
+<style>
+    .vertical-menu a:hover {
+        background-color: #ccc;
+        /* Dark grey background on mouse-over */
+    }
+</style>
+
+{% include 'components/footer.html' %}

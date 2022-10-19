@@ -1,0 +1,88 @@
+{% include 'components/header.html' %}
+
+{% with menu='resultados' %}
+    {% include 'components/sideBar.html' %}
+{% endwith %}
+
+<h4>Resultados</h4>
+<br>
+
+<!-- Input de filtrado -->
+<div class="row ml-1 mt-2">
+  &nbsp;<i class="fas fa-filter mr-2 mt-2""></i>&nbsp;
+  <input type=" text" class="form-control form-control-sm w-25" id="filtro_tabla" placeholder="Filtrar tabla...">
+</div>
+<br>
+
+<ul class="nav nav-tabs mb-4">
+  <li class="nav-item">
+    <a class="nav-link text-dark  bg-light border" href="{{url_for('Resultado.preparaciones')}}">Preparaciones</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link active text-dark" href="#">Ejecuciones</a>
+  </li>
+</ul>
+<div class="table-responsive-sm">
+  <table class="table table-hover table-sm" id="tabla">
+    <thead>
+      <tr>
+        <th scope="col" class="border-top-0">
+          <center>Ejecucion</center>
+        </th>
+        <th scope="col" class="border-top-0">
+          <center>Fecha</center>
+        </th>
+        <th scope="col" class="border-top-0">
+          <center>Duracion</center>
+        </th>
+        <th scope="col" class="border-top-0">
+          <center>Estado</center>
+        </th>
+        <th scope="col" class="border-top-0">
+          <center>Acciones</center>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for e in resultados %}
+      <tr>
+        <td>
+          <center>{{ e.nombre }}</center>
+        </td>
+        <td>
+          <center>{{ e.fechaInicial }}</center>
+        </td>
+        <td>
+          <center>{{  '{:.2f}'.format(e.duracion/60)  }} &nbsp;min</center>
+        </td>
+        <td>
+          <center>{{ e.estado }} </center>
+        </td>
+        <td>
+          <center>
+            <!--Ver Ejecuciones -->
+            <form action="{{url_for('Resultado.ejecucion_detalle')}}" method="POST">
+              <input type="hidden" name="ejecucion" value="{{e.nombre}}">
+              <button type="submit" data-toggle="tooltip" data-placement="bottom" title="Ver Detalle"
+                class="btn btn-outline-dark btn-sm submit" role="status">
+                <i class="fas fa-search-plus"></i>
+              </button>
+            </form>
+          </center>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<br>
+
+{% if error %}
+{% with titulo='No se pudieron cargar los resultados',error=error %}
+{% include "components/alert.html" %}
+{% endwith %}
+{% endif %}
+
+
+{% include 'components/footer.html' %}

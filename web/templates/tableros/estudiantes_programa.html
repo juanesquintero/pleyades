@@ -1,0 +1,119 @@
+{% include 'components/header.html' %}
+
+
+{% with menu='tableros' %}
+{% include 'components/sideBar.html' %}
+{% endwith %}
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+
+
+<div class="container m-0 py-2 px-4 w-100 border my-secondary">
+    <div class="row">
+        <h3 class="ml-2 mt-2 p-0 text-white">Nivel Estudiante</h3>
+        <!-- Controles -->
+        {% if programa %}
+        <div class="row ml-auto" style="width: 40%;;">
+            <div class="col-10 ml-3">
+                <label for="periodo_select" class="text-white">Selecciona un programa:</label>
+                <br>
+                <select id="programa_select" class="form-control-sm w-100">
+                    {% for p in programas_list %}
+                    <option value="{{p.idprograma}}" {% if p.idprograma|string==programa|string %} selected {% endif %}>{{p.programa}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    <script>
+        var programa = '{{ programa }}';
+        $('#programa_select').on('change', function () {
+            openModal();
+            window.location.href ="{{url_for('Tablero.estudiante_dashboard')}}" + '?programa=' + this.value;
+        })
+    </script>
+</div>
+
+
+<!-- Contenedor Dasboard -->
+<div class="container m-0 p-3 mt-3 w-100 {% if session['user'] %} {% if session['user']['rol'] == 'Admin' %} h-75 {% else %} h-100 {% endif %} {% else %} h-dashboard {% endif %}">
+    {% if estudiantes_list %}
+    <div class="row w-50 mt-2">
+        <div class="col-11 d-flex">
+            &nbsp;<i class="fas fa-filter mr-2 mt-2""></i>&nbsp;
+            <input type=" text" class="form-control form-control-sm" id="filtro_tabla" placeholder="Filtrar tabla...">
+        </div>
+        <div class="col-1 m-0 p-0">
+            <a href="{{url_for('Tablero.estudiante_dashboard')}}" class="btn btn-outline-dark">Atras</a>
+        </div>
+    </div>
+    <br>
+    <div class="table-responsive-sm w-50 m-0 p-0">
+        <table class="table table-hover table-sm" id="tabla">
+            <thead>
+                <tr>
+                    <th scope="col" class="font-weight-normal">
+                        <center> <b>Identificación</b> </center>
+                    </th>
+                    <th scope="col" class="font-weight-normal">
+                        <center> <b>Nombre</b> </center>
+                    </th>
+                    <th scope="col" class="font-weight-normal">
+                        <center> <b>Buscar</b> </center>
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="bg-light rounded">
+                {% if estudiantes_list|length > 0 %}
+                {% for e in estudiantes_list %}
+                <tr>
+                    <td>
+                        <center>{{ e.documento }}</center>
+                    </td>
+                    <td>{{ e.nombre_completo }}</td>
+                    <td>
+                        <center>
+                            <form action="{{url_for('Tablero.estudiante_dashboard')}}" method="GET"
+                                data-toggle="validator">
+                                <input type="text" name="documento" class="form-control-sm w-100" maxlength="50"
+                                    value="{{e.documento}}" required hidden>
+                                <input type="text" name="programa" class="form-control-sm w-100" maxlength="200"
+                                    value="{{programa}}" required hidden>
+                                <button type="submit" class="btn btn-dark btn-sm text-white my-primary submit">
+                                    <i class="fas fa-search mr-1"></i>
+                                </button>
+                                <script>
+                                    $('.submit').click(function () {                        
+                                        
+                                        
+                                            openModal();
+                                        
+                                    })
+                                </script>
+                            </form>
+                        </center>
+                    </td>
+                </tr>
+                {% endfor %}
+
+                {% else %}
+                <tr>
+                    <center><b>No hay estudiantes en este programa!!</b> </center>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <center><b>No hay estudiantes en este programa!!</b> </center>
+    {% endif %}
+</div>
+
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+
+
+{% include 'components/footer.html' %}

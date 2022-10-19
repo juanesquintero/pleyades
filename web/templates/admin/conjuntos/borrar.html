@@ -1,0 +1,106 @@
+{% include 'components/header.html' %}
+
+{% include 'components/sideBar.html' %}
+
+<h4>Borrar un Conjunto</h4>
+<br>
+
+{% if c.nombre %}
+<form action="{{url_for('ConjuntoAdmin.eliminar')}}" method="POST" class="jumbotron py-4 pr-2 bg-light" style="width:70%;">
+    <div class="container">
+        <div class="form-group row">
+            <div class="col-sm-7">
+                <label>Nombre</label>
+                <input type="text" class="form-control" maxlength="200" value="{{c.nombre}}" disabled required>
+                <input type="text" name="nombre" class="form-control" maxlength="200" value="{{c.nombre}}" hidden required>
+            </div>
+            <div class="col-sm-4">
+                <label>Estado de datos</label>
+                <input type="text" class="form-control" maxlength="50" value="{{c.estado}}" disabled>
+                <input name="estado" type="hidden" maxlength="50" value="{{c.estado}}">
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-2">
+                <label>Numero</label>
+                <input type="text" class="form-control" maxlength="6" value="{{c.numero}}" disabled>
+            </div>
+            <div class="col-sm-3">
+                <label>Periodo Inicial</label>
+                <input type="text" class="form-control" maxlength="6" value="{{c.periodoInicial}}" disabled>
+            </div>
+            <div class="col-sm-3">
+                <label>Periodo Final</label>
+                <input type="text" class="form-control" maxlength="6" value="{{c.periodoFinal}}" disabled>
+            </div>
+            <div class="col-sm-3 mr-0 pr-0">
+                <label>Tipo</label>
+                <br>
+                <div class="container">
+                    <div class="row">
+                        <span class="mr-2" style="white-space: nowrap;">
+                            {% if c.tipo=='consulta' %}
+                            <input type="radio" name="tipo" checked disabled>
+                            &nbsp;<small><b>Consulta</b></small>
+                            {% else %}
+                            <input type="radio" name="tipo" disabled>
+                            &nbsp;<small>Consulta</small>
+                            {% endif %}
+                        </span>
+                        <br>
+                        <span>
+                            {% if c.tipo=='excel' %}
+                            <input type="radio" name="tipo" checked disabled>
+                            &nbsp;<small><b>Excel</b></small>
+                            {% else %}
+                            <input type="radio" name="tipo" disabled>
+                            &nbsp;<small>Excel</small>
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-11">
+                <label>Programa</label>
+                {% for p in programas %}
+                {% if c.programa==p.codigo %}
+                <input type="text" class="form-control" maxlength="30" value="{{c.programa}}   {{p.nombre}}" disabled>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-11">
+                <label>Encargado</label>
+                
+                <input type="text" class="form-control" maxlength="200" value="{{c.encargado}}" disabled>
+            </div>
+        </div>
+
+
+        
+
+        <br> 
+        <div class="text-center ml-0 mr-5">
+            <input type="submit" value="Eliminar" class="btn btn-danger" />
+            &nbsp;
+            <a  href="#" class="btn btn-outline-dark ml-0 mr-3" onclick="window.history.go(-1)">Atras</a>
+        </div>
+</form>
+
+
+{% else %}
+
+
+<div class="alert alert-danger" role="alert">
+    <h5 class="alert-heading">Aviso!!</h5>
+    <p>No se pudo encontrar el Conjunto</p>
+    <hr>
+</div>
+
+{% endif %}
+
+{% include 'components/footer.html' %}

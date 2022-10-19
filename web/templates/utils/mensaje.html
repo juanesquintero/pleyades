@@ -1,0 +1,29 @@
+{% include 'components/header.html' %}
+
+{% include 'components/sideBar.html' %}
+
+  <div class="alert alert-danger w-50" style="max-width: 50%;" role="alert">
+    <h5 class="alert-heading">Aviso!!</h5>
+    <p>{{mensaje}}</p>
+    <hr>
+
+    {% if submensaje is mapping %}
+
+      {% for key, value in submensaje.items() %}
+      <p class="mb-2 ml-2"><strong>{{ key }}</strong>:  {{ value }} </p>
+      {% endfor %}
+
+    {% else %}
+      <p class="mb-2 ml-2">{{submensaje}}</p>
+    {% endif %}
+  
+  </div>
+  <!-- <button onclick="goBack()" class="btn btn-outline-dark">Atras</button>
+
+
+<script>
+  function goBack() {
+    window.history.go(-1);
+  }
+</script> -->
+{% include 'components/footer.html' %}

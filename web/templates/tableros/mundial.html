@@ -1,0 +1,164 @@
+{% include 'components/header.html' %}
+
+{% with menu='tableros' %}
+{% include 'components/sideBar.html' %}
+{% endwith %}
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+
+<div class="container m-0 py-2 px-4 w-100 border my-secondary">
+    <h2 class="m-2 text-white">Nivel Mundo</h2>
+</div>
+<br>
+
+<!-- Contenedor Dasboard -->
+<div class="container m-0 p-0 w-100 {% if session['user'] %} {% if session['user']['rol'] == 'Admin' %} h-75 {% else %} h-100 {% endif %} {% else %} h-dashboard {% endif %}">
+
+    <!-- Fila 1 -->
+    <div class="row m-0 p-0 px-2 w-100" style="height: 45%;">
+        <!-- MAPA -->
+        <div class="col-6 h-100 w-100 p-0 m-0 pr-2">
+            {% if mapa_plot %}
+            <p class="m-0 p-0 text-black">
+                <b>Mapa del Mundo</b> (Selecciona tu país de interés)
+                <br>
+                <small>(Cantidad de estudiantes inscritos en eduación terciaria y gasto público respecto al PIB en educación del
+                    país)</small>
+            </p>
+            <div class="h-100 w-100" id="mapa" style="width:90%;"></div>
+            {% endif %}
+            <div class="m-0 p-0 h-100 w-100" id="mapa"></div>
+        </div>
+        <!-- INSCRIPCIONES-->
+        <div class="col-6 px-4 h-100 align-self-center">
+            {% if clusters_plot %}
+            <p class="m-0 p-0 ml-5 text-black">
+                <b>Clusterización de países</b>
+                <br>
+                <small>(Clusters o agrupamientos de paises según la relación entre inscripción y gastos)</small>
+            </p>
+            {% endif %}
+            
+            <div class="m-0 p-0 h-100" id="clusters"></div>
+        </div>
+    </div>
+
+    <div class="row m-0 p-0 w-100" style="height: 15%;"></div>
+
+    <!-- Fila 2 -->
+    <div class="row m-0 p-0 d-flex w-100" style="height: 30%;">
+        <!-- CLUSTERS -->
+        <div class="col-6 h-100 p-0 m-0 px-4">
+            {% if inscrp_plot %}
+            <p class="m-0 p-0 ml-5 text-black">
+                <b>Inscripciones en educación terciaria del país</b>
+                <br>
+                <small>(Cantidad de estudiantes inscritos en eduación terciaria en <b id="pais1">{{pais}}</b>)</small>
+            </p>
+            {% endif %}
+            <div class="m-0 p-0 h-100" id="inscripciones"></div>
+        </div>
+        
+        <!-- GASTOS -->
+        <div class="col-6 h-100 px-4 m-0">
+            {% if gastos_plot %}
+            <p class="m-0 p-0 ml-5 text-black">
+                <b>Gasto público en educación del país</b>
+                <br>
+                <small>(Gasto público en educación respecto al PIB de <b id="pais2">{{pais}}</b>)</small>
+            </p>
+            {% endif %}
+            <div class="m-0 p-0 h-100" id="gastos"></div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    var periodo = '{{ periodo }}';
+    $('#periodo_select').on('change', function () {
+        openModal();
+        window.location.href = "{{url_for('Tablero.pais_dashboard')}}" + '?periodo=' + this.value; //relative to domain
+    })
+</script>
+
+
+
+
+<script>
+    $("#clusters").find("g.pointtext").find("text").css("visibility", "hidden");
+</script>
+
+<!-- Scripts para añadir los graficos al los respectivos contenedores -->
+<script>
+    var graphs = {{ mapa_plot | safe}};
+    Plotly.newPlot('mapa', graphs.data, graphs.layout,
+        {
+            scrollZoom: true,
+            displaylogo: false,
+            responsive: true
+        }
+    ).then(gd => {
+        gd.on('plotly_click', series_plot)
+    });
+
+    function series_plot(pais_obj) {
+        var codigo_pais = pais_obj.points[0]['location']
+        $.ajax({
+            url: "{{url_for('Tablero.mundo_dashboard')}}",
+            type: "GET",
+            contentType: 'application/json;charset=UTF-8',
+            data: {
+                'pais': codigo_pais
+            },
+            dataType: "json",
+            success: function (data) {
+                var graphs = JSON.parse(data[0]);
+                Plotly.newPlot('gastos', graphs.data, graphs.layout, {
+                    displaylogo: false,
+                    responsive: true
+                });
+                var graphs = JSON.parse(data[1]);
+                Plotly.newPlot('inscripciones', graphs.data, graphs.layout, {
+                    displaylogo: false,
+                    responsive: true
+                })
+                document.getElementById('pais1').innerHTML = codigo_pais;
+                document.getElementById('pais2').innerHTML = codigo_pais;
+            }
+        });
+    }
+</script>
+<script>
+    var graphs = {{ clusters_plot | safe}};
+    Plotly.newPlot('clusters', graphs.data, graphs.layout,
+        {
+            scrollZoom: true,
+            displaylogo: false,
+            responsive: true
+        }
+    )
+
+</script>
+<script>
+    var graphs = {{ gastos_plot | safe}};
+    Plotly.newPlot('gastos', graphs.data, graphs.layout, {
+        displaylogo: false,
+        responsive: true
+    });
+</script>
+<script>
+    var graphs = {{ inscrp_plot | safe}};
+    Plotly.newPlot('inscripciones', graphs.data, graphs.layout, {
+        displaylogo: false,
+        responsive: true
+    })
+</script>
+
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+
+
+{% include 'components/footer.html' %}

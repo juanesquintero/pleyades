@@ -1,0 +1,227 @@
+{% include 'components/header.html' %}
+
+
+{% with menu='tableros' %}
+{% include 'components/sideBar.html' %}
+{% endwith %}
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+
+<div class="container m-0 py-2 px-4 w-100 border my-secondary">
+    <div class="row">
+        <h2 class="m-2 text-white">Nivel Región</h2>
+        <!-- Controles -->
+        <div class="row ml-auto mr-1">
+            <div class="col-7">
+                <label for="periodo_select" class="text-white">Selecciona una región:</label>
+                <br>
+                <select id="dpto_select" class="form-control-sm w-100">
+                    {% for d in dptos_list %}
+                    <option value="{{d}}" {% if d|string==dpto|string %} selected {% endif %}>{{d}}</option>
+                    {% endfor %}
+                </select>
+
+            </div>
+            <div class="col-5 pl-1">
+                <label for="periodo_select" class="text-white">Selecciona un período:</label>
+                <br>
+                <select id="periodo_select" class="form-control-sm w-75">
+                    {% for p in periodos_list %}
+                    <option value="{{p}}" {% if p|string==periodo|string %} selected {% endif %}>{{p}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </div>
+    <script>
+        var dpto = '{{ dpto }}';
+        var periodo = '{{ periodo }}';
+        $('#periodo_select').on('change', function () {
+            openModal();
+            window.location.href = "{{url_for('Tablero.region_dashboard')}}" + "?dpto=" + dpto + "&periodo=" + this.value;
+        })
+        $('#dpto_select').on('change', function () {
+            openModal();
+            window.location.href = "{{url_for('Tablero.region_dashboard')}}" + "?dpto=" + this.value + "&periodo=" + periodo;
+        })
+    </script>
+</div>
+
+
+<!-- Contenedor Dasboard -->
+<div class="container m-0 p-0 w-100 {% if session['user'] %} {% if session['user']['rol'] == 'Admin' %} h-75 {% else %} h-100 {% endif %} {% else %} h-dashboard {% endif %}">
+
+    <!-- Fila 1 -->
+    {% if indicadores_dpto_plot %}
+    <div class="row m-0 p-0 my-2 mx-5 w-100 " style="height: 12%;">
+        <!-- INDICADORES DPTO -->
+        <div class="col-11 w-100 h-100">
+            <div class="h-100" id="indicadores_dpto"></div>
+        </div>
+    </div>
+    {% endif %}
+    <!-- Fila 2 -->
+    <div class="row m-0 p-0 w-100 " style="height: 38%;">
+        <!-- MAPA -->
+        <div class="col-5 px-3">
+            {% if mapa_plot %}
+            <p class="m-0 p-0 text-black">
+                <b> Mapa de la región</b>
+                <br>
+                <small>(Cantidad de estudiantes matriculados por localidades dentro de la región)</small>
+            </p>
+            <div class="h-100 w-100" id="mapa" style="width:90%;"></div>
+            {% endif %}
+        </div>
+
+        <!-- PATEL SECTOR -->
+        <div class="col-3 w-50" style="padding: 4.5%;">
+            {% if pastel_plot %}
+            <center>
+                <p class="m-0 p-0 text-black">
+                    <b>Matrícula por sector</b>
+                    <br>
+                    <small>(Cantidad de estudiantes matriculados por sector educativo)</small>
+                </p>
+            </center>
+            <div class="h-100 w-100" id="pastel"></div>
+            {% endif %}
+        </div>
+        <!-- BARRAS GENERO -->
+        <div class="col-4 p-5 w-50">
+            {% if genero_plot %}
+            <center>
+                <p class="m-0 p-0 ml-4 text-black">
+                    <b>Matrícula por género</b>
+                    <br>
+                    <small>(Cantidad de estudiantes matriculados por género masculino/femenino)</small>
+                </p>
+            </center>
+            {% endif %}
+            <div class="h-100 w-100" id="genero"></div>
+        </div>
+    </div>
+    <div class="row m-0 p-0 w-100" style="height: 2%;"></div>
+    <!-- Fila 3 -->
+    <div class="row m-0 p-0 w-100" style="height: 25%;">
+        <div class="col-6 mt-5 h-100">
+            {% if indicadores_ies_plot %}
+            <p class="m-0 p-0 ml-4 text-black">
+                <b>Matrícula de IES</b>
+                <br>
+                <small>(Serie de tiempo de estudiantes matriculados por IES de la región)</small>
+            </p>
+            {% endif %}
+            <!-- SERIES IES -->
+            <div class="h-100" style="overflow:auto; position: relative; direction:rtl;">
+                <div id="indicadores_ies" style="width:95%; height:{{ies_size}}%;  position: absolute;"></div>
+            </div>
+        </div>
+
+        <!-- BARRAS IES -->
+        {% if barras_ies_plot %}
+        <div class="col-6 mt-5 h-100">
+
+            <p class="m-0 p-0 ml-4 text-black">
+                <b>Ranking de IES por deserción</b>
+                <br>
+                <small>(Instituciones de educación superior de la región por porcentaje de deserción)</small>
+            </p>
+
+            <div class="h-100" style="overflow:auto; position: relative; direction:rtl;">
+                <div id="barras_ies" class="mt-2" style="width:95%; height:{{ies_size}}%;  position: absolute;"></div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+</div>
+
+
+<!-- Scripts para añadir los graficos al los respectivos contenedores -->
+<script>
+    var graphs = {{ mapa_plot | safe}};
+    if (graphs) {
+        Plotly.newPlot('mapa', graphs.data, graphs.layout,
+            {
+                displaylogo: false,
+                responsive: true
+            })
+
+    }
+
+</script>
+<script>
+    var graphs = {{ barras_plot | safe}};
+    if (graphs) {
+        Plotly.newPlot('barras', graphs.data, graphs.layout,
+            {
+                displaylogo: false,
+                responsive: true
+            })
+    }
+
+</script>
+<script>
+    var graphs = {{ genero_plot | safe}};
+    if (graphs) {
+        Plotly.newPlot('genero', graphs.data, graphs.layout,
+            {
+                displayModeBar: false,
+                responsive: true
+            })
+    }
+
+</script>
+<script>
+    var graphs = {{ pastel_plot | safe}};
+    if (graphs) {
+        Plotly.newPlot('pastel', graphs.data, graphs.layout,
+            {
+                displayModeBar: false,
+                responsive: true
+            })
+    }
+
+</script>
+<script>
+    var graphs = {{ indicadores_dpto_plot | safe}};
+    if (graphs) {
+        Plotly.newPlot('indicadores_dpto', graphs.data, graphs.layout,
+            {
+                displayModeBar: false,
+                responsive: true
+            })
+    }
+
+</script>
+<script>
+    var graphs = {{ indicadores_ies_plot | safe}};
+    if (graphs) {
+        Plotly.newPlot('indicadores_ies', graphs.data, graphs.layout,
+            {
+                displayModeBar: false,
+                responsive: true
+            })
+    }
+
+</script>
+<script>
+    var graphs = {{ barras_ies_plot | safe}};
+    if (graphs) {
+        Plotly.newPlot('barras_ies', graphs.data, graphs.layout,
+            {
+                displayModeBar: false,
+                responsive: true,
+            })
+    }
+
+</script>
+
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+
+
+{% include 'components/footer.html' %}

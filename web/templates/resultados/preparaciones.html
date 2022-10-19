@@ -1,0 +1,90 @@
+{% include 'components/header.html' %}
+
+{% with menu='resultados' %}
+    {% include 'components/sideBar.html' %}
+{% endwith %}
+
+<h4>Resultados</h4>
+<br>
+
+<!-- Input de filtrado -->
+<div class="row ml-1 mt-2">
+  &nbsp;<i class="fas fa-filter mr-2 mt-2""></i>&nbsp;
+  <input type=" text" class="form-control form-control-sm w-25" id="filtro_tabla" placeholder="Filtrar tabla...">
+</div>
+<br>
+
+<ul class="nav nav-tabs mb-4">
+  <li class="nav-item">
+    <a class="nav-link active" href="#">Preparaciones</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link text-dark bg-light border" href="{{url_for('Resultado.ejecuciones')}}">Ejecuciones</a>
+  </li>
+</ul>
+<div class="table-responsive-sm">
+  <table class="table table-hover table-sm" id="tabla">
+    <thead>
+      <tr>
+        <th scope="col" class="border-top-0">
+          <center>Preparacion</center>
+        </th>
+        <th scope="col" class="border-top-0">
+          <center>Fecha</center>
+        </th>
+        <th scope="col" class="border-top-0">
+          <center>Duracion</center>
+        </th>
+        <th scope="col" class="border-top-0">
+          <center>Estado</center>
+        </th>
+        <th scope="col" class="border-top-0">
+          <center> Acciones</center>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in resultados %}
+      <tr>
+        <td>
+          <center>{{ p.nombre }}</center>
+        </td>
+        <td>
+          <center>{{ p.fechaInicial }}</center>
+        </td>
+        <td>
+          <center>{{ p.duracion }} seg</center>
+        </td>
+        <td>
+          <center>{{ p.estado }}</center>
+        </td>
+        <td>
+          <!-- ACCCIONES -->
+          <center>
+            <div class="btn-group" role="group" aria-label="Basic example">
+              <form action="{{url_for('Resultado.preparacion_detalle')}}" method="POST">
+                <input type="hidden" name="preparacion" value="{{p.nombre}}">
+                <button type="submit" data-toggle="tooltip" data-placement="bottom" title="Ver Detalle"
+                  class="btn btn-outline-dark btn-sm submit" role="status">
+                  <i class="fas fa-search-plus"></i>
+                </button>
+              </form>
+            </div>
+          </center>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<br>
+
+{% if error %}
+{% with titulo='No se pudieron cargar los resultados',error=error %}
+{% include "components/alert.html" %}
+{% endwith %}
+{% endif %}
+
+
+{% include 'components/footer.html' %}

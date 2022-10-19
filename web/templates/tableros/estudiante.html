@@ -1,0 +1,499 @@
+{% include 'components/header.html' %}
+
+
+{% with menu='tableros' %}
+{% include 'components/sideBar.html' %}
+{% endwith %}
+
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+
+
+<div class="container m-0 py-2 px-4 w-100 border my-secondary">
+    <div class="row">
+        <h3 class="ml-2 mt-2 p-0 text-white">Nivel Estudiante</h3>
+        <!-- Controles -->
+        {% if estudiante %}
+        <div class="row ml-auto" style="width:60%;">
+            <div class="col-7 m-0 px-1">
+                <label for="periodo_select" class="text-white">Selecciona un programa:</label>
+                <br>
+                <select id="programa_select" class="form-control-sm w-100">
+                    {% for prgm in programas_list %}
+                    <option value="{{prgm.idprograma}}" {% if prgm.idprograma|string==programa.idprograma|string %}
+                        selected {% endif %}>{{prgm.programa}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-3 m-0 px-1">
+                <label for="periodo_select" class="text-white ">Selecciona un período:</label>
+                <br>
+                <select id="periodo_select" class="form-control-sm" style="width:90%;">
+                    {% for p in periodos_list %}
+                    <option value="{{p}}" {% if p|string==periodo|string %} selected {% endif %}>{{p}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-1 m-0 pt-4 pr-5 h-100">
+                <a href="{{url_for('Tablero.estudiante_dashboard')}}" class="btn btn-outline-dark bg-light" style="height:90%;"><i class="fas fa-search mr-1"></i></a>
+            </div>
+
+        </div>
+        {% endif %}
+    </div>
+    <script>
+        var programa = '{{ programa.idprograma }}';
+        var periodo = '{{ periodo }}';
+        var documento = '{{ estudiante.documento }}';
+        $('#periodo_select').on('change', function () {
+            openModal();
+            window.location.href = "{{url_for('Tablero.estudiante_dashboard')}}" + "?documento=" + documento + '&programa=' + programa + '&periodo=' + this.value;
+        })
+        $('#programa_select').on('change', function () {
+            openModal();
+            window.location.href =  "{{url_for('Tablero.estudiante_dashboard')}}" + "?documento=" + documento + '&programa=' + this.value;
+        })
+    </script>
+</div>
+
+
+
+<!-- Contenedor Dasboard -->
+<div class="container m-0 p-0 w-100 {% if session['user'] %} {% if session['user']['rol'] == 'Admin' %} h-75 {% else %} h-100 {% endif %} {% else %} h-dashboard {% endif %}">
+
+    {% if estudiante %}
+    <!-- Fila 1 -->
+    <div class="d-flex justify-content-between row m-0 w-100" style="height: 45%;">
+
+        <div class="col-8 h-100">
+            <div class="row mx-3 text-center mt-4 mb-2 ">
+                <div class="col">
+                    <h4 class="text-bold">{{estudiante.nombre_completo}}</h4>
+                </div>
+            </div>
+            <small class="ml-5">(Datos personales del estudiante) </small>
+            <div class="row m-1 p-2 border d-flex justify-content-between mx-5" style="height: 58%;">
+                <div class="col-6 m-0 w-100 pr-5 pl-3" style="height: 85%;">
+                    <table class="p-0 w-100">
+                        <tbody class="p-0 h-100 w-100" style="height: 55%;">
+                            <tr class="d-flex align-items-center mb-2">
+                                <th scope="row" class="">
+                                    {% if estudiante.tipo_documento %}
+                                    {{estudiante.tipo_documento}}
+                                    {% endif %}
+                                </th>
+                                <td class="ml-auto"><span class="text-right">
+                                        {% if estudiante.documento %}
+                                        &nbsp;{{estudiante.documento}}
+                                        {% endif %}
+                                    </span></td>
+                            </tr>
+                            <tr class="d-flex align-items-center mb-2">
+                                <th scope="row" class="">Fecha Nacimiento</th>
+                                <td class="ml-auto"> <span class="text-right">
+                                        {% if estudiante.fecha_nacimiento %}
+                                        {{estudiante.fecha_nacimiento}}
+                                        {% endif %}
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr class="d-flex align-items-center mb-2">
+                                <th scope="row" class="">Edad</th>
+                                <td class="ml-auto"><span class="text-right">
+                                        {% if estudiante.edad %}
+                                        {{estudiante.edad}}
+                                        {% endif %}
+                                    </span></td>
+                            </tr>
+                            <tr class="d-flex align-items-start">
+                                <th scope="row">
+                                    Contacto
+                                    <br>
+                                    <small>(Celular-Teléfono)</small>
+                                </th>                                
+                                <td class="ml-auto">
+                                    {% if estudiante.celular_telefono %}
+
+                                    {% if ' ' in estudiante.celular_telefono %}
+
+                                    {% set list_numbers = estudiante.celular_telefono.split(' ') %}
+
+                                    {% for number in list_numbers %}
+
+                                    <a href="tel:{{number}}">{{number}}</a>
+                                    {% if loop.index == 1 %}
+                                    -
+                                    {% endif %}
+
+                                    {% endfor %}
+
+                                    {% else %}
+                                    <a href="tel:{{estudiante.celular_telefono}}">{{estudiante.celular_telefono}}</a>
+                                    {% endif %}
+
+                                    {% endif %}
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-6 w-100 m-0 pl-5 pr-3" style="height: 85%;">
+                    <table class="p-0 w-100">
+                        <tbody class="p-0 w-100">
+                            <tr class="d-flex align-items-center mb-1">
+                                <th scope="row" class="">Genero</th>
+                                <td class="ml-auto"><span class="text-right">
+                                        {% if estudiante.genero %}
+                                        {{estudiante.genero}}
+                                        {% endif %}
+                                    </span></td>
+                            </tr>
+
+                            <tr class="d-flex align-items-center mb-1">
+                                <th scope="row" class="">Estado Civil</th>
+                                <td class="ml-auto"><span class="text-right">
+                                        {% if estudiante.estado_civil %}
+                                        {{estudiante.estado_civil}}
+                                        {% endif %}
+                                    </span></td>
+                            </tr>
+                            <tr class="d-flex align-items-center mb-1">
+                                <th scope="row" class="">Estrato Residencia</th>
+                                <td class="ml-auto"><span class="text-right">
+                                        {% if estudiante.estrato_residencia %}
+                                        {{estudiante.estrato_residencia}}
+                                        {% endif %}
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr class="d-flex align-items-center">
+                                <th scope="row" class="">Trabaja</th>
+                                <td class="ml-auto"><span class="text-right">
+                                        {% if estudiante.trabaja %}
+                                        {{estudiante.trabaja}}
+                                        {% endif %}
+                                    </span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row w-100 mt-2 p-0">
+                    <div class="col-5 d-flex justify-content-end"><b>Correo</b></div>
+
+                    <div class="col-7">
+                        {% if estudiante.correo_electronico %}
+                        <a href="mailto:{{estudiante.correo}}">
+                            {{estudiante.correo_electronico}}</a>
+                        {% endif %}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-4 py-5 pr-5">
+            <div class="container mt-2 pr-5">
+                <div class="row h-50 d-flex justify-content-center">
+                    <div class="col-4">
+                        <center>
+                            <h5>Desertor</h5>
+                            <h4 class="
+                            {% if estudiante.desertor == 'SI' %} 
+                            text-danger 
+                            {% else %}
+                            text-success
+                            {% endif %}
+                            ml-4">
+                                {{estudiante.desertor}}
+                            </h4>
+                        </center>
+                    </div>
+                    <div class="col-2"></div>
+                    <div class="col-5 tex-center">
+                        <center>
+                            <h5>Intersemestral</h5>
+                            <h4>
+                                {{estudiante.intersemestral}}
+                            </h4>
+
+                        </center>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div class="row h-50 d-flex justify-content-center">
+                    <div class="col-5">
+                        <center>
+                            <h5>Sanciones</h5>
+                            <h4 class="
+                            {% if estudiante.sanciones_multas == 'SI' %} 
+                            text-danger 
+                            {% else %}
+                            text-success
+                            {% endif %}
+                            ml-4">
+                                {{estudiante.sanciones_multas}}
+                            </h4>
+                        </center>
+                    </div>
+                    <div class="col-1"></div>
+                    <div class="col-5">
+                        <center>
+                            <h5>Semillero</h5>
+                            <h4 class="
+                            {% if estudiante.participacion_semillero_investigacion == 'NO' %} 
+                            text-danger 
+                            {% else %}
+                            text-success
+                            {% endif %}
+                            ml-4">
+                                {{estudiante.participacion_semillero_investigacion}}
+                            </h4>
+                        </center>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Fila 2 -->
+    <div class="d-flex justify-content-between row m-0 w-100 pl-3" style="height: 45%;">
+
+        <!-- PROMEDIOS -->
+        <div class="col-6 p-0 m-0 h-100 pr-5">
+            <div class="d-flex align-items-end justify-content-center m-0 p-0 px-5" style="height:15%;">
+                <div class="border m-0 p-0 px-2 h-75" style="width: 70%;">
+                    <table class="h-100 w-100">
+                        <tbody class="w-100 h-100">
+                            <tr class="">
+                                <th scope="row" class="">Promedio Acumulado <span
+                                        class="font-weight-normal">{{periodo}}</span></th>
+                                <td class="ml-auto">
+                                    <span class="text-right">
+                                        {% if estudiante.promedio_acumulado %}
+                                        {% if estudiante.promedio_acumulado >= 0 %}
+                                        {{estudiante.promedio_acumulado}}
+                                        {% else %} -
+                                        {% endif %}
+                                        {% else %} -
+                                        {% endif %}
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            {% if serie_promedio_plot %}
+            <p class="m-0 p-0 mt-3 ml-5 text-black">
+                <b>Promedio por períodos</b>
+                <br>
+                <small>(Serie de tiempo del promedio por período para este programa) </small>
+            </p>
+            {% endif %}
+            <div class="m-0 p-0" style="height: 85%;" id="serie_promedio"></div>
+        </div>
+
+        <!-- PROGRESO -->
+        <div class="col-6 p-0 m-0 h-100 pl-3 w-100">
+            <p class="m-0 p-0 text-black">
+                <b>Progreso académico</b>
+                <br>
+                <small>(Datos de créditos y asignaturas; aprobados, reprobados y cancelados hasta <b>{{periodo}}</b>)</small>
+            </p>
+            <br>
+            <div class="row" style="height: 35%;">
+                <!-- Creditos -->
+                <div class="px-3 py-1 border" style="width: 45%;">
+                    <table class="w-100 h-100">
+                        <tbody class="w-100 h-100">
+                            <tr class="d-flex align-items-center mb-1">
+                                <th scope="row" class="">Créditos Plan</th>
+                                <td class="ml-auto"><span class="text-right">
+                                        {% if estudiante.creditos_programa %}
+                                        {% if estudiante.creditos_programa >= 0 %}
+                                        {{estudiante.creditos_programa|int}}
+                                        {% else %} -
+                                        {% endif %}
+                                        {% else %} -
+                                        {% endif %}
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr class="d-flex align-items-center mb-1">
+                                <th scope="row" class="">Créditos Matriculados</th>
+                                <td class="ml-auto"><span class="text-right">
+                                        {% if estudiante.creditos_matriculados_acum %}
+                                        {% if estudiante.creditos_matriculados_acum >= 0 %}
+                                        {{estudiante.creditos_matriculados_acum|int}}
+                                        {% else %} -
+                                        {% endif %}
+                                        {% else %} -
+                                        {% endif %}
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr class="d-flex align-items-center mb-1">
+                                <th scope="row" class="">Total Créditos Aprobados</th>
+                                <td class="ml-auto"><span class="text-right">
+                                        {% if estudiante.creditos_aprobados_acum %}
+                                        {% if estudiante.creditos_aprobados_acum >= 0 %}
+                                        {{estudiante.creditos_aprobados_acum|int}}
+                                        {% else %} -{% endif %}
+                                        {% else %} -{% endif %}
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr class="d-flex align-items-center">
+                                <th scope="row" class="">Total Créditos Reprobados</th>
+                                <td class="ml-auto"><span class="text-right">
+                                        {% if estudiante.creditos_reprobados_acum %}
+                                        {% if estudiante.creditos_reprobados_acum >= 0 %}
+                                        {{estudiante.creditos_reprobados_acum|int}}
+                                        {% else %} -{% endif %}
+                                        {% else %} -{% endif %}
+                                    </span> </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Asignaturas -->
+                <div class="px-3 py-1 border " style="width: 45%;">
+                    <table class="w-100 h-100">
+                        <tbody class="w-100 h-100">
+                            <tr class="d-flex align-items-center mb-1">
+                                <th scope="row" class="">Asignaturas Plan</th>
+                                <td class="ml-auto"><span class="text-right">
+                                        {% if estudiante.asignaturas_programa %}
+                                        {% if estudiante.asignaturas_programa >= 0 %}
+                                        {{estudiante.asignaturas_programa|int}}
+                                        {% else %} - {% endif %}
+                                        {% else %} - {% endif %}
+
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr class="d-flex align-items-center mb-1">
+                                <th scope="row" class="">Total Asignaturas Canceladas</th>
+                                <td class="ml-auto"><span class="text-right">
+                                        {% if estudiante.asignaturas_canceladas_sem %}
+                                        {% if estudiante.asignaturas_canceladas_sem >= 0 %}
+                                        {{estudiante.asignaturas_canceladas_sem|int}}
+                                        {% else %} - {% endif %}
+                                        {% else %} - {% endif %}
+                                    </span></td>
+                            </tr>
+                            <tr class="d-flex align-items-center mb-1">
+                                <th scope="row" class="">Total Asignaturas Aprobadas</th>
+                                <td class="ml-auto"><span class="text-right">
+                                        {% if estudiante.asignaturas_aprobadas_acum %}
+                                        {% if estudiante.asignaturas_aprobadas_acum >= 0 %}
+                                        {{estudiante.asignaturas_aprobadas_acum|int}}
+                                        {% else %} - {% endif %}
+                                        {% else %} - {% endif %}
+
+                                    </span></td>
+                            </tr>
+                            <tr class="d-flex align-items-center">
+                                <th scope="row" class="">Total Asignaturas Reprobadas</th>
+                                <td class="ml-auto"><span class="text-right">
+                                        {% if estudiante.asignaturas_reprobadas_acum %}
+                                        {% if estudiante.asignaturas_reprobadas_acum >= 0 %}
+                                        {{estudiante.asignaturas_reprobadas_acum|int}}
+                                        {% else %} -{% endif %}
+                                        {% else %} -{% endif %}
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <br>
+            <div class="row m-0" style="height: 40%; width: 90%;">
+                <strong>Créditos Aprobados</strong>
+                <div class="m-0 p-0 h-50 w-100" id="creditos_a"></div>
+                <br>
+                <strong>Créditos Reprobados</strong>
+                <div class="m-0 p-0 h-50 w-100" id="creditos_r"></div>
+            </div>
+
+        </div>
+    </div>
+    {% else %}
+    <center>
+        <div class="m-5 p-5 w-50">
+            <h6>
+                <i class="fa fa-exclamation-circle fa-lg" aria-hidden="true"></i>
+                NO SE ENCONTRO EL ESTUDIANTE CON...
+            </h6>
+            <br>
+            <i>
+                <strong>DOCUMENTO:</strong> &nbsp;{{documento}}
+
+                {% if programa is not none %}
+                <br>
+                <strong>PROGRAMA:</strong> &nbsp;{{programa.programa}}
+                {% endif %}
+
+                {% if periodo is not none%}
+                <br>
+                <strong>PERÍODO:</strong>&nbsp;{{periodo}}
+                {% endif %}
+            </i>
+
+            <br><br><br>
+            <a href="{{url_for('Tablero.estudiante_dashboard')}}" class="btn btn-outline-dark">Atras</a>
+        </div>
+    </center>
+
+    {% endif %}
+
+</div>
+
+<style>
+    g.pointtext {
+        display: none !important;
+    }
+</style>
+
+<!-- Scripts para añadir los graficos al los respectivos contenedores -->
+<script>
+    var graphs = {{ serie_promedio_plot | safe}};
+    if (graphs) {
+        Plotly.newPlot('serie_promedio', graphs.data, graphs.layout,
+            {
+                responsive: true
+            })
+    }
+</script>
+<script>
+    var graphs = {{ creditos_r_plot | safe}};
+    if (graphs) {
+        Plotly.newPlot('creditos_r', graphs.data, graphs.layout,
+            {
+                displayModeBar: false,
+                responsive: true,
+            })
+    }
+</script>
+<script>
+    var graphs = {{ creditos_a_plot | safe}};
+    if (graphs) {
+        Plotly.newPlot('creditos_a', graphs.data, graphs.layout,
+            {
+                displayModeBar: false,
+                responsive: true,
+            })
+    }
+</script>
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+
+
+{% include 'components/footer.html' %}

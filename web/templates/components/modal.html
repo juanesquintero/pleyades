@@ -1,0 +1,22 @@
+<!-- Modal -->
+<div id="myModal" class="modal fade p-5" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered modal-md p-5">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-body">
+        <center>
+          <h3 class="modal-title">{{titulo}}...</h3>
+          <br>
+          <p>{{mensaje}}
+            <!-- <br>Tasa de tiempo {{tipo}}:<br>
+            <sup>{{num}}</sup> &#8260; <sub>{{den}}</sub> -->
+          </p>
+          <br>
+          <i class="fas fa-circle-notch fa-spin fa-4x mb-3"></i>
+          <br>
+        </center>
+      </div>
+    </div>
+  </div>
+</div>
+<script>$('#myModal').modal('hide');</script>

@@ -1,0 +1,54 @@
+{% include 'components/header.html' %}
+<div class="d-flex align-self-stretch bg-light h-100">
+    <form action="{{url_for('auth.login')}}" method="POST" data-toggle="validator"
+        class="jumbotron container mt-5 py-4 px-5 bg-white border rounded" style="max-width:30%;">
+        <center>
+            <h4>Iniciar Sesión</h4>
+        </center>
+        <br>
+        <div class="form-group">
+            <input type="email" class="form-control" id="InputEmailLoginID" name="InputEmailLogin" aria-describedby="emailHelp"
+                placeholder="Dirección de correo" required>
+
+        </div>
+        <div class="form-group d-flex align-content-center align-items-center">
+            <input type="password" class="form-control mb-1" id="InputPasswordLoginID" name="InputPasswordLogin"
+                placeholder="Contraseña" required>
+            &nbsp;
+        <div class="align-self-center fa fa-eye ml-1" onclick="password()" style="cursor:pointer"></div>
+        </div>
+
+        <script>
+            function password() {
+                var x = document.getElementById("InputPasswordLoginID");
+                if (x.type === "password") {
+                    x.type = "text";
+                } else {
+                    x.type = "password";
+                }
+            }
+        </script>
+
+    
+        {% if mensaje %}
+        <div class="alert alert-danger py-0" role="alert">
+            <p class="pt-1">{{mensaje}}</p>
+        </div>
+        {% endif %}
+
+        <div class="d-flex justify-content-end"><a href="#"><small>¿Olvido su contraseña?</small></a></div>
+        <br>
+
+        <div class="text-center">
+            <input type="submit" value="Entrar" class="btn btn-dark text-white my-primary" />
+        </div>
+
+    </form>
+</div>
+
+<script>
+    function goBack() {
+        window.history.go(-1);
+    }
+</script>
+{% include 'components/footer.html' %}

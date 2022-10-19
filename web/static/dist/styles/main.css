@@ -1,0 +1,95 @@
+/* START SideBar */
+@import url("https://fonts.googleapis.com/css?family=Montserrat");
+
+/*-------------------------------- END ----*/
+#body-row {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+#sidebar-container {
+    min-height: 100vh;
+    padding: 0;
+    /* flex: unset; */
+}
+
+.sidebar-expanded {
+    width: 230px;
+}
+
+.sidebar-collapsed {
+    /*width: 60px;*/
+    width: 100px;
+}
+
+/* ----------| Menu item*/
+#sidebar-container .list-group a {
+    height: 50px;
+    color: white;
+}
+
+/* ----------| Submenu item*/
+#sidebar-container .list-group li.list-group-item {
+    border: 1px solid rgb(255, 255, 255);
+}
+
+#sidebar-container .list-group .sidebar-submenu a {
+    height: 45px;
+    padding-left: 30px;
+}
+
+.sidebar-submenu {
+    font-size: 0.9rem;
+}
+
+/* ----------| Separators */
+.sidebar-separator-title {
+    height: 35px;
+}
+
+.sidebar-separator {
+    height: 25px;
+}
+
+.logo-separator {
+    height: 60px;
+}
+
+a.bg-dark {
+    /* background-color: #132644 !important; */
+}
+
+/* END SideBar */
+
+/* BOOTSTRAP BUG DROPDOWN */
+.dropdown-menu-right {
+    right: 0 !important;
+    left: auto !important;
+}
+
+body {
+    font-size: 12px !important;
+}
+span {
+    font-size: 12px !important;
+}
+.my-dark {
+    background-color: #24292e;
+}
+.my-primary {
+    background-color: rgb(30, 59, 87);
+}
+.my-secondary {
+    background-color: rgb(30, 75, 131);
+}
+
+/* [title]:hover:after {
+        background-color: rgb(30, 75, 131);
+        content: attr(title);
+        position: absolute;
+      } */
+
+.h-dashboard {
+    height: 300% !important;
+    width: 90% !important;
+}

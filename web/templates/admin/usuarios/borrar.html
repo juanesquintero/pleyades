@@ -1,0 +1,56 @@
+{% include 'components/header.html' %}
+
+{% include 'components/sideBar.html' %}
+
+<h5>Elimnar un Usuario</h5>
+
+{% if u.correo %}
+<form action="{{url_for('Usuario.eliminar')}}" method="POST" data-toggle="validator" class="jumbotron py-4 pr-0 bg-light"
+    style="max-width:65%;">
+    <div class="container">
+        <div class="form-group row">
+            <div class="col-sm-7">
+                <label>Nombre</label>
+                <input type="text" name="nombre" class="form-control input-sm" maxlength="200" required
+                    value="{{u.nombre}}" disabled>
+            </div>
+            <div class="col-sm-3">
+                <label>Rol</label>
+                <input type="text" name="rol" class="form-control" maxlength="50" value="{{u.rol}}" disabled />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-10">
+                <label>Correo</label>
+                <input type="hidden" name="correo" class="form-control" value="{{u.correo}}" required maxlength="30">
+                <input type="text" class="form-control input-sm" maxlength="200" required value="{{u.correo}}" disabled>
+            </div>
+        </div>
+        
+        <!--Boton para validar campos-->
+        <br>
+        <div class="alert alert-warning" role="alert">
+            <h5 class="alert-heading">Aviso!!</h5>
+            <p>¿Estas segur@ que quieres eliminar este usuario ?</p>
+            <hr>
+        </div>
+        <div class="text-center">
+            <input type="submit" value="Elimnar" class="btn btn-danger" />
+            &nbsp;
+            <a href="{{url_for('Usuario.listar')}}" class="btn btn-outline-dark">Atras</a>
+        </div>
+    </div>
+</form>
+{% else %}
+
+<div class="alert alert-danger" role="alert">
+    <h5 class="alert-heading">Aviso!!</h5>
+    <p>No se pudo encontrar el Usuario a eliminar</p>
+    <hr>
+</div>
+
+{% endif %}
+
+
+{% include 'components/footer.html' %}

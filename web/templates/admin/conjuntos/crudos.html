@@ -1,0 +1,110 @@
+{% include 'components/header.html' %}
+
+{% include 'components/sideBar.html' %}
+
+<h4>Conjuntos de Datos</h4><h6 class="text-muted" ><i class="fas fa-user-shield fa-sm"></i> Admin</h6>
+<br>
+
+<!-- Input de filtrado -->
+<div class="row ml-1 mt-2">
+  &nbsp;<i class="fas fa-filter mr-2 mt-2""></i>&nbsp;
+  <input type="text" class="form-control form-control-sm w-25" id="filtro_tabla" placeholder="Filtrar tabla...">
+</div>
+<br>
+
+<!-- Tabs de navegacion -->
+<ul class="nav nav-tabs mb-4">
+  <li class="nav-item">
+    <a class="nav-link active" href="#">Crudos</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link text-dark bg-light border" href="{{url_for('ConjuntoAdmin.procesados')}}">Procesados</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link text-dark bg-light border" href="{{url_for('ConjuntoAdmin.en_proceso')}}">En Proceso</a>
+  </li>
+</ul>
+
+<!-- Tabla -->
+<div class="table-responsive-sm ">
+  <table class="table table-hover table-sm" id="tabla">
+    <thead>
+      <tr class="border-top-0">
+        <th scope="col" class="border-top-0">
+          <center> Nombre </center>
+        </th>
+        <th scope="col" class="border-top-0">
+          <center> Tipo </center>
+        </th>
+        <th scope="col" class="border-top-0">
+          <center> Encargado </center>
+        </th>
+        <th scope="col" class="border-top-0">
+          <center> Programa </center>
+        </th>
+        <th scope="col" class="border-top-0">
+          <center> Acciones</center>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+
+      {% for c in conjuntos %}
+      <tr>
+        <td>
+          <center>{{ c.nombre }}</center>
+        </td>
+        <td>
+          <center>{{ c.tipo }}</center>
+        </td>
+        <td>
+          <center>{{ c.encargado }}</center>
+        </td>
+
+        <td>
+          {% for p in programas %}
+          {% if c.programa==p.codigo %}
+          <center>{{c.programa}} {{p.nombre}}</center>
+          {% endif %}
+          {% endfor %}
+        </td>
+        <td>
+          <!-- ACCCIONES -->
+          <div class="row d-flex justify-content-center">
+            
+              <div class="btn-group" role="group" aria-label="Basic example">
+                <!-- Editar -->
+                <form action="{{url_for('ConjuntoAdmin.editar')}}" method="POST">
+                  <input type="hidden" name="conjunto" value="{{c}}">
+                  <input type="submit" data-toggle="tooltip" data-placement="bottom" title="Editar"
+                    class="btn btn-outline-dark btn-sm" value="&#9999;">
+                </form>
+                <!-- Eliminar -->
+                <form action="{{url_for('ConjuntoAdmin.borrar')}}" method="POST">
+                  <input type="hidden" name="conjunto" value="{{c}}">
+                  <input type="submit" data-toggle="tooltip" data-placement="bottom" title="Eliminar"
+                    class="btn btn-outline-dark btn-sm" value="&#128465;">
+                </form>
+  
+              </div>
+
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+</div>
+
+{% if error %}
+<br>
+{% with titulo='No se pudieron cargar los conjuntos',error=error %}
+{% include "components/alert.html" %}
+{% endwith %}
+<br>
+{% endif %}
+
+<br>
+
+{% include 'components/footer.html' %}

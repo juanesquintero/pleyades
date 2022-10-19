@@ -1,0 +1,180 @@
+<!-- Bootstrap row -->
+<div class="container-fluid p-0">
+    <div class="row" id="body-row">
+
+        <!-- Sidebar -->
+        {% if session['user'] %}
+        <div id="sidebar-container" class="sidebar border-right my-secondary"">
+            <!-- d-* hiddens the Sidebar in smaller devices. Its itens can be kept on the Navbar 'Menu' -->
+            <!-- Bootstrap List Group -->
+       
+
+
+                <ul class=" list-group mt-3 " style=" height: 100%;" style="margin-bottom:0px;">
+            <!-- Opciones -->
+            <li
+                class="list-group-item sidebar-separator-title text-white d-flex align-items-center menu-collapsed border-right-0 border-left-0  my-secondary">
+                <small>OPCIONES</small>
+
+            </li>
+
+            <!-- CONJUNTOS MENU -->
+            <a href="#menuConjuntos" data-toggle="collapse" aria-expanded="false"
+                class="list-group-item  flex-column align-items-start my-secondary border-top">
+                <div class="d-flex w-100 justify-content-start align-items-center">
+                    <span class="fa fa-database fa-fw mr-3 text-white"></span>
+                    <span class="menu-collapsed text-white">Conjuntos de Datos</span>
+                    <span class="submenu-icon ml-auto"></span>
+                </div>
+            </a>
+            <!-- Submenu content -->
+            <div {% if menu=='conjuntos' %} style="display:inline;" {% endif %} id='menuConjuntos'
+                class="sidebar-submenu collapse">
+                <a href="{{url_for('Conjunto.crudos')}}"
+                    class="list-group-item  text-white  border-right-0 my-secondary">
+                    &#8226;&nbsp;&nbsp;<span class="menu-collapsed text-white">Crudos</span>
+                </a>
+                <a href="{{url_for('Conjunto.procesados')}}"
+                    class="list-group-item  text-white border-right-0 my-secondary">
+                    &#8226;&nbsp;&nbsp;<span class="menu-collapsed text-white">Procesados</span>
+                </a>
+            </div>
+            <!-- RESULTADOS MENU -->
+            <a href="#menuResultados" data-toggle="collapse" aria-expanded="false"
+                class="list-group-item  flex-column align-items-start  border-right-0 my-secondary">
+                <div class="d-flex w-100 justify-content-start align-items-center">
+                    <i class="fa fa-list fa-fw mr-3 text-white" aria-hidden="true"></i>
+                    <span class="menu-collapsed text-white">Resultados</span>
+                    <span class="submenu-icon ml-auto"></span>
+                </div>
+            </a>
+            <div {% if menu=='resultados' %} style="display:inline;" {% endif %} id='menuResultados'
+                class="sidebar-submenu collapse">
+                <a href="{{url_for('Resultado.preparaciones')}}"
+                    class="list-group-item  text-white  border-right-0 my-secondary">
+                    &#8226;&nbsp;&nbsp;<span class="menu-collapsed text-white">Preparaciones</span>
+                </a>
+                <a href="{{url_for('Resultado.ejecuciones')}}"
+                    class="list-group-item  text-white border-right-0 my-secondary">
+                    &#8226;&nbsp;&nbsp;<span class="menu-collapsed text-white">Ejecuciones</span>
+                </a>
+            </div>
+            <!-- TABLEROS MENU -->
+            <a href="#menuTableros" data-toggle="collapse" aria-expanded="false"
+                class="list-group-item  flex-column align-items-start border-right-0 my-secondary">
+                <div class="d-flex w-100 justify-content-start align-items-center">
+                    <span class="fa fa-chart-bar fa-fw mr-3 text-white" aria-hidden="true"></span>
+
+                    <span class="menu-collapsed text-white">Tableros</span>
+                    <span class="submenu-icon ml-auto"></span>
+                </div>
+            </a>
+
+
+
+            <div {% if menu=='tableros' %} style="display:inline;" {% endif %} id='menuTableros'
+                class="sidebar-submenu collapse">
+                
+                <a {% if  url_for('Tablero.mundo_dashboard') not in request.path %} onclick="openModal()"
+                    href="{{url_for('Tablero.mundo_dashboard')}}" {% else %} href="#" {% endif %}
+                    class="list-group-item  text-white  border-right-0 my-secondary">
+                    &nbsp;&nbsp;<i class="fa fa-globe-americas fa-xs" aria-hidden="true"></i>
+                    <span class="menu-collapsed text-white">Mundo</span>
+                </a>
+                <a {% if  url_for('Tablero.pais_dashboard') not in request.path %} onclick="openModal()"
+                    href="{{url_for('Tablero.pais_dashboard')}}" {% else %} href="#" {% endif %}
+                    class="list-group-item  text-white border-right-0 my-secondary">
+                    &nbsp;&nbsp;<i class="fa fa-flag fa-xs" aria-hidden="true"></i>
+                    <span class="menu-collapsed text-white">País</span>
+                </a>
+                <a {% if  url_for('Tablero.region_dashboard') not in request.path %} onclick="openModal()"
+                    href="{{url_for('Tablero.region_dashboard')}}" {% else %} href="#" {% endif %}
+                    class="list-group-item  text-white border-right-0 my-secondary">
+                    &nbsp;&nbsp;<i class="fa fa-mountain fa-xs" aria-hidden="true"></i>
+                    <span class="menu-collapsed text-white">Región</span>
+                </a>
+                <a {% if  url_for('Tablero.ies_dashboard') not in request.path %} onclick="openModal()"
+                    href="{{url_for('Tablero.ies_dashboard')}}" {% else %} href="#" {% endif %}
+                    class="list-group-item  text-white border-right-0 my-secondary">
+                    &nbsp;&nbsp;<i class="fa fa-school fa-xs" aria-hidden="true"></i>
+                    <span class="menu-collapsed text-white">IES</span>
+                </a>
+                <a {% if  url_for('Tablero.programa_dashboard') not in request.path %} onclick="openModal()"
+                    href="{{url_for('Tablero.programa_dashboard')}}" {% else %} href="#" {% endif %}
+                    class="list-group-item  text-white border-right-0 my-secondary">
+                    &nbsp;&nbsp;<i class="fa fa-graduation-cap fa-xs" aria-hidden="true"></i>
+                    <span class="menu-collapsed text-white">Programa</span>
+                </a>
+                <a onclick="openModal()"
+                    href="{{url_for('Tablero.estudiante_dashboard')}}" 
+                    class="list-group-item  text-white border-right-0 my-secondary">
+                    &nbsp;&nbsp;<i class="fa fa-user-graduate fa-xs" aria-hidden="true"></i>
+                    <span class="menu-collapsed text-white">Estudiante</span>
+                </a>
+            </div>
+            <!-- END Opciones -->
+
+            <!--  Entidades -->
+            {% if session['user']['rol']=='Admin' %}
+            <li
+                class="list-group-item sidebar-separator-title text-white d-flex align-items-center menu-collapsed text-white  border-right-0 border-left-0  mt-5 my-secondary ">
+                <small>ENTIDADES</small>
+            </li>
+            <a href="{{url_for('Facultad.listar')}}" class="list-group-item  border-right-0 border-top my-secondary">
+                <div class="d-flex w-100 justify-content-start align-items-center">
+                    <span class="fa fa-university fa-fw mr-3 text-white"></span>
+                    <span class="menu-collapsed text-white">Facultades</span>
+                </div>
+            </a>
+            <a href="{{url_for('Programa.listar')}}" class="list-group-item  my-secondary">
+                <div class="d-flex w-100 justify-content-start align-items-center">
+                    <span class="fa fa-graduation-cap fa-fw mr-3 text-white"></span>
+                    <span class="menu-collapsed text-white">Programas</span>
+                </div>
+            </a>
+            <a href="{{url_for('Usuario.listar')}}" class="list-group-item  border-right-0 my-secondary light">
+                <div class="d-flex w-100 justify-content-start align-items-center">
+                    <span class="fa fa-user fa-fw mr-3 light"></span>
+                    <span class="menu-collapsed light">Usuarios</span>
+                </div>
+            </a>
+            <a href="{{url_for('ConjuntoAdmin.crudos')}}" class="list-group-item  border-right-0 my-secondary light">
+                <div class="d-flex w-100 justify-content-start align-items-center">
+                    <span class="fa fa-database fa-fw mr-3 text-white"></span>
+                    <span class="menu-collapsed light">Conjuntos</span>
+                </div>
+            </a>
+            <a href="{{url_for('ResultadoAdmin.preparaciones')}}"
+                class="list-group-item  border-right-0 my-secondary light">
+                <div class="d-flex w-100 justify-content-start align-items-center">
+                    <i class="fa fa-list fa-fw mr-3 text-white" aria-hidden="true"></i>
+                    <span class="menu-collapsed light">Resultados</span>
+                </div>
+            </a>
+            {% endif %}
+            <!-- END Entidades -->
+
+            <!-- COLLAPSE Button -->
+            <a href="#" data-toggle="sidebar-colapse"
+                class="list-group-item align-items-center border border-right-0 my-secondary align-bottom"
+                style="margin-top: auto; margin-left: -0.8px; margin-bottom:0px;">
+                <div class="mt-0 d-flex w-100 justify-content-start align-items-center">
+                    <center>
+                        <span id="collapse-icon" class="fa fa-2x mr-3 text-white"></span>
+                    </center>
+                    <!-- <span id="collapse-text" class="menu-collapsed text-white">Collapse</span> -->
+                </div>
+            </a>
+            </ul>
+            <!-- List Group END-->
+        </div>
+        {% endif %}
+        <!-- sidebar-container END -->
+
+
+        {% with titulo='Cargando', mensaje='Por favor espere a que el proceso termine'%}
+        {% include "components/modal.html" %}
+        {% endwith %}
+
+        <!-- MAIN -->
+        <div class="col m-4 px-3 py-2 ">

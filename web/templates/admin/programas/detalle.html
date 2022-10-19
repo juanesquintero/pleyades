@@ -1,0 +1,54 @@
+{% include 'components/header.html' %}
+
+{% include 'components/sideBar.html' %}
+
+<h5>Detalle un Programa</h5>
+
+{% if p.codigo %}
+<form data-toggle="validator" class="jumbotron py-4 pr-0 bg-light"
+    style="max-width:65%;">
+    <div class="container">
+        
+        <div class="form-group row">
+            <div class="col-sm-6">
+                <label>Codigo</label>
+                <input type="number" class="form-control" value="{{p.codigo}}" required maxlength="30" disabled>
+            </div>
+            <div class="col-sm-4">
+                <label>Nombre Corto</label>
+                <input type="text" class="form-control" value="{{p.nombre_corto}}" required maxlength="10" disabled >
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-10">
+                <label>Nombre</label>
+                <input type="text" class="form-control input-sm" maxlength="200" required disabled
+                    value="{{p.nombre}}">
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-10">
+                <label>Facultad</label>
+                <input type="text" class="form-control" required maxlength="30"
+                value="{{ p.facultad }} - {{p.nombre_facultad|replace('Facultad de ','')}}" disabled>
+            </div>
+        </div>
+
+        <!--Boton para validar campos-->
+        <br>
+        <div class="text-center">
+            <a href="{{url_for('Programa.listar')}}" class="btn btn-outline-dark">Atras</a>
+        </div>
+    </div>
+</form>
+{% else %}
+
+<div class="alert alert-danger" role="alert">
+    <h5 class="alert-heading">Aviso!!</h5>
+    <p>No se pudo encontrar la Programa</p>
+    <hr>
+</div>
+
+{% endif %}

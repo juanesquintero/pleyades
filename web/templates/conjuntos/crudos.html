@@ -1,0 +1,140 @@
+{% include 'components/header.html' %}
+
+{% with menu='conjuntos' %}
+    {% include 'components/sideBar.html' %}
+{% endwith %}
+
+<h4>Conjuntos de Datos</h4>
+<br>
+
+<!-- Input de filtrado -->
+<div class="row ml-1 mt-2">
+  &nbsp;<i class="fas fa-filter mr-2 mt-2"></i>&nbsp;
+  <input type="text" class="form-control form-control-sm w-25" id="filtro_tabla" placeholder="Filtrar tabla...">
+</div>
+<br>
+
+<!-- Tabs de navegacion -->
+<ul class="nav nav-tabs mb-4">
+  <li class="nav-item">
+    <a class="nav-link active" href="#">Crudos</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link text-dark bg-light border" href="{{url_for('Conjunto.procesados')}}">Procesados</a>
+  </li>
+</ul>
+
+<!-- Tabla -->
+<div class="table-responsive-sm ">
+  <table class="table table-hover table-sm" id="tabla">
+    <thead>
+      <tr class="border-top-0">
+        <th scope="col" class="border-top-0">
+          <center>Nombre</center>
+        </th>
+        <th scope="col" class="border-top-0">
+          <center>Tipo</center>
+        </th>
+        <th scope="col" class="border-top-0">
+          <center>Numero</center>
+        </th>
+
+        <th scope="col" class="border-top-0">
+          <center>Periodo Inicial</center>
+        </th>
+        <th scope="col" class="border-top-0">
+          <center>Periodo Final</center>
+        </th>
+        <th scope="col" class="border-top-0">
+          <center> Programa </center>
+        </th>
+        <th scope="col" class="border-top-0">
+          <center> Acciones</center>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+
+      {% for c in conjuntos %}
+      <tr>
+        <td>
+          <center>{{ c.nombre }}</center>
+        </td>
+        <td>
+          <center>{{ c.tipo }}</center>
+        </td>
+        <td>
+          <center>{{ c.numero }}</center>
+        </td>
+        <td>
+          <center>{{ c.periodoInicial }}</center>
+        </td>
+        <td>
+          <center>{{ c.periodoFinal }}</center>
+        </td>
+        <td>
+          {% for p in programas %}
+          {% if c.programa==p.codigo %}
+          <center>{{p.nombre}}</center>
+          {% endif %}
+          {% endfor %}
+        </td>
+        <td>
+          <!-- ACCCIONES -->
+          <div class="row d-flex justify-content-center">
+
+            <!-- PREPARAR -->
+            <form action="{{url_for('Conjunto.preparar')}}" method="POST">
+              <input type="hidden" name="conjunto" value="{{c}}">
+              <!-- Boton para preparar y de carga -->
+              <input type="submit" data-toggle="tooltip" data-placement="bottom" title="Preparar"
+                class="btn btn-outline-dark btn-sm submit" role="status" value="&#9881;">
+              <button class="btn btn-outline-dark btn-sm btn-loading" type="button" style="display: none;">
+                <i class="fas fa-spinner fa-spin fa-lg" aria-hidden="true"></i>
+              </button>
+
+            </form>
+
+            &nbsp;
+
+            <!-- VER DETALLE-->
+            <form action="{{url_for('Conjunto.detalle')}}" method="POST">
+              <input type="hidden" name="conjunto" value="{{c}}">
+              <button type="submit" data-toggle="tooltip" data-placement="bottom" title="Ver Detalle"
+                class="btn btn-outline-dark btn-sm submit" role="status">
+                <i class="fas fa-search-plus"></i>
+                </button>
+            </form>
+
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+</div>
+
+{% if error %}
+<br>
+{% with titulo='No se pudieron cargar los conjuntos',error=error %}
+{% include "components/alert.html" %}
+{% endwith %}
+<br>
+{% endif %}
+
+
+<br>
+
+<a href="{{url_for('Conjunto.crear') }}" type="button" class="btn btn-dark text-white my-primary mt-4">
+  <i class="fas fa-file-upload mr-1"></i>
+  Nuevo</a>
+
+<script>
+  // Cargando si se esta validando y guardando la data del conjunto 
+  $('.submit').click(function () {
+    handleModal('Su conjunto aparecera cuando acabe el proceso (recuerde refrescar la página)', "{{url_for('Conjunto.procesados')}}")
+  })
+</script>
+
+{% include 'components/footer.html' %}
