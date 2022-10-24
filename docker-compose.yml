@@ -1,18 +1,18 @@
 version: '3.8'
 services:
-  
+
   web:
-    container_name: pleyades-web
+    container_name: web
     build:
-      context: ./
-      dockerfile: ./Dockerfile
+      context: ./web
+      dockerfile: ./web/Dockerfile
     image: pleyades-web:1.0.0
     volumes:
-      - .:/app
+      - ./web:/app
     networks:
       - dev-net
     env_file:
-      - .env
+      - ./web/.env
     environment:
       - FLASK_APP=__init__:app
       - FLASK_DEBUG=1
