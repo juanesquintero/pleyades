@@ -1,6 +1,11 @@
 import os
+
+import sys 
+# setting path
+sys.path.append('./')
+
 import locale
-locale.setlocale(locale.LC_ALL, 'es_ES.utf8') 
+# locale.setlocale(locale.LC_ALL, 'es_ES.utf8') 
 import os, logging, werkzeug, requests, datetime
 from flask import Flask, session, render_template, request
 from flask_session import Session
