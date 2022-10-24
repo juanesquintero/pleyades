@@ -1,16 +1,14 @@
 import os
-
 import sys 
-# setting path
-sys.path.append('./')
-
 import locale
-# locale.setlocale(locale.LC_ALL, 'es_ES.utf8') 
-import os, logging, werkzeug, requests, datetime
-from flask import Flask, session, render_template, request
+import logging
+import datetime
+from flask import Flask, session, render_template
 from flask_session import Session
 from dotenv import load_dotenv
 
+locale.setlocale(locale.LC_ALL, 'es_MX.UTF-8') 
+sys.path.append('./')
 load_dotenv()
 
 # Import controllers
