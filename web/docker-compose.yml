@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  
+  web:
+    container_name: pleyades-web
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    image: pleyades-web:1.0.0
+    volumes:
+      - .:/app
+    networks:
+      - dev-net
+    env_file:
+      - .env
+    environment:
+      - FLASK_APP=__init__:app
+      - FLASK_DEBUG=1
+    ports:
+      - 5000:80
+    command: flask run --host 0.0.0.0 --port 80
+    # command: gunicorn run:app --bind 0.0.0.0:80 --workers 3
+
+networks:
+  dev-net:
+    driver: bridge
+
