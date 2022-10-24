@@ -1,16 +1,14 @@
 import os
-
 import sys 
-# setting path
-sys.path.append('./')
-
 import locale
-# locale.setlocale(locale.LC_ALL, 'es_ES.utf8') 
-import os, logging, werkzeug, requests, datetime
-from flask import Flask, session, render_template, request
+import logging
+import datetime
+from flask import Flask, session, render_template
 from flask_session import Session
 from dotenv import load_dotenv
 
+locale.setlocale(locale.LC_ALL, 'es_MX.UTF-8') 
+sys.path.append('./')
 load_dotenv()
 
 # Import controllers
@@ -51,7 +49,7 @@ app.register_blueprint(Programa, url_prefix='/admin/programas')
 app.register_blueprint(Usuario, url_prefix='/admin/usuarios')
 app.register_blueprint(Conjunto, url_prefix='/conjuntos')
 app.register_blueprint(Resultado, url_prefix='/resultados')
-app.register_blueprint(Tablero, url_prefix='/tableros')
+app.register_blueprint(Tablero, url_prefix='/_deprecado/#TABLEROS')
 app.register_blueprint(ConjuntoAdmin, url_prefix='/admin/conjuntos')
 app.register_blueprint(ResultadoAdmin, url_prefix='/admin/resultados')
 
