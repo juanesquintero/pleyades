@@ -2,10 +2,10 @@ version: '3.8'
 services:
 
   web:
-    container_name: web
+    container_name: pleyades-web
     build:
       context: ./web
-      dockerfile: ./web/Dockerfile
+      dockerfile: ./Dockerfile
     image: pleyades-web:1.0.0
     volumes:
       - ./web:/app
