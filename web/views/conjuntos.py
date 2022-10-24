@@ -282,6 +282,7 @@ def preparar():
 @Conjunto.route('/ejecutar', methods=['POST'])
 @login_required
 def ejecutar():
+    ejecucion_guardada = False
     # Obtener Lo valores del formulario
     body = dict(request.values)
     conjunto = literal_eval(body['conjunto'])
@@ -326,7 +327,8 @@ def ejecutar():
         error_spa = translator.translate(str(e), src='en', dest='es').text
         resultados = {'error': error_spa }
         exito,pagina_error = guardar_ejecucion(ejecucion, resultados,'Fallida')
-        if not(exito): return pagina_error 
+        ejecucion_guardada = True
+        if not(exito): return pagina_error
         act_estado =  actualizar_estado(nombre,'Procesados')
         if act_estado: return act_estado
         return render_template('utils/mensaje.html', mensaje='La ejecución falló', submensaje=error_spa)
@@ -371,11 +373,12 @@ def ejecutar():
         resultados_modelo.pop('desertores')
         estado_ejecucion = 'Fallida'
     # Guardar registro de ejecución en la BD 
-    exito, pagina_error = guardar_ejecucion(ejecucion=ejecucion, resultados=resultados_modelo ,estado=estado_ejecucion)
-    if not(exito): 
-        act_estado =  actualizar_estado(nombre,'Procesados')
-        if act_estado: return act_estado
-        return pagina_error 
+    if not ejecucion_guardada:
+        exito, pagina_error = guardar_ejecucion(ejecucion=ejecucion, resultados=resultados_modelo ,estado=estado_ejecucion)
+        if not(exito): 
+            act_estado =  actualizar_estado(nombre,'Procesados')
+            if act_estado: return act_estado
+            return pagina_error 
 
     ########### FIN EJECUTAR ############
     # Actualizar conjunto de datos de crudo a procesado 
