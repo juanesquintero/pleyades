@@ -105,11 +105,8 @@ def guardar_preparacion(preparacion,observaciones,estado):
     preparacion['fechaFinal'] = getNowDate()
     preparacion['observaciones'] = observaciones
     preparacion['estado'] = estado
-    status, body = post('preparaciones', preparacion)
-    if not status:
-        return False, render_template('utils/mensaje.html', mensaje='No se pudo guardar el REGISTRO de preparación', submensaje=body)
-    else:
-        return True, 'ERROR'
+    post('preparaciones', preparacion)
+    return True, 'ERROR'
 
 def guardar_ejecucion(ejecucion,resultados,estado):
     # Guardar REGISTRO de ejecución
@@ -117,8 +114,5 @@ def guardar_ejecucion(ejecucion,resultados,estado):
     ejecucion['fechaFinal'] = getNowDate()
     ejecucion['resultados'] = resultados
     ejecucion['estado'] = estado
-    status, body = post('ejecuciones',ejecucion)
-    if not(status):
-        return False, render_template('utils/mensaje.html', mensaje='No se pudo guardar el REGISTRO de la ejecución', submensaje=body)
-    else:
-        return True, 'ERROR'
+    post('ejecuciones',ejecucion)
+    return True, 'ERROR'
