@@ -324,7 +324,11 @@ def ejecutar():
         resultados_modelo,resultados_desertores = ejecutar_modelo(data_preparada)
     except Exception as e:
         model_logger.error(e)
-        error_spa = translator.translate(str(e), src='en', dest='es').text
+        error_logger.error(e)
+        try:
+            error_spa = translator.translate(str(e), src='en', dest='es').text
+        except:
+            error_spa = str(e)
         resultados = {'error': error_spa }
         exito,pagina_error = guardar_ejecucion(ejecucion, resultados,'Fallida')
         ejecucion_guardada = True
