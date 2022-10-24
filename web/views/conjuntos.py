@@ -1,3 +1,4 @@
+import traceback
 from flask import request, session, Blueprint, render_template, redirect, send_file, url_for, jsonify
 from dotenv import load_dotenv
 from datetime import datetime
@@ -323,12 +324,14 @@ def ejecutar():
     try:
         resultados_modelo,resultados_desertores = ejecutar_modelo(data_preparada)
     except Exception as e:
-        model_logger.error(e)
         error_logger.error(e)
         try:
             error_spa = translator.translate(str(e), src='en', dest='es').text
         except:
             error_spa = str(e)
+        model_logger.error(error_spa)
+        model_logger.error(traceback.format_exc())
+        
         resultados = {'error': error_spa }
         exito,pagina_error = guardar_ejecucion(ejecucion, resultados,'Fallida')
         ejecucion_guardada = True
