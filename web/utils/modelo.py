@@ -69,7 +69,7 @@ def preparar_data(data):
         ('desertor', 'SI'),
     ]
     for cond in condiciones:
-        def func(row): return 1 if row[cond[0]] == cond[1] else 0
+        func = lambda row: 1 if row[cond[0]] == cond[1] else 0
         data[cond[0]] = data.apply(func, axis=1)
 
     # Condiciones conjuntas 
@@ -219,7 +219,7 @@ def ejecutar_modelo(data):
     predc_sem_act['prediccion'] = mejor_clasificador.predict(data_a_predecir[col_preparadas])
 
     potenciales_desertores = predc_sem_act[predc_sem_act['prediccion']==1]
-    potenciales_desertores = potenciales_desertores[potenciales_desertores['idestado']==6]
+    # potenciales_desertores = potenciales_desertores[potenciales_desertores['idestado']==6]
 
     # Eliminar valores repetidos 
     potenciales_desertores = potenciales_desertores.drop_duplicates().reset_index()
