@@ -69,19 +69,22 @@ def preparar_data(data):
         ('desertor', 'SI'),
     ]
     for cond in condiciones:
-        func = lambda row: 1 if row[cond[0]] == cond[1] else 0
-        data[cond[0]] = data.apply(func, axis=1)
+        columna, criterio = cond[0], cond[1]
+        func = lambda row: 1 if row[columna] == criterio else 0
+        data[columna] = data.apply(func, axis=1)
 
     # Condiciones conjuntas 
     condiciones = [
         ('lugar_residencia_sede',  ['MEDELLIN', 'BELLO', 'ITAGUI','COPACABANA', 'ENVIGADO', 'SABANETA', 'BARBOSA', 'LA ESTRELLA'], 1, 0),
     ]
     for cond in condiciones:
-        def func(row): return cond[2] if any(c in row[cond[0]] for c in cond[1]) else cond[3]
-        data[cond[0]] = data.apply(func, axis=1)
+        yes_value, no_value = cond[2], cond[3]
+        columna, criterios = cond[0], cond[1]
+        func = lambda row: yes_value if any(c.lower() in row[columna].lower() for c in criterios) else no_value
+        data[columna] = data.apply(func, axis=1)
 
     # Condiciones Especiales
-    def func(row): return 0 if (row['etnia']=='NO APLICA' or row['etnia'] == None) else 1
+    func = lambda row: 0 if (row['etnia']=='NO APLICA' or row['etnia'] == None) else 1
     data['etnia'] = data.apply(func, axis=1)
 
     return data
