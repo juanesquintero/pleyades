@@ -75,11 +75,17 @@
         <tbody>
           {% for key, value in resultados.items() %}
           <tr>
+            {{KEY}}
             <td><strong>{{ key.title()|replace('_',' ') }}</strong></td>
             <td class="bg-light">
-              {{ value }}
-              {% if key=='precision' %}
-              %
+              {% if key=='desercion_prevista' %}
+                {% set proc = value * 100 %}
+                 {{ '%0.2f' % proc|float }} %
+              {% else %}
+                {{ value }}
+                {% if key=='precision' %}
+                %
+                {% endif %}
               {% endif %}
             </td>
           </tr>

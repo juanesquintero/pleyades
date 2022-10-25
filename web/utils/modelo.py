@@ -1,14 +1,20 @@
 import pandas as pd
 import warnings
-import pickle
 import logging
-from ast import literal_eval
-# Algoritmos comunes para clasificación
-from sklearn import svm, tree, linear_model, neighbors, naive_bayes, ensemble, discriminant_analysis
-# Apoyo para la validación cruzada
-from sklearn import model_selection
-
 import utils.constants as CONSTANTS
+# Algoritmos comunes para clasificación
+# Apoyo para la validación cruzada
+from sklearn import (
+    svm,
+    tree,
+    linear_model,
+    neighbors,
+    naive_bayes,
+    ensemble,
+    discriminant_analysis,
+    model_selection
+)
+
 
 error_logger = logging.getLogger('error_logger')
 
@@ -96,11 +102,11 @@ def eliminacion(data):
     warnings.filterwarnings('ignore')
     
     ''' FASE 1 '''
-    semestre_a_predecir = data['registro'].max()
+    periodo_a_predecir = data['registro'].max()
 
-    data_a_predecir = data[data['registro']>=semestre_a_predecir]
+    data_a_predecir = data[data['registro']>=periodo_a_predecir]
     # data = data[data['semestre']>1]
-    data = data[data['registro']<semestre_a_predecir]
+    data = data[data['registro']<periodo_a_predecir]
 
     try:
         data = data.drop(CONSTANTS.columnas_eliminar_1, axis=1)
@@ -124,12 +130,12 @@ def eliminacion(data):
     except Exception as e:
         data = data.drop(CONSTANTS.columnas_eliminar_2_anteriores, axis=1)
 
-    return data, data_a_predecir, semestre_a_predecir
+    return data, data_a_predecir, periodo_a_predecir
 
 
 def ejecutar_modelo(data):
     
-    data, data_a_predecir,semestre_a_predecir =  eliminacion(data)
+    data, data_a_predecir,periodo_a_predecir =  eliminacion(data)
     
     if len(data_a_predecir) <= 0:
         return False, 'No hay suficientes datos en el periodo final, revisa el conjunto.'
@@ -228,7 +234,7 @@ def ejecutar_modelo(data):
     potenciales_desertores = potenciales_desertores.drop_duplicates().reset_index()
 
     # Setear resultados para insertar en la BD 
-    potenciales_desertores['semestre_prediccion'] = semestre_a_predecir
+    potenciales_desertores['semestre_prediccion'] = periodo_a_predecir
     
     resultados_desertores = potenciales_desertores
     potenciales_desertores = potenciales_desertores.drop(['idprograma', 'semestre_prediccion'], axis=1)
@@ -240,19 +246,19 @@ def ejecutar_modelo(data):
     total_desertores = len(potenciales_desertores.index)
     total_estudiantes_analizados = len(predc_sem_act['documento'].unique())    
     potenciales_desertores.drop(['index'], axis=1, inplace=True) 
-    semestre_a_predecir_mas_1 = str(semestre_a_predecir)+' + {}'.format(1)
+    periodo_a_predecir_mas_1 = str(periodo_a_predecir)+' + {}'.format(1)
 
     resultados ={
-        'semestre_a_predecir': semestre_a_predecir_mas_1,
+        'periodo_a_predecir': periodo_a_predecir_mas_1,
         'desertores': potenciales_desertores,
-        'total_desertores'.format(semestre_a_predecir_mas_1) : int(total_desertores), 
+        'total_desertores'.format(periodo_a_predecir_mas_1) : int(total_desertores), 
         'estudiantes_analizados' : int(total_estudiantes_analizados), 
         'desercion_prevista': float(round( int(total_desertores)/int(total_estudiantes_analizados), 2)),
         'clasificador': str(AML_best['Nombre'].tolist()[0]),
         'precision': float(round(AML_best['Precision Media de Prueba'].tolist()[0]*100,2)),
-        'semestre_anterior': str(semestre_a_predecir),
-        'total_desertores_{}'.format(semestre_a_predecir):  str(len(data_a_predecir[data_a_predecir['desertor']==1]))  , 
-        'total_desertores_{}_matriculados'.format(semestre_a_predecir):  str(len(data_a_predecir.query('desertor==1 & idestado==6' )))  , 
+        'periodo_anterior': str(periodo_a_predecir),
+        'total_desertores_{}'.format(periodo_a_predecir):  str(len(data_a_predecir[data_a_predecir['desertor']==1]))  , 
+        'total_desertores_{}_matriculados'.format(periodo_a_predecir):  str(len(data_a_predecir.query('desertor==1 & idestado==6' )))  , 
     }
     
     # Reasignanr el tipo de la columna documento
