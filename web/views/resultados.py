@@ -1,11 +1,9 @@
-from flask import request, session, Blueprint, render_template, redirect, send_file, url_for
+from flask import request, session, Blueprint, render_template, send_file
 from dotenv import load_dotenv
-from ast import literal_eval
-from datetime import datetime
-import os, json, pandas as pd
+import os, pandas as pd
 
 from views.auth import login_required
-from services.API import get, post, put, delete
+from services.API import get
 
 from utils.mixins import *
 

@@ -1,8 +1,7 @@
-from flask import request, session, Blueprint, render_template, redirect, send_file
+import re, os, json, logging, pandas as pd
+from flask import render_template
 from datetime import datetime
-from services.API import get, post, put, delete
-import re, os, sys, json, pandas as pd
-import logging
+from services.API import post, put
 
 error_logger = logging.getLogger('error_logger')
 
@@ -43,7 +42,7 @@ def set_date_format(resultados):
 
 def str_to_date(fecha):
     formato_lectura = '%Y-%m-%d %H:%M:%S'
-    formato_escritura = '%A %d, %B/%Y - %H:%M:%S %p'
+    formato_escritura = '%A %d/%B/%Y - %H:%M %p'
     fecha_lec = datetime.strptime(fecha, formato_lectura)
     fecha_escr = fecha_lec.strftime(formato_escritura)
     return fecha_escr.title() 
