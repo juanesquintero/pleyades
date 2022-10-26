@@ -1,11 +1,10 @@
-FROM python:3.8.3-slim
+FROM python:3.8.3
 
 WORKDIR /app
 
 # Update and install need packages
 RUN apt-get -y update &&  apt-get -y upgrade
-RUN apt-get -y install locales locales-all
-# language-pack-es
+RUN apt-get -y install locales locales-all tzdata
 
 # Language configuration
 ARG LANGUAGE=es_MX.UTF-8
@@ -16,6 +15,11 @@ ENV LC_CTYPE=$LANGUAGE
 
 RUN locale-gen $LANGUAGE
 RUN dpkg-reconfigure locales
+
+# Timezone configuration
+ARG TIMEZONE=America/Bogota
+ENV TZ=$TIMEZONE
+ENV TIME_ZONE=$TIMEZONE
 
 # Update pip
 RUN pip install --upgrade pip

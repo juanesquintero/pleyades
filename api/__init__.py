@@ -1,9 +1,9 @@
-from flask import Flask, jsonify, request
+import os
+import logging
+from dotenv import load_dotenv
+from flask import Flask, jsonify
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
-from dotenv import load_dotenv
-import os,re,werkzeug
-import logging
 
 from utils.utils import *
 
