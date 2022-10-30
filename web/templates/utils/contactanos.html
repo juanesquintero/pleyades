@@ -30,11 +30,13 @@
                         </center>
                     </div>
 
+                    {% if IES_NAME == 'UNIVERSIDAD EIA' %}
                     <div class="col-6" style="width: 50%;">
                         <center>
                             <a href="https://www.eia.edu.co/" target="_blank">
-                                <img src="{{url_for('static', filename='images/EIA_logo.png')}}" class="d-inline-block align-top ml-2"
-                                    title="www.eia.edu.co">
+                                <img src="https://eiadigital.eia.edu.co/cas/images/logos/eia/logoLogin.png" class="d-inline-block align-top ml-2"
+                                    title="www.eia.edu.co"
+                                    width="280">
                             </a>
                             <br>
                             <div class="ml-5">
@@ -51,6 +53,27 @@
                             <br><br><br><br>
                         </center>
                     </div>
+                    {% elif IES_NAME == 'TECNOLOGICO DE ANTIOQUIA' %}
+                    <div class="col-6" style="width: 50%;">
+                        <center>
+                            <a class="mt-0" href="https://www.tdea.edu.co/" target="_blank">
+                                <img width="280" src="https://www.tdea.edu.co/images/tdea/logos/logo-ppal.jpg" class="d-inline-block align-top"
+                                    title="https://www.tdea.edu.co/"
+                                    width="280">
+                            </a>
+                            <br><br>
+                            <a href="https://www.tdea.edu.co/" target="_blank">TdeA</a><br>
+                            <br>
+
+                            Dirección: Calle 78b No. 72a - 220 <br>
+                            Medellín - Colombia - Suramérica  <br>
+                            Teléfono PBX: (574) 444 37 00 <br>
+                            Horario de atención al público 7:30 a.m. A 12:00 m. Y  de 1:00 p.m. A 5:30 p.m. De lunes a jueves, los viernes de 7:30 a.m. A 12:00 m. Y 1:00 p.m. A 4:30 p.m. <br>
+                            Atención al usuario: atencionalcliente@tdea.edu.co<br>
+                            <br><br><br><br>
+                        </center>
+                    </div>
+                    {% endif %}
 
 
                 </div>

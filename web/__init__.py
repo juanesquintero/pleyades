@@ -37,7 +37,7 @@ def inicio():
 
 @app.route('/contactanos')
 def contactanos():
-    return render_template('utils/contactanos.html'), 200
+    return render_template('utils/contactanos.html', IES_NAME=os.getenv('CLI_IES_NAME')), 200
 
 
 '''ROUTES'''
