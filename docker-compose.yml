@@ -21,7 +21,23 @@ services:
     ports:
       - 5000:80
     command: flask run --host 0.0.0.0 --port 80
-    # command: gunicorn run:app --bind 0.0.0.0:80 --workers 3
+  
+  prod:
+    container_name: pleyades-web
+    build:
+      context: ./web
+      dockerfile: ./Dockerfile
+    image: pleyades-web:1.0.0
+    volumes:
+      - ./web:/app
+    env_file:
+      - ./web/.env
+    environment:
+      - FLASK_ENV=production
+      - FLASK_APP=__init__:app
+    ports:
+      - 80:80
+    command: gunicorn run:app --bind 0.0.0.0:80 --workers 3
 
 networks:
   dev-net:
