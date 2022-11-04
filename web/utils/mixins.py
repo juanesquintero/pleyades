@@ -115,3 +115,11 @@ def guardar_ejecucion(ejecucion,resultados,estado):
     ejecucion['estado'] = estado
     post('ejecuciones',ejecucion)
     return True, 'ERROR'
+
+def obtener_nombre_conjunto(conjunto):
+    # Obtener nombre del conjunto desde el api
+    status_n, body_n = post('conjuntos/nombre', conjunto)
+    if status_n:
+        return body_n['nombre'], body_n['numero']
+    else:
+        return False, render_template('utils/mensaje.html', mensaje='No se pudo obtener el nombre del conjunto', submensaje=body_n)
