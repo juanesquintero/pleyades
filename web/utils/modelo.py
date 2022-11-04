@@ -2,6 +2,7 @@ import pandas as pd
 import warnings
 import logging
 import utils.constants as CONSTANTS
+from flask import flash
 # Algoritmos comunes para clasificación
 # Apoyo para la validación cruzada
 from sklearn import (
@@ -52,12 +53,14 @@ def verificar_data(data, periodoInicial, periodoFinal, programa):
     if not(data_verificada['registro'].max() == periodoFinal):
         return False, 'El conjunto no tiene como periodo final {}, verifique los registros'.format(str(periodoFinal)), None
     if not(data_verificada['registro'].min() == periodoInicial):
-        return False, 'El conjunto no tiene como periodo inicial {}, verifique los registros'.format(str(periodoInicial)), None    
+        _periodoInicial = periodoInicial
+        periodoInicial = data_verificada['registro'].min()
+        flash('El conjunto no tiene como periodo inicial {}, se reasignó a <b>{}</b>'.format(str(_periodoInicial), str(periodoInicial)), 'warning')  
     if not(data_verificada['idprograma'] == programa).all():
         return False, 'El conjunto no pertenece al programa indicado, verifique los registros', None    
 
     # Verificacion correcta
-    return True, None, data_verificada
+    return True, None, data_verificada, periodoInicial
 
 
 ################################################################################################################ PREPARACION DE DATOS DE UN CONJUNTO ##############################################################################################################
@@ -231,7 +234,7 @@ def ejecutar_modelo(data):
     # potenciales_desertores = potenciales_desertores[potenciales_desertores['idestado']==6]
 
     # Eliminar valores repetidos 
-    potenciales_desertores = potenciales_desertores.drop_duplicates().reset_index()
+    potenciales_desertores = potenciales_desertores.drop_duplicates(subset=['documento'], keep='first').reset_index()
 
     # Setear resultados para insertar en la BD 
     potenciales_desertores['semestre_prediccion'] = periodo_a_predecir
