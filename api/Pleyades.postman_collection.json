@@ -1888,7 +1888,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"estado\": \"Exitosa\",\r\n\t\"resultados\":  {\"total_desertores\": 61, \"clasificador\": \"LinearDiscriminantAnalysis\", \"precision\": 98.04, \"periodo_a_predecir\": 20192} \r\n\t\r\n}",
+							"raw": "{\r\n\t\"estado\": \"Exitosa\",\r\n\t\"resultados\":  {\"total_desertores\": 61, \"clasificador\": \"LinearDiscriminantAnalysis\", \"precision\": 98.04, \"semestre_a_predecir\": 20192} \r\n\t\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2842,7 +2842,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n\t\"estado\": \"Exitosa\",\r\n\t\"resultados\":  {\"total_desertores\": 61, \"clasificador\": \"LinearDiscriminantAnalysis\", \"precision\": 98.04, \"periodo_a_predecir\": 20192} \r\n\t\r\n}",
+											"raw": "{\r\n\t\"estado\": \"Exitosa\",\r\n\t\"resultados\":  {\"total_desertores\": 61, \"clasificador\": \"LinearDiscriminantAnalysis\", \"precision\": 98.04, \"semestre_a_predecir\": 20192} \r\n\t\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -4786,7 +4786,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n\t\"estado\": \"Exitosa\",\r\n\t\"resultados\":  {\"total_desertores\": 61, \"clasificador\": \"LinearDiscriminantAnalysis\", \"precision\": 98.04, \"periodo_a_predecir\": 20192} \r\n\t\r\n}",
+											"raw": "{\r\n\t\"estado\": \"Exitosa\",\r\n\t\"resultados\":  {\"total_desertores\": 61, \"clasificador\": \"LinearDiscriminantAnalysis\", \"precision\": 98.04, \"semestre_a_predecir\": 20192} \r\n\t\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
