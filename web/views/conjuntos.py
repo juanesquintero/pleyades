@@ -1,19 +1,18 @@
 import traceback
+import pandas as pd
+import os, json, logging
+import utils.tableros.data_ies as DataIES
+
 from flask import request, session, Blueprint, render_template, redirect, send_file, url_for, jsonify
 from dotenv import load_dotenv
-from datetime import datetime
 from ast import literal_eval
 from googletrans import Translator
-import os, sys, json, logging
-import pandas as pd
-
-import utils.tableros.data_ies as DataIES
 
 from utils.modelo import preparar_data, verificar_data, ejecutar_modelo
 from views.auth import login_required
-from services.API import get, post, put, delete
+from services.API import get, post, put
 
-from utils.mixins import actualizar_estado, exception, guardar_archivo, guardar_ejecucion, guardar_preparacion, getNowDate, obtener_archivo_excel
+from utils.mixins import actualizar_estado, guardar_archivo, guardar_ejecucion, guardar_preparacion, getNowDate, obtener_archivo_excel, obtener_nombre_conjunto
 
 model_logger = logging.getLogger('model_logger')
 error_logger = logging.getLogger('error_logger')
@@ -147,17 +146,9 @@ def guardar():
     conjunto['programa'] = int(conjunto['programa'])
     conjunto['encargado'] = session['user']['correo']
 
-    # Obtener nombre del conjunto desde el api
-    status_n, body_n = post('conjuntos/nombre', conjunto)
-    if status_n:
-        nombre, numero = body_n['nombre'], body_n['numero']
-    else:
-        return render_template('utils/mensaje.html', mensaje='No se pudo obtener el nombre del conjunto', submensaje=body_n)
-
-    archivo_guardar = 'C '+ nombre
     tipo = conjunto['tipo']
-    ruta = upload_folder+'/crudos'
     archivo = request.files['archivo']
+    ruta = upload_folder+'/crudos'
 
     # Guardar archivo en Upload folder
 
@@ -165,13 +156,20 @@ def guardar():
     if (archivo.filename and tipo=='excel'):
         extension = '.'+archivo.filename.split('.')[1]
         # Guardar archivo de excel
-        archivo_guardar = archivo_guardar + '.xls'
+        
         if not (extension in ['.xls', '.xlsx']):
             return render_template('utils/mensaje.html', mensaje='Extension de archivo incorrecta: '+str(extension), submensaje='Solo se permiten archivos excel .xls & xlsx')
     
         # VERIFICACION de formato
         data = pd.read_excel(archivo)
-        validacion, mensaje_error, data_verificada = verificar_data(data, conjunto['periodoInicial'], conjunto['periodoFinal'], conjunto['programa'])
+        validacion, mensaje_error, data_verificada, periodoInicial = verificar_data(data, conjunto['periodoInicial'], conjunto['periodoFinal'], conjunto['programa'])
+        conjunto['periodoInicial'] =  periodoInicial
+
+        # Obtener nombre del conjunto desde el api
+        nombre, numero = obtener_nombre_conjunto(conjunto)
+        if not nombre: return numero
+        archivo_guardar = 'C '+ nombre + '.xls'
+
         if validacion:
             try:
                 data_verificada.to_excel(ruta+'/'+archivo_guardar, index=False)
@@ -194,11 +192,18 @@ def guardar():
             return render_template('utils/mensaje.html', mensaje='Consulta fallida a la base de datos')
         
         # VERIFICACION de formato
-        validacion, mensaje_error, data_verificada = verificar_data(data, conjunto['periodoInicial'], conjunto['periodoFinal'], conjunto['programa'])
+        validacion, mensaje_error, data_verificada, periodoInicial = verificar_data(data, conjunto['periodoInicial'], conjunto['periodoFinal'], conjunto['programa'])
+        conjunto['periodoInicial'] =  periodoInicial
+        
+        # Obtener nombre del conjunto desde el api
+        nombre, numero = obtener_nombre_conjunto(conjunto)
+        if not nombre: return numero
+        archivo_guardar = 'C '+ nombre + '.xls'
+
         if validacion:
             # Guardar tabla sql como excel
             try:
-                data_verificada.to_excel(ruta+'/'+archivo_guardar+'.xls', index=False)
+                data_verificada.to_excel(ruta+'/'+archivo_guardar, index=False)
             except Exception as e:
                 error_logger.error(e)
                 return render_template('utils/mensaje.html', mensaje='Ocurrió un error guardando el conjunto de datos')
@@ -210,6 +215,7 @@ def guardar():
     # Guardar registro de conjunto en la BD
     conjunto['nombre'] =  nombre
     conjunto['numero'] =  numero
+
     status, body = post('conjuntos',conjunto)
     if status:
         return redirect(url_for('Conjunto.crudos'))
@@ -256,6 +262,7 @@ def preparar():
         data_preparada = preparar_data(data_cruda)
     except Exception as e:
         model_logger.error(e)
+        model_logger.error(traceback.format_exc())
         observaciones = {'error': str(e)}
         exito,pagina_error = guardar_preparacion(preparacion, observaciones,'Fallida')
         if not(exito): return pagina_error 
