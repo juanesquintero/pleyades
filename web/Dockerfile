@@ -1,4 +1,4 @@
-FROM python:3.8.3
+FROM python:3.8-slim
 
 WORKDIR /app
 
@@ -28,7 +28,7 @@ RUN pip install --upgrade pip
 COPY . /app
 
 # Install requirements
-RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
+RUN pip install --no-cache-dir --default-timeout=100 --upgrade -r /app/requirements.txt
 
 # Expose port
 EXPOSE 80
