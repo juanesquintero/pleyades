@@ -5,10 +5,10 @@ import mysql.connector as mysql
 
 load_dotenv()
 
-_host = os.getenv("MYSQL_DB_SERVER")
-_user = os.getenv("MYSQL_USER")
-_password = os.getenv("MYSQL_PASSWORD")
-_database = os.getenv("MYSQL_DATABASE")
+_host = os.getenv('MYSQL_DB_SERVER')
+_user = os.getenv('MYSQL_USER')
+_password = os.getenv('MYSQL_PASSWORD')
+_database = os.getenv('MYSQL_DATABASE')
 
 
 def validate_connection(f):
