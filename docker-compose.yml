@@ -8,6 +8,7 @@ services:
       dockerfile: ./Dockerfile
     image: pleyades-web_dev:1.0.0
     volumes:
+      - ./ies.json:/app/ies.json
       - ./web:/app
     networks:
       - dev-net
@@ -48,7 +49,7 @@ services:
       dockerfile: ./Dockerfile
     image: pleyades-web:1.0.0
     volumes:
-      - ./web:/app
+      - ./ies.json:/app/ies.json
     env_file:
       - ./web/.env
     environment:
@@ -64,8 +65,6 @@ services:
       context: ./api
       dockerfile: ./Dockerfile
     image: pleyades-api:1.0.0
-    volumes:
-      - ./api:/app
     env_file:
       - ./api/.env
     environment:
