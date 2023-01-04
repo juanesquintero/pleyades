@@ -2,11 +2,11 @@ version: '3.8'
 services:
 
   dev:
-    container_name: pleyades-web
+    container_name: pleyades-web_dev
     build:
       context: ./web
       dockerfile: ./Dockerfile
-    image: pleyades-web:1.0.0
+    image: pleyades-web_dev:1.0.0
     volumes:
       - ./web:/app
     networks:
@@ -14,14 +14,33 @@ services:
     env_file:
       - ./web/.env
     environment:
-      - FLASK_ENV=development
-      - FLASK_APP=__init__:app
       - FLASK_DEBUG=1
+      - FLASK_APP=__init__:app
       - TEMPLATES_AUTO_RELOAD=1
     ports:
       - 5000:80
     command: flask run --host 0.0.0.0 --port 80
+    depends_on:
+      - api_dev
   
+  api_dev:
+    container_name: pleyades-api_dev
+    build:
+      context: ./api
+      dockerfile: ./Dockerfile
+    image: pleyades-api_dev:1.0.0
+    volumes:
+      - ./api:/app
+    env_file:
+      - ./api/.env
+    environment:
+      - FLASK_DEBUG=1
+      - FLASK_APP=__init__:app
+    ports:
+      - 7000:80
+    command: flask run --host 0.0.0.0 --port 80
+    # depends_on:
+    #   - db
   prod:
     container_name: pleyades-web
     build:
@@ -33,12 +52,29 @@ services:
     env_file:
       - ./web/.env
     environment:
-      - FLASK_ENV=production
+      - FLASK_DEBUG=0
       - FLASK_APP=__init__:app
-    ports:
-      - 80:80
     command: gunicorn run:app --bind 0.0.0.0:80 --workers 3
-
+    depends_on:
+      - api_prod
+  
+  api_prod:
+    container_name: pleyades-api
+    build:
+      context: ./api
+      dockerfile: ./Dockerfile
+    image: pleyades-api:1.0.0
+    volumes:
+      - ./api:/app
+    env_file:
+      - ./api/.env
+    environment:
+      - FLASK_DEBUG=0
+      - FLASK_APP=__init__:app
+    command: gunicorn run:app --bind 0.0.0.0:80 --workers 3
+    depends_on:
+      - db
+    
 networks:
   dev-net:
     driver: bridge
