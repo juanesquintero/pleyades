@@ -1,7 +1,7 @@
-import mysql.connector as mysql
-from dotenv import load_dotenv
 import os
 from functools import wraps
+from dotenv import load_dotenv
+import mysql.connector as mysql
 
 load_dotenv()
 
