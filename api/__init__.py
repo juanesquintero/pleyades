@@ -1,13 +1,15 @@
 import os
+import sys 
 import logging
 from dotenv import load_dotenv
 from flask import Flask, jsonify
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 
-from utils.utils import *
-
+sys.path.append('./')
 load_dotenv()
+
+from utils.utils import *
 
 # Flask app config 
 app = Flask(__name__)
