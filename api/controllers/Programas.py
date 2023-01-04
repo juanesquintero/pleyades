@@ -13,7 +13,7 @@ tabla = 'VWPROGRAMADESERCION'
 # tabla = 'VWPROGRAMADESERCIONEIA'
 
 @Programa.route('/')
-@jwt_required
+@jwt_required()
 def get():
     query = db.select("SELECT * FROM {};".format(tabla))
     ex = exception(query)
@@ -25,7 +25,7 @@ def get():
 
 
 @Programa.route('/<int:codigo>')
-@jwt_required
+@jwt_required()
 def getOne(codigo):
     query = db.select(
         "SELECT * FROM {} WHERE codigo={};".format(tabla, codigo))
@@ -38,7 +38,7 @@ def getOne(codigo):
 
 
 @Programa.route('facultad/<int:facultad>')
-@jwt_required
+@jwt_required()
 def getByFacultad(facultad):
     query = db.select(
         "SELECT * FROM {} WHERE facultad={};".format(tabla, facultad))
@@ -51,7 +51,7 @@ def getByFacultad(facultad):
 
 
 @Programa.route('', methods=['POST'])
-@jwt_required
+@jwt_required()
 def post():
     body = request.get_json()
     # validate schema
@@ -75,13 +75,13 @@ def post():
 
 
 @Programa.route('/', methods=['POST'])
-@jwt_required
+@jwt_required()
 def post2():
     return post()
 
 
 @Programa.route('/<int:codigo>', methods=['PUT'])
-@jwt_required
+@jwt_required()
 def put(codigo):
     body = request.get_json()
     if not(codigo):
@@ -102,7 +102,7 @@ def put(codigo):
 
 
 @Programa.route('/<int:codigo>', methods=['DELETE'])
-@jwt_required
+@jwt_required()
 def deleteOne(codigo):
     if not(codigo):
         return {'error': "indique el codigo por el path"}, 404

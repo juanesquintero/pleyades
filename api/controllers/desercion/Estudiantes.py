@@ -18,7 +18,7 @@ msg_error = { 'msg': 'No hay concidencias' }, 404
 ##########################################################  VWDATADESERCION ##########################################################
 
 @Estudiante.route('/conjunto/<int:programa>/<int:periodoInicio>/<int:periodoFin>')
-@jwt_required
+@jwt_required()
 def get_conjunto_estudiantes(programa, periodoInicio, periodoFin):
     sql = "SELECT * FROM {} WHERE idprograma={} AND REGISTRO >= {} AND REGISTRO <= {} ORDER BY REGISTRO;".format(tabla,programa,periodoInicio, periodoFin)
     query = db.select(sql)
@@ -29,7 +29,7 @@ def get_conjunto_estudiantes(programa, periodoInicio, periodoFin):
     return jsonify(format(query) )
 
 @Estudiante.route('/periodo/<int:periodo>')
-@jwt_required
+@jwt_required()
 def get_periodo(periodo):
     sql = 'SELECT * FROM {} WHERE REGISTRO={};'.format(tabla, periodo)
     query = db.select(sql)
@@ -40,7 +40,7 @@ def get_periodo(periodo):
     return jsonify(format(query) )
 
 @Estudiante.route('/programa/<int:programa>')
-@jwt_required
+@jwt_required()
 def get_programa(programa):
     sql = "SELECT * FROM {} WHERE idprograma={};".format(tabla, programa)
     query = db.select(sql)
@@ -52,7 +52,7 @@ def get_programa(programa):
 
 
 @Estudiante.route('/programa/<int:programa>/<int:periodo>')
-@jwt_required
+@jwt_required()
 def get_periodo_programa(programa, periodo):
     sql = "SELECT * FROM {} WHERE REGISTRO={} and idprograma={}".format(tabla, periodo, programa)
     query = db.select(sql)
@@ -63,7 +63,7 @@ def get_periodo_programa(programa, periodo):
     return jsonify(format(query))
 
 @Estudiante.route('/documento/<documento>')
-@jwt_required
+@jwt_required()
 def get_documento(documento):
     sql = "SELECT * FROM {} WHERE documento='{}';".format(tabla,documento)
     query = db.select(sql)
@@ -74,7 +74,7 @@ def get_documento(documento):
 
 
 @Estudiante.route('/periodos')
-@jwt_required
+@jwt_required()
 def get_periodos():
     # Obtener datos desde la bd SQL server       
     sql = 'SELECT DISTINCT REGISTRO FROM {};'.format(tabla)
@@ -88,7 +88,7 @@ def get_periodos():
     return jsonify(format(periodos))
 
 @Estudiante.route('/periodos/programa/<int:programa>')
-@jwt_required
+@jwt_required()
 def get_periodos_programa(programa):
     # Obtener datos desde la bd SQL server       
     sql = 'SELECT DISTINCT REGISTRO FROM {} WHERE idprograma={};'.format(tabla, programa)
@@ -102,7 +102,7 @@ def get_periodos_programa(programa):
     return jsonify(format(periodos))
 
 @Estudiante.route('/programas')
-@jwt_required
+@jwt_required()
 def get_programas():
     # Obtener datos desde la bd SQL server       
     sql = 'SELECT DISTINCT idprograma, programa FROM {};'.format(tabla)

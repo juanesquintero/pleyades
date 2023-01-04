@@ -1,18 +1,19 @@
-from flask import request, jsonify, Blueprint
-from db.cli.db_cli import DB
-from schemas.facultadSchema import validate_post_schema, validate_put_schema
-from flask_jwt_extended import jwt_required
 from utils.utils import *
-import sys
+from db.cli.db_cli import DB
+from flask_jwt_extended import jwt_required
+from flask import request, jsonify, Blueprint
+from schemas.facultadSchema import validate_post_schema, validate_put_schema
+
 
 Facultad = Blueprint('facultad', __name__)
 # TODO cambiar nombre de tabla
 tabla = 'VWFACULTADDESERCION'
 # tabla = 'VWFACULTADDESERCIONEIA'
+
 db = DB.getInstance()
 
 @Facultad.route('/')
-@jwt_required
+@jwt_required()
 def get():
     query = db.select("SELECT * FROM {};".format(tabla))
     ex = exception(query)
@@ -24,7 +25,7 @@ def get():
 
 
 @Facultad.route('/<codigo>')
-@jwt_required
+@jwt_required()
 def getOne(codigo):
     query = db.select("SELECT * FROM {} WHERE codigo={};".format(tabla,codigo))
     ex = exception(query)
@@ -36,7 +37,7 @@ def getOne(codigo):
 
 
 @Facultad.route('',methods=['POST'])
-@jwt_required
+@jwt_required()
 def post():
     body = request.get_json()
     # validate schema
@@ -57,12 +58,12 @@ def post():
     return {'msg': "facultad creada"}, 200
 
 @Facultad.route('/',methods=['POST'])
-@jwt_required
+@jwt_required()
 def post2():
     return post()
 
 @Facultad.route('/<codigo>',methods=['PUT'])
-@jwt_required
+@jwt_required()
 def put(codigo):
     body = request.get_json()
     if not(codigo):
@@ -81,7 +82,7 @@ def put(codigo):
     return {'msg': "facultad actualizada"}, 200
 
 @Facultad.route('/<codigo>',methods=['DELETE'])
-@jwt_required
+@jwt_required()
 def deleteOne(codigo):
     if not(codigo):
         return {'error': "indique el codigo por el path"}, 404
