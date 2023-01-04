@@ -1,7 +1,13 @@
-Flask==1.1.1
+# Core
+Flask==2.2.2
 Flask-Cors==3.0.8
-jsonschema==3.2.0
-mysql-connector-python==8.0.18
-pyodbc==4.0.30
-python-dotenv==0.12.0
-Flask-JWT-Extended==3.24.1
+Flask-JWT-Extended==4.4.4
+jsonschema==4.17.3
+
+# DB
+mysql-connector-python==8.0.31
+pyodbc==4.0.35
+
+# Utils
+python-dotenv==0.21.0
+pandas==1.5.2
