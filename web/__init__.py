@@ -41,7 +41,6 @@ def contactanos():
 
 
 '''ROUTES'''
-# TODO registrar los errores para que controle 
 app.register_blueprint(Error)
 app.register_blueprint(Auth)
 app.register_blueprint(Facultad, url_prefix='/admin/facultades')

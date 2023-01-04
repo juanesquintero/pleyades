@@ -29,35 +29,35 @@ def verificar_data(data, periodoInicial, periodoFinal, programa):
         data.columns = map(str.lower, data.columns)
     except Exception as e:
         error_logger.error(e)
-        return False, 'El conjunto no tiene columnas', None
+        return False, 'El conjunto no tiene columnas', None, None
 
     # Verificar si hay registros
     if not(len(data) > 0):
-        return False, 'El conjunto no tiene registros (esta vacio)', None
+        return False, 'El conjunto no tiene registros (esta vacio)', None, None
 
     # Verificar Si todas las columnas existen
     if not(all(col in data.columns for col in columnas)):
-        return False, 'El conjunto ingresado no posee las columnas requeridas', None
+        return False, 'El conjunto ingresado no posee las columnas requeridas', None, None
     if not(len(data.columns) == len(columnas)):
-        return False, 'El conjunto ingresado tiene mas columnas de las requeridas', None
+        return False, 'El conjunto ingresado tiene mas columnas de las requeridas', None, None
     # Verificar si los tipos de datos de colunma son correctos
     try:
         data_verificada = asignar_tipos(data)
     except Exception as e:
         error_logger.error(e)
-        return False, 'El conjunto ingresado no tiene los tipos de dato por columna requeridos', None
+        return False, 'El conjunto ingresado no tiene los tipos de dato por columna requeridos', None, None
     # Verificar si en conjunto posee mas de un  valor en la columna programa 
     if not(len(set(data_verificada['programa'].tolist()))==1):
-        return False, 'El conjunto tiene resgistros de mas de un programa, los modelos se ejecutan por programa', None
+        return False, 'El conjunto tiene resgistros de mas de un programa, los modelos se ejecutan por programa', None, None
     # Verificar si en conjunto posee los valores de periodo Inicial y Final Correctamente  
     if not(data_verificada['registro'].max() == periodoFinal):
-        return False, 'El conjunto no tiene como periodo final {}, verifique los registros'.format(str(periodoFinal)), None
+        return False, 'El conjunto no tiene como periodo final {}, verifique los registros'.format(str(periodoFinal)), None, None
     if not(data_verificada['registro'].min() == periodoInicial):
         _periodoInicial = periodoInicial
         periodoInicial = data_verificada['registro'].min()
         flash('El conjunto no tiene como periodo inicial {}, se reasignó a <b>{}</b>'.format(str(_periodoInicial), str(periodoInicial)), 'warning')  
     if not(data_verificada['idprograma'] == programa).all():
-        return False, 'El conjunto no pertenece al programa indicado, verifique los registros', None    
+        return False, 'El conjunto no pertenece al programa indicado, verifique los registros', None    , None
 
     # Verificacion correcta
     return True, None, data_verificada, periodoInicial

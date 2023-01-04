@@ -162,7 +162,7 @@ def guardar():
     
         # VERIFICACION de formato
         data = pd.read_excel(archivo)
-        validacion, mensaje_error, data_verificada, periodoInicial = verificar_data(data, conjunto['periodoInicial'], conjunto['periodoFinal'], conjunto['programa'])
+        validacion, mensaje_error, data_verificada, periodoInicial = verificar_data(data, conjunto.get('periodoInicial'), conjunto.get('periodoFinal'), conjunto.get('programa'))
         conjunto['periodoInicial'] =  periodoInicial
 
         # Obtener nombre del conjunto desde el api
@@ -192,7 +192,7 @@ def guardar():
             return render_template('utils/mensaje.html', mensaje='Consulta fallida a la base de datos')
         
         # VERIFICACION de formato
-        validacion, mensaje_error, data_verificada, periodoInicial = verificar_data(data, conjunto['periodoInicial'], conjunto['periodoFinal'], conjunto['programa'])
+        validacion, mensaje_error, data_verificada, periodoInicial = verificar_data(data, conjunto.get('periodoInicial'), conjunto.get('periodoFinal'), conjunto.get('programa'))
         conjunto['periodoInicial'] =  periodoInicial
         
         # Obtener nombre del conjunto desde el api
