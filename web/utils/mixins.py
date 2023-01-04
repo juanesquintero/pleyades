@@ -1,4 +1,8 @@
-import re, os, json, logging, pandas as pd
+import re
+import os
+import json
+import logging
+import pandas as pd
 from flask import render_template
 from datetime import datetime
 from services.API import post, put
@@ -123,3 +127,11 @@ def obtener_nombre_conjunto(conjunto):
         return body_n['nombre'], body_n['numero']
     else:
         return False, render_template('utils/mensaje.html', mensaje='No se pudo obtener el nombre del conjunto', submensaje=body_n)
+
+def obtener_ies_config():
+    # Get IES definition
+    ies_name = os.getenv('CLI_IES_NAME')
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    with open(f'{base_dir}/../ies.json', 'r') as json_file:
+        IES = json.load(json_file).get(ies_name)
+        return IES
