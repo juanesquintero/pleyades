@@ -7,6 +7,8 @@ from flask import Flask, session, render_template
 from flask_session import Session
 from dotenv import load_dotenv
 
+
+# Config root path and language
 locale.setlocale(locale.LC_ALL, 'es_MX.UTF-8') 
 sys.path.append('./')
 load_dotenv()
@@ -27,6 +29,10 @@ from views.tableros import Tablero
 
 app = Flask(__name__, template_folder='templates', static_url_path='/static')
 
+# IES config
+from utils.mixins import obtener_ies_config
+IES = obtener_ies_config()
+
 # Variables de sesion
 app.config['SECRET_KEY'] = os.getenv("SESSION_KEY")
 
@@ -37,7 +43,7 @@ def inicio():
 
 @app.route('/contactanos')
 def contactanos():
-    return render_template('utils/contactanos.html', IES_NAME=os.getenv('CLI_IES_NAME')), 200
+    return render_template('utils/contactanos.html', ies=IES), 200
 
 
 '''ROUTES'''

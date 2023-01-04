@@ -1,23 +1,21 @@
-from flask import request, session, Blueprint, render_template, redirect, send_file, jsonify, url_for
-import plotly
-import json
-import numpy as np
 import os
+import json
+import plotly
+import numpy as np
+from flask import request, Blueprint, render_template, jsonify
 
 from views.auth import login_required
+from utils.mixins import obtener_ies_config
 
 # Importar tableros de plotly para cada nivel
 import utils.tableros.mundo as Mundo
 import utils.tableros.pais as Pais
 import utils.tableros.region as Region
 import utils.tableros.data_ies as DataIES
-import utils.tableros.ies as ies_file
 from utils.tableros.ies import IES
-import utils.tableros.programa as programa_file
 from utils.tableros.programa import Programa
 import utils.tableros.estudiante as Estudiante_file
-from utils.tableros.estudiante import Estudiante
-import pandas as pd
+
 
 endopoint = 'tableros/'
 
@@ -231,7 +229,7 @@ def ies_dashboard():
 
         periodos_list=periodos,
 
-        nombre_ies=os.getenv('CLI_IES_NAME'),
+        nombre_ies=obtener_ies_config().get('nombre'),
 
         indicadores_1_plot=indicadores1,
         indicadores_2_plot=indicadores2,
