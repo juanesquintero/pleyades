@@ -29,7 +29,7 @@ services:
     build:
       context: ./api
       dockerfile: ./Dockerfile
-    image: pleyades-apiv:1.0.0
+    image: pleyades-api:1.0.0
     volumes:
       - ./api:/app
     env_file:
@@ -39,6 +39,10 @@ services:
       - FLASK_APP=__init__:app
     ports:
       - 3000:80
+    networks:
+      dev-net:
+        aliases:
+          - api-host
     command: flask run --host 0.0.0.0 --port 80
     depends_on:
       - db
@@ -56,8 +60,12 @@ services:
     ports:
       - 3306:3306
     volumes:
-      - ./api/db/pleyades/mysql:/var/lib/mysql
-      - ./api/db/pleyades/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./api/db/pleyades/dev/mysql:/var/lib/mysql
+      - ./api/db/pleyades/dev/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      dev-net:
+        aliases:
+          - db-host
 
   adminer:
     container_name: pleyades-adminer
