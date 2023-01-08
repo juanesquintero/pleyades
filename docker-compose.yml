@@ -1,12 +1,12 @@
-version: '3.8'
+version: "3.8"
+name: pleyades-dev
 services:
-
-  dev:
+  web:
     container_name: pleyades-web_dev
     build:
       context: ./web
       dockerfile: ./Dockerfile
-    image: pleyades-web_dev:1.0.0
+    image: pleyades-web:1.0.0
     volumes:
       - ./ies.json:/app/ies.json
       - ./web:/app
@@ -22,14 +22,14 @@ services:
       - 5000:80
     command: flask run --host 0.0.0.0 --port 80
     depends_on:
-      - api_dev
-  
-  api_dev:
+      - api
+
+  api:
     container_name: pleyades-api_dev
     build:
       context: ./api
       dockerfile: ./Dockerfile
-    image: pleyades-api_dev:1.0.0
+    image: pleyades-apiv:1.0.0
     volumes:
       - ./api:/app
     env_file:
@@ -38,43 +38,33 @@ services:
       - FLASK_DEBUG=1
       - FLASK_APP=__init__:app
     ports:
-      - 7000:80
+      - 3000:80
     command: flask run --host 0.0.0.0 --port 80
-    # depends_on:
-    #   - db
-  prod:
-    container_name: pleyades-web
-    build:
-      context: ./web
-      dockerfile: ./Dockerfile
-    image: pleyades-web:1.0.0
-    volumes:
-      - ./ies.json:/app/ies.json
-    env_file:
-      - ./web/.env
-    environment:
-      - FLASK_DEBUG=0
-      - FLASK_APP=__init__:app
-    command: gunicorn run:app --bind 0.0.0.0:80 --workers 3
     depends_on:
-      - api_prod
-  
-  api_prod:
-    container_name: pleyades-api
-    build:
-      context: ./api
-      dockerfile: ./Dockerfile
-    image: pleyades-api:1.0.0
+      - db
+
+  db:
+    container_name: pleyades-db_dev
+    image: mysql:8.0.3
+    cap_add:
+      - SYS_NICE
+    restart: always
     env_file:
       - ./api/.env
     environment:
-      - FLASK_DEBUG=0
-      - FLASK_APP=__init__:app
-    command: gunicorn run:app --bind 0.0.0.0:80 --workers 3
-    depends_on:
-      - db
-    
+      - MYSQL_ROOT_PASSWORD=pl3y4d3s*DB-.
+    ports:
+      - 3306:3306
+    volumes:
+      - ./api/db/pleyades/mysql:/var/lib/mysql
+      - ./api/db/pleyades/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  adminer:
+    container_name: pleyades-adminer
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
 networks:
   dev-net:
     driver: bridge
-

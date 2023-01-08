@@ -6,3 +6,5 @@ __pycache__/
 uploads/
 *.pyc
 flask_session/
+mysql
+web/ies.json
