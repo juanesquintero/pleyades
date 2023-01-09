@@ -26,5 +26,8 @@ COPY . /app
 # Install requirements
 RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
 
+# Update TSL protocol to MySQL
+RUN sed -i -E 's/MinProtocol[=\ ]+.*/MinProtocol = TLSv1.0/g' /etc/ssl/openssl.cnf
+
 # Expose port
 EXPOSE 80
