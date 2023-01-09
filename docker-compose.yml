@@ -10,8 +10,6 @@ services:
     volumes:
       - ./ies.json:/app/ies.json
       - ./web:/app
-    networks:
-      - dev-net
     env_file:
       - ./web/.env
     environment:
@@ -20,9 +18,11 @@ services:
       - TEMPLATES_AUTO_RELOAD=1
     ports:
       - 5000:80
-    command: flask run --host 0.0.0.0 --port 80
+    networks:
+      - dev-net
     depends_on:
       - api
+    command: flask run --host 0.0.0.0 --port 80
 
   api:
     container_name: pleyades-api_dev
@@ -43,9 +43,10 @@ services:
       dev-net:
         aliases:
           - api-host
-    command: flask run --host 0.0.0.0 --port 80
     depends_on:
       - db
+    command: flask run --host 0.0.0.0 --port 80
+
 
   db:
     container_name: pleyades-db_dev
