@@ -47,7 +47,7 @@ class DB:
     def connect(self):
         try:
             self.cnx = mysql.MySQLConnection(
-                host=_host,
+                host='db-host',
                 port=3306,
                 user=_user,
                 password=_password,
