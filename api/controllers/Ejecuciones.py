@@ -158,7 +158,7 @@ def deleteByConjunto(conjunto):
         return {'error': "indique el conjunto por el path"}, 400
     # sql validations
     if not exists_conjunto(conjunto): return {'error': "conjunto no existe"}, 400
-    if not conjunto_preparaciones(conjun):  return {'error': "conjunto no tiene preparaciones"}, 400
+    # if not conjunto_preparaciones(conjun):  return {'error': "conjunto no tiene preparaciones"}, 400
     # delete 
     condicion="conjunto='"+conjunto+"'"
     delete = db.delete(condicion,'ejecuciones')
