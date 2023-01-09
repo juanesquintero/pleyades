@@ -76,8 +76,8 @@ services:
     ports:
       - 3306:3306
     volumes:
-      - ./api/db/pleyades/prod/mysql:/var/lib/mysql
-      - ./api/db/pleyades/prod/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./api/db/pleyades/prod:/var/lib/mysql
+      - ./api/db/pleyades/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       deploy-net:
         aliases:

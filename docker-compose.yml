@@ -60,8 +60,9 @@ services:
     ports:
       - 3306:3306
     volumes:
-      - ./api/db/pleyades/dev/mysql:/var/lib/mysql
-      - ./api/db/pleyades/dev/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./api/db/pleyades/dev:/var/lib/mysql
+      - ./api/db/pleyades/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    # command: --init-file /data/application/init.sql
     networks:
       dev-net:
         aliases:
@@ -69,9 +70,11 @@ services:
 
   adminer:
     container_name: pleyades-adminer
-    image: adminer
+    image: adminer:4
     ports:
       - 8080:8080
+    links:
+      - db:db
     networks:
       - dev-net
 networks:
