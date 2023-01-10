@@ -1,6 +1,7 @@
 version: "3.8"
 name: pleyades-dev
 services:
+  
   web:
     container_name: pleyades-web_dev
     build:
@@ -47,7 +48,6 @@ services:
       - db
     command: flask run --host 0.0.0.0 --port 80
 
-
   db:
     container_name: pleyades-db_dev
     image: mysql:8.0.3
@@ -63,7 +63,6 @@ services:
     volumes:
       - ./api/db/pleyades/dev:/var/lib/mysql
       - ./api/db/pleyades/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
-    # command: --init-file /data/application/init.sql
     networks:
       dev-net:
         aliases:
@@ -78,6 +77,7 @@ services:
       - db:db
     networks:
       - dev-net
+
 networks:
   dev-net:
     driver: bridge
