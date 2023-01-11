@@ -1,0 +1,17 @@
+<section>        
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="py-2 w-100">    
+            {% for category, message in messages %}
+                {% if category != 'http' %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show itemsali" role="alert">
+                        {{ message | safe }}
+                        <!-- <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> -->
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+    {% endwith %}  
+</section>

@@ -14,7 +14,7 @@ db = DB.getInstance()
 db_cli = db_cli.getInstance()
 
 @Conjunto.route('/')
-@jwt_required
+@jwt_required()
 def get():
     query = db.select("SELECT * FROM conjuntosdedatos;")
     ex = exception(query)
@@ -24,7 +24,7 @@ def get():
     return jsonify(query) 
 
 @Conjunto.route('/<nombre>')
-@jwt_required
+@jwt_required()
 def getOne(nombre):
     query = db.select("SELECT * FROM conjuntosdedatos WHERE nombre='{}';".format(nombre))
     ex = exception(query)
@@ -35,7 +35,7 @@ def getOne(nombre):
 
 
 @Conjunto.route('/estado/<estado>')
-@jwt_required
+@jwt_required()
 def getByEstado(estado):
     query = db.select("SELECT * FROM conjuntosdedatos WHERE estado='{}';".format(estado))
     ex = exception(query)
@@ -45,7 +45,7 @@ def getByEstado(estado):
     return jsonify(query) 
 
 @Conjunto.route('/tipo/<tipo>')
-@jwt_required
+@jwt_required()
 def getByTipo(tipo):
     query = db.select("SELECT * FROM conjuntosdedatos WHERE tipo='{}';".format(tipo))
     ex = exception(query)
@@ -56,7 +56,7 @@ def getByTipo(tipo):
     return jsonify(query) 
 
 @Conjunto.route('/programa/<int:programa>')
-@jwt_required
+@jwt_required()
 def getByPrograma(programa):
     query = db.select("SELECT * FROM conjuntosdedatos WHERE programa={};".format(str(programa)))
     ex = exception(query)
@@ -67,7 +67,7 @@ def getByPrograma(programa):
     return jsonify(query)
 
 @Conjunto.route('encargado/<encargado>')
-@jwt_required
+@jwt_required()
 def getByEncargado(encargado):
     estado = request.args.get('estado')
     if estado:
@@ -86,7 +86,7 @@ def getByEncargado(encargado):
 
 
 @Conjunto.route('/periodos/<int:inicio>/<int:fin>')
-@jwt_required
+@jwt_required()
 def getByPeriodos(inicio, fin):
     query = db.select("SELECT * FROM conjuntosdedatos WHERE periodoInicial={} AND periodoFinal={};".format(inicio,fin))
     ex = exception(query)
@@ -96,7 +96,7 @@ def getByPeriodos(inicio, fin):
     return jsonify(query) 
 
 @Conjunto.route('',methods=['POST'])
-@jwt_required
+@jwt_required()
 def post():
     body = request.get_json()
     # validate schema
@@ -122,12 +122,12 @@ def post():
     return {'msg': "Conjunto creado"}, 200
 
 @Conjunto.route('/',methods=['POST'])
-@jwt_required
+@jwt_required()
 def post2():
     return post()
 
 @Conjunto.route('/nombre',methods=['POST'])
-@jwt_required
+@jwt_required()
 def nombre():
     body = request.get_json()
     # validate schema
@@ -165,7 +165,7 @@ def nombre():
 
 
 @Conjunto.route('/<nombre>',methods=['DELETE'])
-@jwt_required
+@jwt_required()
 def deleteOne(nombre):
     if not(nombre):
         return {'error': "indique el nombre por el path"}, 400
@@ -185,7 +185,7 @@ def deleteOne(nombre):
     return {'msg': "Conjunto eliminado"}, 200
 
 @Conjunto.route('/<nombre>',methods=['PUT'])
-@jwt_required
+@jwt_required()
 def put(nombre):
     body = request.get_json()
     if not(nombre):

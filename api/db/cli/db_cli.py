@@ -1,8 +1,7 @@
-import pyodbc
-from dotenv import load_dotenv
 import os
-import sys
+import pyodbc
 from functools import wraps
+from dotenv import load_dotenv
 
 load_dotenv()
 

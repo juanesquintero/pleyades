@@ -60,65 +60,15 @@
                 </a>
             </div>
             <!-- TABLEROS MENU -->
-            <a href="#menuTableros" data-toggle="collapse" aria-expanded="false"
-                class="list-group-item  flex-column align-items-start border-right-0 my-secondary">
-                <div class="d-flex w-100 justify-content-start align-items-center">
-                    <span class="fa fa-chart-bar fa-fw mr-3 text-white" aria-hidden="true"></span>
+            <!-- TODO tableros/_option.html -->
 
-                    <span class="menu-collapsed text-white">Tableros</span>
-                    <span class="submenu-icon ml-auto"></span>
-                </div>
-            </a>
-
-
-
-            <div {% if menu=='tableros' %} style="display:inline;" {% endif %} id='menuTableros'
-                class="sidebar-submenu collapse">
-                
-                <a {% if  url_for('Tablero.mundo_dashboard') not in request.path %} onclick="openModal()"
-                    href="{{url_for('Tablero.mundo_dashboard')}}" {% else %} href="#" {% endif %}
-                    class="list-group-item  text-white  border-right-0 my-secondary">
-                    &nbsp;&nbsp;<i class="fa fa-globe-americas fa-xs" aria-hidden="true"></i>
-                    <span class="menu-collapsed text-white">Mundo</span>
-                </a>
-                <a {% if  url_for('Tablero.pais_dashboard') not in request.path %} onclick="openModal()"
-                    href="{{url_for('Tablero.pais_dashboard')}}" {% else %} href="#" {% endif %}
-                    class="list-group-item  text-white border-right-0 my-secondary">
-                    &nbsp;&nbsp;<i class="fa fa-flag fa-xs" aria-hidden="true"></i>
-                    <span class="menu-collapsed text-white">País</span>
-                </a>
-                <a {% if  url_for('Tablero.region_dashboard') not in request.path %} onclick="openModal()"
-                    href="{{url_for('Tablero.region_dashboard')}}" {% else %} href="#" {% endif %}
-                    class="list-group-item  text-white border-right-0 my-secondary">
-                    &nbsp;&nbsp;<i class="fa fa-mountain fa-xs" aria-hidden="true"></i>
-                    <span class="menu-collapsed text-white">Región</span>
-                </a>
-                <a {% if  url_for('Tablero.ies_dashboard') not in request.path %} onclick="openModal()"
-                    href="{{url_for('Tablero.ies_dashboard')}}" {% else %} href="#" {% endif %}
-                    class="list-group-item  text-white border-right-0 my-secondary">
-                    &nbsp;&nbsp;<i class="fa fa-school fa-xs" aria-hidden="true"></i>
-                    <span class="menu-collapsed text-white">IES</span>
-                </a>
-                <a {% if  url_for('Tablero.programa_dashboard') not in request.path %} onclick="openModal()"
-                    href="{{url_for('Tablero.programa_dashboard')}}" {% else %} href="#" {% endif %}
-                    class="list-group-item  text-white border-right-0 my-secondary">
-                    &nbsp;&nbsp;<i class="fa fa-graduation-cap fa-xs" aria-hidden="true"></i>
-                    <span class="menu-collapsed text-white">Programa</span>
-                </a>
-                <a onclick="openModal()"
-                    href="{{url_for('Tablero.estudiante_dashboard')}}" 
-                    class="list-group-item  text-white border-right-0 my-secondary">
-                    &nbsp;&nbsp;<i class="fa fa-user-graduate fa-xs" aria-hidden="true"></i>
-                    <span class="menu-collapsed text-white">Estudiante</span>
-                </a>
-            </div>
             <!-- END Opciones -->
 
-            <!--  Entidades -->
+            <!--  ADMINISTRACIÓN -->
             {% if session['user']['rol']=='Admin' %}
             <li
                 class="list-group-item sidebar-separator-title text-white d-flex align-items-center menu-collapsed text-white  border-right-0 border-left-0  mt-5 my-secondary ">
-                <small>ENTIDADES</small>
+                <small>ADMINISTRACIÓN</small>
             </li>
             <a href="{{url_for('Facultad.listar')}}" class="list-group-item  border-right-0 border-top my-secondary">
                 <div class="d-flex w-100 justify-content-start align-items-center">
@@ -178,3 +128,5 @@
 
         <!-- MAIN -->
         <div class="col m-4 px-3 py-2 ">
+
+            {% include 'utils/messages.html' %}

@@ -30,28 +30,24 @@
                         </center>
                     </div>
 
+                    {% if ies %}
                     <div class="col-6" style="width: 50%;">
                         <center>
-                            <a href="https://www.eia.edu.co/" target="_blank">
-                                <img src="{{url_for('static', filename='images/EIA_logo.png')}}" class="d-inline-block align-top ml-2"
-                                    title="www.eia.edu.co">
+                            <a href="{{ies.url}}" target="_blank">
+                                <img src="{{ies.logo}}"
+                                    title="{{ies.url}}"
+                                    width="280">
                             </a>
                             <br>
                             <div class="ml-5">
-                                <a href="https://www.eia.edu.co/" target="_blank">Universidad EIA
+                                <a href="{{ies.url}}" target="_blank">{{ies.nombre}}
                                 </a><br><br>
-                                <b>Sede de Las Palmas:</b> <br>
-                                km 2 + 200 Vía al Aeropuerto José María Córdova Envigado, Colombia. <br>
-                                Tel: (574) 354 90 90. Fax: (574) 386 11 60<br>
-                                
-                                <b>Zúñiga:</b><br>
-                                Calle 25 Sur 42-73 Envigado, Colombia. <br>
-                                Tel: (574) 354 90 90. Fax: (574) 331 34 78 <br>
+                                {{ ies.descripcion | safe }}
                             </div>
                             <br><br><br><br>
                         </center>
                     </div>
-
+                    {% endif %}
 
                 </div>
             </div>
