@@ -6,9 +6,8 @@ from schemas.facultadSchema import validate_post_schema, validate_put_schema
 
 
 Facultad = Blueprint('facultad', __name__)
-# TODO cambiar nombre de tabla
+
 tabla = 'VWFACULTADDESERCION'
-# tabla = 'VWFACULTADDESERCIONEIA'
 
 db = DB.getInstance()
 

@@ -116,7 +116,7 @@
                 {% endif %}
 
                 &nbsp;
-                <span>{{session['user']['nombre'].split(' ')[0].upper()}} &nbsp;</span>
+                <span>{{session.get('user').get('nombre').split(' ')[0].upper()}} &nbsp;</span>
             </button>
             <div class="dropdown-menu dropdown-menu-right border border-dark"
                 style="right: 0 !important; left: auto !important; ">
