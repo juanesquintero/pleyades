@@ -10,9 +10,9 @@ import json
 Estudiante = Blueprint('Estudiante', __name__)
 
 db = DB.getInstance()
-# TODO cambiar nombre de tabla
+
 tabla = 'VWDATADESERCION'
-# tabla = 'VWDATADESERCIONEIA'
+
 msg_error = { 'msg': 'No hay concidencias' }, 404
 
 ##########################################################  VWDATADESERCION ##########################################################

@@ -8,9 +8,8 @@ from controllers.Facultades import exists as exists_facultad
 
 Programa = Blueprint('Programa', __name__)
 db = DB.getInstance()
-# TODO cambiar nombre de tabla
+
 tabla = 'VWPROGRAMADESERCION'
-# tabla = 'VWPROGRAMADESERCIONEIA'
 
 @Programa.route('/')
 @jwt_required()
