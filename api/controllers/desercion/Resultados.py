@@ -18,7 +18,7 @@ msg_exito = { 'msg': 'Operación completada con exito!' }, 200
 ##########################################################  TBLDES_RESULTADO_PREDICCION ##########################################################
 
 @Resultado.route('/ultimo/<programa>/<int:semestre>', methods=['PUT'])
-@jwt_required
+@jwt_required()
 def put_ultimo(semestre, programa):
     sql = "UPDATE {} SET blnultimo=0 WHERE semestre_prediccion={} AND idprograma={};".format(tabla, semestre, programa)
     result = db.execute(sql)
@@ -29,7 +29,7 @@ def put_ultimo(semestre, programa):
     return msg_exito
 
 @Resultado.route('', methods=['POST'])
-@jwt_required
+@jwt_required()
 def post_insertar_resultados():
     body = request.get_json()
     if not(validate_post_schema(body)):

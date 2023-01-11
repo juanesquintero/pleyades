@@ -1,13 +1,15 @@
-from flask import Flask, jsonify, request
+import os
+import sys 
+import logging
+from dotenv import load_dotenv
+from flask import Flask, jsonify
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
-from dotenv import load_dotenv
-import os,re,werkzeug
-import logging
+
+sys.path.append('./')
+load_dotenv()
 
 from utils.utils import *
-
-load_dotenv()
 
 # Flask app config 
 app = Flask(__name__)
@@ -23,10 +25,7 @@ def my_expired_token_callback(expired_token):
         'msg': 'Su sesión ha expirado, vuelva a loguearse'
     }), 401
 
-main_path = '/api/v1'
-
-@app.route(main_path)
-@app.route(main_path+'/')
+@app.route('/')
 def index():
     return jsonify({'api': 'Pleyades'}), 200
 
@@ -62,16 +61,16 @@ from controllers.desercion.Estudiantes import Estudiante
 from controllers.desercion.Resultados import Resultado
 
 # Register routes
-app.register_blueprint( Auth, url_prefix=main_path+'/auth')
-app.register_blueprint( Facultad, url_prefix=main_path+'/facultades')
-app.register_blueprint( Programa, url_prefix=main_path+'/programas')
-app.register_blueprint( Usuario, url_prefix=main_path+'/usuarios')
-app.register_blueprint( Conjunto, url_prefix=main_path+'/conjuntos')
-app.register_blueprint( Preparacion, url_prefix=main_path+'/preparaciones')
-app.register_blueprint( Ejecucion, url_prefix=main_path+'/ejecuciones')
-app.register_blueprint( IES, url_prefix=main_path+'/desercion/institucion')
-app.register_blueprint( Estudiante, url_prefix=main_path+'/desercion/estudiantes')
-app.register_blueprint( Resultado, url_prefix=main_path+'/desercion/resultados')
+app.register_blueprint( Auth, url_prefix='/auth')
+app.register_blueprint( Facultad, url_prefix='/facultades')
+app.register_blueprint( Programa, url_prefix='/programas')
+app.register_blueprint( Usuario, url_prefix='/usuarios')
+app.register_blueprint( Conjunto, url_prefix='/conjuntos')
+app.register_blueprint( Preparacion, url_prefix='/preparaciones')
+app.register_blueprint( Ejecucion, url_prefix='/ejecuciones')
+app.register_blueprint( IES, url_prefix='/desercion/institucion')
+app.register_blueprint( Estudiante, url_prefix='/desercion/estudiantes')
+app.register_blueprint( Resultado, url_prefix='/desercion/resultados')
 '''END ROUTES'''
 
 

@@ -1,4 +1,3 @@
-from utils.mixins import exception
 from services.API import get
 import pandas as pd
 

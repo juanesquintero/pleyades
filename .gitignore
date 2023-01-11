@@ -6,3 +6,6 @@ __pycache__/
 uploads/
 *.pyc
 flask_session/
+**/db/pleyades/dev
+**/db/pleyades/prod
+web/ies.json

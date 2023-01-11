@@ -1,10 +1,10 @@
-from flask import session, request, redirect, Blueprint, render_template, url_for
+from flask import session, request, Blueprint, render_template
 from functools import wraps
 import os, dotenv, requests, jwt
 
 dotenv.load_dotenv()
 
-api = os.getenv("API_PATH")
+api = os.getenv('API_PATH')
 
 Auth = Blueprint('auth', __name__)
 
@@ -37,7 +37,7 @@ def only_admin(f):
             return render_template('utils/login.html'), 200
         if session['user']['rol']=='Admin':
             return f(*args, **kwargs)
-        return render_template('utils/mensaje.html', mensaje="Usted no tiene autorizacion para realizar esta accion"), 401
+        return render_template('utils/mensaje.html', mensaje='Usted no tiene autorizacion para realizar esta accion'), 401
     return decorated_function
 
 @Auth.route('/login',methods=['GET','POST'])
@@ -55,9 +55,9 @@ def login():
         session['user'] = None
         session['headers'] = None
         # Obtener token
-        token = body['access_token']
+        token = body.get('access_token')
         # Setear usuario de la session
-        user = jwt.decode(token,os.getenv("JWT_KEY"))['identity']
+        user = jwt.decode(token, os.getenv('JWT_KEY')).get('sub')
         session['user'] = user
         # Definir objeto request para realizar peticiones  al API 
         session['headers'] = {'Authorization': 'Bearer ' + token}        
@@ -65,8 +65,8 @@ def login():
 
         return render_template('utils/inicio.html'), 200
     if 'msg' in body.keys():
-        return render_template('utils/login.html',mensaje=body['msg']), 401
-    return render_template('utils/error.html', mensaje="Ocurrió un error loguandose", submensaje=body['error']), 400
+        return render_template('utils/login.html',mensaje=body.get('msg')), 401
+    return render_template('utils/error.html', mensaje='Ocurrió un error loguandose', submensaje=body.get('error')), 400
     
     
 @Auth.route('/logout')

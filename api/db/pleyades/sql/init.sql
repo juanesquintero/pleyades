@@ -1,7 +1,9 @@
+use pleyades;
+
+
 -- **********************************
 -- ************ Tables **************
 -- **********************************
-use pleyades;
 -- table usuarios
 CREATE TABLE  usuarios (
 	correo VARCHAR (200) NOT NULL 	,
@@ -105,3 +107,11 @@ ALTER TABLE preparaciones ADD(
 	ON DELETE CASCADE
     ON UPDATE CASCADE
 );
+
+
+-- **********************************
+-- ************ Initial Inserts **************
+-- **********************************
+    
+INSERT INTO `pleyades`.`usuarios`(`nombre`,`correo`,`clave`,`rol`) VALUES
+('SUPER ADMIN','admin@pleyades.com','25d55ad283aa400af464c76d713c07ad','Admin');

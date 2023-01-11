@@ -13,7 +13,7 @@ Usuario = Blueprint('Usuario', __name__)
 db = DB.getInstance()
 
 @Usuario.route('/')
-@jwt_required
+@jwt_required()
 def get():
     query = db.select("SELECT * FROM usuarios;")
     ex = exception(query)
@@ -23,7 +23,7 @@ def get():
     return jsonify(query) 
 
 @Usuario.route('/<correo>')
-@jwt_required
+@jwt_required()
 def getOne(correo):
     query = db.select("SELECT * FROM usuarios WHERE correo='{}';".format(correo))
     ex = exception(query)
@@ -33,7 +33,7 @@ def getOne(correo):
     return jsonify(query[0]) 
 
 @Usuario.route('rol/<rol>')
-@jwt_required
+@jwt_required()
 def getByRol(rol):
     query = db.select("SELECT * FROM usuarios WHERE rol='{}';".format(rol))
     ex = exception(query)
@@ -43,7 +43,7 @@ def getByRol(rol):
     return jsonify(query) 
 
 @Usuario.route('',methods=['POST'])
-@jwt_required
+@jwt_required()
 def post():
     body = request.get_json()
     # validate schema
@@ -65,12 +65,12 @@ def post():
     return {'msg': "Usuario creado"}, 200
 
 @Usuario.route('/',methods=['POST'])
-@jwt_required
+@jwt_required()
 def post2():
     return post()
 
 @Usuario.route('/<correo>',methods=['PUT'])
-@jwt_required
+@jwt_required()
 def put(correo):
     body = request.get_json()
     if not(correo):
@@ -96,7 +96,7 @@ def put(correo):
     return {'msg': "Usuario actualizado"}, 200
 
 @Usuario.route('/<correo>',methods=['DELETE'])
-@jwt_required
+@jwt_required()
 def deleteOne(correo):
     if not(correo):
         return {'error': "indique el correo por el path"}, 404

@@ -1,0 +1,89 @@
+version: '3.8'
+name: pleyades-prod
+
+services:
+
+  nginx:
+    restart: always
+    image: nginx:1.23.1-alpine
+    container_name: pleyades-nginx
+    volumes:
+      - ./nginx/conf/default.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/snippets/proxy_params:/etc/nginx/proxy_params
+      - ./nginx/snippets:/etc/nginx/snippets
+      - ./nginx/logs:/var/log/nginx
+      - ./nginx/www:/var/www
+    ports:
+      - 80:80
+    networks:
+      - deploy-net
+    depends_on:
+      - web
+
+  web:
+    container_name: pleyades-web
+    build:
+      context: ./web
+      dockerfile: ./Dockerfile
+    image: pleyades-web:1.0.0
+    volumes:
+      - ./ies.json:/app/ies.json
+    env_file:
+      - ./web/.env
+    environment:
+      - FLASK_DEBUG=0
+      - FLASK_APP=__init__:app
+      
+    networks:
+      deploy-net:
+        aliases:
+          - web-host
+
+    command: gunicorn __init__:app --bind 0.0.0.0:80 --workers 3
+    depends_on:
+      - api
+  
+  api:
+    container_name: pleyades-api
+    build:
+      context: ./api
+      dockerfile: ./Dockerfile
+    image: pleyades-api:1.0.0
+    env_file:
+      - ./api/.env
+    environment:
+      - FLASK_DEBUG=0
+      - FLASK_APP=__init__:app
+    networks:
+      deploy-net:
+        aliases:
+          - api-host
+
+    command: gunicorn __init__:app --bind 0.0.0.0:80 --workers 3
+    depends_on:
+      - db
+
+  db:
+    container_name: pleyades-db
+    image: mysql:8.0
+    cap_add:
+      - SYS_NICE
+    restart: always
+    env_file:
+      - ./api/.env
+    environment:
+      - MYSQL_ROOT_PASSWORD=pl3y4d3s*DB-.
+    ports:
+      - 3306:3306
+    volumes:
+      - ./api/db/pleyades/prod:/var/lib/mysql
+      - ./api/db/pleyades/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      deploy-net:
+        aliases:
+          - db-host
+
+networks:
+  deploy-net:
+    driver: bridge
+  

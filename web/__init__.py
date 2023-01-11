@@ -1,11 +1,16 @@
 import os
+import sys 
 import locale
-locale.setlocale(locale.LC_ALL, 'es_ES.utf8') 
-import os, logging, werkzeug, requests, datetime
-from flask import Flask, session, render_template, request
+import logging
+import datetime
+from flask import Flask, session, render_template
 from flask_session import Session
 from dotenv import load_dotenv
 
+
+# Config root path and language
+locale.setlocale(locale.LC_ALL, 'es_MX.UTF-8') 
+sys.path.append('./')
 load_dotenv()
 
 # Import controllers
@@ -24,6 +29,10 @@ from views.tableros import Tablero
 
 app = Flask(__name__, template_folder='templates', static_url_path='/static')
 
+# IES config
+from utils.mixins import obtener_ies_config
+IES = obtener_ies_config()
+
 # Variables de sesion
 app.config['SECRET_KEY'] = os.getenv("SESSION_KEY")
 
@@ -34,11 +43,10 @@ def inicio():
 
 @app.route('/contactanos')
 def contactanos():
-    return render_template('utils/contactanos.html'), 200
+    return render_template('utils/contactanos.html', ies=IES), 200
 
 
 '''ROUTES'''
-# TODO registrar los errores para que controle 
 app.register_blueprint(Error)
 app.register_blueprint(Auth)
 app.register_blueprint(Facultad, url_prefix='/admin/facultades')
@@ -46,7 +54,7 @@ app.register_blueprint(Programa, url_prefix='/admin/programas')
 app.register_blueprint(Usuario, url_prefix='/admin/usuarios')
 app.register_blueprint(Conjunto, url_prefix='/conjuntos')
 app.register_blueprint(Resultado, url_prefix='/resultados')
-app.register_blueprint(Tablero, url_prefix='/tableros')
+app.register_blueprint(Tablero, url_prefix='/_deprecado/#TABLEROS')
 app.register_blueprint(ConjuntoAdmin, url_prefix='/admin/conjuntos')
 app.register_blueprint(ResultadoAdmin, url_prefix='/admin/resultados')
 

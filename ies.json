@@ -1,0 +1,26 @@
+{
+    "tdea": {
+        "nombre": "TdeA",
+        "url": "https://www.tdea.edu.co/",
+        "logo": "https://www.tdea.edu.co/images/tdea/logos/logo-ppal.jpg",
+        "descripcion": "Dirección: Calle 78b No. 72a - 220<br>Medellín - Colombia - Suramérica<br>Teléfono PBX: (574) 444 37 00<br>Horario de atención al público 7:30 a.m. A 12:00 m. Y  de 1:00 p.m. A 5:30 p.m. De lunes a jueves, los viernes de 7:30 a.m. A 12:00 m. Y 1:00 p.m. A 4:30 p.m.<br>Atención al usuario: atencionalcliente@tdea.edu.co<br>"
+    },
+    "eia": {
+        "nombre": "Universidad EIA",
+        "url": "https://www.eia.edu.co/",
+        "logo": "https://eiadigital.eia.edu.co/cas/images/logos/eia/logoLogin.png",
+        "descripcion": "<b>Sede de Las Palmas:</b><br>km 2 + 200 Vía al Aeropuerto José María Córdova Envigado, Colombia. <br>Tel: (574) 354 90 90. Fax: (574) 386 11 60<br><b>Zúñiga:</b><br>Calle 25 Sur 42-73 Envigado, Colombia.<br>Tel: (574) 354 90 90. Fax: (574) 331 34 78 <br>"
+    },
+    "iudigital": {
+        "nombre": "IU Digital",
+        "url": "https://www.iudigital.edu.co/",
+        "logo": "https://www.iudigital.edu.co/Style%20Library/images/logo-escudo.png",
+        "descripcion": "Horario:<br> De Lunes a Jueves: 08:00 a.m. a 05:00 p.m. y Viernes: 08:00 a.m. a 04:00 p.m.<br><br>Dirección<br>Carrera 55 # 42-90 INT 0101<br>Centro Cívico Plaza de la Libertad<br>Medellín, Antioquia<br><br>Comunícate con nosotros<br>Teléfono: 604 520 07 50"
+    },
+    "udem": {
+        "nombre": "Universidad de Medellín",
+        "url": "https://udemedellin.edu.co/",
+        "logo": "https://udemedellin.edu.co/wp-content/uploads/2022/10/logo_udemedellin2.png",
+        "descripcion": "+57 (604) 590 45 00 <br> +57 (604) 590 6999<br>Carrera 87 N° 30 – 65, Medellín – Colombia<br>"
+    }
+}

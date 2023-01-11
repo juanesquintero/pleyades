@@ -1,8 +1,11 @@
-from flask import request, session, Blueprint, render_template, redirect, send_file
-from datetime import datetime
-from services.API import get, post, put, delete
-import re, os, sys, json, pandas as pd
+import re
+import os
+import json
 import logging
+import pandas as pd
+from flask import render_template
+from datetime import datetime
+from services.API import post, put
 
 error_logger = logging.getLogger('error_logger')
 
@@ -43,7 +46,7 @@ def set_date_format(resultados):
 
 def str_to_date(fecha):
     formato_lectura = '%Y-%m-%d %H:%M:%S'
-    formato_escritura = '%A %d, %B/%Y - %H:%M:%S %p'
+    formato_escritura = '%A %d/%B/%Y - %H:%M %p'
     fecha_lec = datetime.strptime(fecha, formato_lectura)
     fecha_escr = fecha_lec.strftime(formato_escritura)
     return fecha_escr.title() 
@@ -105,11 +108,8 @@ def guardar_preparacion(preparacion,observaciones,estado):
     preparacion['fechaFinal'] = getNowDate()
     preparacion['observaciones'] = observaciones
     preparacion['estado'] = estado
-    status, body = post('preparaciones', preparacion)
-    if not status:
-        return False, render_template('utils/mensaje.html', mensaje='No se pudo guardar el REGISTRO de preparación', submensaje=body)
-    else:
-        return True, 'ERROR'
+    post('preparaciones', preparacion)
+    return True, 'ERROR'
 
 def guardar_ejecucion(ejecucion,resultados,estado):
     # Guardar REGISTRO de ejecución
@@ -117,8 +117,21 @@ def guardar_ejecucion(ejecucion,resultados,estado):
     ejecucion['fechaFinal'] = getNowDate()
     ejecucion['resultados'] = resultados
     ejecucion['estado'] = estado
-    status, body = post('ejecuciones',ejecucion)
-    if not(status):
-        return False, render_template('utils/mensaje.html', mensaje='No se pudo guardar el REGISTRO de la ejecución', submensaje=body)
+    post('ejecuciones',ejecucion)
+    return True, 'ERROR'
+
+def obtener_nombre_conjunto(conjunto):
+    # Obtener nombre del conjunto desde el api
+    status_n, body_n = post('conjuntos/nombre', conjunto)
+    if status_n:
+        return body_n['nombre'], body_n['numero']
     else:
-        return True, 'ERROR'
+        return False, render_template('utils/mensaje.html', mensaje='No se pudo obtener el nombre del conjunto', submensaje=body_n)
+
+def obtener_ies_config():
+    # Get IES definition
+    ies_name = os.getenv('CLI_IES_NAME')
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    with open(f'{base_dir}/../ies.json', 'r') as json_file:
+        IES = json.load(json_file).get(ies_name)
+        return IES
