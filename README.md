@@ -6,12 +6,19 @@
 <br>
 
 ## Run
-Development mode 
+
+
+Recuerda exportar las variables de entorno principales
+```
+$ export $(cat .env | xargs)
+```
+
+Modo desarrollo 
 ```
 $ docker-compose up -d
 ```
 
-Prodction
+Modo produccion 
 ```
 $ docker-compose -f docker-compose.prod.yml up -d
 ```

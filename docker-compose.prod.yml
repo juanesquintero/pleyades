@@ -13,8 +13,11 @@ services:
       - ./nginx/snippets:/etc/nginx/snippets
       - ./nginx/logs:/var/log/nginx
       - ./nginx/www:/var/www
+    environment:
+      - CLI_IES_NAME=${IES}
+      - SERVER_NAME=${DOMAIN_NAME}
     ports:
-      - 80:80
+      - 81:80
     networks:
       - deploy-net
     depends_on:
@@ -34,6 +37,7 @@ services:
     environment:
       - FLASK_DEBUG=0
       - FLASK_APP=__init__:app
+      - CLI_IES_NAME=${IES}
       
     networks:
       deploy-net:
@@ -55,6 +59,7 @@ services:
     environment:
       - FLASK_DEBUG=0
       - FLASK_APP=__init__:app
+      - CLI_IES_NAME=${IES}
     volumes:
       - ./api:/app
     networks:
@@ -75,9 +80,7 @@ services:
     env_file:
       - ./api/.env
     environment:
-      - MYSQL_ROOT_PASSWORD=pl3y4d3s*DB-.
-    ports:
-      - 3307:3306
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PWD}
     volumes:
       - ./api/db/pleyades/prod:/var/lib/mysql
       - ./api/db/pleyades/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
