@@ -27,6 +27,7 @@ services:
       dockerfile: ./Dockerfile
     image: pleyades-web:1.0.0
     volumes:
+      - ./web:/app
       - ./ies.json:/app/ies.json
     env_file:
       - ./web/.env
@@ -54,6 +55,8 @@ services:
     environment:
       - FLASK_DEBUG=0
       - FLASK_APP=__init__:app
+    volumes:
+      - ./api:/app
     networks:
       deploy-net:
         aliases:
@@ -74,7 +77,7 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=pl3y4d3s*DB-.
     ports:
-      - 3306:3306
+      - 3307:3306
     volumes:
       - ./api/db/pleyades/prod:/var/lib/mysql
       - ./api/db/pleyades/sql/init.sql:/docker-entrypoint-initdb.d/init.sql

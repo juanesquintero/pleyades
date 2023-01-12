@@ -59,7 +59,7 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=pl3y4d3s*DB-.
     ports:
-      - 3306:3306
+      - 3307:3306
     volumes:
       - ./api/db/pleyades/dev:/var/lib/mysql
       - ./api/db/pleyades/sql/init.sql:/docker-entrypoint-initdb.d/init.sql

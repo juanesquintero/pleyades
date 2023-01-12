@@ -32,31 +32,33 @@ app = Flask(__name__, template_folder='templates', static_url_path='/static')
 # IES config
 from utils.mixins import obtener_ies_config
 IES = obtener_ies_config()
+ies_name = os.getenv('CLI_IES_NAME')
+base_path = ('/' + ies_name) if ies_name else ''
 
 # Variables de sesion
-app.config['SECRET_KEY'] = os.getenv("SESSION_KEY")
+app.config['SECRET_KEY'] = os.getenv('SESSION_KEY')
 
-@app.route('/')
-@app.route('/inicio')
+@app.route(base_path)
+@app.route(base_path+'/inicio')
 def inicio():
     return render_template('utils/inicio.html'), 200
 
-@app.route('/contactanos')
+@app.route(base_path+'/contactanos')
 def contactanos():
     return render_template('utils/contactanos.html', ies=IES), 200
 
 
 '''ROUTES'''
-app.register_blueprint(Error)
-app.register_blueprint(Auth)
-app.register_blueprint(Facultad, url_prefix='/admin/facultades')
-app.register_blueprint(Programa, url_prefix='/admin/programas')
-app.register_blueprint(Usuario, url_prefix='/admin/usuarios')
-app.register_blueprint(Conjunto, url_prefix='/conjuntos')
-app.register_blueprint(Resultado, url_prefix='/resultados')
-app.register_blueprint(Tablero, url_prefix='/_deprecado/#TABLEROS')
-app.register_blueprint(ConjuntoAdmin, url_prefix='/admin/conjuntos')
-app.register_blueprint(ResultadoAdmin, url_prefix='/admin/resultados')
+app.register_blueprint(Error, url_prefix=base_path)
+app.register_blueprint(Auth, url_prefix=base_path)
+app.register_blueprint(Facultad, url_prefix=base_path+'/admin/facultades')
+app.register_blueprint(Programa, url_prefix=base_path+'/admin/programas')
+app.register_blueprint(Usuario, url_prefix=base_path+'/admin/usuarios')
+app.register_blueprint(Conjunto, url_prefix=base_path+'/conjuntos')
+app.register_blueprint(Resultado, url_prefix=base_path+'/resultados')
+app.register_blueprint(Tablero, url_prefix=base_path+'/_deprecado/#TABLEROS')
+app.register_blueprint(ConjuntoAdmin, url_prefix=base_path+'/admin/conjuntos')
+app.register_blueprint(ResultadoAdmin, url_prefix=base_path+'/admin/resultados')
 
 '''END ROUTES'''
 
@@ -100,4 +102,3 @@ if __name__ == '__main__':
     
     # Run server
     app.run(host='0.0.0.0')
-    # app.run(host='0.0.0.0',port=5000, debug=True, threaded=True)

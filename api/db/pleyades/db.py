@@ -3,7 +3,6 @@ from functools import wraps
 from dotenv import load_dotenv
 import mysql.connector as mysql
 
-
 import ssl
 ctx = ssl.SSLContext()
 ctx.minimum_version = ssl.TLSVersion.TLSv1_1

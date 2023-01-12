@@ -1,10 +1,10 @@
-from flask import session, request, Blueprint, render_template
+import os, dotenv, jwt
 from functools import wraps
-import os, dotenv, requests, jwt
+from flask import session, request, Blueprint, render_template
+from services.API import post
 
 dotenv.load_dotenv()
 
-api = os.getenv('API_PATH')
 
 Auth = Blueprint('auth', __name__)
 
@@ -49,9 +49,8 @@ def login():
     raw_usuario = dict(request.values)
     usuario = { 'correo': raw_usuario['InputEmailLogin'], 'clave': raw_usuario['InputPasswordLogin']}
 
-    res = requests.post(api+'auth/login',json=usuario)
-    status,body = res.status_code, res.json()
-    if status==200:
+    status, body = post('auth/login', usuario)
+    if status:
         session['user'] = None
         session['headers'] = None
         # Obtener token
