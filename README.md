@@ -15,7 +15,7 @@ $ git clone https://gitlab.com/pleyades1/pleyades-educatic.git
 
 Crear los .env desde los .env.template 
 
-/.env
+###  /.env
 ```env
 PLEYADES_IES_CLIENT=ies_client_short_name
 PLEYADES_MYSQL_ROOT_PASSWORD=pleyades_db_root_password
@@ -27,14 +27,14 @@ Institución de Educación Superior (IES) - Cliente de Educatic
 <br>
 <br>
 
-web/.env
+###  web/.env
 ```env
 JWT_KEY=ies_pleyades_jwt_secret
 SESSION_KEY=ies_pleyades_session_secret_key
 ```
 
 
-api/.env
+### api/.env
 ```env
 MYSQL_USER=pleyades_db_user
 MYSQL_PASSWORD=pleyades_db_password
@@ -48,6 +48,7 @@ CLI_DB_NAME=educatic_ies_clien
 JWT_KEY=ies_pleyades_jwt_secret
 ```
 
+<br>
 
 # Ejecución
 
@@ -66,10 +67,13 @@ Modo produccion (NGINX)
 $ docker-compose -f docker-compose.prod.yml up -d
 ```
 
-# Instalación Docker 
+<br>
+<br>
+
+# Instalación Docker (Engine)
 
 
-## Maquina Desktop (Escritorio)
+### Desktop (Escritorio)
 
 Mac 
 https://docs.docker.com/desktop/install/mac-install/
@@ -80,8 +84,8 @@ https://docs.docker.com/desktop/install/linux-install/
 Windows
 https://docs.docker.com/desktop/windows/install/
 
-## Maquina Server (consola)
-Ubuntu
+### Server (consola)
+#### Ubuntu
 
 https://www.digitalocean.com/community/tutorials/como-instalar-y-usar-docker-en-ubuntu-18-04-1-es
 
@@ -95,7 +99,7 @@ $ sudo apt-get upgrade
 $ sudo apt install docker.io
 ```
 
-## Instalación Docker Compose 
+# Instalación Docker Compose 
 ### Unix
 ```console
 $ sudo curl -L https://github.com/docker/compose/releases/download/v2.4.1/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
