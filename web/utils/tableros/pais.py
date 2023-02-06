@@ -10,7 +10,7 @@ from plotly.subplots import make_subplots
 import os
 from dotenv import load_dotenv
 load_dotenv()
-data_folder = os.getcwd()+os.getenv("DATA_FOLDER")
+data_folder = os.getcwd()+'/utils/tableros/data'
 
 import utils.constants as CONSTANTS
 

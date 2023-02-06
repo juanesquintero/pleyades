@@ -15,7 +15,7 @@ endopoint = 'resultados/'
 
 ResultadoAdmin = Blueprint('ResultadoAdmin', __name__)
 
-upload_folder = os.getcwd()+os.getenv("UPLOAD_FOLDER")
+upload_folder = os.getcwd()+'/uploads'
 
 @ResultadoAdmin.route('/')
 @ResultadoAdmin.route('/preparaciones')

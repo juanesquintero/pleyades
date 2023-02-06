@@ -23,7 +23,7 @@ Conjunto = Blueprint('Conjunto', __name__)
 
 endopoint = 'conjuntos/'
 
-upload_folder = os.getcwd()+os.getenv("UPLOAD_FOLDER")
+upload_folder = os.getcwd()+'/uploads'
 
 translator = Translator()
 
