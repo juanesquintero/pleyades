@@ -17,7 +17,7 @@ services:
       - FLASK_DEBUG=1
       - FLASK_APP=__init__:app
       - TEMPLATES_AUTO_RELOAD=1
-      - CLI_IES_NAME=${IES}
+      - CLI_IES_NAME=${PLEYADES_IES_CLIENT}
     ports:
       - 5000:80
     networks:
@@ -39,7 +39,7 @@ services:
     environment:
       - FLASK_DEBUG=1
       - FLASK_APP=__init__:app
-      - CLI_IES_NAME=${IES}
+      - CLI_IES_NAME=${PLEYADES_IES_CLIENT}
     ports:
       - 3000:80
     networks:
@@ -59,7 +59,7 @@ services:
     env_file:
       - ./api/.env
     environment:
-      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PWD}
+      - MYSQL_ROOT_PASSWORD=${PLEYADES_MYSQL_ROOT_PASSWORD}
     volumes:
       - ./api/db/pleyades/dev:/var/lib/mysql
       - ./api/db/pleyades/sql/init.sql:/docker-entrypoint-initdb.d/init.sql

@@ -14,8 +14,7 @@ services:
       - ./nginx/logs:/var/log/nginx
       - ./nginx/www:/var/www
     environment:
-      - CLI_IES_NAME=${IES}
-      - SERVER_NAME=${DOMAIN_NAME}
+      - CLI_IES_NAME=${PLEYADES_IES_CLIENT}
     ports:
       - 81:80
     networks:
@@ -37,7 +36,7 @@ services:
     environment:
       - FLASK_DEBUG=0
       - FLASK_APP=__init__:app
-      - CLI_IES_NAME=${IES}
+      - CLI_IES_NAME=${PLEYADES_IES_CLIENT}
       
     networks:
       deploy-net:
@@ -59,7 +58,7 @@ services:
     environment:
       - FLASK_DEBUG=0
       - FLASK_APP=__init__:app
-      - CLI_IES_NAME=${IES}
+      - CLI_IES_NAME=${PLEYADES_IES_CLIENT}
     volumes:
       - ./api:/app
     networks:
@@ -80,7 +79,7 @@ services:
     env_file:
       - ./api/.env
     environment:
-      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PWD}
+      - MYSQL_ROOT_PASSWORD=${PLEYADES_MYSQL_ROOT_PASSWORD}
     volumes:
       - ./api/db/pleyades/prod:/var/lib/mysql
       - ./api/db/pleyades/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
