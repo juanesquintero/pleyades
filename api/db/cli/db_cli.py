@@ -64,9 +64,9 @@ class DB:
                 'Trusted_Connection=yes;'
                 'UID='+_user+';'
                 'PWD='+_password+';'
-                # 'SSLVERIFY=0;'
-                # 'Encrypt=YES;'
-                # 'TrustServerCertificate=NO;'
+                'SSLVERIFY=0;'
+                'Encrypt=YES;'
+                'TrustServerCertificate=NO;'
             )
         except Exception as e:
             log_error(e)
