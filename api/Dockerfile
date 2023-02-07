@@ -1,10 +1,10 @@
 FROM python:3.8-slim
 
 WORKDIR /app
+RUN apt-get update && apt-get install -y gnupg curl openssl ca-certificates
+RUN update-ca-certificates
 
 #······················ MS SQL SERVER Driver ······················
-RUN apt-get update && apt-get install -y gnupg curl 
-
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
 
 #Download appropriate package for the OS version (Debian 11)
