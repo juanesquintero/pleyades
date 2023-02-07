@@ -67,8 +67,6 @@ services:
           - api-host
 
     command: gunicorn __init__:app --bind 0.0.0.0:80 --workers 3
-    depends_on:
-      - db
 
   db:
     container_name: pleyades-db

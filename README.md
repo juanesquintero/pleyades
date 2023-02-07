@@ -20,6 +20,8 @@ Crear los .env desde los .env.template
 PLEYADES_IES_CLIENT=ies_client_short_name
 PLEYADES_MYSQL_ROOT_PASSWORD=pleyades_db_root_password
 ```
+<small>PLEYADES_MYSQL_ROOT_PASSWORD es opcional (es necesaria solo si la bd esta dockerizada)</small>
+
 
 Institución de Educación Superior (IES) - Cliente de Educatic
 <br>
@@ -36,6 +38,8 @@ SESSION_KEY=ies_pleyades_session_secret_key
 
 ### api/.env
 ```env
+MYSQL_SERVER=pleyades_db_server
+MYSQL_SERVER_PORT=pleyades_db_server_port
 MYSQL_USER=pleyades_db_user
 MYSQL_PASSWORD=pleyades_db_password
 MYSQL_DATABASE=pleyades_db_name
@@ -62,7 +66,12 @@ Modo desarrollo
 $ docker-compose up -d
 ```
 
-Modo produccion (NGINX)
+Modo producción (NGINX)
+```console
+$ docker-compose -f docker-compose.prod.yml nginx up -d
+```
+
+... incluyendo la base de datos dockerizada
 ```console
 $ docker-compose -f docker-compose.prod.yml up -d
 ```
