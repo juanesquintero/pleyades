@@ -20,9 +20,10 @@ driver = _drivers[-1] if _drivers else 'SQL Server'
 def log_error(e):
     error_logger.error('EXCEPTION: base de datos IES (institución)... '+str(e))
 
+
 def validate_connection(f):
     @wraps(f)
-    def decorated_function(self,*args, **kwargs):
+    def decorated_function(self, *args, **kwargs):
         if not(self.cnx):
             self.connect()
             raise Exception('Conexión caida a la BD de la Institución!')
@@ -35,21 +36,23 @@ def validate_connection(f):
                 self.connect()
                 raise Exception('Conexión caida a la BD de la Institución!')
     return decorated_function
+
+
 class DB:
     __instance = None
-    
+
     @staticmethod
     def getInstance():
         if DB.__instance == None:
             DB()
         return DB.__instance
-    
+
     def __init__(self):
         if DB.__instance != None:
             raise Exception('Esta clase es un Singleton!')
         else:
             self.cnx = None
-            self.connect()          
+            self.connect()
             DB.__instance = self
 
     def connect(self):
@@ -57,23 +60,23 @@ class DB:
             self.cnx = pyodbc.connect(
                 'DRIVER={'+str(driver)+'};'
                 'SERVER='+_host+';'
-                'DATABASE='+_db+';'
+                'DATABASE='+_db+';' +
                 'UID='+_user+';'
                 'PWD='+_password+';',
-                # autocommit=True
+                'sslverify=0',
             )
         except Exception as e:
             log_error(e)
             self.close_connection()
-    
+
     def close_connection(self):
         if self.cnx:
             if self.cnx.is_connected():
                 self.cnx.close()
         self.cnx = None
-    
+
     @validate_connection
-    def select(self,sql):
+    def select(self, sql):
         try:
             if self.cnx is None:
                 self.connect()
@@ -83,7 +86,7 @@ class DB:
         except Exception as e:
             log_error(e)
             self.connect()
-            return e  
+            return e
 
         lista = []
         rows = cur.fetchall()
@@ -97,28 +100,29 @@ class DB:
         cur.close
         self.cnx.close
         return lista
-    
+
     @validate_connection
-    def insert(self,body,tabla):
+    def insert(self, body, tabla):
         # Keys Body
         columns = str(tuple(body.keys())).replace("'", "")
         # Values Body
         values = str((tuple(body.values())))
         # Sentencia SQL
-        sql = "INSERT INTO {} {} VALUES{}".format(tabla, columns, values).replace('None','NULL')
+        sql = "INSERT INTO {} {} VALUES{}".format(
+            tabla, columns, values).replace('None', 'NULL')
         return self.execute(sql)
-    
+
     @validate_connection
-    def multi_insert(self,data,tabla):
-        columnas = str(tuple(data.columns)).replace("'","")
+    def multi_insert(self, data, tabla):
+        columnas = str(tuple(data.columns)).replace("'", "")
         valores = '( ?'
         for _ in range(len(data.columns)-1):
             valores += ', ?'
         valores += ')'
-        sql = "INSERT INTO {} {} VALUES {}".format(tabla,columnas,valores)
+        sql = "INSERT INTO {} {} VALUES {}".format(tabla, columnas, valores)
         registros = list(tuple(row) for row in data.values)
 
-        try:    
+        try:
             cur = self.cnx.cursor()
             cur.executemany(sql, registros)
             cur.close
@@ -129,25 +133,25 @@ class DB:
         self.cnx.close
         return True
 
-    def sql(self,sql):
+    def sql(self, sql):
         # Sentencia SQL
-        return self.execute(sql) 
+        return self.execute(sql)
 
-    
     @validate_connection
-    def update(self,body,condicion,tabla):
-        set_values = str(body)[2:-1].replace("':"," =").replace(", '",", ")
-        sql = "UPDATE {} SET {} WHERE {};".format(tabla, set_values, condicion).replace('None','NULL')
-        return self.execute(sql) 
-    
+    def update(self, body, condicion, tabla):
+        set_values = str(body)[2:-1].replace("':", " =").replace(", '", ", ")
+        sql = "UPDATE {} SET {} WHERE {};".format(
+            tabla, set_values, condicion).replace('None', 'NULL')
+        return self.execute(sql)
+
     @validate_connection
-    def delete(self,condicion,tabla):
+    def delete(self, condicion, tabla):
         # Sentencia SQL
         sql = "DELETE FROM {} WHERE {};".format(tabla, condicion)
         return self.execute(sql)
-    
+
     @validate_connection
-    def execute(self,sql):
+    def execute(self, sql):
         # Manejar error de ejecución
         try:
             if self.cnx is None:
@@ -162,5 +166,4 @@ class DB:
         except Exception as e:
             log_error(e)
             self.connect()
-            return e  
-
+            return e
