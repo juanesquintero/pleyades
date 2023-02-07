@@ -44,7 +44,7 @@ services:
         aliases:
           - web-host
 
-    command: gunicorn __init__:app --bind 0.0.0.0:80 --workers 3
+    command: gunicorn __init__:app --bind 0.0.0.0:80 --workers 3 --timeout=90
     depends_on:
       - api
   
@@ -68,7 +68,7 @@ services:
         aliases:
           - api-host
 
-    command: gunicorn __init__:app --bind 0.0.0.0:80 --workers 3
+    command: gunicorn __init__:app --bind 0.0.0.0:80 --workers 3 --timeout=90
 
   db:
     container_name: pleyades-db
