@@ -91,6 +91,20 @@ Evidenciar contenedores corriendo
 $ docker ps -a
 ```
 
+Si hay errores en la ejecucion de contenedores por favor revisar los logs 
+```console
+$ docker logs -f --tail 50 pleyades-web
+$ docker logs -f --tail 50 pleyades-api
+$ docker logs -f --tail 50 pleyades-nginx
+```
+
+Eliminar contenedores 
+```console
+$ docker rm -f pleyades-web pleyades-nginx
+```
+...y volver a correr
+
+
 <br>
 <br>
 
