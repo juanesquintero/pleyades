@@ -19,6 +19,7 @@ Crear los .env desde los .env.template
 ```env
 PLEYADES_IES_CLIENT=ies_client_short_name
 PLEYADES_MYSQL_ROOT_PASSWORD=pleyades_db_root_password
+PUBLIC_PORT=pleyades_server_public_port
 ```
 <small>PLEYADES_MYSQL_ROOT_PASSWORD es opcional (es necesaria solo si la bd esta dockerizada)</small>
 
@@ -52,6 +53,15 @@ CLI_DB_NAME=educatic_ies_clien
 JWT_KEY=ies_pleyades_jwt_secret
 ```
 
+### Inicializar base de datos
+
+Si la base de datos de mysql para Pleyades no se encuentra contenerizada;
+por favor correr el siguiente archivo .sql, antes de correr el comando de ejecución 
+```
+api/db/pleyades/sql/init.sql
+```
+Si se usara la base de datos en Docker contenerizada, este proceso es automatico;
+
 <br>
 
 # Ejecución
@@ -74,6 +84,11 @@ $ docker-compose -f docker-compose.prod.yml up nginx -d
 ... incluyendo la base de datos dockerizada
 ```console
 $ docker-compose -f docker-compose.prod.yml up -d
+```
+
+Evidenciar contenedores corriendo
+```console
+$ docker ps -a
 ```
 
 <br>

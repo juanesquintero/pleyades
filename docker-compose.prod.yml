@@ -16,13 +16,14 @@ services:
     environment:
       - CLI_IES_NAME=${PLEYADES_IES_CLIENT}
     ports:
-      - 81:80
+      - ${PUBLIC_PORT}:80
     networks:
       - deploy-net
     depends_on:
       - web
 
   web:
+    restart: always
     container_name: pleyades-web
     build:
       context: ./web
@@ -48,6 +49,7 @@ services:
       - api
   
   api:
+    restart: always
     container_name: pleyades-api
     build:
       context: ./api

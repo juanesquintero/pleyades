@@ -1,6 +1,3 @@
-use pleyades;
-
-
 -- **********************************
 -- ************ Tables **************
 -- **********************************
@@ -113,5 +110,5 @@ ALTER TABLE preparaciones ADD(
 -- ************ Initial Inserts **************
 -- **********************************
     
-INSERT INTO `pleyades`.`usuarios`(`nombre`,`correo`,`clave`,`rol`) VALUES
+INSERT INTO `usuarios`(`nombre`,`correo`,`clave`,`rol`) VALUES
 ('SUPER ADMIN','admin@pleyades.com','25d55ad283aa400af464c76d713c07ad','Admin');
