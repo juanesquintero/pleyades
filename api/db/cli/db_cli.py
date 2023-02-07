@@ -1,14 +1,24 @@
 import os
+import logging
 import pyodbc
 from functools import wraps
 from dotenv import load_dotenv
 
 load_dotenv()
+error_logger = logging.getLogger('error_logger')
 
-_db = os.getenv("CLI_DB_NAME")
-_host = os.getenv("CLI_DB_SERVER")
-_user = os.getenv("CLI_DB_USER")
-_password = os.getenv("CLI_DB_PASSWORD")
+_db = os.getenv('CLI_DB_NAME')
+_host = os.getenv('CLI_DB_SERVER')
+_user = os.getenv('CLI_DB_USER')
+_password = os.getenv('CLI_DB_PASSWORD')
+
+
+_drivers = [d for d in pyodbc.drivers()]
+driver = _drivers[-1] if _drivers else 'SQL Server'
+
+
+def log_error(e):
+    error_logger.error('EXCEPTION: base de datos IES (institución)... '+str(e))
 
 def validate_connection(f):
     @wraps(f)
@@ -19,8 +29,9 @@ def validate_connection(f):
         else:
             try:
                 return f(self, *args, **kwargs)
-            except:
+            except Exception as e:
                 self.close_connection()
+                log_error(e)
                 self.connect()
                 raise Exception('Conexión caida a la BD de la Institución!')
     return decorated_function
@@ -44,19 +55,21 @@ class DB:
     def connect(self):
         try:
             self.cnx = pyodbc.connect(
-                "Driver={ODBC Driver 17 for SQL SERVER};"
-                "Server="+_host+";"
-                "Database="+_db+";"
-                "UID="+_user+";"
-                "PWD="+_password+";"
+                'DRIVER={'+str(driver)+'};'
+                'SERVER='+_host+';'
+                'DATABASE='+_db+';'
+                'UID='+_user+';'
+                'PWD='+_password+';',
+                # autocommit=True
             )
         except Exception as e:
+            log_error(e)
             self.close_connection()
     
     def close_connection(self):
         if self.cnx:
             if self.cnx.is_connected():
-                cnx.close()
+                self.cnx.close()
         self.cnx = None
     
     @validate_connection
@@ -68,6 +81,7 @@ class DB:
             cur = self.cnx.cursor()
             cur.execute(sql)
         except Exception as e:
+            log_error(e)
             self.connect()
             return e  
 
@@ -110,6 +124,7 @@ class DB:
             cur.close
             self.cnx.commit()
         except Exception as e:
+            log_error(e)
             return e
         self.cnx.close
         return True
@@ -145,6 +160,7 @@ class DB:
             self.cnx.close
             return cur
         except Exception as e:
+            log_error(e)
             self.connect()
             return e  
 
