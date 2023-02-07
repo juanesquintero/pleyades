@@ -13,6 +13,8 @@ load_dotenv()
 _user = os.getenv('MYSQL_USER')
 _password = os.getenv('MYSQL_PASSWORD')
 _database = os.getenv('MYSQL_DATABASE')
+_host = os.getenv('MYSQL_SERVER')
+_port = os.getenv('MYSQL_SERVER_PORT')
 
 
 def validate_connection(f):
@@ -51,8 +53,8 @@ class DB:
     def connect(self):
         try:
             self.cnx = mysql.MySQLConnection(
-                host='db-host',
-                port=3306,
+                host=_host,
+                port=_port,
                 user=_user,
                 password=_password,
                 database=_database,
