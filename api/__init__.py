@@ -16,7 +16,8 @@ app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
 app.config['JWT_SECRET_KEY'] = os.getenv('JWT_KEY')
 ies_name = os.getenv('CLI_IES_NAME')
-base_path = ('/' + ies_name) if ies_name else ''
+# base_path = ('/' + ies_name) if ies_name else ''
+base_path = ''
 
 CORS(app)
 jwt = JWTManager(app)
