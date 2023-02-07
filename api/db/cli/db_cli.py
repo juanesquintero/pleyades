@@ -61,11 +61,12 @@ class DB:
                 'DRIVER={'+str(driver)+'};'
                 'SERVER='+_host+';'
                 'DATABASE='+_db+';' +
+                'Trusted_Connection=yes;',
                 'UID='+_user+';'
                 'PWD='+_password+';',
                 'SSLVERIFY=0;',
                 'Encrypt=YES;', 
-                'TrustServerCertificate=NO;'
+                'TrustServerCertificate=NO;',
             )
         except Exception as e:
             log_error(e)
