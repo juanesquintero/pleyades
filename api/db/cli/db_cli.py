@@ -66,7 +66,7 @@ class DB:
                 'PWD='+_password+';'
                 'SSLVERIFY=0;'
                 'Encrypt=YES;'
-                'TrustServerCertificate=NO;'
+                'TrustServerCertificate=no;'
             )
         except Exception as e:
             log_error(e)
