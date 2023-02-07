@@ -58,15 +58,15 @@ class DB:
     def connect(self):
         try:
             self.cnx = pyodbc.connect(
-                + 'DRIVER={'+str(driver)+'};'
-                + 'SERVER='+_host+';'
-                + 'DATABASE='+_db+';'
-                + 'Trusted_Connection=yes;'
-                + 'UID='+_user+';'
-                + 'PWD='+_password+';'
-                # + 'SSLVERIFY=0;'
-                # + 'Encrypt=YES;'
-                # + 'TrustServerCertificate=NO;'
+                'DRIVER={'+str(driver)+'};'
+                'SERVER='+_host+';'
+                'DATABASE='+_db+';'
+                'Trusted_Connection=yes;'
+                'UID='+_user+';'
+                'PWD='+_password+';'
+                # 'SSLVERIFY=0;'
+                # 'Encrypt=YES;'
+                # 'TrustServerCertificate=NO;'
             )
         except Exception as e:
             log_error(e)
