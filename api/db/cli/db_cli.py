@@ -63,7 +63,9 @@ class DB:
                 'DATABASE='+_db+';' +
                 'UID='+_user+';'
                 'PWD='+_password+';',
-                'sslverify=0',
+                'SSLVERIFY=0;',
+                'Encrypt=YES;', 
+                'TrustServerCertificate=NO;'
             )
         except Exception as e:
             log_error(e)
