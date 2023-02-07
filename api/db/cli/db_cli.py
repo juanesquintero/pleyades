@@ -58,15 +58,15 @@ class DB:
     def connect(self):
         try:
             self.cnx = pyodbc.connect(
-                'DRIVER={'+str(driver)+'};'
-                'SERVER='+_host+';'
-                'DATABASE='+_db+';' +
-                'Trusted_Connection=yes;',
-                'UID='+_user+';'
-                'PWD='+_password+';',
-                'SSLVERIFY=0;',
-                'Encrypt=YES;', 
-                'TrustServerCertificate=NO;',
+                + 'DRIVER={'+str(driver)+'};'
+                + 'SERVER='+_host+';'
+                + 'DATABASE='+_db+';'
+                + 'Trusted_Connection=yes;'
+                + 'UID='+_user+';'
+                + 'PWD='+_password+';'
+                # + 'SSLVERIFY=0;'
+                # + 'Encrypt=YES;'
+                # + 'TrustServerCertificate=NO;'
             )
         except Exception as e:
             log_error(e)
@@ -144,7 +144,8 @@ class DB:
     def update(self, body, condicion, tabla):
         set_values = str(body)[2:-1].replace("':", " =").replace(", '", ", ")
         sql = "UPDATE {} SET {} WHERE {};".format(
-            tabla, set_values, condicion).replace('None', 'NULL')
+            tabla, set_values, condicion
+        ).replace('None', 'NULL')
         return self.execute(sql)
 
     @validate_connection
