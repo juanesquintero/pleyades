@@ -40,11 +40,11 @@ base_path = '/'
 app.config['SECRET_KEY'] = os.getenv('SESSION_KEY')
 
 @app.route(base_path)
-@app.route(base_path+'/inicio')
+@app.route(base_path+'inicio')
 def inicio():
     return render_template('utils/inicio.html'), 200
 
-@app.route(base_path+'/contactanos')
+@app.route(base_path+'contactanos')
 def contactanos():
     return render_template('utils/contactanos.html', ies=IES), 200
 
