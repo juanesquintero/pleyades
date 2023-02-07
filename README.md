@@ -68,7 +68,7 @@ $ docker-compose up -d
 
 Modo producción (NGINX)
 ```console
-$ docker-compose -f docker-compose.prod.yml nginx up -d
+$ docker-compose -f docker-compose.prod.yml up nginx -d
 ```
 
 ... incluyendo la base de datos dockerizada

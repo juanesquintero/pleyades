@@ -33,8 +33,8 @@ app = Flask(__name__, template_folder='templates', static_url_path='/static')
 from utils.mixins import obtener_ies_config
 IES = obtener_ies_config()
 ies_name = os.getenv('CLI_IES_NAME')
-# base_path = ('/' + ies_name) if ies_name else ''
-base_path = ''
+# base_path = ('/' + ies_name) if ies_name else '/'
+base_path = '/'
 
 # Variables de sesion
 app.config['SECRET_KEY'] = os.getenv('SESSION_KEY')
@@ -52,14 +52,14 @@ def contactanos():
 '''ROUTES'''
 app.register_blueprint(Error, url_prefix=base_path)
 app.register_blueprint(Auth, url_prefix=base_path)
-app.register_blueprint(Facultad, url_prefix=base_path+'/admin/facultades')
-app.register_blueprint(Programa, url_prefix=base_path+'/admin/programas')
-app.register_blueprint(Usuario, url_prefix=base_path+'/admin/usuarios')
-app.register_blueprint(Conjunto, url_prefix=base_path+'/conjuntos')
-app.register_blueprint(Resultado, url_prefix=base_path+'/resultados')
-app.register_blueprint(Tablero, url_prefix=base_path+'/_deprecado/#TABLEROS')
-app.register_blueprint(ConjuntoAdmin, url_prefix=base_path+'/admin/conjuntos')
-app.register_blueprint(ResultadoAdmin, url_prefix=base_path+'/admin/resultados')
+app.register_blueprint(Facultad, url_prefix=base_path+'admin/facultades')
+app.register_blueprint(Programa, url_prefix=base_path+'admin/programas')
+app.register_blueprint(Usuario, url_prefix=base_path+'admin/usuarios')
+app.register_blueprint(Conjunto, url_prefix=base_path+'conjuntos')
+app.register_blueprint(Resultado, url_prefix=base_path+'resultados')
+app.register_blueprint(Tablero, url_prefix=base_path+'_deprecado/#TABLEROS')
+app.register_blueprint(ConjuntoAdmin, url_prefix=base_path+'admin/conjuntos')
+app.register_blueprint(ResultadoAdmin, url_prefix=base_path+'admin/resultados')
 
 '''END ROUTES'''
 

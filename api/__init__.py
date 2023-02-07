@@ -16,8 +16,8 @@ app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
 app.config['JWT_SECRET_KEY'] = os.getenv('JWT_KEY')
 ies_name = os.getenv('CLI_IES_NAME')
-# base_path = ('/' + ies_name) if ies_name else ''
-base_path = ''
+# base_path = ('/' + ies_name) if ies_name else '/'
+base_path = '/'
 
 CORS(app)
 jwt = JWTManager(app)
@@ -65,16 +65,16 @@ from controllers.desercion.Estudiantes import Estudiante
 from controllers.desercion.Resultados import Resultado
 
 # Register routes
-app.register_blueprint( Auth, url_prefix=base_path+'/auth')
-app.register_blueprint( Facultad, url_prefix=base_path+'/facultades')
-app.register_blueprint( Programa, url_prefix=base_path+'/programas')
-app.register_blueprint( Usuario, url_prefix=base_path+'/usuarios')
-app.register_blueprint( Conjunto, url_prefix=base_path+'/conjuntos')
-app.register_blueprint( Preparacion, url_prefix=base_path+'/preparaciones')
-app.register_blueprint( Ejecucion, url_prefix=base_path+'/ejecuciones')
-app.register_blueprint( IES, url_prefix=base_path+'/desercion/institucion')
-app.register_blueprint( Estudiante, url_prefix=base_path+'/desercion/estudiantes')
-app.register_blueprint( Resultado, url_prefix=base_path+'/desercion/resultados')
+app.register_blueprint( Auth, url_prefix=base_path+'auth')
+app.register_blueprint( Facultad, url_prefix=base_path+'facultades')
+app.register_blueprint( Programa, url_prefix=base_path+'programas')
+app.register_blueprint( Usuario, url_prefix=base_path+'usuarios')
+app.register_blueprint( Conjunto, url_prefix=base_path+'conjuntos')
+app.register_blueprint( Preparacion, url_prefix=base_path+'preparaciones')
+app.register_blueprint( Ejecucion, url_prefix=base_path+'ejecuciones')
+app.register_blueprint( IES, url_prefix=base_path+'desercion/institucion')
+app.register_blueprint( Estudiante, url_prefix=base_path+'desercion/estudiantes')
+app.register_blueprint( Resultado, url_prefix=base_path+'desercion/resultados')
 '''END ROUTES'''
 
 
