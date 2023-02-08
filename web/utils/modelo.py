@@ -57,7 +57,7 @@ def verificar_data(data, periodoInicial, periodoFinal, programa):
         periodoInicial = data_verificada['registro'].min()
         flash('El conjunto no tiene como periodo inicial {}, se reasignó a <b>{}</b>'.format(str(_periodoInicial), str(periodoInicial)), 'warning')  
     if not(data_verificada['idprograma'] == programa).all():
-        return False, 'El conjunto no pertenece al programa indicado, verifique los registros', None    , None
+        return False, 'El conjunto no pertenece al programa indicado, verifique los registros', None, None
 
     # Verificacion correcta
     return True, None, data_verificada, periodoInicial

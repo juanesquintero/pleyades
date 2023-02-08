@@ -91,19 +91,47 @@ Evidenciar contenedores corriendo
 $ docker ps -a
 ```
 
-Si hay errores en la ejecucion de contenedores por favor revisar los logs 
+
+# Detención 
+
+
+### Contenedores de desarrollo
+
+Parar 
+```console
+docker-compose stop
+```
+Eliminar 
+```console
+docker-compose rm
+```
+
+## Contenedores Productivos
+Parar
+```console
+docker-compose -f docker-compose.prod.yml stop
+```
+Eliminar 
+```console
+docker-compose -f docker-compose.prod.yml rm
+```
+
+# Revisar errores (logs)
+
+Errores en la ejecucion de contenedores, revisar los logs de Docker
 ```console
 $ docker logs -f --tail 50 pleyades-web
-$ docker logs -f --tail 50 pleyades-api
-$ docker logs -f --tail 50 pleyades-nginx
+$              ...         pleyades-api
+$              ...         pleyades-nginx
 ```
 
-Eliminar contenedores 
+Errores de la aplicacion corriendo, revisar los siguientes logs 
 ```console
-$ docker rm -f pleyades-web pleyades-nginx
+$ tail -n 50 api/logs/ERRORS.log
+$     ...    api/logs/GENERALS.log
+$     ...    web/logs/ERRORS.log
+$     ...    web/logs/GENERALS.log
 ```
-...y volver a correr
-
 
 <br>
 <br>
