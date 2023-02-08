@@ -63,6 +63,8 @@ class DB:
                 'Database='+_db+';'
                 'UID='+_user+';'
                 'PWD='+_password+';'
+                'TrustServerCertificate=YES;'
+                'Trusted_Connection=yes;'
             )
         except Exception as e:
             log_error(e)
