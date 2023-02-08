@@ -13,8 +13,8 @@ _user = os.getenv('CLI_DB_USER')
 _password = os.getenv('CLI_DB_PASSWORD')
 
 
-_drivers = [d for d in pyodbc.drivers()]
-driver = _drivers[-1] if _drivers else 'SQL Server'
+# _drivers = [d for d in pyodbc.drivers()]
+# driver = _drivers[-1] if _drivers else 'SQL Server'
 
 
 def log_error(e):
@@ -58,15 +58,11 @@ class DB:
     def connect(self):
         try:
             self.cnx = pyodbc.connect(
-                'DRIVER={'+str(driver)+'};'
-                'SERVER='+_host+';'
-                'DATABASE='+_db+';'
+                'Driver={ODBC Driver 17 for SQL SERVER};'
+                'Server='+_host+';'
+                'Database='+_db+';'
                 'UID='+_user+';'
                 'PWD='+_password+';'
-                'Encrypt=YES;'
-                'TrustServerCertificate=YES'
-                # 'Trusted_Connection=yes;'
-                # 'SSLVERIFY=0;'
             )
         except Exception as e:
             log_error(e)
