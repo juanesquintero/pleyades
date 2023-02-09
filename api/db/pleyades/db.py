@@ -101,13 +101,17 @@ class DB:
             if self.cnx is None:
                 self.connect()
                 return self.exception
+
             cur = self.cnx.cursor()
             cur.execute(sql)
+        
         except Exception as e:
             self.connect()
             return e
+
         rows = cur.fetchall()
         columns = [i[0] for i in cur.description]
+        
         lista = [dict(zip(columns, row)) for row in rows]
 
         # for row in rows:
@@ -116,6 +120,7 @@ class DB:
         #     # Create a dictionary from zip object
         #     json = dict(REGISTRO)
         #     lista.append(json)
+        
         cur.close
         # self.cnx.close
         return lista
