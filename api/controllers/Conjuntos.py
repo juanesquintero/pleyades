@@ -176,7 +176,7 @@ def deleteOne(nombre):
     condicion="nombre='"+nombre+"'"
     delete = db.delete(condicion,'conjuntosdedatos')
     # delete resultados
-    condicion_resultados='conjunto=''+nombre+'''
+    condicion_resultados="conjunto='"+nombre+"'"
     delete = db.delete(condicion_resultados,'ejecuciones')
     delete = db.delete(condicion_resultados,'preparaciones')
     ex = exception(delete) 

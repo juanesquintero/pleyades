@@ -82,7 +82,7 @@ columnas_eliminar_1 = [
     'idmatricula', 
     'idaspiracion', 
     'idprograma',
-    'idestado '
+    # 'idestado '
 ]
 
 columnas_eliminar_nulos = [ 'semestre', 'jornada', 'genero', 'estado_civil', 'lugar_residencia_sede', 'etnia', 'victima',

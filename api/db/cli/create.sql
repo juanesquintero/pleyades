@@ -85,8 +85,8 @@ CREATE TABLE VWDATADESERCION(
 	asignaturas_programa INT,
 	asignaturas_canceladas_sem INT,
 	asignaturas_canceladas_acum INT,
-	DTFECHAREGISTRO DATE,
-	idestado INT,);
+	DTFECHAREGISTRO DATE);
+	-- idestado INT,);
 GO
 
 USE [CLI_desercion]
