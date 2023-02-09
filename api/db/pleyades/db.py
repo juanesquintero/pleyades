@@ -78,8 +78,8 @@ class DB:
             cur = self.cnx.cursor()
             cur.execute(sql)
             self.cnx.commit()
-            cur.close
-            self.cnx.close
+            cur.close()
+            self.cnx.close()
             return cur
         except Exception as e:
             self.connect()
@@ -97,6 +97,8 @@ class DB:
 
     @validate_connection
     def select(self, sql):
+        cur = None
+
         try:
             if self.cnx is None:
                 self.connect()
@@ -104,15 +106,20 @@ class DB:
 
             cur = self.cnx.cursor()
             cur.execute(sql)
-        
+
+            rows = cur.fetchall()
+            columns = [i[0] for i in cur.description]
+
         except Exception as e:
             self.connect()
             return e
 
-        rows = cur.fetchall()
-        columns = [i[0] for i in cur.description]
-        
-        lista = [dict(zip(columns, row)) for row in rows]
+        finally:
+            if cur: cur.close()
+
+        self.cnx.close()
+
+        return [dict(zip(columns, row)) for row in rows]
 
         # for row in rows:
         #     # Create a zip object from two lists
@@ -121,9 +128,8 @@ class DB:
         #     json = dict(REGISTRO)
         #     lista.append(json)
         
-        cur.close
-        # self.cnx.close
-        return lista
+        
+
 
     @validate_connection
     def update(self,body,condicion,tabla):
