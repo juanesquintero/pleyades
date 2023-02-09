@@ -162,7 +162,8 @@ def guardar():
     
         # VERIFICACION de formato
         data = pd.read_excel(archivo)
-        error_logger.info('\n\n\n\n\nPeriodoInicial:  {} '.format(periodoInicial))
+        
+        error_logger.info('\n\n\n\n\nPeriodoInicial:  {} '.format(conjunto.get('periodoInicial')))
         validacion, mensaje_error, data_verificada, periodoInicial = verificar_data(data, conjunto.get('periodoInicial'), conjunto.get('periodoFinal'), conjunto.get('programa'))
         print(conjunto, periodoInicial, flush=True)
         error_logger.info('\n\n\n\n\n\n\n\n\n Conjunto: '+ conjunto.__str__() + '\n\n\n\n\nPeriodoInicial:   '+ periodoInicial + '\n\n\n\n\n')
@@ -194,7 +195,7 @@ def guardar():
         else:
             return render_template('utils/mensaje.html', mensaje='Consulta fallida a la base de datos')
         
-        error_logger.info('\n\n\n\n\nPeriodoInicial:  {} '.format(periodoInicial))
+        error_logger.info('\n\n\n\n\nPeriodoInicial:  {} '.format(conjunto.get('periodoInicial')))
         # VERIFICACION de formato
         validacion, mensaje_error, data_verificada, periodoInicial = verificar_data(data, conjunto.get('periodoInicial'), conjunto.get('periodoFinal'), conjunto.get('programa'))
         conjunto['periodoInicial'] =  periodoInicial
