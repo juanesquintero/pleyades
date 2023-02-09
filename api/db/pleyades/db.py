@@ -78,13 +78,14 @@ class DB:
             cur = self.cnx.cursor()
             cur.execute(sql)
             self.cnx.commit()
+            cur.close()
             return cur
         except Exception as e:
             self.connect()
             return e
-        finally:
+        # finally:
             # self.close_connection()
-            if cur: cur.close()
+            # if cur: cur.close()
 
     @validate_connection
     def insert(self, body, tabla):
