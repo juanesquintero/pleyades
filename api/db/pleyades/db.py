@@ -1,4 +1,5 @@
 import os
+import logging
 from functools import wraps
 from dotenv import load_dotenv
 import mysql.connector as mysql
@@ -8,6 +9,8 @@ ctx = ssl.SSLContext()
 ctx.minimum_version = ssl.TLSVersion.TLSv1_1
 
 
+error_logger = logging.getLogger('error_logger')
+
 load_dotenv()
 
 _user = os.getenv('MYSQL_USER')
@@ -16,6 +19,9 @@ _database = os.getenv('MYSQL_DATABASE')
 _host = os.getenv('MYSQL_SERVER')
 _port = os.getenv('MYSQL_SERVER_PORT')
 
+
+def log_error(e):
+    error_logger.error('EXCEPTION: base de datos Pleyades MYSQL... '+str(e))
 
 def validate_connection(f):
     @wraps(f)
@@ -28,6 +34,7 @@ def validate_connection(f):
                 return f(self, *args, **kwargs)
             except Exception as e:
                 self.close_connection()
+                log_error(e)
                 self.connect()
                 raise Exception('Conexión caida a la BD de PLEYADES!')
     return decorated_function
@@ -60,6 +67,7 @@ class DB:
                 database=_database,
             )
         except Exception as e:
+            log_error(e)
             print(e, flush=True)
             self.close_connection()
 
@@ -81,6 +89,7 @@ class DB:
             cur.close()
             return cur
         except Exception as e:
+            log_error(e)
             self.connect()
             return e
         # finally:
@@ -115,6 +124,7 @@ class DB:
             return [dict(zip(columns, row)) for row in rows]
 
         except Exception as e:
+            log_error(e)
             self.connect()
             return e
 
