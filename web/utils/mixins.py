@@ -138,7 +138,6 @@ def guardar_ejecucion(ejecucion, resultados, estado):
 def obtener_nombre_conjunto(conjunto):
     # Obtener nombre del conjunto desde el api
     status_n, body_n = post('conjuntos/nombre', conjunto)
-    print(status_n, body_n, flush=True)
     if status_n:
         return body_n['nombre'], body_n['numero']
     else:

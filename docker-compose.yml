@@ -80,6 +80,20 @@ services:
       - dev-net
       - pleyades-prod_deploy-net
 
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-CU3-ubuntu-18.04
+    user: '0:0'
+    container_name: sqlserver2019
+    ports:
+      - 1433:1433
+    environment:
+      ACCEPT_EULA: Y
+      SA_PASSWORD: PasswordO1.
+      MSSQL_PID: Express
+    volumes:
+      # - ~/docker/sqlserver-data:/var/opt/mssql
+      - ./sqlserver-data:/var/opt/mssql
+
 networks:
   dev-net:
     driver: bridge
