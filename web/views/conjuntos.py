@@ -163,11 +163,11 @@ def guardar():
         # VERIFICACION de formato
         data = pd.read_excel(archivo)
 
-        error_logger.info('\n\n\n\n\nPeriodoInicial:  {} '.format(conjunto.get('periodoInicial')))
+        error_logger.error('\n\n\n\n\nPeriodoInicial:  {} '.format(conjunto.get('periodoInicial', 'NO periodo')))
         validacion, mensaje_error, data_verificada, periodoInicial = verificar_data(data, conjunto.get('periodoInicial'), conjunto.get('periodoFinal'), conjunto.get('programa'))
-        print(conjunto, periodoInicial, flush=True)
-        error_logger.info('\n\n\n\n\n\n\n\n\n Conjunto: '+ conjunto.__str__()) 
-        error_logger.info('\n\n\n\n\nPeriodoInicial:   {} \n\n\n\n\n'.format(periodoInicial))
+        
+        error_logger.error('\n\n\n\n\n\n\n\n\n Conjunto: '+ conjunto.__str__()) 
+        error_logger.error('\n\n\n\n\nPeriodoInicial:   {} \n\n\n\n\n'.format(periodoInicial))
         
         conjunto['periodoInicial'] =  periodoInicial
 
@@ -197,13 +197,13 @@ def guardar():
         else:
             return render_template('utils/mensaje.html', mensaje='Consulta fallida a la base de datos')
         
-        error_logger.info('\n\n\n\n\nPeriodoInicial:  {} '.format(conjunto.get('periodoInicial', 'No periodo')))
+        error_logger.error('\n\n\n\n\nPeriodoInicial:  {} '.format(conjunto.get('periodoInicial', 'No periodo')))
         # VERIFICACION de formato
         validacion, mensaje_error, data_verificada, periodoInicial = verificar_data(data, conjunto.get('periodoInicial'), conjunto.get('periodoFinal'), conjunto.get('programa'))
         conjunto['periodoInicial'] =  periodoInicial
         
-        error_logger.info('\n\n\n\n\n\n\n\n\n Conjunto: '+ conjunto.__str__()) 
-        error_logger.info('\n\n\n\n\nPeriodoInicial:   {} \n\n\n\n\n'.format(periodoInicial))
+        error_logger.error('\n\n\n\n\n\n\n\n\n Conjunto: '+ conjunto.__str__()) 
+        error_logger.error('\n\n\n\n\nPeriodoInicial:   {} \n\n\n\n\n'.format(periodoInicial))
         # Obtener nombre del conjunto desde el api
         nombre, numero = obtener_nombre_conjunto(conjunto)
         if not nombre: return numero
