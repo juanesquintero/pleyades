@@ -109,6 +109,8 @@ class DB:
 
             rows = cur.fetchall()
             columns = [i[0] for i in cur.description]
+            
+            return [dict(zip(columns, row)) for row in rows]
 
         except Exception as e:
             self.connect()
@@ -116,10 +118,9 @@ class DB:
 
         finally:
             if cur: cur.close()
+            self.cnx.close()
 
-        self.cnx.close()
-
-        return [dict(zip(columns, row)) for row in rows]
+        
 
         # for row in rows:
         #     # Create a zip object from two lists
