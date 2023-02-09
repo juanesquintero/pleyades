@@ -229,7 +229,8 @@ def ejecutar_modelo(data):
     #     clf = pickle.load(f)
     # clf = pickle.load(open('clasificador.sav', 'rb'))
 
-    predc_sem_act = data_a_predecir[['documento','nombre_completo','desertor', 'idprograma', 'idestado']]
+    # predc_sem_act = data_a_predecir[['documento','nombre_completo','desertor', 'idprograma', 'idestado']]
+    predc_sem_act = data_a_predecir[['documento','nombre_completo','desertor', 'idprograma']]
     
     predc_sem_act['prediccion'] = mejor_clasificador.predict(data_a_predecir[col_preparadas])
 
@@ -264,7 +265,8 @@ def ejecutar_modelo(data):
         'precision': float(round(AML_best['Precision Media de Prueba'].tolist()[0]*100,2)),
         'periodo_anterior': str(periodo_a_predecir),
         'total_desertores_{}'.format(periodo_a_predecir):  str(len(data_a_predecir[data_a_predecir['desertor']==1]))  , 
-        'total_desertores_{}_matriculados'.format(periodo_a_predecir):  str(len(data_a_predecir.query('desertor==1 & idestado==6' )))  , 
+        # 'total_desertores_{}_matriculados'.format(periodo_a_predecir):  str(len(data_a_predecir.query('desertor==1 & idestado==6' ))), 
+        'total_desertores_{}_matriculados'.format(periodo_a_predecir):  str(len(data_a_predecir.query('desertor==1' ))), 
     }
     
     # Reasignanr el tipo de la columna documento
