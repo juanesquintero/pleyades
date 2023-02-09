@@ -23,13 +23,12 @@ error_logger = logging.getLogger('error_logger')
 ############################################################################################################# VERIFICACION DE DATOS CONJUNTO ##############################################################################################################
 def verificar_data(data, periodoInicial, periodoFinal, programa):
     columnas = list(condiciones.keys())
-    columnas.remove('idestado')
 
     # Verificar si conjunto tiene columnas en str y la primera fila
     try:
         data.columns = map(str.lower, data.columns)
     except Exception as e:
-        error_logger.error(e)
+        error_logger.error('ERROR: el conjunto no tiene datos... {}'.format(e))
         return False, 'El conjunto no tiene columnas', None, periodoInicial
 
     # Verificar si hay registros
@@ -46,7 +45,7 @@ def verificar_data(data, periodoInicial, periodoFinal, programa):
     try:
         data_verificada = asignar_tipos(data)
     except Exception as e:
-        error_logger.error(e)
+        error_logger.error('ERROR: asignando los tipos de dato... {}'.format(e))
         return False, 'El conjunto ingresado no tiene los tipos de dato por columna requeridos', None, periodoInicial
     
     # Verificar si en conjunto posee mas de un  valor en la columna programa 

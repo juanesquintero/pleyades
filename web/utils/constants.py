@@ -169,5 +169,5 @@ condiciones = {
 	'asignaturas_canceladas_sem':               int,
 	'asignaturas_canceladas_acum':              int,
 	'dtfecharegistro':                          str,
-    'idestado':                                 int
+    # 'idestado':                                 int
 }
