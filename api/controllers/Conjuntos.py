@@ -26,7 +26,7 @@ def get():
 @Conjunto.route('/<nombre>')
 @jwt_required()
 def getOne(nombre):
-    query = db.select('SELECT * FROM conjuntosdedatos WHERE nombre='{}';'.format(nombre))
+    query = db.select("SELECT * FROM conjuntosdedatos WHERE nombre='{}';".format(nombre))
     ex = exception(query)
     if ex: 
         return ex
@@ -37,7 +37,7 @@ def getOne(nombre):
 @Conjunto.route('/estado/<estado>')
 @jwt_required()
 def getByEstado(estado):
-    query = db.select('SELECT * FROM conjuntosdedatos WHERE estado='{}';'.format(estado))
+    query = db.select("SELECT * FROM conjuntosdedatos WHERE estado='{}';".format(estado))
     ex = exception(query)
     if ex: 
         return ex
@@ -47,7 +47,7 @@ def getByEstado(estado):
 @Conjunto.route('/tipo/<tipo>')
 @jwt_required()
 def getByTipo(tipo):
-    query = db.select('SELECT * FROM conjuntosdedatos WHERE tipo='{}';'.format(tipo))
+    query = db.select("SELECT * FROM conjuntosdedatos WHERE tipo='{}';".format(tipo))
     ex = exception(query)
     if ex: 
         return ex
@@ -72,11 +72,11 @@ def getByEncargado(encargado):
     estado = request.args.get('estado')
     if estado:
         if estado.lower().strip() in ['crudos', 'procesados', 'en proceso']:
-            query = db.select('SELECT * FROM conjuntosdedatos WHERE encargado='{}' AND estado='{}';'.format(encargado,estado))
+            query = db.select("SELECT * FROM conjuntosdedatos WHERE encargado='{}' AND estado='{}';".format(encargado,estado))
         else:
             return {'msg': 'Estado invalido'}, 404
     else:
-        query = db.select('SELECT * FROM conjuntosdedatos WHERE encargado='{}';'.format(encargado))
+        query = db.select("SELECT * FROM conjuntosdedatos WHERE encargado='{}';".format(encargado))
     ex = exception(query)
     if ex: 
         return ex

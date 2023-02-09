@@ -120,7 +120,7 @@ docker-compose -f docker-compose.prod.yml rm
 
 Errores en la ejecucion de contenedores, revisar los logs de Docker
 ```console
-$ docker logs -f --tail 50 pleyades-web
+$ docker logs --tail 50 pleyades-web
 $              ...         pleyades-api
 $              ...         pleyades-nginx
 ```
