@@ -22,7 +22,8 @@ error_logger = logging.getLogger('error_logger')
 
 ############################################################################################################# VERIFICACION DE DATOS CONJUNTO ##############################################################################################################
 def verificar_data(data, periodoInicial, periodoFinal, programa):
-    columnas = list(condiciones.keys()).remove('idestado')
+    columnas = list(condiciones.keys())
+    columnas.remove('idestado')
 
     # Verificar si conjunto tiene columnas en str y la primera fila
     try:
