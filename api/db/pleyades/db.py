@@ -106,17 +106,18 @@ class DB:
         except Exception as e:
             self.connect()
             return e
-        lista = []
         rows = cur.fetchall()
         columns = [i[0] for i in cur.description]
-        for row in rows:
-            # Create a zip object from two lists
-            REGISTRO = dict(zip(columns, row))
-            # Create a dictionary from zip object
-            json = dict(REGISTRO)
-            lista.append(json)
+        lista = [dict(zip(columns, row)) for row in rows]
+
+        # for row in rows:
+        #     # Create a zip object from two lists
+        #     REGISTRO = dict(zip(columns, row))
+        #     # Create a dictionary from zip object
+        #     json = dict(REGISTRO)
+        #     lista.append(json)
         cur.close
-        self.cnx.close
+        # self.cnx.close
         return lista
 
     @validate_connection
