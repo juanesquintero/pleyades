@@ -170,7 +170,7 @@ def deleteOne(nombre):
     if not(nombre):
         return {'error': 'indique el nombre por el path'}, 400
     # sql validations
-    if not exists(nombre):  
+    if not exists(nombre):
         return {'error': 'Conjunto no existe'}, 404
     # delete 
     condicion="nombre='"+nombre+"'"
@@ -194,6 +194,7 @@ def put(nombre):
     if not(validate_put_schema(body)):
         return {'error': 'body invalido'}, 400
     # sql validations
+    error_logger.error('API NOMBRE CONJUNTO: ' + nombre)
     if not exists(nombre):  
         return {'error': 'Conjunto no existe'}, 404
     if 'estado' in body.keys():
@@ -212,6 +213,7 @@ def put(nombre):
 
 def exists(nombre):
     query = db.select('SELECT * FROM conjuntosdedatos;')
+    error_logger.error('QUERY: ' + query)
     if exception(query): 
         return False
     lista = map(lambda c : c['nombre'], query) 

@@ -234,6 +234,7 @@ def preparar():
     nombre = conjunto['nombre']
 
     # Actualizar conjunto de datos de crudo a en proceso 
+    error_logger.error('NOMBRE CONJUNTO: ' + nombre)
     act_estado =  actualizar_estado(nombre,'En Proceso')
     if act_estado: return act_estado
 
@@ -298,6 +299,7 @@ def ejecutar():
     nombre = conjunto['nombre']
 
     # Actualizar conjunto de datos de crudo a procesado
+    error_logger.error('NOMBRE CONJUNTO: ' + nombre)
     act_estado =  actualizar_estado(nombre,'En Proceso')
     if act_estado: return act_estado
     
