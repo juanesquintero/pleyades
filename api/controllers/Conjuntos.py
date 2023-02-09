@@ -194,7 +194,6 @@ def put(nombre):
     if not(validate_put_schema(body)):
         return {'error': 'body invalido'}, 400
     # sql validations
-    error_logger.error('API NOMBRE CONJUNTO: ' + nombre)
     if not exists(nombre):  
         return {'error': 'Conjunto no existe'}, 404
     if 'estado' in body.keys():
@@ -212,8 +211,9 @@ def put(nombre):
     return {'msg': 'Conjunto actualizado'}, 200
 
 def exists(nombre):
+    error_logger.error('Nombre "{}"'.format(nombre))
     query = db.select('SELECT * FROM conjuntosdedatos;')
-    error_logger.error('QUERY: ' + query)
+    error_logger.error('QUERY: ' + query.__str__())
     if exception(query): 
         return False
     lista = map(lambda c : c['nombre'], query) 
