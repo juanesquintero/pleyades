@@ -73,7 +73,7 @@ services:
     container_name: pleyades-adminer
     image: adminer:4
     ports:
-      - 8080:8080
+      - 8082:8080
     links:
       - db:db
     networks:
