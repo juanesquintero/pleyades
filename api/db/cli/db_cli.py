@@ -96,8 +96,8 @@ class DB:
             # Create a dictionary from zip object
             json = dict(REGISTRO)
             lista.append(json)
-        cur.close
-        self.cnx.close
+        cur.close()
+        self.cnx.close()
         return lista
 
     @validate_connection
@@ -125,12 +125,12 @@ class DB:
         try:
             cur = self.cnx.cursor()
             cur.executemany(sql, registros)
-            cur.close
+            cur.close()
             self.cnx.commit()
         except Exception as e:
             log_error(e)
             return e
-        self.cnx.close
+        self.cnx.close()
         return True
 
     def sql(self, sql):
@@ -161,8 +161,8 @@ class DB:
             cur = self.cnx.cursor()
             cur.execute(sql)
             self.cnx.commit()
-            cur.close
-            self.cnx.close
+            cur.close()
+            self.cnx.close()
             return cur
         except Exception as e:
             log_error(e)

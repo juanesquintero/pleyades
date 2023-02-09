@@ -78,12 +78,13 @@ class DB:
             cur = self.cnx.cursor()
             cur.execute(sql)
             self.cnx.commit()
-            cur.close()
-            self.cnx.close()
             return cur
         except Exception as e:
             self.connect()
             return e
+        finally:
+            if cur: cur.close()
+            if self.cnx: self.cnx.close()
 
     @validate_connection
     def insert(self, body, tabla):
@@ -118,9 +119,7 @@ class DB:
 
         finally:
             if cur: cur.close()
-            self.cnx.close()
-
-        
+            if self.cnx: self.cnx.close()
 
         # for row in rows:
         #     # Create a zip object from two lists
@@ -128,8 +127,6 @@ class DB:
         #     # Create a dictionary from zip object
         #     json = dict(REGISTRO)
         #     lista.append(json)
-        
-        
 
 
     @validate_connection
