@@ -173,7 +173,7 @@ def deleteOne(nombre):
     if not exists(nombre):  
         return {'error': 'Conjunto no existe'}, 404
     # delete 
-    condicion='nombre=''+nombre+'''
+    condicion="nombre='"+nombre+"'"
     delete = db.delete(condicion,'conjuntosdedatos')
     # delete resultados
     condicion_resultados='conjunto=''+nombre+'''
@@ -203,7 +203,7 @@ def put(nombre):
         if not exists_usuario(body['encargado']): 
             return {'error': 'encargado invalido'}, 400  
     # Uptade 
-    condicion='nombre=''+nombre+'''
+    condicion="nombre='"+nombre+"'"
     update = db.update(body,condicion,'conjuntosdedatos')
     ex = exception(update) 
     if ex: 

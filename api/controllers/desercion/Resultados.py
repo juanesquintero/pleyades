@@ -20,7 +20,7 @@ msg_exito = { 'msg': 'Operación completada con exito!' }, 200
 @Resultado.route('/ultimo/<programa>/<int:semestre>', methods=['PUT'])
 @jwt_required()
 def put_ultimo(semestre, programa):
-    sql = "UPDATE {} SET blnultimo=0 WHERE semestre_prediccion={} AND idprograma={};".format(tabla, semestre, programa)
+    sql = 'UPDATE {} SET blnultimo=0 WHERE semestre_prediccion={} AND idprograma={};'.format(tabla, semestre, programa)
     result = db.execute(sql)
     ex = exception(result)
     if ex: 

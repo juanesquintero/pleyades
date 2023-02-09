@@ -107,8 +107,9 @@ class DB:
         # Values Body
         values = str((tuple(body.values())))
         # Sentencia SQL
-        sql = "INSERT INTO {} {} VALUES{}".format(
-            tabla, columns, values).replace('None', 'NULL')
+        sql = 'INSERT INTO {} {} VALUES{}'.format(
+            tabla, columns, values
+        ).replace('None', 'NULL')
         return self.execute(sql)
 
     @validate_connection
@@ -139,7 +140,7 @@ class DB:
     @validate_connection
     def update(self, body, condicion, tabla):
         set_values = str(body)[2:-1].replace("':", " =").replace(", '", ", ")
-        sql = "UPDATE {} SET {} WHERE {};".format(
+        sql = 'UPDATE {} SET {} WHERE {};'.format(
             tabla, set_values, condicion
         ).replace('None', 'NULL')
         return self.execute(sql)
