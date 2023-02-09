@@ -162,9 +162,10 @@ def guardar():
     
         # VERIFICACION de formato
         data = pd.read_excel(archivo)
+        error_logger.info('\n\n\n\n\nPeriodoInicial:  {} '.format(periodoInicial))
         validacion, mensaje_error, data_verificada, periodoInicial = verificar_data(data, conjunto.get('periodoInicial'), conjunto.get('periodoFinal'), conjunto.get('programa'))
         print(conjunto, periodoInicial, flush=True)
-        error_logger.info('\n\n\n\n\n\n\n\n\n Conjunto: '+ conjunto + '\n\n\n\n\nPeriodoInicial:   '+ periodoInicial + '\n\n\n\n\n')
+        error_logger.info('\n\n\n\n\n\n\n\n\n Conjunto: '+ conjunto.__str__() + '\n\n\n\n\nPeriodoInicial:   '+ periodoInicial + '\n\n\n\n\n')
         conjunto['periodoInicial'] =  periodoInicial
 
         # Obtener nombre del conjunto desde el api
@@ -193,11 +194,12 @@ def guardar():
         else:
             return render_template('utils/mensaje.html', mensaje='Consulta fallida a la base de datos')
         
+        error_logger.info('\n\n\n\n\nPeriodoInicial:  {} '.format(periodoInicial))
         # VERIFICACION de formato
         validacion, mensaje_error, data_verificada, periodoInicial = verificar_data(data, conjunto.get('periodoInicial'), conjunto.get('periodoFinal'), conjunto.get('programa'))
         conjunto['periodoInicial'] =  periodoInicial
         
-        error_logger.info('\n\n\n\n\n\n\n\n\n Conjunto: '+ conjunto + '\n\n\n\n\nPeriodoInicial:   '+ periodoInicial + '\n\n\n\n\n')
+        error_logger.info('\n\n\n\n\n\n\n\n\n Conjunto: '+ conjunto.__str__() + '\n\n\n\n\nPeriodoInicial:   '+ periodoInicial + '\n\n\n\n\n')
         # Obtener nombre del conjunto desde el api
         nombre, numero = obtener_nombre_conjunto(conjunto)
         if not nombre: return numero
