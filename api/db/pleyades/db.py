@@ -83,8 +83,8 @@ class DB:
             self.connect()
             return e
         finally:
+            # self.close_connection()
             if cur: cur.close()
-            if self.cnx: self.cnx.close()
 
     @validate_connection
     def insert(self, body, tabla):
@@ -119,7 +119,7 @@ class DB:
 
         finally:
             if cur: cur.close()
-            if self.cnx: self.cnx.close()
+            # self.close_connection()
 
         # for row in rows:
         #     # Create a zip object from two lists

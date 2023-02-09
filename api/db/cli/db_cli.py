@@ -97,7 +97,7 @@ class DB:
             json = dict(REGISTRO)
             lista.append(json)
         cur.close()
-        self.cnx.close()
+        # self.cnx.close()
         return lista
 
     @validate_connection
@@ -130,7 +130,7 @@ class DB:
         except Exception as e:
             log_error(e)
             return e
-        self.cnx.close()
+        # self.cnx.close()
         return True
 
     def sql(self, sql):
@@ -162,7 +162,7 @@ class DB:
             cur.execute(sql)
             self.cnx.commit()
             cur.close()
-            self.cnx.close()
+            # self.cnx.close()
             return cur
         except Exception as e:
             log_error(e)
