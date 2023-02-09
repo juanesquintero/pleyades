@@ -8,6 +8,7 @@ gunicorn==20.1.0
 # DB
 mysql-connector-python==8.0.31
 pyodbc==4.0.35
+SQLAlchemy==2.0.2
 
 # Utils
 python-dotenv==0.21.0

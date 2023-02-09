@@ -1,10 +1,12 @@
-import logging
 import os
+import ssl
+import logging
 from functools import wraps
 from dotenv import load_dotenv
-import mysql.connector as mysql
 
-import ssl
+# import mysql.connector as mysql
+from sqlalchemy import create_engine
+
 ctx = ssl.SSLContext()
 ctx.minimum_version = ssl.TLSVersion.TLSv1_1
 
@@ -58,13 +60,15 @@ class DB:
 
     def connect(self):
         try:
-            self.cnx = mysql.MySQLConnection(
-                host=_host,
-                port=_port,
-                user=_user,
-                password=_password,
-                database=_database,
-            )
+            # self.cnx = mysql.MySQLConnection(
+            #     host=_host,
+            #     port=_port,
+            #     user=_user,
+            #     password=_password,
+            #     database=_database,
+            # )
+            engine = create_engine('mysql+pymysql://{}:{}@{}:{}/{}'.format(_user, _password, _host, _port, _database))
+            self.cnx = engine.raw_connection()
         except Exception as e:
             log_error(e)
             self.close_connection()

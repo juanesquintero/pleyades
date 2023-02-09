@@ -1,8 +1,10 @@
 import os
-import logging
 import pyodbc
+import logging
 from functools import wraps
 from dotenv import load_dotenv
+from sqlalchemy import create_engine
+
 
 load_dotenv()
 error_logger = logging.getLogger('error_logger')
@@ -57,13 +59,15 @@ class DB:
 
     def connect(self):
         try:
-            self.cnx = pyodbc.connect(
-                'Driver={ODBC Driver 17 for SQL SERVER};'
-                'Server='+_host+';'
-                'Database='+_db+';'
-                'UID='+_user+';'
-                'PWD='+_password+';'
-            )
+            # self.cnx = pyodbc.connect(
+            #     'Driver={ODBC Driver 17 for SQL SERVER};'
+            #     'Server='+_host+';'
+            #     'Database='+_db+';'
+            #     'UID='+_user+';'
+            #     'PWD='+_password+';'
+            # )
+            engine = create_engine('mssql+pyodbc://{}:{}@{}:1433/{}?driver=ODBC+Driver+17+for+SQL+SERVER'.format(_user, _password, _host, _db))
+            self.cnx = engine.raw_connection()
         except Exception as e:
             log_error(e)
             self.close_connection()
