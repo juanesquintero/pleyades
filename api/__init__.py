@@ -1,5 +1,9 @@
+import sys
+sys.path.append('.')
+sys.path.append('..')
+
+import traceback 
 import os
-import sys 
 import logging
 from dotenv import load_dotenv
 from flask import Flask, jsonify
@@ -8,7 +12,7 @@ from flask_jwt_extended import JWTManager
 from sqlalchemy import text
 from flask_sqlalchemy import SQLAlchemy
 
-sys.path.append('./')
+
 load_dotenv()
 
 # ies_name = os.getenv('CLI_IES_NAME')
@@ -120,6 +124,12 @@ def app_routes(app):
 
 
 def app_errors(app, error_logger):
+    def exception(e):
+        message, exception_info = 'EXCEPTION: {}'.format(e), traceback.format_exc()
+        if exception_info:
+            message += '   ---->   {}'.format(exception_info) 
+            logging.getLogger('error_logger').error(message, exc_info=True)
+
     @app.errorhandler(404)
     def page_not_found(e):
         return jsonify({'error': 'Endpoint No Encontrado'}), 404
@@ -130,10 +140,10 @@ def app_errors(app, error_logger):
 
     @app.errorhandler(500)
     def handle_500(e):
-        error_logger.error(e)
+        exception(e)
         return jsonify({'error': 'Error en el Servidor del Sistema'}), 500
 
     @app.errorhandler(Exception)
     def handle_exception(e):
-        error_logger.error('EXCEPTION: '+str(e))
-        return {'error': 'Ha ocurrido un error en la ejecución del servidor, si es necesario contacte al Admin del Sistema para verificar el error.'}, 500 
+        exception(e)
+        return {'error': 'Excepción, Ha ocurrido un error en la ejecución del servidor.'}, 500 

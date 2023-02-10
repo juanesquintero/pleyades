@@ -1,9 +1,8 @@
-
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.dialects.mysql import JSON
 from sqlalchemy import update
 from sqlalchemy.ext.hybrid import hybrid_property
-from app import db
+from app import  db
 
 
 class DTO():    
@@ -22,7 +21,6 @@ class DTO():
     def update(sql):
         row = db.session.execute(sql)
         db.session.commit()
-        print(row, flush=True)
         return row
 
 

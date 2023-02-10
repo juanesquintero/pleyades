@@ -2,7 +2,7 @@ import json
 from flask import request, jsonify, Blueprint
 from schemas.ejecucionSchema import validate_post_schema, validate_put_schema
 from flask_jwt_extended import jwt_required
-from utils.utils import *
+from utils.utils import exception, _format
 from db.pleyades.db import Ejecucion as ejecucion_model
 # Relaciones
 from controllers.Conjuntos import exists as exists_conjunto
@@ -10,6 +10,7 @@ from controllers.Usuarios import exists as exists_usuario
 
 Ejecucion = Blueprint('Ejecucion', __name__)
 
+@Ejecucion.route('')
 @Ejecucion.route('/')
 @jwt_required()
 def get():

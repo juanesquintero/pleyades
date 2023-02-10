@@ -3,13 +3,14 @@ from flask_jwt_extended import jwt_required
 import json
 from schemas.preparacionSchema import validate_post_schema, validate_put_schema
 from db.pleyades.db import Preparacion as preparacion_model
-from utils.utils import *
+from utils.utils import exception, _format
 # Relaciones
 from controllers.Conjuntos import exists as exists_conjunto
 from controllers.Usuarios import exists as exists_usuario
 
 Preparacion = Blueprint('Preparacion', __name__)
 
+@Preparacion.route('')
 @Preparacion.route('/')
 @jwt_required()
 def get():
@@ -69,7 +70,6 @@ def nombre(conjunto):
         return {'error': 'conjunto no existe'}, 400
     # Obtener el numero consecutivo para el conjunto de datos
     query = preparacion_model.get_consecutivo(conjunto)
-    print(query, flush=True)
     ex = exception(query)
     if ex: 
         return ex

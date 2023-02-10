@@ -3,7 +3,7 @@ from schemas.usuarioSchema import validate_post_schema, validate_put_schema
 from db.pleyades.db import Usuario as usuario_model
 from flask_jwt_extended import jwt_required
 from hashlib import md5
-from utils.utils import *
+from utils.utils import exception, _format
 
 # Relaciones
 from controllers.Facultades import exists as exists_facultad
@@ -11,6 +11,7 @@ from controllers.Programas import exists as exists_programa
 
 Usuario = Blueprint('Usuario', __name__)
 
+@Usuario.route('')
 @Usuario.route('/')
 @jwt_required()
 def get():

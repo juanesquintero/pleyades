@@ -1,4 +1,4 @@
-from utils.utils import *
+from utils.utils import exception, _format
 from db.cli.db_cli import DB
 from flask_jwt_extended import jwt_required
 from flask import request, jsonify, Blueprint
@@ -11,6 +11,7 @@ tabla = 'VWFACULTADDESERCION'
 
 db = DB.getInstance()
 
+@Facultad.route('')
 @Facultad.route('/')
 @jwt_required()
 def get():
@@ -20,7 +21,7 @@ def get():
         return ex
     if not(query): 
         return {'msg': 'No hay Facultades'}, 404
-    return jsonify(format(query))
+    return jsonify(_format(query))
 
 
 @Facultad.route('/<codigo>')
@@ -32,7 +33,7 @@ def get_one(codigo):
         return ex
     if not(query): 
         return {'msg': 'No hay concidencias'}, 404
-    return jsonify(format(query)[0])
+    return jsonify(_format(query)[0])
 
 
 @Facultad.route('',methods=['POST'])

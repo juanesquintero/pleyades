@@ -2,7 +2,7 @@ from flask import request, jsonify, Blueprint
 from db.cli.db_cli import DB
 from schemas.programaSchema import validate_post_schema, validate_put_schema
 from flask_jwt_extended import jwt_required
-from utils.utils import *
+from utils.utils import exception, _format, _format
 # Relaciones
 from controllers.Facultades import exists as exists_facultad
 
@@ -11,6 +11,7 @@ db = DB.getInstance()
 
 tabla = 'VWPROGRAMADESERCION'
 
+@Programa.route('')
 @Programa.route('/')
 @jwt_required()
 def get():
@@ -20,7 +21,7 @@ def get():
         return ex
     if not(query):
         return {'msg': "No hay programas"}, 404
-    return jsonify(format(query))
+    return jsonify(_format(query))
 
 
 @Programa.route('/<int:codigo>')
@@ -33,7 +34,7 @@ def get_one(codigo):
         return ex
     if not(query):
         return {'msg': "No hay concidencias"}, 404
-    return jsonify(format(query)[0])
+    return jsonify(_format(query)[0])
 
 
 @Programa.route('facultad/<int:facultad>')
@@ -46,7 +47,7 @@ def getByFacultad(facultad):
         return ex
     if not(query):
         return {'msg': "No hay concidencias"}, 404
-    return jsonify(format(query))
+    return jsonify(_format(query))
 
 
 @Programa.route('', methods=['POST'])

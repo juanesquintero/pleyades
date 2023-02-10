@@ -3,7 +3,7 @@ from db.cli.db_cli import DB as db_cli
 from db.pleyades.db import Conjunto as conjunto_model, Ejecucion as ejecucion_model, Preparacion as preparacion_model
 from schemas.conjuntoSchema import validate_post_schema, validate_put_schema, validate_nombre_schema
 from flask_jwt_extended import jwt_required
-from utils.utils import *
+from utils.utils import exception, _format
 
 # Relaciones
 from controllers.Programas import exists as exists_programa
@@ -13,6 +13,7 @@ Conjunto = Blueprint('Conjunto', __name__)
 execute = None
 db_cli = db_cli.getInstance()
 
+@Conjunto.route('')
 @Conjunto.route('/')
 @jwt_required()
 def get():

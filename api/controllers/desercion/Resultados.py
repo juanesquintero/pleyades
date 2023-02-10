@@ -1,7 +1,7 @@
 from flask import request, jsonify, Blueprint
 from db.cli.db_cli import DB
 from flask_jwt_extended import jwt_required
-from utils.utils import *
+from utils.utils import exception, _format
 import pandas as pd
 from schemas.resultadoSchema import validate_post_schema
 # Relaciones
