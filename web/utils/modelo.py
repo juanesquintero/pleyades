@@ -54,9 +54,6 @@ def verificar_data(data, periodoInicial, periodoFinal, programa):
         return False, 'El conjunto no tiene como periodo final {}, verifique los registros'.format(str(periodoFinal)), None, periodoInicial
     if not(data_verificada['registro'].min() == periodoInicial):
         _periodoInicial = periodoInicial
-        
-        error_logger.error('\n\n\n\n\n\n\n\n\n registro minimo: '+ data_verificada['registro'].min()) 
-
         periodoInicial = data_verificada['registro'].min()
         flash('El conjunto no tiene como periodo inicial {}, se reasignó a <b>{}</b>'.format(str(_periodoInicial), str(periodoInicial)), 'warning')  
     if not(data_verificada['idprograma'] == programa).all():

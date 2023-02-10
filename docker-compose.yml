@@ -38,7 +38,7 @@ services:
       - ./api/.env
     environment:
       - FLASK_DEBUG=1
-      - FLASK_APP=__init__:app
+      - FLASK_APP=__init__:create_app()
       - CLI_IES_NAME=${PLEYADES_IES_CLIENT}
     ports:
       - 3000:80

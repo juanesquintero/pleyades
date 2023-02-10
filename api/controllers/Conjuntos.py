@@ -1,22 +1,22 @@
 from flask import request, jsonify, Blueprint
-from db.pleyades.db import DB
 from db.cli.db_cli import DB as db_cli
+from db.pleyades.db import Conjunto as conjunto_model, Ejecucion as ejecucion_model, Preparacion as preparacion_model
 from schemas.conjuntoSchema import validate_post_schema, validate_put_schema, validate_nombre_schema
 from flask_jwt_extended import jwt_required
 from utils.utils import *
-# Relationsships
+
+# Relaciones
 from controllers.Programas import exists as exists_programa
 from controllers.Usuarios import exists as exists_usuario
 
 Conjunto = Blueprint('Conjunto', __name__)
-  
-db = DB.getInstance()
+execute = None
 db_cli = db_cli.getInstance()
 
 @Conjunto.route('/')
 @jwt_required()
 def get():
-    query = db.select('SELECT * FROM conjuntosdedatos;')
+    query = conjunto_model.get_all()
     ex = exception(query)
     if ex: 
         return ex
@@ -25,8 +25,8 @@ def get():
 
 @Conjunto.route('/<nombre>')
 @jwt_required()
-def getOne(nombre):
-    query = db.select("SELECT * FROM conjuntosdedatos WHERE nombre='{}';".format(nombre))
+def get_one(nombre):
+    query = conjunto_model.get_one(nombre)
     ex = exception(query)
     if ex: 
         return ex
@@ -37,7 +37,7 @@ def getOne(nombre):
 @Conjunto.route('/estado/<estado>')
 @jwt_required()
 def getByEstado(estado):
-    query = db.select("SELECT * FROM conjuntosdedatos WHERE estado='{}';".format(estado))
+    query = conjunto_model.get_estado(estado)
     ex = exception(query)
     if ex: 
         return ex
@@ -47,7 +47,7 @@ def getByEstado(estado):
 @Conjunto.route('/tipo/<tipo>')
 @jwt_required()
 def getByTipo(tipo):
-    query = db.select("SELECT * FROM conjuntosdedatos WHERE tipo='{}';".format(tipo))
+    query = conjunto_model.get_tipo(tipo)
     ex = exception(query)
     if ex: 
         return ex
@@ -58,7 +58,7 @@ def getByTipo(tipo):
 @Conjunto.route('/programa/<int:programa>')
 @jwt_required()
 def getByPrograma(programa):
-    query = db.select('SELECT * FROM conjuntosdedatos WHERE programa={};'.format(str(programa)))
+    query = conjunto_model.get_programa(programa)
     ex = exception(query)
     if ex: 
         return ex
@@ -72,11 +72,11 @@ def getByEncargado(encargado):
     estado = request.args.get('estado')
     if estado:
         if estado.lower().strip() in ['crudos', 'procesados', 'en proceso']:
-            query = db.select("SELECT * FROM conjuntosdedatos WHERE encargado='{}' AND estado='{}';".format(encargado,estado))
+            query = conjunto_model.get_encargado(encargado,estado)
         else:
             return {'msg': 'Estado invalido'}, 404
     else:
-        query = db.select("SELECT * FROM conjuntosdedatos WHERE encargado='{}';".format(encargado))
+        query = conjunto_model.get_encargado(encargado)
     ex = exception(query)
     if ex: 
         return ex
@@ -88,7 +88,7 @@ def getByEncargado(encargado):
 @Conjunto.route('/periodos/<int:inicio>/<int:fin>')
 @jwt_required()
 def getByPeriodos(inicio, fin):
-    query = db.select('SELECT * FROM conjuntosdedatos WHERE periodoInicial={} AND periodoFinal={};'.format(inicio,fin))
+    query = conjunto_model.get_rango(inicio, fin)
     ex = exception(query)
     if ex: 
         return ex
@@ -115,7 +115,7 @@ def post():
     if not body['estado'] in ['Crudos','Procesados','En Proceso']: 
         return {'error': 'estado invalido'}, 400  
     # Insert 
-    insert = db.insert(body,'conjuntosdedatos')
+    insert = conjunto_model.insert(body)
     ex = exception(insert)
     if ex: 
         return ex
@@ -143,13 +143,16 @@ def nombre():
     if not body['tipo'] in ['consulta','excel']: 
         return {'error': 'tipo invalido'}, 400  
     # Obtener el numero consecutivo para el conjunto de datos
-    sql = 'SELECT * FROM conjuntosdedatos WHERE programa={} AND periodoInicial={} AND periodoFinal={} ORDER BY numero DESC;'
-    query = db.select(sql.format(str(body['programa']),str(body['periodoInicial']),str(body['periodoFinal'])))
+    query = conjunto_model.get_numero(
+        body['programa'],
+        body['periodoInicial'],
+        body['periodoFinal']
+    )
     ex = exception(query)
     if ex: 
         return ex
     if query:
-        numero = query[0]['numero']+1
+        numero = query[0].get('numero')+1
     else:
         numero = 1
     # Obtener la sigla del nombre del programa
@@ -166,19 +169,17 @@ def nombre():
 
 @Conjunto.route('/<nombre>',methods=['DELETE'])
 @jwt_required()
-def deleteOne(nombre):
+def delete_one(nombre):
     if not(nombre):
         return {'error': 'indique el nombre por el path'}, 400
     # sql validations
     if not exists(nombre):  
         return {'error': 'Conjunto no existe'}, 404
     # delete 
-    condicion="nombre='{}'".format(nombre)
-    delete = db.delete(condicion,'conjuntosdedatos')
+    delete = conjunto_model.delete(dict(nombre=nombre))
     # delete resultados
-    condicion_resultados="conjunto='{}'".format(nombre)
-    delete = db.delete(condicion_resultados,'ejecuciones')
-    delete = db.delete(condicion_resultados,'preparaciones')
+    delete = ejecucion_model.delete(dict(conjunto=nombre))
+    delete = preparacion_model.delete(dict(conjunto=nombre))
     ex = exception(delete) 
     if ex: 
         return ex
@@ -203,21 +204,15 @@ def put(nombre):
         if not exists_usuario(body['encargado']): 
             return {'error': 'encargado invalido'}, 400  
     # Uptade 
-    condicion="nombre='{}'".format(nombre)
-    update = db.update(body,condicion,'conjuntosdedatos')
+    update = conjunto_model.update(nombre, body)
     ex = exception(update) 
     if ex: 
         return ex
     return {'msg': 'Conjunto actualizado'}, 200
 
 def exists(nombre):
-    query = db.select('SELECT * FROM conjuntosdedatos;')
+    query = conjunto_model.get_all()
     if exception(query): 
         return False
     lista = map(lambda c : c['nombre'], query) 
     return True if nombre in list(lista) else False
-
-# Funcion que retiorna una sigla optima para el nombre del programa
-def sigla_programa(nombre):
-    pass
-

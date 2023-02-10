@@ -4,7 +4,7 @@ from flask_jwt_extended import jwt_required
 from utils.utils import *
 import pandas as pd
 from schemas.resultadoSchema import validate_post_schema
-# Relationsships
+# Relaciones
 from controllers.Programas import exists as exists_programa
 
 

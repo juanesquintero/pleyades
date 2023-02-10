@@ -2,7 +2,7 @@ from flask import request, jsonify, Blueprint
 from db.cli.db_cli import DB
 from flask_jwt_extended import jwt_required
 from utils.utils import *
-# Relationsships
+# Relaciones
 from controllers.Programas import exists as exists_programa
 import pandas as pd
 import json

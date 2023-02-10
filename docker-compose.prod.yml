@@ -44,22 +44,23 @@ services:
         aliases:
           - web-host
 
-    command: gunicorn __init__:app --bind 0.0.0.0:80 --workers 3 --timeout=90
+    command: gunicorn __init__:app --bind 0.0.0.0:80 --workers 5 --timeout=90
     depends_on:
       - api
   
   api:
     restart: always
     container_name: pleyades-api
-    # build:
-    #   context: ./api
-    #   dockerfile: ./Dockerfile
-    image: juanesquintero/pleyades-api:1.0.0
+    build:
+      context: ./api
+      dockerfile: ./Dockerfile
+    image: pleyades-api:1.0.0
+    # image: juanesquintero/pleyades-api:1.0.0
     env_file:
       - ./api/.env
     environment:
       - FLASK_DEBUG=0
-      - FLASK_APP=__init__:app
+      - FLASK_APP=__init__:create_app()
       - CLI_IES_NAME=${PLEYADES_IES_CLIENT}
     volumes:
       - ./api:/app
@@ -68,7 +69,7 @@ services:
         aliases:
           - api-host
 
-    command: gunicorn __init__:app --bind 0.0.0.0:80 --workers 3 --timeout=90
+    command: gunicorn __init__:create_app() --bind 0.0.0.0:80 --workers 5 --timeout=90
 
   db:
     container_name: pleyades-db

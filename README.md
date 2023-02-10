@@ -101,9 +101,10 @@ Parar
 ```console
 docker-compose stop
 ```
+
 Eliminar 
 ```console
-docker-compose rm
+docker-compose rm -f
 ```
 
 ## Contenedores Productivos
@@ -113,7 +114,7 @@ docker-compose -f docker-compose.prod.yml stop
 ```
 Eliminar 
 ```console
-docker-compose -f docker-compose.prod.yml rm
+docker-compose -f docker-compose.prod.yml rm --force
 ```
 
 # Revisar errores (logs)

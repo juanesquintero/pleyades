@@ -17,4 +17,5 @@ PyMySQL[rsa]
 pyodbc==4.0.35
 mssql==1.0.1
 SQLAlchemy==2.0.2
-
+Flask-SQLAlchemy==3.0.3
+SQLAlchemy-serializer==1.4.1

@@ -25,7 +25,7 @@ def get():
 
 @Facultad.route('/<codigo>')
 @jwt_required()
-def getOne(codigo):
+def get_one(codigo):
     query = db.select('SELECT * FROM {} WHERE codigo={};'.format(tabla,codigo))
     ex = exception(query)
     if ex: 
@@ -82,7 +82,7 @@ def put(codigo):
 
 @Facultad.route('/<codigo>',methods=['DELETE'])
 @jwt_required()
-def deleteOne(codigo):
+def delete_one(codigo):
     if not(codigo):
         return {'error': 'indique el codigo por el path'}, 404
     # sql validations

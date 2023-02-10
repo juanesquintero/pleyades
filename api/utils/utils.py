@@ -1,12 +1,14 @@
 import re
+import sys
 import logging
+import traceback
 from decimal import Decimal
 
 error_logger = logging.getLogger('error_logger')
 
 def exception(op):
     if isinstance(op, Exception): 
-        error_logger.error('EXCEPTION: '+str(op),exc_info=True)
+        error_logger.error('EXCEPTION: '+str(op) + '   ...   ' +traceback.format_exc()+ '  ...  ' +sys.exc_info(),exc_info=True)
         return {'error': 'Ha ocurrido un error en la ejecución del servidor, si es necesario contacte al Admin del sistema para verificar el error.'}, 500 
     else:
         return False

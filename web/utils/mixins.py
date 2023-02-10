@@ -156,10 +156,8 @@ def obtener_ies_config():
         except Exception as e:
             error_logger.error('EXCEPTION: IES Config ERROR: {}'.format(e))
             return {
-                {
-                    'nombre': 'Educatic',
-                    'url': 'http://educatic.com.co/',
-                    'logo': 'http://educatic.com.co/assets/images/logo.png',
-                    'descripcion': 'Oficina: Carrera 42 No 5 SUR 145 Piso 13, oficina 125 WeWork, Medellín, Antioquia Celular: (+57) 311 634 45 26 Email: walter.alvarez@educatic.com.co Servicio y Soporte: soporte@educatic.com.co (+57) 311 634 45 26'
-                },
+                'nombre': 'Educatic',
+                'url': 'http://educatic.com.co/',
+                'logo': 'http://educatic.com.co/assets/images/logo.png',
+                'descripcion': 'Oficina: Carrera 42 No 5 SUR 145 Piso 13, oficina 125 WeWork, Medellín, Antioquia Celular: (+57) 311 634 45 26 Email: walter.alvarez@educatic.com.co Servicio y Soporte: soporte@educatic.com.co (+57) 311 634 45 26'
             }

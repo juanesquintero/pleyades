@@ -3,7 +3,7 @@ from db.cli.db_cli import DB
 from schemas.programaSchema import validate_post_schema, validate_put_schema
 from flask_jwt_extended import jwt_required
 from utils.utils import *
-# Relationsships
+# Relaciones
 from controllers.Facultades import exists as exists_facultad
 
 Programa = Blueprint('Programa', __name__)
@@ -25,7 +25,7 @@ def get():
 
 @Programa.route('/<int:codigo>')
 @jwt_required()
-def getOne(codigo):
+def get_one(codigo):
     query = db.select(
         "SELECT * FROM {} WHERE codigo={};".format(tabla, codigo))
     ex = exception(query)
@@ -102,7 +102,7 @@ def put(codigo):
 
 @Programa.route('/<int:codigo>', methods=['DELETE'])
 @jwt_required()
-def deleteOne(codigo):
+def delete_one(codigo):
     if not(codigo):
         return {'error': "indique el codigo por el path"}, 404
     # sql validations

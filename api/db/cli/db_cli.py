@@ -74,8 +74,7 @@ class DB:
 
     def close_connection(self):
         if self.cnx:
-            if self.cnx.is_connected():
-                self.cnx.close()
+            self.cnx.close()
         self.cnx = None
 
     @validate_connection

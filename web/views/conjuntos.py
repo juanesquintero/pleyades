@@ -162,13 +162,8 @@ def guardar():
     
         # VERIFICACION de formato
         data = pd.read_excel(archivo)
-
-        error_logger.error('\n\n\n\n\nPeriodoInicial:  {} '.format(conjunto.get('periodoInicial')))
-
         validacion, mensaje_error, data_verificada, periodoInicial = verificar_data(data, conjunto.get('periodoInicial'), conjunto.get('periodoFinal'), conjunto.get('programa'))
         conjunto['periodoInicial'] =  periodoInicial
-
-        error_logger.error('\n\n\n\n\n\n\n\n\n Conjunto: '+ conjunto.__str__()) 
 
         # Obtener nombre del conjunto desde el api
         nombre, numero = obtener_nombre_conjunto(conjunto)
@@ -195,14 +190,10 @@ def guardar():
             data = pd.DataFrame(body)
         else:
             return render_template('utils/mensaje.html', mensaje='Consulta fallida a la base de datos')
-        
-        error_logger.error('\n\n\n\n\nPeriodoInicial:  {} '.format(conjunto.get('periodoInicial')))
-        
+
         # VERIFICACION de formato
         validacion, mensaje_error, data_verificada, periodoInicial = verificar_data(data, conjunto.get('periodoInicial'), conjunto.get('periodoFinal'), conjunto.get('programa'))
         conjunto['periodoInicial'] =  periodoInicial
-        
-        error_logger.error('\n\n\n\n\n\n\n\n\n Conjunto: '+ conjunto.__str__()) 
 
         # Obtener nombre del conjunto desde el api
         nombre, numero = obtener_nombre_conjunto(conjunto)
