@@ -177,10 +177,10 @@ def delete_one(nombre):
     if not exists(nombre):  
         return {'error': 'Conjunto no existe'}, 404
     # delete 
-    delete = conjunto_model.delete(dict(nombre=nombre))
+    delete = conjunto_model.delete(nombre)
     # delete resultados
-    delete = ejecucion_model.delete(dict(conjunto=nombre))
-    delete = preparacion_model.delete(dict(conjunto=nombre))
+    delete = ejecucion_model.delete_conjunto(nombre)
+    delete = preparacion_model.delete_conjunto(nombre)
     ex = exception(delete) 
     if ex: 
         return ex
