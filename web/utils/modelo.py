@@ -29,35 +29,35 @@ def verificar_data(data, periodoInicial, periodoFinal, programa):
         data.columns = map(str.lower, data.columns)
     except Exception as e:
         error_logger.error(e)
-        return False, 'El conjunto no tiene columnas', None, None
+        return False, 'El conjunto no tiene columnas', None, periodoInicial
 
     # Verificar si hay registros
     if not(len(data) > 0):
-        return False, 'El conjunto no tiene registros (esta vacio)', None, None
+        return False, 'El conjunto no tiene registros (esta vacio)', None, periodoInicial
 
     # Verificar Si todas las columnas existen
     if not(all(col in data.columns for col in columnas)):
-        return False, 'El conjunto ingresado no posee las columnas requeridas', None, None
+        return False, 'El conjunto ingresado no posee las columnas requeridas', None, periodoInicial
     if not(len(data.columns) == len(columnas)):
-        return False, 'El conjunto ingresado tiene mas columnas de las requeridas', None, None
+        return False, 'El conjunto ingresado tiene mas columnas de las requeridas', None, periodoInicial
     # Verificar si los tipos de datos de colunma son correctos
     try:
         data_verificada = asignar_tipos(data)
     except Exception as e:
         error_logger.error(e)
-        return False, 'El conjunto ingresado no tiene los tipos de dato por columna requeridos', None, None
+        return False, 'El conjunto ingresado no tiene los tipos de dato por columna requeridos', None, periodoInicial
     # Verificar si en conjunto posee mas de un  valor en la columna programa 
     if not(len(set(data_verificada['programa'].tolist()))==1):
-        return False, 'El conjunto tiene resgistros de mas de un programa, los modelos se ejecutan por programa', None, None
+        return False, 'El conjunto tiene resgistros de mas de un programa, los modelos se ejecutan por programa', None, periodoInicial
     # Verificar si en conjunto posee los valores de periodo Inicial y Final Correctamente  
     if not(data_verificada['registro'].max() == periodoFinal):
-        return False, 'El conjunto no tiene como periodo final {}, verifique los registros'.format(str(periodoFinal)), None, None
+        return False, 'El conjunto no tiene como periodo final {}, verifique los registros'.format(str(periodoFinal)), None, periodoInicial
     if not(data_verificada['registro'].min() == periodoInicial):
         _periodoInicial = periodoInicial
         periodoInicial = data_verificada['registro'].min()
         flash('El conjunto no tiene como periodo inicial {}, se reasignó a <b>{}</b>'.format(str(_periodoInicial), str(periodoInicial)), 'warning')  
     if not(data_verificada['idprograma'] == programa).all():
-        return False, 'El conjunto no pertenece al programa indicado, verifique los registros', None    , None
+        return False, 'El conjunto no pertenece al programa indicado, verifique los registros', None, periodoInicial
 
     # Verificacion correcta
     return True, None, data_verificada, periodoInicial
@@ -226,7 +226,8 @@ def ejecutar_modelo(data):
     #     clf = pickle.load(f)
     # clf = pickle.load(open('clasificador.sav', 'rb'))
 
-    predc_sem_act = data_a_predecir[['documento','nombre_completo','desertor', 'idprograma', 'idestado']]
+    # predc_sem_act = data_a_predecir[['documento','nombre_completo','desertor', 'idprograma', 'idestado']]
+    predc_sem_act = data_a_predecir[['documento','nombre_completo','desertor', 'idprograma']]
     
     predc_sem_act['prediccion'] = mejor_clasificador.predict(data_a_predecir[col_preparadas])
 
@@ -261,7 +262,8 @@ def ejecutar_modelo(data):
         'precision': float(round(AML_best['Precision Media de Prueba'].tolist()[0]*100,2)),
         'periodo_anterior': str(periodo_a_predecir),
         'total_desertores_{}'.format(periodo_a_predecir):  str(len(data_a_predecir[data_a_predecir['desertor']==1]))  , 
-        'total_desertores_{}_matriculados'.format(periodo_a_predecir):  str(len(data_a_predecir.query('desertor==1 & idestado==6' )))  , 
+        # 'total_desertores_{}_matriculados'.format(periodo_a_predecir):  str(len(data_a_predecir.query('desertor==1 & idestado==6' ))), 
+        'total_desertores_{}_matriculados'.format(periodo_a_predecir):  str(len(data_a_predecir.query('desertor==1' ))), 
     }
     
     # Reasignanr el tipo de la columna documento

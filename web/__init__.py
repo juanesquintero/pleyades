@@ -57,7 +57,7 @@ app.register_blueprint(Programa, url_prefix=base_path+'admin/programas')
 app.register_blueprint(Usuario, url_prefix=base_path+'admin/usuarios')
 app.register_blueprint(Conjunto, url_prefix=base_path+'conjuntos')
 app.register_blueprint(Resultado, url_prefix=base_path+'resultados')
-app.register_blueprint(Tablero, url_prefix=base_path+'_deprecado/#TABLEROS')
+# app.register_blueprint(Tablero, url_prefix=base_path+'_deprecado/#TABLEROS')
 app.register_blueprint(ConjuntoAdmin, url_prefix=base_path+'admin/conjuntos')
 app.register_blueprint(ResultadoAdmin, url_prefix=base_path+'admin/resultados')
 

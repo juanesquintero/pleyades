@@ -190,11 +190,11 @@ def guardar():
             data = pd.DataFrame(body)
         else:
             return render_template('utils/mensaje.html', mensaje='Consulta fallida a la base de datos')
-        
+
         # VERIFICACION de formato
         validacion, mensaje_error, data_verificada, periodoInicial = verificar_data(data, conjunto.get('periodoInicial'), conjunto.get('periodoFinal'), conjunto.get('programa'))
         conjunto['periodoInicial'] =  periodoInicial
-        
+
         # Obtener nombre del conjunto desde el api
         nombre, numero = obtener_nombre_conjunto(conjunto)
         if not nombre: return numero
