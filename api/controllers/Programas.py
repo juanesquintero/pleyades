@@ -2,8 +2,8 @@ from flask import request, jsonify, Blueprint
 from db.cli.db_cli import DB
 from schemas.programaSchema import validate_post_schema, validate_put_schema
 from flask_jwt_extended import jwt_required
-from utils.utils import *
-# Relationsships
+from utils.utils import exception, _format, _format
+# Relaciones
 from controllers.Facultades import exists as exists_facultad
 
 Programa = Blueprint('Programa', __name__)
@@ -11,6 +11,7 @@ db = DB.getInstance()
 
 tabla = 'VWPROGRAMADESERCION'
 
+@Programa.route('')
 @Programa.route('/')
 @jwt_required()
 def get():
@@ -20,12 +21,12 @@ def get():
         return ex
     if not(query):
         return {'msg': "No hay programas"}, 404
-    return jsonify(format(query))
+    return jsonify(_format(query))
 
 
 @Programa.route('/<int:codigo>')
 @jwt_required()
-def getOne(codigo):
+def get_one(codigo):
     query = db.select(
         "SELECT * FROM {} WHERE codigo={};".format(tabla, codigo))
     ex = exception(query)
@@ -33,7 +34,7 @@ def getOne(codigo):
         return ex
     if not(query):
         return {'msg': "No hay concidencias"}, 404
-    return jsonify(format(query)[0])
+    return jsonify(_format(query)[0])
 
 
 @Programa.route('facultad/<int:facultad>')
@@ -46,7 +47,7 @@ def getByFacultad(facultad):
         return ex
     if not(query):
         return {'msg': "No hay concidencias"}, 404
-    return jsonify(format(query))
+    return jsonify(_format(query))
 
 
 @Programa.route('', methods=['POST'])
@@ -102,7 +103,7 @@ def put(codigo):
 
 @Programa.route('/<int:codigo>', methods=['DELETE'])
 @jwt_required()
-def deleteOne(codigo):
+def delete_one(codigo):
     if not(codigo):
         return {'error': "indique el codigo por el path"}, 404
     # sql validations

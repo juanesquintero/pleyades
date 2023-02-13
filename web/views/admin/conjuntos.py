@@ -1,12 +1,9 @@
-from flask import request, session, Blueprint, render_template, redirect, send_file, url_for
+import os
+from flask import request, Blueprint, render_template, redirect, url_for
 from dotenv import load_dotenv
-from datetime import datetime
 from ast import literal_eval
-import os, sys, json
-from views.admin.resultados import eliminar_ejecucion, eliminar_preparacion
-
 from views.auth import only_admin
-from services.API import get, post, put, delete
+from services.API import get, put, delete
 
 from utils.mixins import *
 

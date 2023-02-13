@@ -1,135 +1,265 @@
-import os
-from functools import wraps
-from dotenv import load_dotenv
-import mysql.connector as mysql
-
-import ssl
-ctx = ssl.SSLContext()
-ctx.minimum_version = ssl.TLSVersion.TLSv1_1
+from sqlalchemy_serializer import SerializerMixin
+from sqlalchemy.dialects.mysql import JSON
+from sqlalchemy import update
+from sqlalchemy.ext.hybrid import hybrid_property
+from app import  db
 
 
-load_dotenv()
-
-_user = os.getenv('MYSQL_USER')
-_password = os.getenv('MYSQL_PASSWORD')
-_database = os.getenv('MYSQL_DATABASE')
-_host = os.getenv('MYSQL_SERVER')
-_port = os.getenv('MYSQL_SERVER_PORT')
-
-
-def validate_connection(f):
-    @wraps(f)
-    def decorated_function(self, *args, **kwargs):
-        if not(self.cnx):
-            self.connect()
-            raise Exception('Conexión caida a la BD de PLEYADES!')
-        else:
-            try:
-                return f(self, *args, **kwargs)
-            except Exception as e:
-                self.close_connection()
-                self.connect()
-                raise Exception('Conexión caida a la BD de PLEYADES!')
-    return decorated_function
+class DTO():    
+    def insert(_class, fields):
+        row = _class(**fields)
+        db.session.add(row)
+        db.session.commit()
+        return row
+    
+    def delete(_class, field):
+        row = _class._get_one(field)
+        db.session.delete(row)
+        db.session.commit()
+        return row
+    
+    def update(sql):
+        row = db.session.execute(sql)
+        db.session.commit()
+        return row
 
 
-class DB:
-    __instance = None
+class Usuario(db.Model, SerializerMixin):
+    __tablename__ = 'usuarios'
+    correo = db.Column(db.String, primary_key=True, nullable=False)
+    nombre = db.Column(db.String, nullable=False)
+    clave = db.Column(db.String, nullable=False)
+    rol = db.Column(db.String, nullable=False)
 
-    @staticmethod
-    def getInstance():
-        if DB.__instance == None:
-            DB()
-        return DB.__instance
+    def get_all():
+        return [row.to_dict() for row in Usuario.query.all()]
 
-    def __init__(self):
-        if DB.__instance != None:
-            raise Exception('Esta clase es un Singleton!')
-        else:
-            self.cnx = None
-            self.connect()
-            DB.__instance = self
+    def _get_one(correo):
+        return Usuario.query.filter(Usuario.correo==correo).first_or_404()
+    
+    def get_one(correo):
+        return Usuario._get_one(correo).to_dict()
+    
+    def get_rol(rol):
+        query = Usuario.query.filter(Usuario.rol==rol).all()
+        return [row.to_dict() for row in query]
 
-    def connect(self):
-        try:
-            self.cnx = mysql.MySQLConnection(
-                host=_host,
-                port=_port,
-                user=_user,
-                password=_password,
-                database=_database,
-            )
-        except Exception as e:
-            print(e, flush=True)
-            self.close_connection()
+    def get_login(correo,clave):
+        row = Usuario.query.filter(
+            Usuario.correo==correo,
+            Usuario.clave==clave
+        ).one()
+        return row.to_dict()
+    
+    def insert(fields):
+        return DTO.insert(Usuario, fields)
 
-    def close_connection(self):
-        if self.cnx:
-            if self.cnx.is_connected():
-                self.cnx.close()
-        self.cnx = None
+    def delete(correo):
+        return DTO.delete(Usuario, correo)
+    
+    def update(correo, fields):
+        return DTO.update(
+            update(Usuario).where(Usuario.correo == correo).values(**fields)
+        )
 
-    def execute(self, sql):
-        # Manejar error de ejecución
-        try:
-            if self.cnx is None:
-                self.connect()
-                return self.exception
-            cur = self.cnx.cursor()
-            cur.execute(sql)
-            self.cnx.commit()
-            cur.close
-            self.cnx.close
-            return cur
-        except Exception as e:
-            self.connect()
-            return e
 
-    @validate_connection
-    def insert(self, body, tabla):
-        # Keys Body
-        columns = str(tuple(body.keys())).replace("'", "`")
-        # Values Body
-        values = str(tuple(body.values()))
-        # Sentencia SQL
-        sql = "INSERT INTO {} {} VALUES{}".format(
-            tabla, columns, values).replace('None', 'NULL')
-        return self.execute(sql)
 
-    @validate_connection
-    def select(self, sql):
-        try:
-            if self.cnx is None:
-                self.connect()
-                return self.exception
-            cur = self.cnx.cursor()
-            cur.execute(sql)
-        except Exception as e:
-            self.connect()
-            return e
-        lista = []
-        rows = cur.fetchall()
-        columns = [i[0] for i in cur.description]
-        for row in rows:
-            # Create a zip object from two lists
-            REGISTRO = dict(zip(columns, row))
-            # Create a dictionary from zip object
-            json = dict(REGISTRO)
-            lista.append(json)
-        cur.close
-        self.cnx.close
-        return lista
+class Conjunto(db.Model, SerializerMixin):
+    __tablename__ = 'conjuntosdedatos'
 
-    @validate_connection
-    def update(self, body, condicion, tabla):
-        # Sentencia SQL
-        set_values = '`'+str(body)[2:-1].replace("':", "`=").replace(", '", ", `")
-        sql = "UPDATE {} SET {} WHERE {};".format(
-            tabla, set_values, condicion).replace('None', 'NULL')
-        return self.execute(sql)
+    programa = db.Column(db.Integer, nullable=False)
+    encargado = db.Column(db.String, nullable=False)
+    nombre = db.Column(db.String, primary_key=True, nullable=False)
+    tipo = db.Column(db.String, nullable=False)
+    numero = db.Column(db.Integer, nullable=False)
+    periodoInicial = db.Column(db.Integer, nullable=False)
+    periodoFinal = db.Column(db.Integer, nullable=False)
+    estado = db.Column(db.String, nullable=False)
+    
+    def get_all():
+        return [row.to_dict() for row in Conjunto.query.all()]
 
-    @validate_connection
-    def delete(self, condicion, tabla):
-        # Sentencia SQL
-        sql = "DELETE FROM {} WHERE {};".format(tabla, condicion)
-        return self.execute(sql)
+    def get_estado(estado):
+        query = Conjunto.query.filter(Conjunto.estado==estado)
+        return [row.to_dict() for row in query.all()]
+    
+    def get_tipo(tipo):
+        query = Conjunto.query.filter(Conjunto.tipo==tipo)
+        return [row.to_dict() for row in query.all()]
+        
+    def get_programa(programa):
+        query = Conjunto.query.filter(Conjunto.programa==programa)
+        return [row.to_dict() for row in query.all()]
+
+    def get_rango(inicio, fin):
+        query = Conjunto.query.filter(
+            Conjunto.periodoInicial==inicio,
+            Conjunto.periodoFinal==fin,
+        )
+        return [row.to_dict() for row in query.all()]
+
+    def get_numero(programa, inicio, fin):
+        query = Conjunto.query.filter(
+            Conjunto.programa==programa,
+            Conjunto.periodoInicial==inicio,
+            Conjunto.periodoFinal==fin
+        ).order_by(Conjunto.numero.desc())
+        return [row.to_dict() for row in query.all()]
+
+    def get_encargado(encargado, estado=None):
+        query = Conjunto.query.filter(Conjunto.encargado==encargado)
+        if estado:
+            query = query.filter(Conjunto.estado==estado)
+        return [row.to_dict() for row in query.all()]
+
+    def _get_one(nombre):
+        return Conjunto.query.filter(Conjunto.nombre==nombre).first_or_404()
+    
+    def get_one(nombre):
+        return Conjunto._get_one(nombre).to_dict()
+        
+    def insert(fields):
+        return DTO.insert(Conjunto, fields)
+
+    def delete(nombre):
+        return DTO.delete(Conjunto, nombre)
+    
+    def update(nombre, fields):
+        return DTO.update(
+            update(Conjunto).where(Conjunto.nombre == nombre).values(**fields)
+        )
+
+
+class Preparacion(db.Model, SerializerMixin):
+    __tablename__ = 'preparaciones'
+    serialize_only = (
+        'preparador',
+        'conjunto',
+        'nombre',
+        'numero',
+        'fechaInicial',
+        'fechaFinal',
+        'estado',
+        'observaciones', 
+        'duracion'
+    )
+
+    preparador = db.Column(db.String, nullable=False)
+    conjunto = db.Column(db.String, nullable=False)
+    nombre = db.Column(db.String, primary_key=True, nullable=False)
+    numero = db.Column(db.Integer, nullable=False)
+    fechaInicial = db.Column(db.DateTime, nullable=False)
+    fechaFinal = db.Column(db.DateTime, nullable=False)
+    estado = db.Column(db.String, nullable=False)
+    observaciones = db.Column(JSON, nullable=True)
+
+    @hybrid_property
+    def duracion(self):
+        return int((self.fechaFinal - self.fechaInicial).total_seconds())
+        
+    @duracion.expression
+    def duracion(cls):
+        return int((cls.fechaFinal - cls.fechaInicial).total_seconds())
+
+    def get_all():
+        return [row.to_dict() for row in Preparacion.query.all()]
+    
+    def get_conjunto(conjunto):
+        query = Preparacion.query.filter(Preparacion.conjunto==conjunto).all()
+        return [row.to_dict() for row in query]
+    
+    def get_consecutivo(conjunto):
+        query = Preparacion.query.filter(Preparacion.conjunto==conjunto)
+        return [row.to_dict() for row in query.order_by(Preparacion.numero.desc()).all()]
+    
+    def get_preparador(preparador):
+        query = Preparacion.query.filter(Preparacion.preparador==preparador).all()
+        return [row.to_dict() for row in query]
+
+    def _get_one(nombre):
+        return Preparacion.query.filter(Preparacion.nombre==nombre).first_or_404()
+    
+    def get_one(nombre):
+        return Preparacion._get_one(nombre).to_dict()
+    
+    def insert(fields):
+        return DTO.insert(Preparacion, fields)
+
+    def delete(nombre):
+        return DTO.delete(Preparacion, nombre)
+
+    def delete_conjunto(conjunto):
+        return Preparacion.__table__.delete().where(Preparacion.conjunto==conjunto)
+    
+    def update(nombre, fields):
+        return DTO.update(
+            update(Preparacion).where(Preparacion.nombre == nombre).values(**fields)
+        )
+
+class Ejecucion(db.Model, SerializerMixin):
+    __tablename__ = 'ejecuciones'
+    serialize_only = (
+        'ejecutor',
+        'conjunto',
+        'nombre',
+        'numero',
+        'fechaInicial',
+        'fechaFinal',
+        'estado',
+        'precision_modelo',
+        'resultados', 
+        'duracion'
+    )
+
+    ejecutor = db.Column(db.String, nullable=False)
+    conjunto = db.Column(db.String, nullable=False)
+    nombre = db.Column(db.String, primary_key=True, nullable=False)
+    numero = db.Column(db.Integer, nullable=False)
+    fechaInicial = db.Column(db.DateTime, nullable=False)
+    fechaFinal = db.Column(db.DateTime, nullable=False)
+    estado = db.Column(db.String, nullable=False)
+    precision_modelo = db.Column(db.Float, nullable=False)
+    resultados = db.Column(db.String, nullable=False)
+
+    @hybrid_property
+    def duracion(self):
+        return int((self.fechaFinal - self.fechaInicial).total_seconds())
+        
+    @duracion.expression
+    def duracion(cls):
+        return int((cls.fechaFinal - cls.fechaInicial).total_seconds())
+
+    def get_all():
+        return [row.to_dict() for row in Ejecucion.query.all()]
+
+    def get_conjunto(conjunto):
+        query = Ejecucion.query.filter(Ejecucion.conjunto==conjunto).all()
+        return [row.to_dict() for row in query]
+    
+    def get_consecutivo(conjunto):
+        query = Ejecucion.query.filter(Ejecucion.conjunto==conjunto)
+        return [row.to_dict() for row in query.order_by(Ejecucion.numero.desc()).all()]
+    
+    def get_ejecutor(ejecutor):
+        query = Ejecucion.query.filter(Ejecucion.ejecutor==ejecutor).all()
+        return [row.to_dict() for row in query]
+
+    def _get_one(nombre):
+        return Ejecucion.query.filter(Ejecucion.nombre==nombre).first_or_404()
+    
+    def get_one(nombre):
+        return Ejecucion._get_one(nombre).to_dict()
+    
+    def insert(fields):
+        return DTO.insert(Ejecucion, fields)
+
+    def delete(nombre):
+        return DTO.delete(Ejecucion, nombre)
+    
+    def delete_conjunto(conjunto):
+        return Ejecucion.__table__.delete().where(Ejecucion.conjunto==conjunto)
+    
+    def update(nombre, fields):
+        return DTO.update(
+            update(Ejecucion).where(Ejecucion.nombre == nombre).values(**fields)
+        )

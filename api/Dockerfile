@@ -23,6 +23,9 @@ RUN apt-get install -y libgssapi-krb5-2
 
 
 #······················ Python App ······················
+
+RUN apt-get install -y python3-pymysql
+
 # Update pip
 RUN pip install --upgrade pip
 

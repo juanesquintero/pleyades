@@ -1,8 +1,8 @@
 from flask import request, jsonify, Blueprint
 from db.cli.db_cli import DB
 from flask_jwt_extended import jwt_required
-from utils.utils import *
-# Relationsships
+from utils.utils import exception, _format
+# Relaciones
 from controllers.Programas import exists as exists_programa
 import pandas as pd
 import json
@@ -23,7 +23,7 @@ def get_periodo(periodo: int):
     if ex: 
         return ex
     if not(query):  return msg_error
-    return jsonify(format(query)) 
+    return jsonify(_format(query)) 
 
 @IES.route('/totales/<int:periodo>')
 @jwt_required()
@@ -34,7 +34,7 @@ def get_totales_periodo(periodo: int):
     if ex: 
         return ex
     if not(query):  return msg_error
-    return jsonify(format(query)) 
+    return jsonify(_format(query)) 
 
 @IES.route('/programa/<int:programa>')
 @jwt_required()
@@ -45,7 +45,7 @@ def get_programa(programa: int):
     if ex: 
         return ex
     if not(query):  return msg_error
-    return jsonify(format(query)) 
+    return jsonify(_format(query)) 
 
 @IES.route('/programa/<int:programa>/<int:periodo>')
 @jwt_required()
@@ -56,7 +56,7 @@ def get_periodo_programa(programa: int, periodo: int):
     if ex: 
         return ex
     if not(query):  return msg_error
-    return jsonify(format(query))
+    return jsonify(_format(query))
 
 @IES.route('/periodos')
 @jwt_required()
@@ -70,7 +70,7 @@ def get_periodos():
     periodos_list = [ int(p['periodo']) for p in query]
     periodos =  sorted(periodos_list)
     if not(periodos):  return msg_error
-    return jsonify(format(periodos))
+    return jsonify(_format(periodos))
 
 @IES.route('/programas')
 @jwt_required()
@@ -85,7 +85,7 @@ def get_programas():
     programas_df['idprograma'] = programas_df['idprograma'].astype(int)
     programas =  json.loads(programas_df.to_json(orient='records'))
     if not(programas):  return msg_error
-    return jsonify(format(programas))
+    return jsonify(_format(programas))
     
 @IES.route('/programas/<int:periodo>')
 @jwt_required()
@@ -100,4 +100,4 @@ def get_programas_by_periodo(periodo: int):
     programas_df['idprograma'] = programas_df['idprograma'].astype(int)
     programas =  json.loads(programas_df.to_json(orient='records'))
     if not(programas):  return msg_error
-    return jsonify(format(programas))
+    return jsonify(_format(programas))

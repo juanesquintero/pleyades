@@ -1,12 +1,16 @@
 import re
 import logging
+import traceback
 from decimal import Decimal
 
 error_logger = logging.getLogger('error_logger')
 
 def exception(op):
     if isinstance(op, Exception): 
-        error_logger.error('EXCEPTION: '+str(op),exc_info=True)
+        message, exception_info = 'EXCEPTION: {}'.format(op), traceback.format_exc()
+        if exception_info:
+            message += '   ---->   {}'.format(exception_info) 
+        error_logger.error(message, exc_info=True)
         return {'error': 'Ha ocurrido un error en la ejecución del servidor, si es necesario contacte al Admin del sistema para verificar el error.'}, 500 
     else:
         return False
@@ -31,7 +35,7 @@ def decimal_format(obj: dict):
             obj[k] = int(v)
     return obj
 
-def format(query):
+def _format(query):
     if isinstance(query , list):
         for obj in query:
             if isinstance(obj, dict):   
