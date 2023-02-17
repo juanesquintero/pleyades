@@ -114,7 +114,7 @@ docker-compose -f docker-compose.prod.yml stop
 ```
 Eliminar 
 ```console
-docker-compose -f docker-compose.prod.yml rm --force
+docker-compose -f docker-compose.prod.yml rm -f
 ```
 
 # Revisar errores (logs)
@@ -134,8 +134,19 @@ $     ...    web/logs/ERRORS.log
 $     ...    web/logs/GENERALS.log
 ```
 
+
+# Aplicar cambios 
+```console
+$ git pull origin --force
+$ docker-compose -f docker-compose.prod.yml stop
+$ docker-compose -f docker-compose.prod.yml rm -f
+$ docker-compose -f docker-compose.prod.yml up nginx -d
+````
+
 <br>
 <br>
+
+
 
 # Instalación Docker (Engine)
 
