@@ -99,7 +99,7 @@ def delete_one(codigo):
     
 def exists(codigo):
     codigo = int(codigo)
-    query = db.select("SELECT * FROM {};".format(tabla))
+    query = db.select('SELECT * FROM {};'.format(tabla))
     if exception(query): 
         return False
     lista = map(lambda f : f['codigo'], query) 

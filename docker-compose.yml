@@ -55,7 +55,6 @@ services:
     image: mysql:8.0.3
     cap_add:
       - SYS_NICE
-    restart: always
     env_file:
       - ./api/.env
     environment:
