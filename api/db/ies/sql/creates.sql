@@ -14,7 +14,7 @@ CREATE TABLE VWPROGRAMADESERCION (
   nombre VARCHAR(200) NOT NULL,
   nombre_corto VARCHAR(10) NOT NULL,
   facultad INT NOT NULL,
-  nombre_facultad VARCHAR(200) NOT NULL);
+  nombre_facultad VARCHAR(200));
 GO
 
 -- Table Desercion Crudos
