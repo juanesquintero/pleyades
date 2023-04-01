@@ -353,7 +353,7 @@ def ejecutar():
         if act_estado: return act_estado
         return render_template('utils/mensaje.html', mensaje='La ejecución falló', submensaje=resultados_desertores)
 
-    # Guardar registro de los desertores en la BD del cli
+    # Guardar registro de los desertores en la BD del ies
     
     # Actualizar los resultados a ultimo 
     endpoint_ultimo = 'desercion/resultados/ultimo/{}/{}'

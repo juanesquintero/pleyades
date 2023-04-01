@@ -1,5 +1,5 @@
 from flask import request, jsonify, Blueprint
-from db.cli.db_cli import DB as db_cli
+from db.ies.db_ies import DB as db_ies
 from db.pleyades.db import Conjunto as conjunto_model, Ejecucion as ejecucion_model, Preparacion as preparacion_model
 from schemas.conjuntoSchema import validate_post_schema, validate_put_schema, validate_nombre_schema
 from flask_jwt_extended import jwt_required
@@ -11,7 +11,7 @@ from controllers.Usuarios import exists as exists_usuario
 
 Conjunto = Blueprint('Conjunto', __name__)
 execute = None
-db_cli = db_cli.getInstance()
+db_ies = db_ies.getInstance()
 
 @Conjunto.route('')
 @Conjunto.route('/')
@@ -157,7 +157,7 @@ def nombre():
     else:
         numero = 1
     # Obtener la sigla del nombre del programa
-    programa = db_cli.select('SELECT * FROM VWPROGRAMADESERCION WHERE codigo={};'.format(str(body['programa'])))
+    programa = db_ies.select('SELECT * FROM VWPROGRAMADESERCION WHERE codigo={};'.format(str(body['programa'])))
     ex = exception(programa)
     if ex: 
         return ex

@@ -45,7 +45,7 @@ services:
       - 3000:80
     links:
       - db:db
-      - db-cli:db-cli
+      - db-ies:db-ies
     networks:
       - dev-net
     depends_on:
@@ -67,18 +67,18 @@ services:
     networks:
       - dev-net
 
-  db-cli:
+  db-ies:
     image: mcr.microsoft.com/mssql/server:2019-CU3-ubuntu-18.04
     user: '0:0'
     container_name: pleyades-client-db
     ports:
       - 1433:1433
     env_file:
-      - ./api/db/cli/.env
+      - ./api/db/ies/.env
     volumes:
-      - ./api/db/cli/sqlserver-data:/var/opt/mssql
-      - ./api/db/cli/sql:/tmp/sql
-      - ./api/db/cli/init.sh:/tmp/init.sh
+      - ./api/db/ies/sqlserver-data:/var/opt/mssql
+      - ./api/db/ies/sql:/tmp/sql
+      - ./api/db/ies/init.sh:/tmp/init.sh
     networks:
       - dev-net
     command: sh /tmp/init.sh
@@ -90,7 +90,7 @@ services:
       - 8080:8080
     links:
       - db:db
-      - db-cli:db-cli
+      - db-ies:db-ies
     networks:
       - dev-net
       # - pleyades-prod_deploy-net
