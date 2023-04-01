@@ -1,5 +1,5 @@
 from flask import request, jsonify, Blueprint
-from db.ies.db_ies import DB as db_ies
+from db.ies.db import DB as db_ies
 from db.pleyades.db import Conjunto as conjunto_model, Ejecucion as ejecucion_model, Preparacion as preparacion_model
 from schemas.conjuntoSchema import validate_post_schema, validate_put_schema, validate_nombre_schema
 from flask_jwt_extended import jwt_required
