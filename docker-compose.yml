@@ -80,7 +80,11 @@ services:
       - ./api/db/cli/sql/init.sql:/tmp/init.sql
     networks:
       - dev-net
-    command: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $MSSQL_SA_PASSWORD -i /tmp/init.sql
+    command: >
+      /bin/bash -c "
+        /opt/mssql/bin/sqlservr &
+        /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $MSSQL_SA_PASSWORD -i /tmp/init.sql
+      "
         
   adminer:
     container_name: pleyades-adminer

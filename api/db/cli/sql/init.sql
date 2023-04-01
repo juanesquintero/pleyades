@@ -117,3 +117,5 @@ CREATE TABLE TBLDES_RESULTADO_PREDICCION (
   idprograma VARCHAR(30) NOT NULL,
   blnultimo INT NULL);
 GO
+
+-- Inserts
