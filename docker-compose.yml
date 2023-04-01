@@ -77,14 +77,11 @@ services:
       - ./api/db/cli/.env
     volumes:
       - ./api/db/cli/sqlserver-data:/var/opt/mssql
-      - ./api/db/cli/sql/init.sql:/tmp/init.sql
+      - ./api/db/cli/sql:/tmp/sql
+      - ./api/db/cli/init.sh:/tmp/init.sh
     networks:
       - dev-net
-    command: >
-      /bin/bash -c "
-        /opt/mssql/bin/sqlservr &
-        /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $MSSQL_SA_PASSWORD -i /tmp/init.sql
-      "
+    command: sh /tmp/init.sh
         
   adminer:
     container_name: pleyades-adminer
