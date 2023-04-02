@@ -1,5 +1,5 @@
 from flask import request, jsonify, Blueprint
-from db.cli.db_cli import DB
+from db.ies.db import DB
 from flask_jwt_extended import jwt_required
 from utils.utils import exception, _format
 # Relaciones

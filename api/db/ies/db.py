@@ -14,6 +14,8 @@ _host = os.getenv('CLI_DB_SERVER')
 _user = os.getenv('CLI_DB_USER')
 _password = os.getenv('CLI_DB_PASSWORD')
 
+str_conn = 'mssql+pyodbc://{}:{}@{}:1433/{}?driver=ODBC+Driver+17+for+SQL+SERVER'.format(_user, _password, _host, _db)
+
 
 # _drivers = [d for d in pyodbc.drivers()]
 # driver = _drivers[-1] if _drivers else 'SQL Server'
@@ -59,14 +61,7 @@ class DB:
 
     def connect(self):
         try:
-            # self.cnx = pyodbc.connect(
-            #     'Driver={ODBC Driver 17 for SQL SERVER};'
-            #     'Server='+_host+';'
-            #     'Database='+_db+';'
-            #     'UID='+_user+';'
-            #     'PWD='+_password+';'
-            # )
-            engine = create_engine('mssql+pyodbc://{}:{}@{}:1433/{}?driver=ODBC+Driver+17+for+SQL+SERVER'.format(_user, _password, _host, _db))
+            engine = create_engine(str_conn)
             self.cnx = engine.raw_connection()
         except Exception as e:
             log_error(e)

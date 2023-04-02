@@ -51,11 +51,11 @@ services:
   api:
     restart: always
     container_name: pleyades-api
-    # build:
-    #   context: ./api
-    #   dockerfile: ./Dockerfile
-    # image: pleyades-api:1.0.0
-    image: juanesquintero/pleyades-api:1.0.1
+    build:
+      context: ./api
+      dockerfile: ./Dockerfile
+    image: pleyades-api:1.0.0
+    # image: juanesquintero/pleyades-api:1.0.1
     env_file:
       - ./api/.env
     environment:
@@ -70,24 +70,6 @@ services:
           - api-host
 
     command: gunicorn wsgi:app --bind 0.0.0.0:80 --workers 3 --timeout=90
-
-  db:
-    container_name: pleyades-db
-    image: mysql:8.0
-    cap_add:
-      - SYS_NICE
-    restart: always
-    env_file:
-      - ./api/.env
-    environment:
-      - MYSQL_ROOT_PASSWORD=${PLEYADES_MYSQL_ROOT_PASSWORD}
-    volumes:
-      - ./api/db/pleyades/prod:/var/lib/mysql
-      - ./api/db/pleyades/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
-    networks:
-      deploy-net:
-        aliases:
-          - db-host
 
 networks:
   deploy-net:
