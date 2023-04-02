@@ -1,9 +1,6 @@
 ## Open permissions to this file
 chmod +x /tmp/init.sh
 
-## Run MSSQLServer service
-/opt/mssql/bin/sqlservr
-
 ## Reuse variables
 sqlcmd='/opt/mssql-tools/bin/sqlcmd -S localhost -U'
 
