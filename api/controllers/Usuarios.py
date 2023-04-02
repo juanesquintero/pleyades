@@ -1,5 +1,5 @@
 from flask import request, jsonify, Blueprint
-from schemas.usuarioSchema import validate_post_schema, validate_put_schema
+from schemas.usuario_schema import validate_post_schema, validate_put_schema
 from db.pleyades.db import Usuario as usuario_model
 from flask_jwt_extended import jwt_required
 from hashlib import md5

@@ -5,8 +5,8 @@ from flask import session
 
 dotenv.load_dotenv()
 
-api_path = 'http://api-host/'
-# api_path = 'http://api-host/' + os.getenv('CLI_IES_NAME') + '/'
+api_path = 'http://api/'
+# api_path = 'http://api/' + os.getenv('CLI_IES_NAME') + '/'
 
 def get(endpoint):
     res = requests.get(api_path+endpoint, headers=session.get('headers'))

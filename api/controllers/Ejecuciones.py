@@ -1,6 +1,6 @@
 import json
 from flask import request, jsonify, Blueprint
-from schemas.ejecucionSchema import validate_post_schema, validate_put_schema
+from schemas.ejecucion_schema import validate_post_schema, validate_put_schema
 from flask_jwt_extended import jwt_required
 from utils.utils import exception, _format
 from db.pleyades.db import Ejecucion as ejecucion_model

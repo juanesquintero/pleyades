@@ -1,8 +1,8 @@
 from utils.utils import exception, _format
-from db.cli.db_cli import DB
+from db.ies.db import DB
 from flask_jwt_extended import jwt_required
 from flask import request, jsonify, Blueprint
-from schemas.facultadSchema import validate_post_schema, validate_put_schema
+from schemas.facultad_schema import validate_post_schema, validate_put_schema
 
 
 Facultad = Blueprint('facultad', __name__)
