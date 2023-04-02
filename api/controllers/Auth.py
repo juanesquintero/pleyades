@@ -3,7 +3,7 @@ from flask_jwt_extended import (create_access_token)
 import datetime as dt
 from hashlib import md5
 
-from schemas.authSchema import validate_login_schema
+from schemas.auth_schema import validate_login_schema
 from controllers.Usuarios import auth, post
 
 Auth = Blueprint('auth', __name__)

@@ -3,7 +3,7 @@ from db.ies.db import DB
 from flask_jwt_extended import jwt_required
 from utils.utils import exception, _format
 import pandas as pd
-from schemas.resultadoSchema import validate_post_schema
+from schemas.resultado_schema import validate_post_schema
 # Relaciones
 from controllers.Programas import exists as exists_programa
 

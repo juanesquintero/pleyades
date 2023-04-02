@@ -1,6 +1,6 @@
 from flask import request, jsonify, Blueprint
 from db.ies.db import DB
-from schemas.programaSchema import validate_post_schema, validate_put_schema
+from schemas.programa_schema import validate_post_schema, validate_put_schema
 from flask_jwt_extended import jwt_required
 from utils.utils import exception, _format, _format
 # Relaciones

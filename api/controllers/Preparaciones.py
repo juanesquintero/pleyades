@@ -1,7 +1,7 @@
 from flask import request, jsonify, Blueprint
 from flask_jwt_extended import jwt_required
 import json
-from schemas.preparacionSchema import validate_post_schema, validate_put_schema
+from schemas.preparacion_schema import validate_post_schema, validate_put_schema
 from db.pleyades.db import Preparacion as preparacion_model
 from utils.utils import exception, _format
 # Relaciones
