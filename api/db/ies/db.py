@@ -14,15 +14,18 @@ _host = os.getenv('CLI_DB_SERVER')
 _user = os.getenv('CLI_DB_USER')
 _password = os.getenv('CLI_DB_PASSWORD')
 
-str_conn = 'mssql+pyodbc://{}:{}@{}:1433/{}?driver=ODBC+Driver+17+for+SQL+SERVER'.format(_user, _password, _host, _db)
+ies_name = os.getenv('CLI_IES_NAME')
 
+str_conn = f'mssql+pyodbc://{_user}:{_password}@{_host}:1433/{_db}?driver=ODBC+Driver+17+for+SQL+SERVER'
+
+conn_fail_msg = f'Conexión caida BD Institución!! (SQL Server - {ies_name})'
 
 # _drivers = [d for d in pyodbc.drivers()]
 # driver = _drivers[-1] if _drivers else 'SQL Server'
 
 
 def log_error(e):
-    error_logger.error('EXCEPTION: base de datos IES (institución)... '+str(e))
+    error_logger.error(f'EXCEPTION: base de datos IES ({ies_name})... {e}')
 
 
 def validate_connection(f):
@@ -30,7 +33,7 @@ def validate_connection(f):
     def decorated_function(self, *args, **kwargs):
         if not(self.cnx):
             self.connect()
-            raise Exception('Conexión caida a la BD de la Institución!')
+            raise Exception(conn_fail_msg)
         else:
             try:
                 return f(self, *args, **kwargs)
@@ -38,7 +41,7 @@ def validate_connection(f):
                 self.close_connection()
                 log_error(e)
                 self.connect()
-                raise Exception('Conexión caida a la BD de la Institución!')
+                raise Exception(conn_fail_msg)
     return decorated_function
 
 
