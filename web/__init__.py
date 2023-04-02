@@ -51,9 +51,11 @@ from views.admin.programas import Programa
 from views.admin.usuarios import Usuario
 from views.auth import Auth
 from views.errors import Error
+from views.analista import Analista
 
 app.register_blueprint(Error, url_prefix=base_path)
 app.register_blueprint(Auth, url_prefix=base_path)
+app.register_blueprint(Analista, url_prefix=base_path)
 app.register_blueprint(Facultad, url_prefix=base_path+'admin/facultades')
 app.register_blueprint(Programa, url_prefix=base_path+'admin/programas')
 app.register_blueprint(Usuario, url_prefix=base_path+'admin/usuarios')
