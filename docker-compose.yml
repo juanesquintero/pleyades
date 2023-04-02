@@ -81,7 +81,7 @@ services:
       - ./api/db/ies/init.sh:/tmp/init.sh
     networks:
       - dev-net
-    command: /bin/bash -c "/opt/mssql/bin/sqlservr && /tmp/init.sh"
+    command: /bin/bash -c "/tmp/init.sh"
         
   adminer:
     container_name: pleyades-adminer
