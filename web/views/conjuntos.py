@@ -1,6 +1,8 @@
 import traceback
 import pandas as pd
-import os, json, logging
+import os
+import json
+import logging
 import utils.tableros.data_ies as DataIES
 
 from flask import request, session, Blueprint, render_template, redirect, send_file, url_for, jsonify
@@ -27,43 +29,51 @@ upload_folder = os.getcwd()+'/uploads'
 
 translator = Translator()
 
+
+@Conjunto.route('')
+@Conjunto.route('/')
 @Conjunto.route('/crudos')
 @Conjunto.route('/crudos/')
 @login_required
 def crudos():
     return listar('crudos')
 
+
 @Conjunto.route('/procesados')
 @Conjunto.route('/procesados/')
 @Conjunto.route('/procesados/<conjunto>')
 @login_required
 def procesados(conjunto=None):
-    if conjunto: return listar('procesados',str(conjunto))
+    if conjunto:
+        return listar('procesados', str(conjunto))
     return listar('procesados')
 
+
 def listar(estado, conjunto=None):
-    status_p,body_p = get('programas')
-    status_c,body_c = get('conjuntos/encargado/'+session['user']['correo']+'?estado='+estado)
-    
+    status_p, body_p = get('programas')
+    status_c, body_c = get('conjuntos/encargado/' +
+                           session['user']['correo']+'?estado='+estado)
+
     if status_c and status_p:
-        if conjunto: 
+        if conjunto:
             body_c = [d for d in body_c if conjunto in d['nombre']]
-        return render_template(endopoint+estado+'.html', conjuntos=body_c, programas=body_p)        
+        return render_template(endopoint+estado+'.html', conjuntos=body_c, programas=body_p)
     elif not(status_c) and not(status_p):
-        error = {**body_c,**body_p}
+        error = {**body_c, **body_p}
     elif not(status_c):
         error = body_c
     else:
         error = body_p
-    return render_template(endopoint+estado+'.html', conjuntos=[],error=error)
+    return render_template(endopoint+estado+'.html', conjuntos=[], error=error)
+
 
 @Conjunto.route('/descargar/<estado>/<nombre>')
-def descargar (estado, nombre):
+def descargar(estado, nombre):
 
-    status_c,body_c = get('conjuntos/'+nombre)
+    status_c, body_c = get('conjuntos/'+nombre)
     if not status_c:
         return render_template('utils/mensaje.html', mensaje='No existe ese conjunto')
-    
+
     if estado.lower() == 'crudos':
         nombre = 'C '+nombre
     elif estado.lower() == 'procesados':
@@ -72,56 +82,59 @@ def descargar (estado, nombre):
         return render_template('utils/mensaje.html', mensaje='Estado del conjunto incorrecto')
 
     ruta = upload_folder+'/'+estado.lower()+'/'+nombre
-    
+
     if os.path.exists(ruta+'.xlsx'):
         return send_file(ruta+'.xlsx', as_attachment=True)
     elif os.path.exists(ruta+'.xls'):
         return send_file(ruta+'.xls', as_attachment=True)
     else:
-        return render_template('utils/mensaje.html', mensaje='No se encontro el archivo a descargar')    
-    
+        return render_template('utils/mensaje.html', mensaje='No se encontro el archivo a descargar')
+
 
 @Conjunto.route('/crear')
 @Conjunto.route('/crear/')
 @login_required
 def crear():
-    periodos =  DataIES.get_periodos_origen();
-    status_f,body_f = get('facultades')
-    status_p,body_p = get('programas')
+    periodos = DataIES.get_periodos_origen()
+    status_f, body_f = get('facultades')
+    status_p, body_p = get('programas')
 
     if status_f and status_p and periodos:
         return render_template(endopoint+'crear.html', facultades=body_f, programas=body_p)
     elif not(status_f) and not(status_p):
-        error = {**body_f,**body_p}
+        error = {**body_f, **body_p}
     elif not(status_f):
         error = body_f
     else:
         error = body_p
     return render_template('utils/mensaje.html', mensaje='No se pudieron cargar las programas y las facultades', submensaje=error)
 
+
 @Conjunto.route('crear/periodos/programa/<int:programa>')
 @login_required
 def get_periodos_programa(programa):
-    status,body = get('desercion/estudiantes/periodos/programa/{}'.format(programa))
+    status, body = get(
+        'desercion/estudiantes/periodos/programa/{}'.format(programa))
     if status:
         return jsonify(body)
     return jsonify([])
 
-@Conjunto.route('/detalle',methods=['POST'])
+
+@Conjunto.route('/detalle', methods=['POST'])
 @login_required
 def detalle():
     # Obtener Lo valores del formulario
     body = dict(request.values)
     conjunto = literal_eval(body['conjunto'])
     # Consultas para mostrar info
-    status_f,body_f = get('facultades')
-    status_p,body_p = get('programas')
+    status_f, body_f = get('facultades')
+    status_p, body_p = get('programas')
     status_u, body_u = get('usuarios')
-    
+
     if status_p and status_f and status_u and conjunto:
         return render_template(endopoint+'detalle.html', facultades=body_f, programas=body_p, usuarios=body_u, c=conjunto)
     elif not(status_f) and not(status_p) and not(status_u):
-        error = {**body_f,**body_p,**body_u}
+        error = {**body_f, **body_p, **body_u}
     elif not(status_f):
         error = body_f
     elif not(status_p):
@@ -131,6 +144,7 @@ def detalle():
     else:
         error = body_u
     return render_template('utils/mensaje.html', mensaje='No se pudieron cargar los datos para detallar el conjunto', submensaje=error)
+
 
 @Conjunto.route('/crear', methods=['POST'])
 @Conjunto.route('/crear/', methods=['POST'])
@@ -153,22 +167,24 @@ def guardar():
     # Guardar archivo en Upload folder
 
     ############# ARCHIVO ##############
-    if (archivo.filename and tipo=='excel'):
+    if (archivo.filename and tipo == 'excel'):
         extension = '.'+archivo.filename.split('.')[1]
         # Guardar archivo de excel
-        
+
         if not (extension in ['.xls', '.xlsx']):
             return render_template('utils/mensaje.html', mensaje='Extension de archivo incorrecta: '+str(extension), submensaje='Solo se permiten archivos excel .xls & xlsx')
-    
+
         # VERIFICACION de formato
         data = pd.read_excel(archivo)
-        validacion, mensaje_error, data_verificada, periodoInicial = verificar_data(data, conjunto.get('periodoInicial'), conjunto.get('periodoFinal'), conjunto.get('programa'))
-        conjunto['periodoInicial'] =  periodoInicial
+        validacion, mensaje_error, data_verificada, periodoInicial = verificar_data(
+            data, conjunto.get('periodoInicial'), conjunto.get('periodoFinal'), conjunto.get('programa'))
+        conjunto['periodoInicial'] = periodoInicial
 
         # Obtener nombre del conjunto desde el api
         nombre, numero = obtener_nombre_conjunto(conjunto)
-        if not nombre: return numero
-        archivo_guardar = 'C '+ nombre + '.xls'
+        if not nombre:
+            return numero
+        archivo_guardar = 'C ' + nombre + '.xls'
 
         if validacion:
             try:
@@ -179,26 +195,29 @@ def guardar():
                 return render_template('utils/mensaje.html', mensaje='Ocurrió un error guardando el conjunto de datos')
         else:
             return render_template('utils/mensaje.html', mensaje='Incorrecto el formato de la fuente de datos', submensaje=mensaje_error)
-    
+
     ############# CONSULTA ##############
-    elif tipo=='consulta':
+    elif tipo == 'consulta':
         # Obtener datos de los estudiantes en ese programas y periodos
         endpoint_conjunto = 'desercion/estudiantes/conjunto/{}/{}/{}'
-        endpoint_conjunto_values = endpoint_conjunto.format(conjunto['programa'], conjunto['periodoInicial'], conjunto['periodoFinal'])
-        status,body = get(endpoint_conjunto_values)
+        endpoint_conjunto_values = endpoint_conjunto.format(
+            conjunto['programa'], conjunto['periodoInicial'], conjunto['periodoFinal'])
+        status, body = get(endpoint_conjunto_values)
         if status:
             data = pd.DataFrame(body)
         else:
             return render_template('utils/mensaje.html', mensaje='Consulta fallida a la base de datos')
 
         # VERIFICACION de formato
-        validacion, mensaje_error, data_verificada, periodoInicial = verificar_data(data, conjunto.get('periodoInicial'), conjunto.get('periodoFinal'), conjunto.get('programa'))
-        conjunto['periodoInicial'] =  periodoInicial
+        validacion, mensaje_error, data_verificada, periodoInicial = verificar_data(
+            data, conjunto.get('periodoInicial'), conjunto.get('periodoFinal'), conjunto.get('programa'))
+        conjunto['periodoInicial'] = periodoInicial
 
         # Obtener nombre del conjunto desde el api
         nombre, numero = obtener_nombre_conjunto(conjunto)
-        if not nombre: return numero
-        archivo_guardar = 'C '+ nombre + '.xls'
+        if not nombre:
+            return numero
+        archivo_guardar = 'C ' + nombre + '.xls'
 
         if validacion:
             # Guardar tabla sql como excel
@@ -211,12 +230,12 @@ def guardar():
             return render_template('utils/mensaje.html', mensaje='Incorrecto el formato de la fuente de datos', submensaje=mensaje_error)
     else:
         return render_template('utils/mensaje.html', mensaje='Formulario incorrecto', submensaje='Verifica el formulario de creacion o notifica al Administrador del sistema')
-           
-    # Guardar registro de conjunto en la BD
-    conjunto['nombre'] =  nombre
-    conjunto['numero'] =  numero
 
-    status, body = post('conjuntos',conjunto)
+    # Guardar registro de conjunto en la BD
+    conjunto['nombre'] = nombre
+    conjunto['numero'] = numero
+
+    status, body = post('conjuntos', conjunto)
     if status:
         return redirect(url_for('Conjunto.crudos'))
     else:
@@ -229,12 +248,13 @@ def preparar():
     # Obtener Lo valores del formulario
     body = dict(request.values)
     conjunto = literal_eval(body['conjunto'])
-    
+
     nombre = conjunto['nombre']
 
-    # Actualizar conjunto de datos de crudo a en proceso 
-    act_estado =  actualizar_estado(nombre,'En Proceso')
-    if act_estado: return act_estado
+    # Actualizar conjunto de datos de crudo a en proceso
+    act_estado = actualizar_estado(nombre, 'En Proceso')
+    if act_estado:
+        return act_estado
 
     # Crear prepraracion
     preparacion = {}
@@ -252,10 +272,11 @@ def preparar():
     ########### PREPARAR ############
 
     # Obtener archivo crudo
-    archivo_crudo = 'C '+nombre 
+    archivo_crudo = 'C '+nombre
     ruta = upload_folder+'/crudos/'+archivo_crudo
-    exito,data_cruda = obtener_archivo_excel(ruta) 
-    if not(exito): return data_cruda 
+    exito, data_cruda = obtener_archivo_excel(ruta)
+    if not(exito):
+        return data_cruda
 
     # Algoritmo de preparacion
     try:
@@ -264,25 +285,30 @@ def preparar():
         model_logger.error(e)
         model_logger.error(traceback.format_exc())
         observaciones = {'error': str(e)}
-        exito,pagina_error = guardar_preparacion(preparacion, observaciones,'Fallida')
-        if not(exito): return pagina_error 
+        exito, pagina_error = guardar_preparacion(
+            preparacion, observaciones, 'Fallida')
+        if not(exito):
+            return pagina_error
         return render_template('utils/mensaje.html', mensaje='la preparación falló')
 
     # Guardar archivo en Upload folder procesados
     archivo_procesado = 'P '+nombre+'.xls'
     ruta = upload_folder+'/procesados/'+archivo_procesado
-    exito,pagina_error = guardar_archivo(data_preparada, ruta, 'excel')
-    if not(exito): return pagina_error 
+    exito, pagina_error = guardar_archivo(data_preparada, ruta, 'excel')
+    if not(exito):
+        return pagina_error
 
-    # Guardar registro de preparacion en la BD 
-    exito, pagina_error = guardar_preparacion(preparacion,None,'Exitosa')
-    if not(exito): return pagina_error 
+    # Guardar registro de preparacion en la BD
+    exito, pagina_error = guardar_preparacion(preparacion, None, 'Exitosa')
+    if not(exito):
+        return pagina_error
 
-    ########### FIN PREPARAR ############    
+    ########### FIN PREPARAR ############
 
     # Actualizar conjunto de datos de crudo a procesado
-    act_estado =  actualizar_estado(nombre,'Procesados')
-    if act_estado: return act_estado
+    act_estado = actualizar_estado(nombre, 'Procesados')
+    if act_estado:
+        return act_estado
 
     return redirect(url_for('Conjunto.procesados', conjunto=conjunto['nombre']))
 
@@ -297,10 +323,10 @@ def ejecutar():
     nombre = conjunto['nombre']
 
     # Actualizar conjunto de datos de crudo a procesado
-    act_estado =  actualizar_estado(nombre,'En Proceso')
-    if act_estado: return act_estado
-    
-    
+    act_estado = actualizar_estado(nombre, 'En Proceso')
+    if act_estado:
+        return act_estado
+
     # Crear prepraracion
     ejecucion = {}
     ejecucion['conjunto'] = conjunto['nombre']
@@ -318,18 +344,20 @@ def ejecutar():
     ########### EJECUTAR ############
 
     # Obtener archivo procesado
-    archivo_procesado = 'P '+nombre 
+    archivo_procesado = 'P '+nombre
     ruta = upload_folder+'/procesados/'+archivo_procesado
-    exito, data_preparada = obtener_archivo_excel(ruta) 
-    if not(exito): return data_preparada 
-    
+    exito, data_preparada = obtener_archivo_excel(ruta)
+    if not(exito):
+        return data_preparada
+
     # Algoritmo de ejecución
     # try:
     #     resultados_modelo,resultados_desertores = clasificador(data_preparada)
     # except Exception as e:
     #   pass
     try:
-        resultados_modelo,resultados_desertores = ejecutar_modelo(data_preparada)
+        resultados_modelo, resultados_desertores = ejecutar_modelo(
+            data_preparada)
     except Exception as e:
         error_logger.error(e)
         try:
@@ -338,64 +366,79 @@ def ejecutar():
             error_spa = str(e)
         model_logger.error(error_spa)
         model_logger.error(traceback.format_exc())
-        
-        resultados = {'error': error_spa }
-        exito,pagina_error = guardar_ejecucion(ejecucion, resultados,'Fallida')
+
+        resultados = {'error': error_spa}
+        exito, pagina_error = guardar_ejecucion(
+            ejecucion, resultados, 'Fallida')
         ejecucion_guardada = True
-        if not(exito): return pagina_error
-        act_estado =  actualizar_estado(nombre,'Procesados')
-        if act_estado: return act_estado
+        if not(exito):
+            return pagina_error
+        act_estado = actualizar_estado(nombre, 'Procesados')
+        if act_estado:
+            return act_estado
         return render_template('utils/mensaje.html', mensaje='La ejecución falló', submensaje=error_spa)
-    
+
     if not resultados_modelo:
-        # Actualizar conjunto de datos de crudo a procesado 
-        act_estado =  actualizar_estado(nombre,'Procesados')
-        if act_estado: return act_estado
+        # Actualizar conjunto de datos de crudo a procesado
+        act_estado = actualizar_estado(nombre, 'Procesados')
+        if act_estado:
+            return act_estado
         return render_template('utils/mensaje.html', mensaje='La ejecución falló', submensaje=resultados_desertores)
 
     # Guardar registro de los desertores en la BD del ies
-    
-    # Actualizar los resultados a ultimo 
+
+    # Actualizar los resultados a ultimo
     endpoint_ultimo = 'desercion/resultados/ultimo/{}/{}'
-    endpoint_ultimo_values = endpoint_ultimo.format(conjunto['programa'], conjunto['periodoFinal'])
-    status_update, body_update = put(endpoint_ultimo_values, {}) 
+    endpoint_ultimo_values = endpoint_ultimo.format(
+        conjunto['programa'], conjunto['periodoFinal'])
+    status_update, body_update = put(endpoint_ultimo_values, {})
 
     # Insertar los resultados
     if resultados_desertores.any().any():
-        resultados_insert = json.loads(resultados_desertores.to_json(orient='records'))
-        status_insert, body_insert = post('desercion/resultados', resultados_insert) 
+        resultados_insert = json.loads(
+            resultados_desertores.to_json(orient='records'))
+        status_insert, body_insert = post(
+            'desercion/resultados', resultados_insert)
         if not status_update or not status_insert:
-            act_estado =  actualizar_estado(nombre,'Procesados')
-            if act_estado: return act_estado
+            act_estado = actualizar_estado(nombre, 'Procesados')
+            if act_estado:
+                return act_estado
 
-            if not status_insert: 
-                error_logger.error('Error insertando los nuevos desertores'.format(json.dumps(body_insert)))
-                
-            if not status_update: 
-                error_logger.error('Error actualizando los desertores del programa'.format(json.dumps(body_update)))
+            if not status_insert:
+                error_logger.error(
+                    'Error insertando los nuevos desertores'.format(json.dumps(body_insert)))
 
-            return render_template('utils/mensaje.html', mensaje='Ocurrió un error insertando y/o actualizando los resultados'), 500 
-        
+            if not status_update:
+                error_logger.error('Error actualizando los desertores del programa'.format(
+                    json.dumps(body_update)))
+
+            return render_template('utils/mensaje.html', mensaje='Ocurrió un error insertando y/o actualizando los resultados'), 500
+
         estado_ejecucion = 'Exitosa'
         # Guardar resultados de desertotres en Upload folder desertores
         archivo_desertores = 'D '+ejecucion['nombre']+'.json'
         ruta = upload_folder+'/desertores/'+archivo_desertores
-        exito,pagina_error = guardar_archivo(resultados_modelo.pop('desertores'), ruta, 'json')
-        if not(exito): return pagina_error 
+        exito, pagina_error = guardar_archivo(
+            resultados_modelo.pop('desertores'), ruta, 'json')
+        if not(exito):
+            return pagina_error
 
     else:
         resultados_modelo.pop('desertores')
         estado_ejecucion = 'Fallida'
-    # Guardar registro de ejecución en la BD 
+    # Guardar registro de ejecución en la BD
     if not ejecucion_guardada:
-        exito, pagina_error = guardar_ejecucion(ejecucion=ejecucion, resultados=resultados_modelo ,estado=estado_ejecucion)
-        if not(exito): 
-            act_estado =  actualizar_estado(nombre,'Procesados')
-            if act_estado: return act_estado
-            return pagina_error 
+        exito, pagina_error = guardar_ejecucion(
+            ejecucion=ejecucion, resultados=resultados_modelo, estado=estado_ejecucion)
+        if not(exito):
+            act_estado = actualizar_estado(nombre, 'Procesados')
+            if act_estado:
+                return act_estado
+            return pagina_error
 
     ########### FIN EJECUTAR ############
-    # Actualizar conjunto de datos de crudo a procesado 
-    act_estado =  actualizar_estado(nombre,'Procesados')
-    if act_estado: return act_estado
-    return redirect(url_for('Resultado.ejecuciones',conjunto=nombre))
+    # Actualizar conjunto de datos de crudo a procesado
+    act_estado = actualizar_estado(nombre, 'Procesados')
+    if act_estado:
+        return act_estado
+    return redirect(url_for('Resultado.ejecuciones', conjunto=nombre))
