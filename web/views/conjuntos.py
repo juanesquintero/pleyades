@@ -149,9 +149,10 @@ def detalle():
 @Conjunto.route('/crear', methods=['POST'])
 @Conjunto.route('/crear/', methods=['POST'])
 @login_required
-def guardar():
-    # Obtener Lo valores del formulario
-    conjunto = dict(request.values)
+def guardar(conjunto=None):
+    if not conjunto:
+        # Obtener Lo valores del formulario
+        conjunto = dict(request.values)
     # Preparar conjunto para la insercion
     del conjunto['facultad']
     conjunto['estado'] = 'Crudos'
@@ -161,13 +162,13 @@ def guardar():
     conjunto['encargado'] = session['user']['correo']
 
     tipo = conjunto['tipo']
-    archivo = request.files['archivo']
+    archivo = request.files.get('archivo')
     ruta = upload_folder+'/crudos'
 
     # Guardar archivo en Upload folder
 
     ############# ARCHIVO ##############
-    if (archivo.filename and tipo == 'excel'):
+    if (archivo and archivo.filename and tipo == 'excel'):
         extension = '.'+archivo.filename.split('.')[1]
         # Guardar archivo de excel
 
@@ -234,20 +235,27 @@ def guardar():
     # Guardar registro de conjunto en la BD
     conjunto['nombre'] = nombre
     conjunto['numero'] = numero
-
     status, body = post('conjuntos', conjunto)
+
+    # TODO DEPRECATED! version 1 v1.5.0
+    # if status:
+    #     return redirect(url_for('Conjunto.crudos'))
+
+    # TODO NEW! version 2 v2.0.0
     if status:
-        return redirect(url_for('Conjunto.crudos'))
-    else:
-        return render_template('utils/mensaje.html', mensaje='No se pudo guardar el conjunto', submensaje=body)
+        # preparar() luego de guardar()
+        return preparar(conjunto)
+
+    return render_template('utils/mensaje.html', mensaje='No se pudo guardar el conjunto', submensaje=body)
 
 
 @Conjunto.route('/preparar', methods=['POST'])
 @login_required
-def preparar():
-    # Obtener Lo valores del formulario
-    body = dict(request.values)
-    conjunto = literal_eval(body['conjunto'])
+def preparar(conjunto=None):
+    if not conjunto:
+        # Obtener Lo valores del formulario
+        body = dict(request.values)
+        conjunto = literal_eval(body['conjunto'])
 
     nombre = conjunto['nombre']
 
@@ -310,16 +318,24 @@ def preparar():
     if act_estado:
         return act_estado
 
-    return redirect(url_for('Conjunto.procesados', conjunto=conjunto['nombre']))
+    # TODO DEPRECATED! version 1 v1.5.0
+    # return redirect(url_for('Conjunto.procesados', conjunto=conjunto['nombre']))
+
+    # TODO NEW! version 2 v2.0.0
+    # ejecutar() luego de preparar()
+    return ejecutar(conjunto)
 
 
 @Conjunto.route('/ejecutar', methods=['POST'])
 @login_required
-def ejecutar():
+def ejecutar(conjunto=None):
     ejecucion_guardada = False
-    # Obtener Lo valores del formulario
-    body = dict(request.values)
-    conjunto = literal_eval(body['conjunto'])
+
+    if not conjunto:
+        # Obtener Lo valores del formulario
+        body = dict(request.values)
+        conjunto = literal_eval(body['conjunto'])
+
     nombre = conjunto['nombre']
 
     # Actualizar conjunto de datos de crudo a procesado
@@ -441,4 +457,10 @@ def ejecutar():
     act_estado = actualizar_estado(nombre, 'Procesados')
     if act_estado:
         return act_estado
-    return redirect(url_for('Resultado.ejecuciones', conjunto=nombre))
+
+    # TODO DEPRECATED! version 1 v1.5.0
+    # return redirect(url_for('Resultado.ejecuciones', conjunto=nombre))
+
+    # TODO NEW! version 2 v2.0.0
+    return redirect(url_for('Analista.modelos', modelo=nombre))
+
