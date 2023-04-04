@@ -1,3 +1,4 @@
+import os
 import pickle
 import logging
 import warnings
@@ -294,17 +295,20 @@ def ejecutar_modelo(data, conjunto=''):
 
     return resultados, resultados_desertores
 
+
+modelos_folder = os.getcwd()+'/uploads/modelos'
+
 # TODO NEW! version 2 v2.0.0
 def save_model(mejor_clasificador, conjunto=''):
-    clf_file = f'{conjunto}.pkl'
+    clf_file = f'{modelos_folder}/{conjunto}.pkl'
     with open(clf_file, 'wb') as f:
         pickle.dump(mejor_clasificador, f)
-    pickle.dump(mejor_clasificador, open('clasificador.sav', 'wb'))
+    pickle.dump(mejor_clasificador, open(f'{modelos_folder}/{conjunto}.sav', 'wb'))
 
 
 # TODO NEW! version 2 v2.0.0
 def read_model(conjunto):
-    clf_file = f'{conjunto}.pkl'
+    clf_file = f'{modelos_folder}/{conjunto}.pkl'
     with open(clf_file, 'rb') as f:
         clf = pickle.load(f)
     clf = pickle.load(open(clf_file, 'rb'))
