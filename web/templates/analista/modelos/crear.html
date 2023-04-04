@@ -6,7 +6,7 @@
 
 
 <span>
-    <h4 class="d-inline-block">Crear</h4> <h5 class="ml-1 d-inline-block">Modelo de Deserción </h5>
+    <h4 class="ml-1 d-inline-block">Entrenar</h4> <h6 class="ml-1 d-inline-block">Modelo de Deserción </h6>
 </span>
 
 <form id="conjuntoForm" action="{{url_for('Conjunto.crear')}}" method="POST" enctype="multipart/form-data"
@@ -14,7 +14,10 @@
     <div class="container">
         <div class="form-group row">
             <div class="col-sm-5">
-                <label id="facultad_label">Facultad</label>
+                <label id="facultad_label">
+                    <i class="fa fa-university"></i>
+                    Facultad
+                </label>
                 <select class="form-control programa-change" name="facultad" id="facultad_select" required>
                     {% for f in facultades %}
                     <option key="{{f.codigo}}" value="{{f.codigo}}">{{f.nombre}}</option>
@@ -23,7 +26,10 @@
             </div>
             <input type="hidden" value="{{programas}}" id="programas_list">
             <div class="col-sm-6">
-                <label id="programa_label">Programa</label>
+                <label id="programa_label">
+                    <i class="fa fa-graduation-cap"></i>
+                    Programa
+                </label>
                 <select class="form-control programa-change" name="programa" id="programa_select" required>
                 </select>
             </div>
@@ -66,14 +72,20 @@
         </div>
         <div class="form-group row">
             <div class="col-sm-2">
-                <label>Periodo Inicial</label>
+                <label>
+                    <i class="fa fa-calendar"></i>
+                    Periodo Inicial
+                </label>
                 <select name="periodoInicial" id="periodoInicialID" class="periodos-controls form-control input-sm"
                     required>
                     <option disabled selected hidden></option>
                 </select>
             </div>
             <div class="col-sm-2">
-                <label>Periodo Final</label>
+                <label>
+                    <i class="fa fa-calendar-alt"></i>
+                    Periodo Final
+                </label>
                 <select name="periodoFinal" id="periodoFinalID" class="periodos-controls form-control input-sm"
                     required>
                     <option disabled selected hidden></option>
