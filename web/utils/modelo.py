@@ -93,13 +93,18 @@ def preparar_data(data):
         yes_value, no_value = cond[2], cond[3]
         columna, criterios = cond[0], cond[1]
 
-        def func(row): return yes_value if any(
-            c.lower() in row[columna].lower() for c in criterios) else no_value
+        def func(row):
+            return yes_value if any(
+                c.lower() in row[columna].lower() for c in criterios
+            ) else no_value
         data[columna] = data.apply(func, axis=1)
 
     # Condiciones Especiales
-    def func(row): return 0 if (row['etnia'] ==
-                                'NO APLICA' or row['etnia'] == None) else 1
+    def func(row):
+        return 0 if (
+            row['etnia'] == 'NO APLICA' or
+            row['etnia'] == None
+        ) else 1
     data['etnia'] = data.apply(func, axis=1)
 
     return data
@@ -144,7 +149,7 @@ def eliminacion(data):
     return data, data_a_predecir, periodo_a_predecir
 
 
-def ejecutar_modelo(data):
+def ejecutar_modelo(data, conjunto=''):
 
     data, data_a_predecir, periodo_a_predecir = eliminacion(data)
 
@@ -232,7 +237,8 @@ def ejecutar_modelo(data):
     AML_best = AML_compare.head(1)
     mejor_clasificador = AML_best['objeto'].tolist()[0]
 
-    save_model(mejor_clasificador)
+    # TODO NEW! version 2 v2.0.0
+    save_model(mejor_clasificador, conjunto)
 
     # predc_sem_act = data_a_predecir[['documento','nombre_completo','desertor', 'idprograma', 'idestado']]
     predc_sem_act = data_a_predecir[[
@@ -288,15 +294,22 @@ def ejecutar_modelo(data):
 
     return resultados, resultados_desertores
 
-
-def save_model(mejor_clasificador):
-    with open('clasificador.pkl', 'wb') as f:
+# TODO NEW! version 2 v2.0.0
+def save_model(mejor_clasificador, conjunto=''):
+    clf_file = f'{conjunto}.pkl'
+    with open(clf_file, 'wb') as f:
         pickle.dump(mejor_clasificador, f)
     pickle.dump(mejor_clasificador, open('clasificador.sav', 'wb'))
 
-    with open('clasificador.pkl', 'rb') as f:
+
+# TODO NEW! version 2 v2.0.0
+def read_model(conjunto):
+    clf_file = f'{conjunto}.pkl'
+    with open(clf_file, 'rb') as f:
         clf = pickle.load(f)
-    clf = pickle.load(open('clasificador.sav', 'rb'))
+    clf = pickle.load(open(clf_file, 'rb'))
+    return clf
+
 
 ############################################################################################################### FUNCION DE ASIGNACION DE TIPOS DE DATOS CORRECTOS ###########################################################################################################################################
 

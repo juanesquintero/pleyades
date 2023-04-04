@@ -373,7 +373,9 @@ def ejecutar(conjunto=None):
     #   pass
     try:
         resultados_modelo, resultados_desertores = ejecutar_modelo(
-            data_preparada)
+            data_preparada,
+            nombre
+        )
     except Exception as e:
         error_logger.error(e)
         try:
