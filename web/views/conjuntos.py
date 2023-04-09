@@ -50,21 +50,32 @@ def procesados(conjunto=None):
 
 
 def listar(estado, conjunto=None):
+    user = session.get('user', {'correo': ''}).get('correo')
     status_p, body_p = get('programas')
-    status_c, body_c = get('conjuntos/encargado/' +
-                           session['user']['correo']+'?estado='+estado)
+    status_c, body_c = get(
+        f'conjuntos/encargado/{user}?estado={estado}'
+    )
 
     if status_c and status_p:
         if conjunto:
             body_c = [d for d in body_c if conjunto in d['nombre']]
-        return render_template(endopoint+estado+'.html', conjuntos=body_c, programas=body_p)
-    elif not(status_c) and not(status_p):
+        return render_template(
+            endopoint+estado+'.html',
+            conjuntos=body_c,
+            programas=body_p
+        )
+
+    if not status_c and not status_p:
         error = {**body_c, **body_p}
-    elif not(status_c):
+    elif not status_c:
         error = body_c
     else:
         error = body_p
-    return render_template(endopoint+estado+'.html', conjuntos=[], error=error)
+    return render_template(
+        endopoint+estado+'.html',
+        conjuntos=[],
+        error=error
+    )
 
 
 @Conjunto.route('/descargar/<estado>/<nombre>')
@@ -465,4 +476,3 @@ def ejecutar(conjunto=None):
 
     # TODO NEW! version 2 v2.0.0
     return redirect(url_for('Analista.modelos', modelo=nombre))
-
