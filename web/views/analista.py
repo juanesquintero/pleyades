@@ -20,11 +20,29 @@ modelos_folder = os.getcwd()+'/uploads/modelos'
 @Analista.route('/modelos', methods=['GET'])
 @login_required
 def modelos():
-    return render_template('analista/modelos/listar.html', modelos=[{
-        'nombre': 'Modelo 1',
-        'programa': 'Ing Sistemas',
-        'tipo': 'SKLear Algorithm',
-    }])
+    user = session.get('user', {'correo': ''}).get('correo')
+    status_p, body_p = get('programas')
+    status_c, body_c = get(f'ejecuciones/ejecutor/{user}')
+
+    if status_c and status_p:
+        return render_template(
+            'analista/modelos/listar.html',
+            modelos=body_c,
+            programas=body_p
+        )
+
+    if not status_c and not status_p:
+        error = {**body_c, **body_p}
+    elif not status_c:
+        error = body_c
+    else:
+        error = body_p
+
+    return render_template(
+        'analista/modelos/listar.html',
+        modelos=[],
+        error=error
+    )
 
 
 @Analista.route('/modelos/descargar', methods=['POST'])
@@ -46,7 +64,7 @@ def entrenar():
         return formulario_entrenar()
     conjunto = dict(request.values)
     return conjuntos.guardar(conjunto)
-    
+
 
 @Analista.route('/modelos/periodos/<int:programa>')
 @login_required
@@ -81,7 +99,7 @@ def formulario_entrenar():
 
     if status_f and status_p and periodos:
         return render_template(endopoint+'crear.html', facultades=body_f, programas=body_p)
-    
+
     if not status_f and not status_p:
         error = {**body_f, **body_p}
     elif not status_f:
