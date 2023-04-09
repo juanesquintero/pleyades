@@ -11,6 +11,7 @@ db = DB.getInstance()
 
 tabla = 'VWPROGRAMADESERCION'
 
+
 @Programa.route('')
 @Programa.route('/')
 @jwt_required()
