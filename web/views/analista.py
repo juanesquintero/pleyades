@@ -16,14 +16,8 @@ Analista = Blueprint('Analista', __name__)
 modelos_folder = os.getcwd()+'/uploads/modelos'
 
 
-def get_modelos():
-    user = session.get('user', {'correo': ''}).get('correo')
-    status_p, body_p = get('programas')
-    status_c, body_c = get(f'ejecuciones/ejecutor/{user}')
-    success = status_c and status_p
-    return success, body_p, body_c
-
 @Analista.route('/modelos', methods=['GET'])
+@Analista.route('/modelos/', methods=['GET'])
 @login_required
 def modelos():
     success, body_p, body_c = get_modelos()
@@ -42,31 +36,6 @@ def modelos():
     )
 
 
-@Analista.route('/modelos/descargar', methods=['POST'])
-@login_required
-def descargar():
-    modelo = dict(request.values).get('modelo')
-    ruta = f'{modelos_folder}/{modelo}.pkl'
-
-    print(ruta, flush=True)
-
-    if os.path.exists(ruta):
-        return send_file(ruta, as_attachment=True)
-
-    success, body_p, body_c = get_modelos()
-    
-    flash('No se encontro el archivo a descargar', 'warning')
-    
-    if not success:
-        flash(f"{body_p.get('error')}, {body_c.get('error')}", 'danger')
-
-    return render_template(
-        'analista/modelos/listar.html',
-        modelos=body_c,
-        programas=body_p
-    )
-
-
 @Analista.route('/modelos/entrenar', methods=['GET', 'POST'])
 @login_required
 def entrenar():
@@ -76,18 +45,12 @@ def entrenar():
     return conjuntos.guardar(conjunto)
 
 
-@Analista.route('/modelos/periodos/<int:programa>')
-@login_required
-def get_periodos_programa(programa):
-    status, body = get(f'desercion/estudiantes/periodos/programa/{programa}')
-    if status:
-        return jsonify(body)
-    return jsonify([])
-
-
 @Analista.route('/modelos/predecir', methods=['POST'])
 def predecir():
-    return render_template(endopoint+'crear.html')
+    return render_template(
+        endopoint+'predecir.html', 
+        modelo=dict(request.values)
+    )
 
 
 @Analista.route('/entrenamientos', methods=['GET'])
@@ -101,6 +64,49 @@ def entrenamientos():
 def predicciones():
     return redirect(url_for('Resultado.ejecuciones'))
 
+
+
+@Analista.route('/modelos/descargar', methods=['POST'])
+@login_required
+def descargar():
+    modelo = dict(request.values).get('modelo')
+    ruta = f'{modelos_folder}/{modelo}.pkl'
+
+    print(ruta, flush=True)
+
+    if os.path.exists(ruta):
+        return send_file(ruta, as_attachment=True)
+
+    success, body_p, body_c = get_modelos()
+
+    flash('No se encontro el archivo a descargar', 'warning')
+
+    if not success:
+        flash(f"{body_p.get('error')}, {body_c.get('error')}", 'danger')
+
+    return render_template(
+        'analista/modelos/listar.html',
+        modelos=body_c,
+        programas=body_p
+    )
+
+
+@Analista.route('/modelos/periodos/<int:programa>')
+@login_required
+def get_periodos_programa(programa):
+    status, body = get(f'desercion/estudiantes/periodos/programa/{programa}')
+    if status:
+        return jsonify(body)
+    return jsonify([])
+
+
+
+def get_modelos():
+    user = session.get('user', {'correo': ''}).get('correo')
+    status_p, body_p = get('programas')
+    status_c, body_c = get(f'ejecuciones/ejecutor/{user}')
+    success = status_c and status_p
+    return success, body_p, body_c
 
 def formulario_entrenar():
     periodos = DataIES.get_periodos_origen()
