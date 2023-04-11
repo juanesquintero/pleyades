@@ -17,11 +17,11 @@ Crear los .env desde los .env.template
 
 ###  /.env
 ```env
-PLEYADES_IES_CLIENT=ies_client_short_name
-PLEYADES_MYSQL_ROOT_PASSWORD=pleyades_db_root_password
+IES_CLIENT=ies_client_short_name
+DB_ROOT_PWD=pleyades_db_root_password
 PUBLIC_PORT=pleyades_server_public_port
 ```
-<small>PLEYADES_MYSQL_ROOT_PASSWORD es opcional (es necesaria solo si la bd esta dockerizada)</small>
+<small>DB_ROOT_PWD es opcional (es necesaria solo si la bd de Pleyades MySQL esta dockerizada)</small>
 
 
 Institución de Educación Superior (IES) - Cliente de Educatic

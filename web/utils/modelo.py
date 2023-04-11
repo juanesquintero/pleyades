@@ -1,3 +1,4 @@
+import os
 import pickle
 import logging
 import warnings
@@ -93,13 +94,18 @@ def preparar_data(data):
         yes_value, no_value = cond[2], cond[3]
         columna, criterios = cond[0], cond[1]
 
-        def func(row): return yes_value if any(
-            c.lower() in row[columna].lower() for c in criterios) else no_value
+        def func(row):
+            return yes_value if any(
+                c.lower() in row[columna].lower() for c in criterios
+            ) else no_value
         data[columna] = data.apply(func, axis=1)
 
     # Condiciones Especiales
-    def func(row): return 0 if (row['etnia'] ==
-                                'NO APLICA' or row['etnia'] == None) else 1
+    def func(row):
+        return 0 if (
+            row['etnia'] == 'NO APLICA' or
+            row['etnia'] == None
+        ) else 1
     data['etnia'] = data.apply(func, axis=1)
 
     return data
@@ -144,7 +150,13 @@ def eliminacion(data):
     return data, data_a_predecir, periodo_a_predecir
 
 
-def ejecutar_modelo(data):
+def ejecutar_modelo(data, conjunto=''):
+    
+    idprograma = int(data['idprograma'][0])
+    nombre_programa = str(data['programa'][0])
+    
+    idfacultad = int(data['idfacultad'][0])
+    nombre_facultad = str(data['facultad'][0])
 
     data, data_a_predecir, periodo_a_predecir = eliminacion(data)
 
@@ -232,11 +244,13 @@ def ejecutar_modelo(data):
     AML_best = AML_compare.head(1)
     mejor_clasificador = AML_best['objeto'].tolist()[0]
 
-    save_model(mejor_clasificador)
+    # TODO NEW! version 2 v2.0.0
+    save_model(mejor_clasificador, conjunto)
 
     # predc_sem_act = data_a_predecir[['documento','nombre_completo','desertor', 'idprograma', 'idestado']]
-    predc_sem_act = data_a_predecir[[
-        'documento', 'nombre_completo', 'desertor', 'idprograma']]
+    predc_sem_act = data_a_predecir[
+        ['documento', 'nombre_completo', 'desertor', 'idprograma']
+    ]
 
     predc_sem_act['prediccion'] = mejor_clasificador.predict(
         data_a_predecir[col_preparadas])
@@ -246,14 +260,18 @@ def ejecutar_modelo(data):
 
     # Eliminar valores repetidos
     potenciales_desertores = potenciales_desertores.drop_duplicates(
-        subset=['documento'], keep='first').reset_index()
+        subset=['documento'], 
+        keep='first'
+    ).reset_index()
 
     # Setear resultados para insertar en la BD
     potenciales_desertores['semestre_prediccion'] = periodo_a_predecir
 
     resultados_desertores = potenciales_desertores
     potenciales_desertores = potenciales_desertores.drop(
-        ['idprograma', 'semestre_prediccion'], axis=1)
+        ['idprograma', 'semestre_prediccion'], 
+        axis=1
+    )
 
     ''' FASE 3 '''
     pd.crosstab(predc_sem_act.prediccion, predc_sem_act.desertor, margins=True)
@@ -263,23 +281,27 @@ def ejecutar_modelo(data):
     total_desertores = len(potenciales_desertores.index)
     total_estudiantes_analizados = len(predc_sem_act['documento'].unique())
     potenciales_desertores.drop(['index'], axis=1, inplace=True)
-    periodo_a_predecir_mas_1 = str(periodo_a_predecir)+' + {}'.format(1)
+    periodo_a_predecir_mas_1 = f'{periodo_a_predecir} + 1'
 
     resultados = {
+        'idprograma': idprograma,
+        'programa': nombre_programa,
+        'idfacultad': idfacultad,
+        'facultad': nombre_facultad,
         'periodo_a_predecir': periodo_a_predecir_mas_1,
         'desertores': potenciales_desertores,
-        'total_desertores_{}'.format(periodo_a_predecir_mas_1): int(total_desertores),
+        f'total_desertores_{periodo_a_predecir_mas_1}': int(total_desertores),
         'estudiantes_analizados': int(total_estudiantes_analizados),
         'desercion_prevista': float(round(int(total_desertores)/int(total_estudiantes_analizados), 2)),
         'clasificador': str(AML_best['Nombre'].tolist()[0]),
         'precision': float(round(AML_best['Precision Media de Prueba'].tolist()[0]*100, 2)),
         'periodo_anterior': str(periodo_a_predecir),
-        'total_desertores_{}'.format(periodo_a_predecir):  str(len(data_a_predecir[data_a_predecir['desertor'] == 1])),
+        f'total_desertores_{periodo_a_predecir}':  str(len(data_a_predecir[data_a_predecir['desertor'] == 1])),
+        f'total_desertores_{periodo_a_predecir}_matriculados':  str(len(data_a_predecir.query('desertor==1'))),
         # 'total_desertores_{}_matriculados'.format(periodo_a_predecir):  str(len(data_a_predecir.query('desertor==1 & idestado==6' ))),
-        'total_desertores_{}_matriculados'.format(periodo_a_predecir):  str(len(data_a_predecir.query('desertor==1'))),
     }
 
-    # Reasignanr el tipo de la columna documento
+    # Reasignar el tipo de la columna documento
     resultados_desertores['documento'] = resultados_desertores['documento'].astype(
         str, copy=False)
     resultados_desertores = resultados_desertores[[
@@ -289,14 +311,24 @@ def ejecutar_modelo(data):
     return resultados, resultados_desertores
 
 
-def save_model(mejor_clasificador):
-    with open('clasificador.pkl', 'wb') as f:
-        pickle.dump(mejor_clasificador, f)
-    pickle.dump(mejor_clasificador, open('clasificador.sav', 'wb'))
+modelos_folder = os.getcwd()+'/uploads/modelos'
 
-    with open('clasificador.pkl', 'rb') as f:
+# TODO NEW! version 2 v2.0.0
+def save_model(mejor_clasificador, conjunto=''):
+    clf_file = f'{modelos_folder}/{conjunto}.pkl'
+    with open(clf_file, 'wb') as f:
+        pickle.dump(mejor_clasificador, f)
+    pickle.dump(mejor_clasificador, open(f'{modelos_folder}/{conjunto}.sav', 'wb'))
+
+
+# TODO NEW! version 2 v2.0.0
+def read_model(conjunto):
+    clf_file = f'{modelos_folder}/{conjunto}.pkl'
+    with open(clf_file, 'rb') as f:
         clf = pickle.load(f)
-    clf = pickle.load(open('clasificador.sav', 'rb'))
+    clf = pickle.load(open(clf_file, 'rb'))
+    return clf
+
 
 ############################################################################################################### FUNCION DE ASIGNACION DE TIPOS DE DATOS CORRECTOS ###########################################################################################################################################
 
