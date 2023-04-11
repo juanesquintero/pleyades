@@ -95,23 +95,6 @@
           <!-- ACCCIONES -->
           <div class="row d-flex justify-content-center">
 
-            <!-- DESCARGAR-->
-            <form action="{{url_for('Analista.descargar')}}" method="POST">
-              <input type="hidden" name="modelo" value="{{m.conjunto}}" />
-              <button
-                type="submit"
-                data-toggle="tooltip"
-                data-placement="bottom"
-                title="Descargar Archivo"
-                class="btn btn-sm btn-link text-dark"
-                role="status"
-              >
-                <i class="fa fa-dark fa-file-download"></i>
-              </button>
-            </form>
-
-            &nbsp;&nbsp;&nbsp;&nbsp;
-
             <!-- PREDECIR -->
             <form action="{{url_for('Analista.predecir')}}" method="POST">
               <input type="hidden" name="modelo" value="{{m}}" />
@@ -133,6 +116,23 @@
                 style="display: none"
               >
                 <i class="fas fa-spinner fa-spin fa-lg" aria-hidden="true"></i>
+              </button>
+            </form>
+           
+            &nbsp;&nbsp;
+
+            <!-- DESCARGAR-->
+            <form action="{{url_for('Analista.descargar')}}" method="POST">
+              <input type="hidden" name="modelo" value="{{m.conjunto}}" />
+              <button
+                type="submit"
+                data-toggle="tooltip"
+                data-placement="bottom"
+                title="Descargar Archivo"
+                class="btn btn-sm btn-link text-dark"
+                role="status"
+              >
+                <i class="fa fa-dark fa-file-download"></i>
               </button>
             </form>
 
