@@ -16,7 +16,7 @@ services:
       - FLASK_DEBUG=1
       - FLASK_APP=__init__:app
       - TEMPLATES_AUTO_RELOAD=1
-      - CLI_IES_NAME=${PLEYADES_IES_CLIENT}
+      - CLI_IES_NAME=${IES_CLIENT}
     ports:
       - 5000:80
     links:
@@ -40,7 +40,7 @@ services:
     environment:
       - FLASK_DEBUG=1
       - FLASK_APP=__init__:create_app()
-      - CLI_IES_NAME=${PLEYADES_IES_CLIENT}
+      - CLI_IES_NAME=${IES_CLIENT}
     ports:
       - 3000:80
     links:
@@ -60,7 +60,7 @@ services:
     env_file:
       - ./api/.env
     environment:
-      - MYSQL_ROOT_PASSWORD=${PLEYADES_MYSQL_ROOT_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PWD}
     volumes:
       - ./api/db/pleyades/dev:/var/lib/mysql
       - ./api/db/pleyades/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -81,7 +81,7 @@ services:
       - ./api/db/ies/init.sh:/tmp/init.sh
     networks:
       - dev-net
-    command: /bin/bash -c "/tmp/init.sh"
+    command: /bin/bash -c "/opt/mssql/bin/sqlservr && /tmp/init.sh"
         
   adminer:
     container_name: pleyades-adminer

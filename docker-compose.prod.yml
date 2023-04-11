@@ -14,7 +14,7 @@ services:
       - ./nginx/logs:/var/log/nginx
       - ./nginx/www:/var/www
     environment:
-      - CLI_IES_NAME=${PLEYADES_IES_CLIENT}
+      - CLI_IES_NAME=${IES_CLIENT}
     ports:
       - ${PUBLIC_PORT}:80
     networks:
@@ -37,7 +37,7 @@ services:
     environment:
       - FLASK_DEBUG=0
       - FLASK_APP=__init__:app
-      - CLI_IES_NAME=${PLEYADES_IES_CLIENT}
+      - CLI_IES_NAME=${IES_CLIENT}
       
     networks:
       deploy-net:
@@ -61,7 +61,7 @@ services:
     environment:
       - FLASK_DEBUG=0
       - FLASK_APP=__init__:create_app()
-      - CLI_IES_NAME=${PLEYADES_IES_CLIENT}
+      - CLI_IES_NAME=${IES_CLIENT}
     volumes:
       - ./api:/app
     networks:

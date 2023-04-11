@@ -18,9 +18,9 @@ def method_not_allow(e):
 @Error.route('/error')
 def handle_500(e):
     error_logger.error(e)
-    return render_template('utils/error.html',error=str(e)), 500
+    return render_template('utils/error.html', error=str(e)), 500
 
 @Error.app_errorhandler(Exception)
 def handle_exception(e):
     error_logger.error('EXCEPTION: '+str(e), exc_info=True)
-    return render_template('utils/error.html', exception=True), 500
+    return render_template('utils/error.html', exception=True, mensaje=str(e)), 500

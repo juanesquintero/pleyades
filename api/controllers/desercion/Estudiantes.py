@@ -91,12 +91,12 @@ def get_periodos():
 @jwt_required()
 def get_periodos_programa(programa):
     # Obtener datos desde la bd SQL server       
-    sql = 'SELECT DISTINCT REGISTRO FROM {} WHERE idprograma={};'.format(tabla, programa)
+    sql = f'SELECT DISTINCT REGISTRO FROM {tabla} WHERE idprograma={programa};'
     query = db.select(sql)
     ex = exception(query)
     if ex: return ex
     if not query: return msg_error
-    periodos_list = [ int(p['REGISTRO']) for p in query]
+    periodos_list = [ int(p.get('REGISTRO')) for p in query]
     periodos =  sorted(periodos_list)
     if not(periodos):  return msg_error
     return jsonify(_format(periodos))

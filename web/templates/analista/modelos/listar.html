@@ -1,0 +1,175 @@
+{% include 'components/header.html' %} 
+
+{% include 'components/sidebar.html' %}
+
+<h4>Modelos de Deserción</h4>
+<br />
+
+<!-- Input de filtrado -->
+<div class="row ml-1 mt-2">
+  &nbsp;<i class="fas fa-filter mr-2 mt-2"></i>&nbsp;
+  <input
+    type="text"
+    class="form-control form-control-sm w-25"
+    id="filtro_tabla"
+    placeholder="Filtrar tabla..."
+  />
+</div>
+<br />
+
+<!-- Tabla -->
+<div class="table-responsive-sm">
+  <table class="table table-hover table-sm" id="tabla">
+    <thead>
+      <tr class="border-top-0">
+        <th scope="col" class="col-3 border-top-0">
+          <center><i>Programa</i></center>
+        </th>
+        <th scope="col" class="border-top-0">
+          <center><i>Info</i></center>
+        </th>
+        <th scope="col" class="border-top-0">
+          <center><i>Clasificador</i></center>
+        </th>
+        <th scope="col" class="border-top-0">
+          <center><i>Precisión</i></center>
+        </th>
+        <th scope="col" class="border-top-0">
+          <center><i>Deserción</i></center>
+        </th>
+        <th scope="col" class="col-2 border-top-0">
+          <center><i>Acciones</i></center>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for m in modelos %} {% if m.estado=='Exitosa' %}
+      <tr>
+        <td>
+          {% for p in programas %} {% if m.resultados.idprograma ==p.codigo %}
+          <center>{{p.nombre}}</center>
+          {% endif %} {% endfor %}
+        </td>
+        <td>
+          {% set info_array = m.conjunto.split(' ')[1:] %}
+          <center>{{ info_array|join(' ') }}</center>
+        </td>
+
+        <td>
+          <center>{{ m.resultados.clasificador }}</center>
+        </td>
+
+        <td>
+          <center>
+            {{ m.resultados.precision }} % {% if (m.resultados.precision|float)
+            < 85.00 %}
+
+            <i
+              class="fa fa-solid fa-exclamation-triangle fa-lg text-warning border-dark"
+              data-toggle="tooltip"
+              data-placement="bottom"
+              style="cursor: pointer"
+              title="La precisión del modelo no es muy alta, Ya que esta por debajo del 85%&#10;Para estar mas seguro se recomienda crear otro con mas datos de entrenamiento."
+            ></i>
+            {% endif %}
+          </center>
+        </td>
+
+        <td>
+          {% set proc = m.resultados.desercion_prevista * 100 %}
+
+          <center>
+            {{ '%0.1f' % proc|float }} % {% if m.resultados.desercion_prevista >
+            0.15 %}
+            <i
+              class="fa fa-solid fa-exclamation-triangle fa-lg text-danger border-dark"
+              data-toggle="tooltip"
+              data-placement="bottom"
+              title="Deserción estudiantil por encima del 15% promediado&#10;Pudo ocurrir un error de entrenamiento&#10;El modelo de predicción parece NO ser confiable&#10;Se recomienda crear otro."
+            ></i>
+            {% endif %}
+          </center>
+        </td>
+
+        <td>
+          <!-- ACCCIONES -->
+          <div class="row d-flex justify-content-center">
+
+            <!-- PREDECIR -->
+            <form action="{{url_for('Analista.predecir')}}" method="POST">
+              <input type="hidden" name="modelo" value="{{m}}" />
+              <!-- Boton para predecir con un modelo -->
+              <button
+                type="submit"
+                data-toggle="tooltip"
+                data-placement="bottom"
+                title="Predecir"
+                class="btn btn-info text-white border border-info btn-sm submit"
+                role="status"
+              >
+                <i class="fa fa-flask fa-lg" aria-hidden="true"></i>
+              </button>
+
+              <button
+                class="btn btn-outline-dark btn-sm btn-loading"
+                type="button"
+                style="display: none"
+              >
+                <i class="fas fa-spinner fa-spin fa-lg" aria-hidden="true"></i>
+              </button>
+            </form>
+           
+            &nbsp;&nbsp;
+
+            <!-- DESCARGAR-->
+            <form action="{{url_for('Analista.descargar')}}" method="POST">
+              <input type="hidden" name="modelo" value="{{m.conjunto}}" />
+              <button
+                type="submit"
+                data-toggle="tooltip"
+                data-placement="bottom"
+                title="Descargar Archivo"
+                class="btn btn-sm btn-link text-dark"
+                role="status"
+              >
+                <i class="fa fa-dark fa-file-download"></i>
+              </button>
+            </form>
+
+          </div>
+        </td>
+      </tr>
+      {% endif %} {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% if error %}
+<br />
+{% with titulo='No se pudieron cargar los modelos',error=error %} {% include
+"components/alert.html" %} {% endwith %}
+<br />
+{% endif %}
+
+<br />
+
+<a
+  href="{{url_for('Analista.entrenar') }}"
+  type="button"
+  class="btn btn-dark text-white my-primary mt-4"
+>
+  Nuevo
+  <i class="fa fa-robot ml-1"></i>
+</a>
+
+<script>
+  // Cargando si se esta validando y guardando la data del modelo
+  $(".submit").click(function () {
+    handleModal(
+      "Su modelo aparecera cuando acabe el proceso (recuerde refrescar la página)",
+      "{{url_for('Analista.predicciones')}}"
+    );
+  });
+</script>
+
+{% include 'components/footer.html' %}

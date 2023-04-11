@@ -18,8 +18,31 @@
 
             </li>
 
+
+            <a 
+                href="{{url_for('Analista.modelos')}}"
+                class="list-group-item  text-white  border-right-0 my-secondary"
+            >
+                <i class="fa fa-solid fa-robot"></i>
+                &nbsp;&nbsp;<span class="menu-collapsed text-white">Modelos de Deserción</span>
+            </a>
+       
+            <a 
+                href="{{url_for('Analista.entrenamientos')}}"
+                class="list-group-item  text-white  border-right-0 my-secondary"
+            >
+                <i class="fa fa-solid fa-dumbbell"></i>
+                &nbsp;&nbsp;<span class="menu-collapsed text-white">Entrenamientos</span>
+            </a>
+            <a href="{{url_for('Analista.predicciones')}}"
+                class="list-group-item  text-white border-right-0 my-secondary"
+            >
+                <i class="fa fa-solid fa-flask"></i>
+                &nbsp;&nbsp;<span class="menu-collapsed text-white">Predicciones</span>
+            </a>
+
             <!-- CONJUNTOS MENU -->
-            <a href="#menuConjuntos" data-toggle="collapse" aria-expanded="false"
+            <!-- <a href="#menuConjuntos" data-toggle="collapse" aria-expanded="false"
                 class="list-group-item  flex-column align-items-start my-secondary border-top">
                 <div class="d-flex w-100 justify-content-start align-items-center">
                     <span class="fa fa-database fa-fw mr-3 text-white"></span>
@@ -27,7 +50,6 @@
                     <span class="submenu-icon ml-auto"></span>
                 </div>
             </a>
-            <!-- Submenu content -->
             <div {% if menu=='conjuntos' %} style="display:inline;" {% endif %} id='menuConjuntos'
                 class="sidebar-submenu collapse">
                 <a href="{{url_for('Conjunto.crudos')}}"
@@ -38,9 +60,10 @@
                     class="list-group-item  text-white border-right-0 my-secondary">
                     &#8226;&nbsp;&nbsp;<span class="menu-collapsed text-white">Procesados</span>
                 </a>
-            </div>
+            </div> -->
+
             <!-- RESULTADOS MENU -->
-            <a href="#menuResultados" data-toggle="collapse" aria-expanded="false"
+            <!-- <a href="#menuResultados" data-toggle="collapse" aria-expanded="false"
                 class="list-group-item  flex-column align-items-start  border-right-0 my-secondary">
                 <div class="d-flex w-100 justify-content-start align-items-center">
                     <i class="fa fa-list fa-fw mr-3 text-white" aria-hidden="true"></i>
@@ -58,7 +81,8 @@
                     class="list-group-item  text-white border-right-0 my-secondary">
                     &#8226;&nbsp;&nbsp;<span class="menu-collapsed text-white">Ejecuciones</span>
                 </a>
-            </div>
+            </div> -->
+
             <!-- TABLEROS MENU -->
             <!-- TODO tableros/_option.html -->
 
