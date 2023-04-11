@@ -80,7 +80,7 @@
             <td class="bg-light">
               {% if key=='desercion_prevista' %}
                 {% set proc = value * 100 %}
-                 {{ '%0.2f' % proc|float }} %
+                {{ '%0.2f' % proc|float }} %
               {% else %}
                 {{ value }}
                 {% if key=='precision' %}
