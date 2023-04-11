@@ -124,4 +124,8 @@ def formulario_entrenar():
         error = body_f
     else:
         error = body_p
-    return render_template('utils/mensaje.html', mensaje='No se pudieron cargar las programas y las facultades', submensaje=error)
+    return render_template(
+        'utils/mensaje.html',
+        mensaje='No se pudieron cargar las programas y las facultades',
+        submensaje=error
+    )
