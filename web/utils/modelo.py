@@ -151,6 +151,12 @@ def eliminacion(data):
 
 
 def ejecutar_modelo(data, conjunto=''):
+    
+    idprograma = int(data['idprograma'][0])
+    nombre_programa = str(data['programa'][0])
+    
+    idfacultad = int(data['idfacultad'][0])
+    nombre_facultad = str(data['facultad'][0])
 
     data, data_a_predecir, periodo_a_predecir = eliminacion(data)
 
@@ -278,7 +284,10 @@ def ejecutar_modelo(data, conjunto=''):
     periodo_a_predecir_mas_1 = f'{periodo_a_predecir} + 1'
 
     resultados = {
-        'idprograma': int(resultados_desertores['idprograma'][0]),
+        'idprograma': idprograma,
+        'programa': nombre_programa,
+        'idfacultad': idfacultad,
+        'facultad': nombre_facultad,
         'periodo_a_predecir': periodo_a_predecir_mas_1,
         'desertores': potenciales_desertores,
         f'total_desertores_{periodo_a_predecir_mas_1}': int(total_desertores),
