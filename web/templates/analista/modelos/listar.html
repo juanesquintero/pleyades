@@ -1,4 +1,6 @@
-{% include 'components/header.html' %} {% include 'components/sidebar.html' %}
+{% include 'components/header.html' %} 
+
+{% include 'components/sidebar.html' %}
 
 <h4>Modelos de Deserción</h4>
 <br />
@@ -35,7 +37,7 @@
         <th scope="col" class="border-top-0">
           <center><i>Deserción</i></center>
         </th>
-        <th scope="col" class="border-top-0">
+        <th scope="col" class="col-2 border-top-0">
           <center><i>Acciones</i></center>
         </th>
       </tr>
@@ -45,7 +47,7 @@
       <tr>
         <td>
           {% for p in programas %} {% if m.resultados.idprograma ==p.codigo %}
-          <center> {{p.nombre}} </center>
+          <center>{{p.nombre}}</center>
           {% endif %} {% endfor %}
         </td>
         <td>
@@ -83,7 +85,6 @@
               class="fa fa-solid fa-exclamation-triangle fa-lg text-danger border-dark"
               data-toggle="tooltip"
               data-placement="bottom"
-              style="cursor: pointer"
               title="Deserción estudiantil por encima del 15% promediado&#10;Pudo ocurrir un error de entrenamiento&#10;El modelo de predicción parece NO ser confiable&#10;Se recomienda crear otro."
             ></i>
             {% endif %}
@@ -93,6 +94,24 @@
         <td>
           <!-- ACCCIONES -->
           <div class="row d-flex justify-content-center">
+
+            <!-- DESCARGAR-->
+            <form action="{{url_for('Analista.descargar')}}" method="POST">
+              <input type="hidden" name="modelo" value="{{m.conjunto}}" />
+              <button
+                type="submit"
+                data-toggle="tooltip"
+                data-placement="bottom"
+                title="Descargar Archivo"
+                class="btn btn-sm btn-link text-dark"
+                role="status"
+              >
+                <i class="fa fa-dark fa-file-download"></i>
+              </button>
+            </form>
+
+            &nbsp;&nbsp;&nbsp;&nbsp;
+
             <!-- PREDECIR -->
             <form action="{{url_for('Analista.predecir')}}" method="POST">
               <input type="hidden" name="modelo" value="{{m}}" />
@@ -102,7 +121,7 @@
                 data-toggle="tooltip"
                 data-placement="bottom"
                 title="Predecir"
-                class="btn my-primary text-white border border-success btn-sm submit"
+                class="btn btn-info text-white border border-info btn-sm submit"
                 role="status"
               >
                 <i class="fa fa-flask fa-lg" aria-hidden="true"></i>
@@ -117,22 +136,6 @@
               </button>
             </form>
 
-            &nbsp;
-
-            <!-- DESCARGAR-->
-            <form action="{{url_for('Analista.descargar')}}" method="POST">
-              <input type="hidden" name="modelo" value="{{m}}" />
-              <button
-                type="submit"
-                data-toggle="tooltip"
-                data-placement="bottom"
-                title="Descargar Archivo"
-                class="btn btn-outline-dark btn-sm submit"
-                role="status"
-              >
-                <i class="fa fa-solid fa-arrow-down"></i>
-              </button>
-            </form>
           </div>
         </td>
       </tr>
