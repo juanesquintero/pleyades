@@ -1,4 +1,5 @@
 import os
+from ast import literal_eval
 from dotenv import load_dotenv
 from flask import request, session, Blueprint, render_template, send_file, redirect, url_for, jsonify, flash
 from views.auth import login_required
@@ -47,9 +48,10 @@ def entrenar():
 
 @Analista.route('/modelos/predecir', methods=['POST'])
 def predecir():
+    modelo = dict(request.values).get('modelo')    
     return render_template(
         endopoint+'predecir.html', 
-        modelo=dict(request.values)
+        modelo=literal_eval(modelo)
     )
 
 
