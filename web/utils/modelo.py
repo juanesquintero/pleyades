@@ -242,8 +242,9 @@ def ejecutar_modelo(data, conjunto=''):
     save_model(mejor_clasificador, conjunto)
 
     # predc_sem_act = data_a_predecir[['documento','nombre_completo','desertor', 'idprograma', 'idestado']]
-    predc_sem_act = data_a_predecir[[
-        'documento', 'nombre_completo', 'desertor', 'idprograma']]
+    predc_sem_act = data_a_predecir[
+        ['documento', 'nombre_completo', 'desertor', 'idprograma']
+    ]
 
     predc_sem_act['prediccion'] = mejor_clasificador.predict(
         data_a_predecir[col_preparadas])
@@ -253,14 +254,18 @@ def ejecutar_modelo(data, conjunto=''):
 
     # Eliminar valores repetidos
     potenciales_desertores = potenciales_desertores.drop_duplicates(
-        subset=['documento'], keep='first').reset_index()
+        subset=['documento'], 
+        keep='first'
+    ).reset_index()
 
     # Setear resultados para insertar en la BD
     potenciales_desertores['semestre_prediccion'] = periodo_a_predecir
 
     resultados_desertores = potenciales_desertores
     potenciales_desertores = potenciales_desertores.drop(
-        ['idprograma', 'semestre_prediccion'], axis=1)
+        ['idprograma', 'semestre_prediccion'], 
+        axis=1
+    )
 
     ''' FASE 3 '''
     pd.crosstab(predc_sem_act.prediccion, predc_sem_act.desertor, margins=True)
@@ -270,23 +275,24 @@ def ejecutar_modelo(data, conjunto=''):
     total_desertores = len(potenciales_desertores.index)
     total_estudiantes_analizados = len(predc_sem_act['documento'].unique())
     potenciales_desertores.drop(['index'], axis=1, inplace=True)
-    periodo_a_predecir_mas_1 = str(periodo_a_predecir)+' + {}'.format(1)
+    periodo_a_predecir_mas_1 = f'{periodo_a_predecir} + 1'
 
     resultados = {
+        'idprograma': int(resultados_desertores['idprograma'][0]),
         'periodo_a_predecir': periodo_a_predecir_mas_1,
         'desertores': potenciales_desertores,
-        'total_desertores_{}'.format(periodo_a_predecir_mas_1): int(total_desertores),
+        f'total_desertores_{periodo_a_predecir_mas_1}': int(total_desertores),
         'estudiantes_analizados': int(total_estudiantes_analizados),
         'desercion_prevista': float(round(int(total_desertores)/int(total_estudiantes_analizados), 2)),
         'clasificador': str(AML_best['Nombre'].tolist()[0]),
         'precision': float(round(AML_best['Precision Media de Prueba'].tolist()[0]*100, 2)),
         'periodo_anterior': str(periodo_a_predecir),
-        'total_desertores_{}'.format(periodo_a_predecir):  str(len(data_a_predecir[data_a_predecir['desertor'] == 1])),
+        f'total_desertores_{periodo_a_predecir}':  str(len(data_a_predecir[data_a_predecir['desertor'] == 1])),
+        f'total_desertores_{periodo_a_predecir}_matriculados':  str(len(data_a_predecir.query('desertor==1'))),
         # 'total_desertores_{}_matriculados'.format(periodo_a_predecir):  str(len(data_a_predecir.query('desertor==1 & idestado==6' ))),
-        'total_desertores_{}_matriculados'.format(periodo_a_predecir):  str(len(data_a_predecir.query('desertor==1'))),
     }
 
-    # Reasignanr el tipo de la columna documento
+    # Reasignar el tipo de la columna documento
     resultados_desertores['documento'] = resultados_desertores['documento'].astype(
         str, copy=False)
     resultados_desertores = resultados_desertores[[
