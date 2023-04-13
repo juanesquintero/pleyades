@@ -21,20 +21,17 @@ modelos_folder = os.getcwd()+'/uploads/modelos'
 @Analista.route('/modelos/', methods=['GET'])
 @login_required
 def modelos():
-    success, body_p, body_c = get_modelos()
+    success, body = get_modelos()
 
-    if success:
-        return render_template(
-            'analista/modelos/listar.html',
-            modelos=body_c,
-            programas=body_p
-        )
+    if not success:
+        flash(body.get('error'))
+        body = []
 
     return render_template(
         'analista/modelos/listar.html',
-        modelos=[],
-        error={**body_c, **body_p}
+        modelos=body,
     )
+
 
 
 @Analista.route('/modelos/entrenar', methods=['GET', 'POST'])
@@ -56,9 +53,20 @@ def predecir():
 
 
 @Analista.route('/entrenamientos', methods=['GET'])
+@Analista.route('/entrenamientos/', methods=['GET'])
 @login_required
 def entrenamientos():
-    return redirect(url_for('Resultado.preparaciones'))
+    success, body = get_modelos()
+
+    if not success:
+        flash(body.get('error'))
+        body = []
+
+    return render_template(
+        'analista/entrenamientos/listar.html',
+        entrenamientos=body,
+    )
+
 
 
 @Analista.route('/predicciones', methods=['GET'])
@@ -79,17 +87,16 @@ def descargar():
     if os.path.exists(ruta):
         return send_file(ruta, as_attachment=True)
 
-    success, body_p, body_c = get_modelos()
+    success, body = get_modelos()
 
     flash('No se encontro el archivo a descargar', 'warning')
 
     if not success:
-        flash(f"{body_p.get('error')}, {body_c.get('error')}", 'danger')
+        flash(f"{body.get('error')}", 'danger')
 
     return render_template(
         'analista/modelos/listar.html',
-        modelos=body_c,
-        programas=body_p
+        modelos=body,
     )
 
 
@@ -105,10 +112,7 @@ def get_periodos_programa(programa):
 
 def get_modelos():
     user = session.get('user', {'correo': ''}).get('correo')
-    status_p, body_p = get('programas')
-    status_c, body_c = get(f'ejecuciones/ejecutor/{user}')
-    success = status_c and status_p
-    return success, body_p, body_c
+    return get(f'ejecuciones/ejecutor/{user}')
 
 def formulario_entrenar():
     periodos = DataIES.get_periodos_origen()
