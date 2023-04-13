@@ -172,7 +172,7 @@ def guardar(conjunto=None):
     conjunto['programa'] = int(conjunto['programa'])
     conjunto['encargado'] = session['user']['correo']
 
-    tipo = conjunto['tipo']
+    tipo = conjunto.get('tipo', 'consulta')
     archivo = request.files.get('archivo')
     ruta = upload_folder+'/crudos'
 
@@ -209,7 +209,8 @@ def guardar(conjunto=None):
             return render_template('utils/mensaje.html', mensaje='Incorrecto el formato de la fuente de datos', submensaje=mensaje_error)
 
     ############# CONSULTA ##############
-    elif tipo == 'consulta':
+    # elif tipo == 'consulta':
+    else:
         # Obtener datos de los estudiantes en ese programas y periodos
         endpoint_conjunto = 'desercion/estudiantes/conjunto/{}/{}/{}'
         endpoint_conjunto_values = endpoint_conjunto.format(
@@ -240,8 +241,8 @@ def guardar(conjunto=None):
                 return render_template('utils/mensaje.html', mensaje='Ocurrió un error guardando el conjunto de datos')
         else:
             return render_template('utils/mensaje.html', mensaje='Incorrecto el formato de la fuente de datos', submensaje=mensaje_error)
-    else:
-        return render_template('utils/mensaje.html', mensaje='Formulario incorrecto', submensaje='Verifica el formulario de creacion o notifica al Administrador del sistema')
+    # else:
+    #     return render_template('utils/mensaje.html', mensaje='Formulario incorrecto', submensaje='Verifica el formulario de creacion o notifica al Administrador del sistema')
 
     # Guardar registro de conjunto en la BD
     conjunto['nombre'] = nombre

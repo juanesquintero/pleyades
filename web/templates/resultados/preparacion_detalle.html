@@ -1,24 +1,19 @@
-{% include 'components/header.html' %}
-
-{% with menu='resultados' %}
-    {% include 'components/sidebar.html' %}
-{% endwith %}
+{% include 'components/header.html' %} {% with menu='resultados' %} {% include
+'components/sidebar.html' %} {% endwith %}
 
 <h4>Detalles de una Preparacion</h4>
-<br>
+<br />
 
 {% if observaciones %}
-<div class="container pt-3 pl-5 float-left border rounded ">
+<div class="container pt-3 pl-5 float-left border rounded">
   {% else %}
   <div class="container pt-3 pl-5 float-left">
     {% endif %}
 
-
     <div class="row">
-
       <div class="col">
         {% if observaciones %}
-        <h5 class="mb-3 font-weight-bold ">Detalle</h5>
+        <h5 class="mb-3 font-weight-bold">Detalle</h5>
         {% endif %}
 
         <table class="table table-bordered w-75">
@@ -27,82 +22,85 @@
             <tr>
               <td><strong>{{ key.title() }}</strong></td>
               <td class="bg-light">
-
-                {{ value }}
-
-                {% if key=='duracion' %}
-                seg
-                {% endif %}
+                {{ value }} {% if key=='duracion' %} seg {% endif %}
               </td>
             </tr>
             {% endfor %}
           </tbody>
         </table>
 
-        <br>
+        <br />
 
         <div class="col-sm-11 d-flex justify-content-center align-items-center">
           <i class="fa fa-download" aria-hidden="true"></i>
           &nbsp;
-          <strong class="mr-2 d-flex ">Descargar: </strong>
+          <strong class="mr-2 d-flex">Descargar: </strong>
           &nbsp;&nbsp;
-          <a class="btn bg-white btn-sm border text-dark" type="button"
-            href="{{url_for('Conjunto.descargar',estado='procesados',nombre=p.conjunto)}}">
+          <a
+            class="btn bg-white btn-sm border text-dark"
+            type="button"
+            href="{{url_for('Conjunto.descargar',estado='procesados',nombre=p.conjunto)}}"
+          >
             <i class="fas fa-file-excel mr-1"></i>
             Procesado
           </a>
         </div>
 
-
-        <br><br>
+        <br /><br />
 
         {% if not observaciones %}
         <div class="text-center ml-0 pl-0 mr-5 pr-5">
-          <a class="btn btn-outline-dark ml-0 mr-3" href="{{url_for('Resultado.preparaciones')}}">Atras</a>
+          <!-- TODO NEW! version 2 v2.0.0 -->
+          <a
+            class="btn btn-outline-dark ml-0 mr-3"
+            href="{{url_for('Analista.entrenamientos')}}"
+            >Atras</a
+          >
+          <!-- <a class="btn btn-outline-dark ml-0 mr-3" href="{{url_for('Resultado.preparaciones')}}">Atras</a> -->
         </div>
         {% endif %}
 
-        <br>
-
+        <br />
       </div>
 
-      {% if observaciones %}
-      {% if observaciones  is mapping  %}
+      {% if observaciones %} {% if observaciones is mapping %}
       <div class="col">
-        <h5 class="mb-3 font-weight-bold ">Observaciones</h5>
+        <h5 class="mb-3 font-weight-bold">Observaciones</h5>
 
         <table class="table table-bordered w-75">
           <tbody>
             {% for key, value in observaciones.items() %}
             <tr>
               <td><strong>{{ key.title() }}</strong></td>
-              <td class="bg-light">
-                {{ value }}
-              </td>
+              <td class="bg-light">{{ value }}</td>
             </tr>
             {% endfor %}
           </tbody>
         </table>
-
       </div>
-      {% endif %}
-      {% endif %}
-
-
+      {% endif %} {% endif %}
     </div>
     {% if observaciones %}
     <div class="row">
       <div class="col">
         <center>
-          <a class="btn btn-outline-dark ml-0 mr-3" href="{{url_for('Resultado.preparaciones')}}">Atras</a>
+          <!-- TODO NEW! version 2 v2.0.0 -->
+          <a
+            class="btn btn-outline-dark ml-0 mr-3"
+            href="{{url_for('Analista.entrenamientos')}}"
+            >Atras</a
+          >
+          <!-- <a
+            class="btn btn-outline-dark ml-0 mr-3"
+            href="{{url_for('Resultado.preparaciones')}}"
+            >Atras</a
+          > -->
         </center>
       </div>
     </div>
-    <br>
+    <br />
     {% endif %}
   </div>
 
-
-
-
   {% include 'components/footer.html' %}
+</div>
