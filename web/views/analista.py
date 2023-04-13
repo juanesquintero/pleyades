@@ -63,7 +63,7 @@ def entrenamientos():
         body = []
 
     return render_template(
-        'analista/entrenamientos/listar.html',
+        'analista/entrenamientos.html',
         entrenamientos=body,
     )
 
