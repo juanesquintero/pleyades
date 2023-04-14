@@ -70,9 +70,19 @@ def entrenamientos():
 
 
 @Analista.route('/predicciones', methods=['GET'])
+@Analista.route('/predicciones/', methods=['GET'])
 @login_required
 def predicciones():
-    return redirect(url_for('Resultado.ejecuciones'))
+    success, body = get_modelos()
+
+    if not success:
+        flash(body.get('error'))
+        body = []
+
+    return render_template(
+        'analista/predicciones.html',
+        predicciones=body,
+    )
 
 
 
