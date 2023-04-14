@@ -287,6 +287,7 @@ def ejecutar_modelo(data, conjunto=''):
         'idprograma': idprograma,
         'programa': nombre_programa,
         'idfacultad': idfacultad,
+        'tipo': 'Entrenamiento',
         'facultad': nombre_facultad,
         'periodo_a_predecir': periodo_a_predecir_mas_1,
         'desertores': potenciales_desertores,
