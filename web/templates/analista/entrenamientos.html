@@ -46,7 +46,7 @@
       </tr>
     </thead>
     <tbody>
-      {% for e in entrenamientos %} {% if e.estado=='Exitosa' %}
+      {% for e in entrenamientos %} {% if e.estado=='Exitosa' and e.resultados.tipo == 'Entrenamiento' %}
       <tr>
         <td>
           <center>{{e.resultados.programa}}</center>
