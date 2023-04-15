@@ -1,0 +1,167 @@
+{% include 'components/header.html' %} {% include 'components/sidebar.html' %}
+
+<h4>
+  Predicciones
+  <i class="fas fa-flask fa-sm ml-1"></i>
+</h4>
+<br />
+
+<!-- Input de filtrado -->
+<div class="row ml-1 mt-2">
+  &nbsp;<i class="fas fa-filter mr-2 mt-2"></i>&nbsp;
+  <input
+    type="text"
+    class="form-control form-control-sm w-25"
+    id="filtro_tabla"
+    placeholder="Filtrar tabla..."
+  />
+</div>
+<br />
+
+<!-- Tabla -->
+<div class="table-responsive-sm">
+  <table class="table table-hover table-sm" id="tabla">
+    <thead>
+      <tr>
+        <th class="col-4 border-top-0">
+          <center><i>Programa</i></center>
+        </th>
+        <th class="col-2 border-top-0">
+          <center><i>Info</i></center>
+        </th>
+
+        <th scope="col" class="col-2 border-top-0">
+          <center><i>Estado</i></center>
+        </th>
+
+        <th scope="col" class="col-1 border-top-0">
+          <center><i>Preparación</i></center>
+        </th>
+
+        <th scope="col" class="col-1 border-top-0">
+          <center><i>Ejecución</i></center>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in predicciones %} {% if p.estado=='Exitosa' and p.resultados.tipo == 'Prediccion' %}
+      
+      <tr>
+        <td>
+          <center>{{p.resultados.programa}}</center>
+        </td>
+        <td>
+          <center>
+            <!-- {% set info_array = p.nombre.split(' ')[1:] %}  -->
+            <!-- {{ info_array|join(' ') }} -->
+            {{ p.nombre }}
+          </center>
+        </td>
+        <td>
+          {% set proc = p.resultados.desercion_prevista * 100 %}
+          <center>
+            
+              {% if p.resultados.desercion_prevista > 0.15  %}
+              <i
+              class="fa fa-solid fa-exclamation-triangle fa-lg text-danger border-dark"
+              data-toggle="tooltip"
+              data-placement="bottom"
+              title="Deserción estudiantil por encima del 15% promediado&#10;Pudo ocurrir un error de entrenamiento&#10;El modelo de predicción parece NO ser confiable&#10;Se recomienda crear otro."
+            ></i>
+            
+              {% elif (p.resultados.precision|float) < 85.00 %}
+              <i
+              class="fa fa-solid fa-exclamation-triangle fa-lg text-warning border-dark"
+              data-toggle="tooltip"
+              data-placement="bottom"
+              style="cursor: pointer"
+              title="La precisión del modelo no es muy alta, Ya que esta por debajo del 85%&#10;Para estar mas seguro se recomienda crear otro con mas datos de entrenamiento."
+            ></i>
+        
+              {% else %}
+
+              
+              <i
+              class="fa fa-solid fa-check fa-lg text-success border-dark"
+              data-toggle="tooltip"
+              data-placement="bottom"
+              title="El entrenamiento del modelo al parecer es muy optimo por los valores acertados de la precision y deserción."
+            ></i>
+
+              {% endif %}
+            </center>
+          </center>
+        </td>
+        <td>
+          <div class="row d-flex justify-content-center">
+            <!-- Preparacion-->
+            <div class="btn-group" role="group" aria-label="Basic example">
+              <form
+                action="{{url_for('Resultado.preparacion_detalle')}}"
+                method="POST"
+              >
+                <input type="hidden" name="preparacion" value="{{p.nombre}}" />
+                <button
+                  type="submit"
+                  data-toggle="tooltip"
+                  data-placement="bottom"
+                  title="Ver Detalle de Preparación"
+                  class="btn btn-outline-dark btn-sm submit"
+                  role="status"
+                >
+                  <i class="fas fa-cog"></i>
+                </button>
+              </form>
+            </div>
+          </div>
+        </td>
+
+        <td>
+          <div class="row d-flex justify-content-center">
+            <!-- Ejecución-->
+            <div class="btn-group" role="group" aria-label="Basic example">
+              <form
+                action="{{url_for('Resultado.ejecucion_detalle')}}"
+                method="POST"
+              >
+                <input type="hidden" name="ejecucion" value="{{p.nombre}}" />
+                <button
+                  type="submit"
+                  data-toggle="tooltip"
+                  data-placement="bottom"
+                  title="Ver Detalle de Ejecución"
+                  class="btn btn-outline-dark btn-sm submit"
+                  role="status"
+                >
+                  <i class="fas fa-play"></i>
+                </button>
+              </form>
+            </div>
+          </div>
+        </td>
+      </tr>
+      {% endif %} {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% if error %}
+<br />
+{% with titulo='No se pudieron cargar los predicciones',error=error %} {%
+include "components/alert.html" %} {% endwith %}
+<br />
+{% endif %}
+
+<br />
+
+<script>
+  // Cargando si se esta validando y guardando la data del modelo
+  $(".submit").click(function () {
+    handleModal(
+      "Su modelo aparecera cuando acabe el proceso (recuerde refrescar la página)",
+      "{{url_for('Analista.predicciones')}}"
+    );
+  });
+</script>
+
+{% include 'components/footer.html' %}
