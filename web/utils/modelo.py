@@ -19,8 +19,10 @@ from sklearn import (
 )
 
 
-error_logger = logging.getLogger('error_logger')
+# TODO NEW! version 2 v2.0.0
+modelos_folder = os.getcwd()+'/uploads/modelos'
 
+error_logger = logging.getLogger('error_logger')
 
 ############################################################################################################# VERIFICACION DE DATOS CONJUNTO ##############################################################################################################
 def verificar_data(data, periodoInicial, periodoFinal, programa):
@@ -245,7 +247,7 @@ def ejecutar_modelo(data, conjunto=''):
     mejor_clasificador = AML_best['objeto'].tolist()[0]
 
     # TODO NEW! version 2 v2.0.0
-    save_model(mejor_clasificador, conjunto)
+    guardar_clasificador(mejor_clasificador, conjunto)
 
     # predc_sem_act = data_a_predecir[['documento','nombre_completo','desertor', 'idprograma', 'idestado']]
     predc_sem_act = data_a_predecir[
@@ -312,10 +314,78 @@ def ejecutar_modelo(data, conjunto=''):
     return resultados, resultados_desertores
 
 
-modelos_folder = os.getcwd()+'/uploads/modelos'
+# TODO NEW! version 2 v2.0.0
+def predecir(data_a_predecir, periodo_a_predecir, basic_info):
+    nombre_modelo = basic_info.get('modelo')
+    mejor_clasificador = cargar_clasificador(nombre_modelo)
+    col_preparadas = CONSTANTS.col_preparadas
+  
+    # predc_sem_act = data_a_predecir[['documento','nombre_completo','desertor', 'idprograma', 'idestado']]
+    predc_sem_act = data_a_predecir[
+        ['documento', 'nombre_completo', 'desertor', 'idprograma']
+    ]
+
+    predc_sem_act['prediccion'] = mejor_clasificador.predict(
+        data_a_predecir[col_preparadas]
+    )
+
+    potenciales_desertores = predc_sem_act[predc_sem_act['prediccion'] == 1]
+    # potenciales_desertores = potenciales_desertores[potenciales_desertores['idestado']==6]
+
+    # Eliminar valores repetidos
+    potenciales_desertores = potenciales_desertores.drop_duplicates(
+        subset=['documento'], 
+        keep='first'
+    ).reset_index()
+
+    # Setear resultados para insertar en la BD
+    potenciales_desertores['semestre_prediccion'] = periodo_a_predecir
+
+    resultados_desertores = potenciales_desertores
+    potenciales_desertores = potenciales_desertores.drop(
+        ['idprograma', 'semestre_prediccion'], 
+        axis=1
+    )
+
+    ''' FASE 3 '''
+    pd.crosstab(predc_sem_act.prediccion, predc_sem_act.desertor, margins=True)
+    matriz_confusion = pd.crosstab(
+        predc_sem_act.prediccion, predc_sem_act.desertor, margins=True
+    )
+
+    total_desertores = len(potenciales_desertores.index)
+    total_estudiantes_analizados = len(predc_sem_act['documento'].unique())
+    potenciales_desertores.drop(['index'], axis=1, inplace=True)
+    
+
+    resultados = {
+        **basic_info,
+        'tipo': 'Prediccion',
+        'periodo_a_predecir': periodo_a_predecir,
+        'desertores': potenciales_desertores,
+        f'total_desertores_{periodo_a_predecir}': int(total_desertores),
+        'estudiantes_analizados': int(total_estudiantes_analizados),
+        'desercion_prevista': float(round(int(total_desertores)/int(total_estudiantes_analizados), 2)),
+        'clasificador': str(mejor_clasificador.named_steps['classifier']),
+        'periodo_anterior': str(periodo_a_predecir),
+        f'total_desertores_{periodo_a_predecir}':  str(len(data_a_predecir[data_a_predecir['desertor'] == 1])),
+        f'total_desertores_{periodo_a_predecir}_matriculados':  str(len(data_a_predecir.query('desertor==1'))),
+        # 'total_desertores_{}_matriculados'.format(periodo_a_predecir):  str(len(data_a_predecir.query('desertor==1 & idestado==6' ))),
+    }
+
+    # Reasignar el tipo de la columna documento
+    resultados_desertores['documento'] = resultados_desertores['documento'].astype(
+        str, copy=False)
+    resultados_desertores = resultados_desertores[[
+        'documento', 'nombre_completo', 'desertor', 'prediccion', 'semestre_prediccion', 'idprograma'
+    ]]
+
+    return resultados, resultados_desertores
+
+
 
 # TODO NEW! version 2 v2.0.0
-def save_model(mejor_clasificador, conjunto=''):
+def guardar_clasificador(mejor_clasificador, conjunto=''):
     clf_file = f'{modelos_folder}/{conjunto}.pkl'
     with open(clf_file, 'wb') as f:
         pickle.dump(mejor_clasificador, f)
@@ -323,7 +393,7 @@ def save_model(mejor_clasificador, conjunto=''):
 
 
 # TODO NEW! version 2 v2.0.0
-def read_model(conjunto):
+def cargar_clasificador(conjunto):
     clf_file = f'{modelos_folder}/{conjunto}.pkl'
     with open(clf_file, 'rb') as f:
         clf = pickle.load(f)
