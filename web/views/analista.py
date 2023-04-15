@@ -7,6 +7,8 @@ from services.API import get
 import views.conjuntos as conjuntos
 import utils.tableros.data_ies as DataIES
 from utils.mixins import *
+import utils.tableros.data_ies as Data
+import utils.modelo as Modelo
 
 load_dotenv()
 
@@ -84,6 +86,31 @@ def predicciones():
         predicciones=body,
     )
 
+@Analista.route('/predicciones/predecir', methods=['POST'])
+def predecir_modelo():
+    form = dict(request.values)
+    modelo = form.get('modelo')
+    periodo = form.get('periodo')
+    resultados = literal_eval(form.get('resultados'))
+    idprograma = resultados.get('idprograma')
+    
+
+    basic_info = {
+        'idprograma': idprograma,
+        'programa': resultados.get('programa'),
+        'idfacultad': resultados.get('idfacultad'),
+        'facultad': resultados.get('facultad'),
+        'modelo': modelo
+    }
+
+    data_a_predecir = Data.get_estudiantes_periodo_programa(periodo, idprograma)
+
+    data_preparada = Modelo.preparar_data(data_a_predecir)
+    
+    Modelo.predecir(data_preparada, periodo, basic_info)
+    
+    return redirect(url_for('Analista.modelos'))
+
 
 
 @Analista.route('/modelos/descargar', methods=['POST'])
@@ -91,8 +118,6 @@ def predicciones():
 def descargar():
     modelo = dict(request.values).get('modelo')
     ruta = f'{modelos_folder}/{modelo}.pkl'
-
-    print(ruta, flush=True)
 
     if os.path.exists(ruta):
         return send_file(ruta, as_attachment=True)
