@@ -1,4 +1,5 @@
 import os
+import pandas as pd
 from ast import literal_eval
 from dotenv import load_dotenv
 from flask import request, session, Blueprint, render_template, send_file, redirect, url_for, jsonify, flash
@@ -35,7 +36,6 @@ def modelos():
     )
 
 
-
 @Analista.route('/modelos/entrenar', methods=['GET', 'POST'])
 @login_required
 def entrenar():
@@ -47,9 +47,9 @@ def entrenar():
 
 @Analista.route('/modelos/predecir', methods=['POST'])
 def predecir():
-    modelo = dict(request.values).get('modelo')    
+    modelo = dict(request.values).get('modelo')
     return render_template(
-        endopoint+'predecir.html', 
+        endopoint+'predecir.html',
         modelo=literal_eval(modelo)
     )
 
@@ -70,7 +70,6 @@ def entrenamientos():
     )
 
 
-
 @Analista.route('/predicciones', methods=['GET'])
 @Analista.route('/predicciones/', methods=['GET'])
 @login_required
@@ -86,6 +85,7 @@ def predicciones():
         predicciones=body,
     )
 
+
 @Analista.route('/predicciones/predecir', methods=['POST'])
 def predecir_modelo():
     form = dict(request.values)
@@ -93,7 +93,6 @@ def predecir_modelo():
     periodo = form.get('periodo')
     resultados = literal_eval(form.get('resultados'))
     idprograma = resultados.get('idprograma')
-    
 
     basic_info = {
         'idprograma': idprograma,
@@ -103,14 +102,18 @@ def predecir_modelo():
         'modelo': modelo
     }
 
-    data_a_predecir = Data.get_estudiantes_periodo_programa(periodo, idprograma)
+    data_a_predecir = Data.get_estudiantes_periodo_programa(
+        periodo, idprograma
+    )
+    df_data_a_predecir = pd.DataFrame(data_a_predecir)
 
-    data_preparada = Modelo.preparar_data(data_a_predecir)
+    data_preparada = Modelo.preparar_data(df_data_a_predecir)
     
+    df_data_a_predecir = df_data_a_predecir.rename(columns={'REGISTRO': 'registro'})
+
     Modelo.predecir(data_preparada, periodo, basic_info)
-    
-    return redirect(url_for('Analista.modelos'))
 
+    return redirect(url_for('Analista.modelos'))
 
 
 @Analista.route('/modelos/descargar', methods=['POST'])
@@ -144,10 +147,10 @@ def get_periodos_programa(programa):
     return jsonify([])
 
 
-
 def get_modelos():
     user = session.get('user', {'correo': ''}).get('correo')
     return get(f'ejecuciones/ejecutor/{user}')
+
 
 def formulario_entrenar():
     periodos = DataIES.get_periodos_origen()
