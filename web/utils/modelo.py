@@ -25,6 +25,8 @@ modelos_folder = os.getcwd()+'/uploads/modelos'
 error_logger = logging.getLogger('error_logger')
 
 ############################################################################################################# VERIFICACION DE DATOS CONJUNTO ##############################################################################################################
+
+
 def verificar_data(data, periodoInicial, periodoFinal, programa):
     columnas = list(condiciones.keys())
 
@@ -115,16 +117,20 @@ def preparar_data(data):
 ############################################################################################################## EJECUCION DE MODELO CON UN CONJUNTO ##############################################################################################################
 
 
-def eliminacion(data):
+def eliminacion(data, periodo_a_predecir=None, predicir=False,):
 
     warnings.filterwarnings('ignore')
 
     ''' FASE 1 '''
-    periodo_a_predecir = data['registro'].max()
+    if predicir:
+        data = data
+        data_a_predecir = data
+    else:
+        periodo_a_predecir = data['registro'].max()
 
-    data_a_predecir = data[data['registro'] >= periodo_a_predecir]
-    # data = data[data['semestre']>1]
-    data = data[data['registro'] < periodo_a_predecir]
+        data_a_predecir = data[data['registro'] >= periodo_a_predecir]
+        # data = data[data['semestre']>1]
+        data = data[data['registro'] < periodo_a_predecir]
 
     try:
         data = data.drop(CONSTANTS.columnas_eliminar_1, axis=1)
@@ -134,8 +140,11 @@ def eliminacion(data):
     columnas_eliminar_nulos = CONSTANTS.columnas_eliminar_nulos
 
     data.dropna(subset=columnas_eliminar_nulos, how='any', inplace=True)
-    data_a_predecir.dropna(subset=columnas_eliminar_nulos,
-                           how='any', inplace=True)
+    data_a_predecir.dropna(
+        subset=columnas_eliminar_nulos,
+        how='any',
+        inplace=True
+    )
 
     ''' FASE 2 '''
     x = data.groupby('semestre')['edad'].mean()
@@ -149,14 +158,16 @@ def eliminacion(data):
     except Exception as e:
         data = data.drop(CONSTANTS.columnas_eliminar_2_anteriores, axis=1)
 
+    if not predicir:
+        return data, data_a_predecir, periodo_a_predecir
     return data, data_a_predecir, periodo_a_predecir
 
 
 def ejecutar_modelo(data, conjunto=''):
-    
+
     idprograma = int(data['idprograma'][0])
     nombre_programa = str(data['programa'][0])
-    
+
     idfacultad = int(data['idfacultad'][0])
     nombre_facultad = str(data['facultad'][0])
 
@@ -203,9 +214,15 @@ def ejecutar_modelo(data, conjunto=''):
     ]
 
     cv_split = model_selection.ShuffleSplit(
-        n_splits=10, test_size=.3, train_size=.6, random_state=0)
-    AML_columns = ['Nombre', 'objeto', 'Parametros',
-                   'Precision Media de Prueba', 'STD de la Precision * 3', 'Tiempo']
+        n_splits=10, test_size=.3, train_size=.6, random_state=0
+    )
+    AML_columns = ['Nombre',
+                   'objeto',
+                   'Parametros',
+                   'Precision Media de Prueba',
+                   'STD de la Precision * 3',
+                   'Tiempo'
+                   ]
     AML_compare = pd.DataFrame(columns=AML_columns)
 
     col_preparadas = CONSTANTS.col_preparadas
@@ -262,7 +279,7 @@ def ejecutar_modelo(data, conjunto=''):
 
     # Eliminar valores repetidos
     potenciales_desertores = potenciales_desertores.drop_duplicates(
-        subset=['documento'], 
+        subset=['documento'],
         keep='first'
     ).reset_index()
 
@@ -271,7 +288,7 @@ def ejecutar_modelo(data, conjunto=''):
 
     resultados_desertores = potenciales_desertores
     potenciales_desertores = potenciales_desertores.drop(
-        ['idprograma', 'semestre_prediccion'], 
+        ['idprograma', 'semestre_prediccion'],
         axis=1
     )
 
@@ -295,9 +312,9 @@ def ejecutar_modelo(data, conjunto=''):
         'desertores': potenciales_desertores,
         f'total_desertores_{periodo_a_predecir_mas_1}': int(total_desertores),
         'estudiantes_analizados': int(total_estudiantes_analizados),
-        'desercion_prevista': float(round(int(total_desertores)/int(total_estudiantes_analizados), 2)),
+        'desercion_prevista': float(round(int(total_desertores)/int(total_estudiantes_analizados), 1)),
         'clasificador': str(AML_best['Nombre'].tolist()[0]),
-        'precision': float(round(AML_best['Precision Media de Prueba'].tolist()[0]*100, 2)),
+        'precision': float(round(AML_best['Precision Media de Prueba'].tolist()[0]*100, 1)),
         'periodo_anterior': str(periodo_a_predecir),
         f'total_desertores_{periodo_a_predecir}':  str(len(data_a_predecir[data_a_predecir['desertor'] == 1])),
         f'total_desertores_{periodo_a_predecir}_matriculados':  str(len(data_a_predecir.query('desertor==1'))),
@@ -316,15 +333,22 @@ def ejecutar_modelo(data, conjunto=''):
 
 # TODO NEW! version 2 v2.0.0
 def predecir(data_a_predecir, periodo_a_predecir, basic_info):
+    if len(data_a_predecir) < 5:
+        raise Exception(
+            f'Hay muy pocos registros para el periodo {periodo_a_predecir} (menos de 5)'
+        )
+
+    data_a_predecir = eliminacion(data_a_predecir, periodo_a_predecir, True)
+
     nombre_modelo = basic_info.get('modelo')
     mejor_clasificador = cargar_clasificador(nombre_modelo)
     col_preparadas = CONSTANTS.col_preparadas
-  
+
     # predc_sem_act = data_a_predecir[['documento','nombre_completo','desertor', 'idprograma', 'idestado']]
     predc_sem_act = data_a_predecir[
         ['documento', 'nombre_completo', 'desertor', 'idprograma']
     ]
-
+    print(data_a_predecir[col_preparadas], flush=True)
     predc_sem_act['prediccion'] = mejor_clasificador.predict(
         data_a_predecir[col_preparadas]
     )
@@ -334,7 +358,7 @@ def predecir(data_a_predecir, periodo_a_predecir, basic_info):
 
     # Eliminar valores repetidos
     potenciales_desertores = potenciales_desertores.drop_duplicates(
-        subset=['documento'], 
+        subset=['documento'],
         keep='first'
     ).reset_index()
 
@@ -343,7 +367,7 @@ def predecir(data_a_predecir, periodo_a_predecir, basic_info):
 
     resultados_desertores = potenciales_desertores
     potenciales_desertores = potenciales_desertores.drop(
-        ['idprograma', 'semestre_prediccion'], 
+        ['idprograma', 'semestre_prediccion'],
         axis=1
     )
 
@@ -356,7 +380,6 @@ def predecir(data_a_predecir, periodo_a_predecir, basic_info):
     total_desertores = len(potenciales_desertores.index)
     total_estudiantes_analizados = len(predc_sem_act['documento'].unique())
     potenciales_desertores.drop(['index'], axis=1, inplace=True)
-    
 
     resultados = {
         **basic_info,
@@ -383,13 +406,13 @@ def predecir(data_a_predecir, periodo_a_predecir, basic_info):
     return resultados, resultados_desertores
 
 
-
 # TODO NEW! version 2 v2.0.0
 def guardar_clasificador(mejor_clasificador, conjunto=''):
     clf_file = f'{modelos_folder}/{conjunto}.pkl'
     with open(clf_file, 'wb') as f:
         pickle.dump(mejor_clasificador, f)
-    pickle.dump(mejor_clasificador, open(f'{modelos_folder}/{conjunto}.sav', 'wb'))
+    pickle.dump(mejor_clasificador, open(
+        f'{modelos_folder}/{conjunto}.sav', 'wb'))
 
 
 # TODO NEW! version 2 v2.0.0
