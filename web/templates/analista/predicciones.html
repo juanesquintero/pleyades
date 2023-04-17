@@ -33,7 +33,10 @@
           <center><i>Resultado</i></center>
         </th>
         <th scope="col" class="col-1 border-top-0">
-          <center><i>Acciones</i></center>
+          <center><i>Detalle</i></center>
+        </th>
+        <th scope="col" class="col-1 border-top-0">
+          <center><i>Replicar</i></center>
         </th>
       </tr>
     </thead>
@@ -123,34 +126,9 @@
             </center>
           </center>
         </td>
+        
         <td>
-          <div class="row d-flex justify-content-center">       
-            <!-- PREDECIR -->
-            <form action="{{url_for('Analista.predecir')}}" method="POST">
-              <input type="hidden" name="modelo" value="{{p}}" />
-              <button
-                type="submit"
-                data-toggle="tooltip"
-                data-html="true"
-                data-placement="bottom"
-                title="Hacer otra Predicción"
-                class="btn my-primary text-white border border-white btn-sm submit"
-                role="status"
-              >
-                <i class="fa fa-flask fa-lg" aria-hidden="true"></i>
-              </button>
-
-              <button
-                class="btn btn-outline-dark btn-sm btn-loading"
-                type="button"
-                style="display: none"
-              >
-                <i class="fas fa-spinner fa-spin fa-lg" aria-hidden="true"></i>
-              </button>
-            </form>
-            
-            &nbsp;&nbsp;
-
+            <div class="row d-flex justify-content-center">       
             <!-- DETALLE -->
             <form
               action="{{url_for('Resultado.ejecucion_detalle')}}"
@@ -170,6 +148,34 @@
               </button>
             </form>
           </div>
+        </td>
+        <td>
+          <div class="row d-flex justify-content-center">       
+            <!-- PREDECIR -->
+            <form action="{{url_for('Analista.predecir')}}" method="POST">
+              <input type="hidden" name="modelo" value="{{p}}" />
+              <button
+                type="submit"
+                data-toggle="tooltip"
+                data-html="true"
+                data-placement="bottom"
+                title="Hacer otra Predicción con este Mismo Modelo."
+                class="btn my-primary text-white border border-white btn-sm submit"
+                role="status"
+              >
+                <i class="fa fa-flask fa-lg" aria-hidden="true"></i>
+              </button>
+
+              <button
+                class="btn btn-outline-dark btn-sm btn-loading"
+                type="button"
+                style="display: none"
+              >
+                <i class="fas fa-spinner fa-spin fa-lg" aria-hidden="true"></i>
+              </button>
+            </form>
+            
+          </div>       
         </td>
       </tr>
       {% endif %} {% endfor %}
