@@ -1,23 +1,28 @@
 import os
+import json
+import logging
 import pandas as pd
 from ast import literal_eval
 from dotenv import load_dotenv
 from flask import request, session, Blueprint, render_template, send_file, redirect, url_for, jsonify, flash
 from views.auth import login_required
-from services.API import get
 import views.conjuntos as conjuntos
 import utils.tableros.data_ies as DataIES
-from utils.mixins import *
+from utils.mixins import guardar_archivo, guardar_ejecucion
 import utils.tableros.data_ies as Data
 import utils.modelo as Modelo
+from services.API import get, post
 
 load_dotenv()
+
+error_logger = logging.getLogger('error_logger')
 
 endopoint = 'analista/modelos/'
 
 Analista = Blueprint('Analista', __name__)
 
-modelos_folder = os.getcwd()+'/uploads/modelos'
+upload_folder = os.getcwd()+'/uploads'
+modelos_folder = f'{upload_folder}/modelos'
 
 
 @Analista.route('/modelos', methods=['GET'])
@@ -90,6 +95,7 @@ def predicciones():
 def predecir_modelo():
     form = dict(request.values)
     modelo = form.get('modelo')
+    ejecucion = literal_eval(form.get('ejecucion'))
     periodo = form.get('periodo')
     resultados = literal_eval(form.get('resultados'))
     idprograma = resultados.get('idprograma')
@@ -102,18 +108,60 @@ def predecir_modelo():
         'modelo': modelo
     }
 
+    # Obtener estudiantes a predecir
     data_a_predecir = Data.get_estudiantes_periodo_programa(
         periodo, idprograma
     )
+
+    # Preparar data
     df_data_a_predecir = pd.DataFrame(data_a_predecir)
-
     data_preparada = Modelo.preparar_data(df_data_a_predecir)
-    
-    df_data_a_predecir = df_data_a_predecir.rename(columns={'REGISTRO': 'registro'})
+    data_preparada = data_preparada.rename(columns={'REGISTRO': 'registro'})
 
-    Modelo.predecir(data_preparada, periodo, basic_info)
+    # Predecir resultados
+    resultados_modelo, resultados_desertores = Modelo.predecir(
+        data_preparada, periodo, basic_info
+    )
+    resultados_desertores['idprograma'] = resultados_desertores['idprograma'].astype(int)
+    resultados_desertores['semestre_prediccion'] = resultados_desertores['semestre_prediccion'].astype(int)
 
-    return redirect(url_for('Analista.modelos'))
+    # Insertar los resultados
+    if resultados_desertores.any().any():
+        resultados_insert = json.loads(
+            resultados_desertores.to_json(orient='records')
+        )
+        
+        status_insert, body_insert = post(
+            'desercion/resultados',
+            resultados_insert
+        )
+
+        if not status_insert:
+            error_logger.error(
+                'Error insertando los nuevos desertores'.format(
+                    json.dumps(body_insert))
+            )
+            raise Exception(
+                'Ocurrió un error insertando y/o actualizando los resultados')
+    else:
+        raise Exception('No hay desertores para esta predicción')
+
+    nombre_ejecucion = ejecucion.get('nombre').split('.')
+    siguiente_ejecucion = int(nombre_ejecucion[1]) + 1
+    ejecucion['nombre'] = f'{nombre_ejecucion[0]}.{siguiente_ejecucion}'
+
+    # Guardar desertotres
+    archivo_desertores = "D {ejecucion.get('nombre')}.json"
+    ruta = upload_folder+'/desertores/'+archivo_desertores
+    guardar_archivo(
+        resultados_modelo.pop('desertores'), ruta, 'json'
+    )
+
+    # Guardar ejecución 
+    guardar_ejecucion(ejecucion, resultados, 'Exitosa')
+    flash('Predicción exitosa!!', 'success')
+
+    return redirect(url_for('Analista.predicciones'))
 
 
 @Analista.route('/modelos/descargar', methods=['POST'])
