@@ -65,10 +65,15 @@ def guardar_archivo(data, ruta, tipo):
         elif tipo == 'json':
             data.to_json(ruta, orient='records')
         else:
-            return False, render_template('utils/mensaje.html', mensaje='No se pudo guardar el archivo', submensaje='Tipo de archivo incorrecto')
+
+            raise Exception(
+                'No se pudo guardar el archivo \n Tipo de archivo incorrecto'
+            )
+            # return False, render_template('utils/mensaje.html', mensaje='No se pudo guardar el archivo', submensaje='Tipo de archivo incorrecto')
     except Exception as e:
         error_logger.error(e)
-        return False, render_template('utils/mensaje.html', mensaje='No se pudo guardar el archivo')
+        raise Exception('No se pudo guardar el archivo')
+        # return False, render_template('utils/mensaje.html', mensaje='No se pudo guardar el archivo')
     return True, 'ERROR'
 
 
@@ -140,9 +145,9 @@ def obtener_nombre_conjunto(conjunto):
     status_n, body_n = post('conjuntos/nombre', conjunto)
     if status_n:
         return body_n['nombre'], body_n['numero']
-    else:
-        error_logger.error('API ERROR: {} {}'.format(status_n, body_n))
-        return False, render_template('utils/mensaje.html', mensaje='No se pudo obtener el nombre del conjunto', submensaje=body_n)
+    
+    error_logger.error('API ERROR: {} {}'.format(status_n, body_n))
+    return False, render_template('utils/mensaje.html', mensaje='No se pudo obtener el nombre del conjunto', submensaje=body_n)
 
 
 def obtener_ies_config():
