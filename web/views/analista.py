@@ -153,7 +153,7 @@ def predecir_modelo():
     ejecucion['numero'] = siguiente_ejecucion
 
     # Guardar desertotres
-    archivo_desertores = "D {ejecucion.get('nombre')}.json"
+    archivo_desertores = f"D {ejecucion.get('nombre')}.json"
     ruta = upload_folder+'/desertores/'+archivo_desertores
     guardar_archivo(
         resultados_modelo.pop('desertores'), ruta, 'json'
