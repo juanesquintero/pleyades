@@ -114,6 +114,7 @@ def preparar_data(data):
 
     return data
 
+
 ############################################################################################################## EJECUCION DE MODELO CON UN CONJUNTO ##############################################################################################################
 
 
@@ -123,7 +124,6 @@ def eliminacion(data, periodo_a_predecir=None, predicir=False,):
 
     ''' FASE 1 '''
     if predicir:
-        data = data
         data_a_predecir = data
     else:
         periodo_a_predecir = data['registro'].max()
@@ -158,8 +158,9 @@ def eliminacion(data, periodo_a_predecir=None, predicir=False,):
     except Exception as e:
         data = data.drop(CONSTANTS.columnas_eliminar_2_anteriores, axis=1)
 
-    if not predicir:
-        return data, data_a_predecir, periodo_a_predecir
+    if predicir:
+        return data_a_predecir
+
     return data, data_a_predecir, periodo_a_predecir
 
 
@@ -338,17 +339,22 @@ def predecir(data_a_predecir, periodo_a_predecir, basic_info):
             f'Hay muy pocos registros para el periodo {periodo_a_predecir} (menos de 5)'
         )
 
+    # Eliminacion y Relleno
     data_a_predecir = eliminacion(data_a_predecir, periodo_a_predecir, True)
+    x = data_a_predecir.groupby('semestre')['edad'].mean()
+    for indice_fila, fila in data_a_predecir.loc[data_a_predecir.edad.isnull()].iterrows():
+        data_a_predecir.loc[indice_fila, 'edad'] = x[fila['semestre']]
 
     nombre_modelo = basic_info.get('modelo')
     mejor_clasificador = cargar_clasificador(nombre_modelo)
     col_preparadas = CONSTANTS.col_preparadas
 
-    # predc_sem_act = data_a_predecir[['documento','nombre_completo','desertor', 'idprograma', 'idestado']]
+    # data_a_predecir.to_excel('data.xlsx')
+
     predc_sem_act = data_a_predecir[
         ['documento', 'nombre_completo', 'desertor', 'idprograma']
     ]
-    print(data_a_predecir[col_preparadas], flush=True)
+
     predc_sem_act['prediccion'] = mejor_clasificador.predict(
         data_a_predecir[col_preparadas]
     )
@@ -389,7 +395,7 @@ def predecir(data_a_predecir, periodo_a_predecir, basic_info):
         f'total_desertores_{periodo_a_predecir}': int(total_desertores),
         'estudiantes_analizados': int(total_estudiantes_analizados),
         'desercion_prevista': float(round(int(total_desertores)/int(total_estudiantes_analizados), 2)),
-        'clasificador': str(mejor_clasificador.named_steps['classifier']),
+        'clasificador': str(mejor_clasificador.__class__.__name__),
         'periodo_anterior': str(periodo_a_predecir),
         f'total_desertores_{periodo_a_predecir}':  str(len(data_a_predecir[data_a_predecir['desertor'] == 1])),
         f'total_desertores_{periodo_a_predecir}_matriculados':  str(len(data_a_predecir.query('desertor==1'))),
