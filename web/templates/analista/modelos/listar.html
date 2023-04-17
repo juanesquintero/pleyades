@@ -25,7 +25,7 @@
   <table class="table table-hover table-sm" id="tabla">
     <thead>
       <tr class="border-top-0">
-        <th scope="col" class="col-3 border-top-0">
+        <th scope="col" class="col-4 border-top-0">
           <center><i>Programa</i></center>
         </th>
         <th scope="col" class="border-top-0">
@@ -68,9 +68,10 @@
             <i
               class="fa fa-solid fa-exclamation-triangle fa-lg text-warning border-dark"
               data-toggle="tooltip"
+              data-html="true"
               data-placement="bottom"
               style="cursor: pointer"
-              title="La precisión del modelo no es muy alta, Ya que esta por debajo del 85%&#10;Para estar mas seguro se recomienda crear otro con mas datos de entrenamiento."
+              title="La precisión del modelo no es muy alta, Ya que esta por debajo del 85%<br>Para estar mas seguro se recomienda crear otro con mas datos de entrenamiento."
             ></i>
             {% endif %}
           </center>
@@ -85,8 +86,9 @@
             <i
               class="fa fa-solid fa-exclamation-triangle fa-lg text-danger border-dark"
               data-toggle="tooltip"
+              data-html="true"
               data-placement="bottom"
-              title="Deserción estudiantil por encima del 15% promediado&#10;Pudo ocurrir un error de entrenamiento&#10;El modelo de predicción parece NO ser confiable&#10;Se recomienda crear otro."
+              title="Deserción estudiantil por encima del 15% promediado<br>Pudo ocurrir un error de entrenamiento<br>El modelo de predicción parece NO ser confiable<br>Se recomienda crear otro."
             ></i>
             {% endif %}
           </center>
@@ -103,6 +105,7 @@
               <button
                 type="submit"
                 data-toggle="tooltip"
+                data-html="true"
                 data-placement="bottom"
                 title="Predecir"
                 class="btn my-primary text-white border border-white btn-sm submit"
@@ -128,6 +131,7 @@
               <button
                 type="submit"
                 data-toggle="tooltip"
+                data-html="true"
                 data-placement="bottom"
                 title="Descargar Archivo"
                 class="btn btn-sm btn-link text-dark"
