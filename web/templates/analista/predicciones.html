@@ -23,23 +23,17 @@
   <table class="table table-hover table-sm" id="tabla">
     <thead>
       <tr>
-        <th class="col-4 border-top-0">
-          <center><i>Programa</i></center>
-        </th>
         <th class="col-2 border-top-0">
-          <center><i>Info</i></center>
+          <center><i>Modelo</i></center>
         </th>
-
         <th scope="col" class="col-2 border-top-0">
-          <center><i>Estado</i></center>
+          <center><i>Duracion</i></center>
         </th>
-
         <th scope="col" class="col-1 border-top-0">
-          <center><i>Preparación</i></center>
+          <center><i>Resultado</i></center>
         </th>
-
         <th scope="col" class="col-1 border-top-0">
-          <center><i>Ejecución</i></center>
+          <center><i>Acciones</i></center>
         </th>
       </tr>
     </thead>
@@ -48,15 +42,38 @@
       
       <tr>
         <td>
-          <center>{{p.resultados.programa}}</center>
+          <center>
+            <!-- {{p}} -->
+            <p
+              data-toggle="tooltip"
+              data-html="true"
+              data-placement="bottom"
+              style="cursor: pointer"
+              title="{{p.resultados.programa}}<br>{{p.resultados.clasificador}}<br>{{p.resultados.desercion_prevista*100}} %">
+              {{ p.nombre }}
+              <div hidden>
+                {{p.resultados.programa}}
+                {{p.resultados.clasificador}}
+              </div>
+            </p>
+          </center>
         </td>
         <td>
           <center>
-            <!-- {% set info_array = p.nombre.split(' ')[1:] %}  -->
-            <!-- {{ info_array|join(' ') }} -->
-            {{ p.nombre }}
+            <p data-toggle="tooltip"
+            data-html="true"
+            data-placement="bottom"
+            style="cursor: pointer"
+            title="{{p.fechaInicial}}<br>{{p.fechaFinal}}">
+            {{p.duracion}} segundos
+            <div hidden>
+              {{p.fechaInicial}}
+              {{p.fechaFinal}}
+            </div>
+            </p>
           </center>
         </td>
+        
         <td>
           {% set proc = p.resultados.desercion_prevista * 100 %}
           <center>
@@ -65,17 +82,30 @@
               <i
               class="fa fa-solid fa-exclamation-triangle fa-lg text-danger border-dark"
               data-toggle="tooltip"
+              data-html="true"
               data-placement="bottom"
-              title="Deserción estudiantil por encima del 15% promediado&#10;Pudo ocurrir un error de entrenamiento&#10;El modelo de predicción parece NO ser confiable&#10;Se recomienda crear otro."
+              title="Deserción estudiantil por encima del 15% promediado.<br>Esta predicción parece NO ser confiable.<br>Se recomienda ejecutar otra o crear otro Modelo."
             ></i>
+            
             
               {% elif (p.resultados.precision|float) < 85.00 %}
               <i
               class="fa fa-solid fa-exclamation-triangle fa-lg text-warning border-dark"
               data-toggle="tooltip"
+              data-html="true"
               data-placement="bottom"
               style="cursor: pointer"
-              title="La precisión del modelo no es muy alta, Ya que esta por debajo del 85%&#10;Para estar mas seguro se recomienda crear otro con mas datos de entrenamiento."
+              title="La precisión del modelo no es muy alta, Ya que esta por debajo del 85%<br>Para estar mas seguro se recomienda crear otro con mas datos de entrenamiento."
+            ></i>
+        
+              {% elif (p.resultados.precision|float) < 85.00 %}
+              <i
+              class="fa fa-solid fa-exclamation-triangle fa-lg text-warning border-dark"
+              data-toggle="tooltip"
+              data-html="true"
+              data-placement="bottom"
+              style="cursor: pointer"
+              title="La precisión del modelo no es muy alta, Ya que esta por debajo del 85%<br>Para estar mas seguro se recomienda crear otro con mas datos de entrenamiento."
             ></i>
         
               {% else %}
@@ -84,8 +114,9 @@
               <i
               class="fa fa-solid fa-check fa-lg text-success border-dark"
               data-toggle="tooltip"
+              data-html="true"
               data-placement="bottom"
-              title="El entrenamiento del modelo al parecer es muy optimo por los valores acertados de la precision y deserción."
+              title="La prediccion tiene al parecer valores acertados de la precision y deserción."
             ></i>
 
               {% endif %}
@@ -93,50 +124,51 @@
           </center>
         </td>
         <td>
-          <div class="row d-flex justify-content-center">
-            <!-- Preparacion-->
-            <div class="btn-group" role="group" aria-label="Basic example">
-              <form
-                action="{{url_for('Resultado.preparacion_detalle')}}"
-                method="POST"
+          <div class="row d-flex justify-content-center">       
+            <!-- PREDECIR -->
+            <form action="{{url_for('Analista.predecir')}}" method="POST">
+              <input type="hidden" name="modelo" value="{{p}}" />
+              <button
+                type="submit"
+                data-toggle="tooltip"
+                data-html="true"
+                data-placement="bottom"
+                title="Hacer otra Predicción"
+                class="btn my-primary text-white border border-white btn-sm submit"
+                role="status"
               >
-                <input type="hidden" name="preparacion" value="{{p.nombre}}" />
-                <button
-                  type="submit"
-                  data-toggle="tooltip"
-                  data-placement="bottom"
-                  title="Ver Detalle de Preparación"
-                  class="btn btn-outline-dark btn-sm submit"
-                  role="status"
-                >
-                  <i class="fas fa-cog"></i>
-                </button>
-              </form>
-            </div>
-          </div>
-        </td>
+                <i class="fa fa-flask fa-lg" aria-hidden="true"></i>
+              </button>
 
-        <td>
-          <div class="row d-flex justify-content-center">
-            <!-- Ejecución-->
-            <div class="btn-group" role="group" aria-label="Basic example">
-              <form
-                action="{{url_for('Resultado.ejecucion_detalle')}}"
-                method="POST"
+              <button
+                class="btn btn-outline-dark btn-sm btn-loading"
+                type="button"
+                style="display: none"
               >
-                <input type="hidden" name="ejecucion" value="{{p.nombre}}" />
-                <button
-                  type="submit"
-                  data-toggle="tooltip"
-                  data-placement="bottom"
-                  title="Ver Detalle de Ejecución"
-                  class="btn btn-outline-dark btn-sm submit"
-                  role="status"
-                >
-                  <i class="fas fa-play"></i>
-                </button>
-              </form>
-            </div>
+                <i class="fas fa-spinner fa-spin fa-lg" aria-hidden="true"></i>
+              </button>
+            </form>
+            
+            &nbsp;&nbsp;
+
+            <!-- DETALLE -->
+            <form
+              action="{{url_for('Resultado.ejecucion_detalle')}}"
+              method="POST"
+            >
+              <input type="hidden" name="ejecucion" value="{{p.nombre}}" />
+              <button
+                type="submit"
+                data-toggle="tooltip"
+                data-html="true"
+                data-placement="bottom"
+                title="Ver Detalle"
+                class="btn btn-outline-dark btn-sm submit"
+                role="status"
+              >
+              <i class="fas fa-search-plus"></i>
+              </button>
+            </form>
           </div>
         </td>
       </tr>
