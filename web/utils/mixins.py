@@ -35,7 +35,7 @@ def exception(op):
 ####################################### FUNCIONES logicas repetitivas ###############################################
 
 
-def getNowDate():
+def get_now_date():
     formato = '%Y-%m-%d %H:%M:%S'
     fecha = datetime.strftime(datetime.now(), formato)
     # Formateo para el api y la bd
@@ -122,7 +122,7 @@ def actualizar_estado(nombre, estado):
 
 def guardar_preparacion(preparacion, observaciones, estado):
     # Guardar REGISTRO de preparacion
-    preparacion['fechaFinal'] = getNowDate()
+    preparacion['fechaFinal'] = get_now_date()
     preparacion['observaciones'] = observaciones
     preparacion['estado'] = estado
     post('preparaciones', preparacion)
@@ -131,12 +131,20 @@ def guardar_preparacion(preparacion, observaciones, estado):
 
 def guardar_ejecucion(ejecucion, resultados, estado):
     # Guardar REGISTRO de ejecución
-    ejecucion['precision_modelo'] = resultados['precision'] if 'precision' in resultados.keys(
-    ) else None
-    ejecucion['fechaFinal'] = getNowDate()
+    ejecucion['precision_modelo'] = resultados.get('precision', None) 
+    ejecucion['fechaFinal'] = get_now_date()
     ejecucion['resultados'] = resultados
     ejecucion['estado'] = estado
-    post('ejecuciones', ejecucion)
+    
+    print(ejecucion, flush=True)
+
+    status, body = post('ejecuciones', ejecucion)
+
+    if not status:
+        raise Exception(
+            f"No se pudo guardar la Ejecucion: {body.get('error')}"
+        )
+
     return True, 'ERROR'
 
 
@@ -145,7 +153,7 @@ def obtener_nombre_conjunto(conjunto):
     status_n, body_n = post('conjuntos/nombre', conjunto)
     if status_n:
         return body_n['nombre'], body_n['numero']
-    
+
     error_logger.error('API ERROR: {} {}'.format(status_n, body_n))
     return False, render_template('utils/mensaje.html', mensaje='No se pudo obtener el nombre del conjunto', submensaje=body_n)
 
