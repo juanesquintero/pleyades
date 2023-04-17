@@ -8,7 +8,7 @@ from flask import request, session, Blueprint, render_template, send_file, redir
 from views.auth import login_required
 import views.conjuntos as conjuntos
 import utils.tableros.data_ies as DataIES
-from utils.mixins import guardar_archivo, guardar_ejecucion
+from utils.mixins import guardar_archivo, guardar_ejecucion, get_now_date
 import utils.tableros.data_ies as Data
 import utils.modelo as Modelo
 from services.API import get, post
@@ -94,10 +94,11 @@ def predicciones():
 @Analista.route('/predicciones/predecir', methods=['POST'])
 def predecir_modelo():
     form = dict(request.values)
-    modelo = form.get('modelo')
     ejecucion = literal_eval(form.get('ejecucion'))
+    ejecucion['fechaInicial'] = get_now_date()
     periodo = form.get('periodo')
-    resultados = literal_eval(form.get('resultados'))
+    resultados = ejecucion.pop('resultados')
+    modelo = ejecucion.get('conjunto')
     idprograma = resultados.get('idprograma')
 
     basic_info = {
@@ -149,6 +150,7 @@ def predecir_modelo():
     nombre_ejecucion = ejecucion.get('nombre').split('.')
     siguiente_ejecucion = int(nombre_ejecucion[1]) + 1
     ejecucion['nombre'] = f'{nombre_ejecucion[0]}.{siguiente_ejecucion}'
+    ejecucion['numero'] = siguiente_ejecucion
 
     # Guardar desertotres
     archivo_desertores = "D {ejecucion.get('nombre')}.json"
@@ -158,7 +160,8 @@ def predecir_modelo():
     )
 
     # Guardar ejecución 
-    guardar_ejecucion(ejecucion, resultados, 'Exitosa')
+    resultados_modelo['duracion'] = ejecucion.pop('duracion')
+    guardar_ejecucion(ejecucion, resultados_modelo, 'Exitosa')
     flash('Predicción exitosa!!', 'success')
 
     return redirect(url_for('Analista.predicciones'))
