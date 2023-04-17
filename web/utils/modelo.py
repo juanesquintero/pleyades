@@ -267,16 +267,13 @@ def ejecutar_modelo(data, conjunto=''):
     # TODO NEW! version 2 v2.0.0
     guardar_clasificador(mejor_clasificador, conjunto)
 
-    # predc_sem_act = data_a_predecir[['documento','nombre_completo','desertor', 'idprograma', 'idestado']]
-    predc_sem_act = data_a_predecir[
-        ['documento', 'nombre_completo', 'desertor', 'idprograma']
-    ]
+    predc_sem_act = data_a_predecir[['documento','nombre_completo','desertor', 'idprograma', 'idestado']]
 
     predc_sem_act['prediccion'] = mejor_clasificador.predict(
         data_a_predecir[col_preparadas])
 
     potenciales_desertores = predc_sem_act[predc_sem_act['prediccion'] == 1]
-    # potenciales_desertores = potenciales_desertores[potenciales_desertores['idestado']==6]
+    potenciales_desertores = potenciales_desertores[potenciales_desertores['idestado']==6]
 
     # Eliminar valores repetidos
     potenciales_desertores = potenciales_desertores.drop_duplicates(
@@ -317,9 +314,8 @@ def ejecutar_modelo(data, conjunto=''):
         'clasificador': str(AML_best['Nombre'].tolist()[0]),
         'precision': float(round(AML_best['Precision Media de Prueba'].tolist()[0]*100, 1)),
         'periodo_anterior': str(periodo_a_predecir),
-        f'total_desertores_{periodo_a_predecir}':  str(len(data_a_predecir[data_a_predecir['desertor'] == 1])),
-        f'total_desertores_{periodo_a_predecir}_matriculados':  str(len(data_a_predecir.query('desertor==1'))),
-        # 'total_desertores_{}_matriculados'.format(periodo_a_predecir):  str(len(data_a_predecir.query('desertor==1 & idestado==6' ))),
+        f'total_desertores':  str(len(data_a_predecir[data_a_predecir['desertor'] == 1])),
+        'total_desertores_matriculados'.format(periodo_a_predecir):  str(len(data_a_predecir.query('desertor==1 & idestado==6' ))),
     }
 
     # Reasignar el tipo de la columna documento
@@ -360,7 +356,7 @@ def predecir(data_a_predecir, periodo_a_predecir, basic_info):
     )
 
     potenciales_desertores = predc_sem_act[predc_sem_act['prediccion'] == 1]
-    # potenciales_desertores = potenciales_desertores[potenciales_desertores['idestado']==6]
+    potenciales_desertores = potenciales_desertores[potenciales_desertores['idestado']==6]
 
     # Eliminar valores repetidos
     potenciales_desertores = potenciales_desertores.drop_duplicates(
