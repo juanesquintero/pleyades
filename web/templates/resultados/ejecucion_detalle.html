@@ -70,10 +70,24 @@
 
     <div class="col ml-5">
       <h5 class="mb-3 font-weight-bold">Resultados</h5>
+            
+      {% set fileds = [
+        'facultad',
+        'programa',
+        'periodo_a_predecir',
+        'estudiantes_analizados',
+        'desercion_prevista',
+        'clasificador',
+        'total_desertores',
+        'total_desertores_matriculados'
+        ] 
+        %}
       <br>
       <table class="table table-bordered w-75 ml-3" style="max-width: 70%;">
         <tbody>
           {% for key, value in resultados.items() %}
+    
+          {% if key in fileds %}
           <tr>
             {{KEY}}
             <td><strong>{{ key.title()|replace('_',' ') }}</strong></td>
@@ -89,6 +103,8 @@
               {% endif %}
             </td>
           </tr>
+          {% endif %}
+          
           {% endfor %}
         </tbody>
       </table>

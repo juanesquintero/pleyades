@@ -390,16 +390,13 @@ def predecir(data_a_predecir, periodo_a_predecir, basic_info):
     resultados = {
         **basic_info,
         'tipo': 'Prediccion',
-        'periodo_a_predecir': periodo_a_predecir,
         'desertores': potenciales_desertores,
-        f'total_desertores_{periodo_a_predecir}': int(total_desertores),
+        'periodo_a_predecir': periodo_a_predecir,
         'estudiantes_analizados': int(total_estudiantes_analizados),
         'desercion_prevista': float(round(int(total_desertores)/int(total_estudiantes_analizados), 2)),
         'clasificador': str(mejor_clasificador.__class__.__name__),
-        'periodo_anterior': str(periodo_a_predecir),
-        f'total_desertores_{periodo_a_predecir}':  str(len(data_a_predecir[data_a_predecir['desertor'] == 1])),
-        f'total_desertores_{periodo_a_predecir}_matriculados':  str(len(data_a_predecir.query('desertor==1'))),
-        # 'total_desertores_{}_matriculados'.format(periodo_a_predecir):  str(len(data_a_predecir.query('desertor==1 & idestado==6' ))),
+        f'total_desertores': int(total_desertores),
+        'total_desertores_matriculados'.format(periodo_a_predecir):  str(len(data_a_predecir.query('desertor==1 & idestado==6'))),
     }
 
     # Reasignar el tipo de la columna documento
