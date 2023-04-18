@@ -34,9 +34,12 @@
         <th class="col-2 border-top-0">
           <center><i>Info</i></center>
         </th>
-
         <th scope="col" class="col-2 border-top-0">
           <center><i>Estado</i></center>
+        </th>
+
+        <th scope="col" class="col-2 border-top-0">
+          <center><i>Duración</i></center>
         </th>
 
         <th scope="col" class="col-1 border-top-0">
@@ -96,6 +99,24 @@
 
               {% endif %}
             </center>
+          </center>
+        </td>
+        <td>
+          <center>
+            <p data-toggle="tooltip"
+            data-html="true"
+            data-placement="bottom"
+            style="cursor: pointer"
+            title="{{e.fechaInicial}}<br>{{e.fechaFinal}}">
+            {% set minutes = e.duracion // 60 %}
+            {% set seconds = e.duracion % 60 %}
+            {{ minutes }} min {{ seconds }} sec
+            
+            <div hidden>
+              {{e.fechaInicial}}
+              {{e.fechaFinal}}
+            </div>
+            </p>
           </center>
         </td>
         <td>
