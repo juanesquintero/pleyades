@@ -324,7 +324,7 @@ def ejecutar_modelo(data, conjunto=''):
         'periodo_anterior': str(periodo_a_predecir),
         'total_potenciales_desertores': int(total_desertores),
         'total_desertores':  str(len(data_a_predecir[data_a_predecir['desertor'] == 1])),
-        'total_desertores_matriculados'.format(periodo_a_predecir):  str(len(data_a_predecir.query('idestado==6'))),
+        'total_desertores_matriculados':  str(len(potenciales_desertores_matriculados)),
     }
 
     # Reasignar el tipo de la columna documento
@@ -404,7 +404,7 @@ def predecir(data_a_predecir, periodo_a_predecir, basic_info):
         'desercion_prevista': float(round(desercion_prevista, 2)),
         'clasificador': str(mejor_clasificador.__class__.__name__),
         'total_desertores': int(total_desertores),
-        'total_desertores_matriculados':  str(len()),
+        'total_desertores_matriculados':  str(len(potenciales_desertores_matriculados)),
     }
 
     # Reasignar el tipo de la columna documento
