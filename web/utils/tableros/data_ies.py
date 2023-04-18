@@ -57,8 +57,7 @@ def get_programa(programa: int):
 
 
 def get_estudiantes_periodo_programa(periodo: int, programa: int):
-    status, body = get(estudiantes_route +
-                       'programa/{}/{}'.format(programa, periodo))
+    status, body = get(f'{estudiantes_route}programa/{programa}/{periodo}')
     return validate(status, body, True)
 
 

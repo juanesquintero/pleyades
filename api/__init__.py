@@ -69,7 +69,6 @@ def app_db(app):
     def query(sql):
         cur = db.session.execute(text(sql))
         rows = cur.fetchall()
-        print(rows.__str__())
         columns = [i[0] for i in cur.description]
         return  [dict(zip(columns, row)) for row in rows]
     

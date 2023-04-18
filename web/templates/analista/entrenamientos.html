@@ -1,6 +1,9 @@
 {% include 'components/header.html' %} {% include 'components/sidebar.html' %}
 
-<h4>Entrenamientos</h4>
+<h4>
+  Entrenamientos
+  <i class="fas fa-dumbbell fa-sm ml-1"></i>
+</h4>
 <br />
 
 <!-- Input de filtrado -->
@@ -31,9 +34,12 @@
         <th class="col-2 border-top-0">
           <center><i>Info</i></center>
         </th>
-
         <th scope="col" class="col-2 border-top-0">
           <center><i>Estado</i></center>
+        </th>
+
+        <th scope="col" class="col-2 border-top-0">
+          <center><i>Duración</i></center>
         </th>
 
         <th scope="col" class="col-1 border-top-0">
@@ -46,7 +52,7 @@
       </tr>
     </thead>
     <tbody>
-      {% for e in entrenamientos %} {% if e.estado=='Exitosa' %}
+      {% for e in entrenamientos %} {% if e.estado=='Exitosa' and e.resultados.tipo == 'Entrenamiento' %}
       <tr>
         <td>
           <center>{{e.resultados.programa}}</center>
@@ -65,17 +71,19 @@
               <i
               class="fa fa-solid fa-exclamation-triangle fa-lg text-danger border-dark"
               data-toggle="tooltip"
+              data-html="true"
               data-placement="bottom"
-              title="Deserción estudiantil por encima del 15% promediado&#10;Pudo ocurrir un error de entrenamiento&#10;El modelo de predicción parece NO ser confiable&#10;Se recomienda crear otro."
+              title="Deserción estudiantil por encima del 15% promediado<br>Pudo ocurrir un error de entrenamiento<br>El modelo de predicción parece NO ser confiable<br>Se recomienda crear otro."
             ></i>
             
               {% elif (e.resultados.precision|float) < 85.00 %}
               <i
               class="fa fa-solid fa-exclamation-triangle fa-lg text-warning border-dark"
               data-toggle="tooltip"
+              data-html="true"
               data-placement="bottom"
               style="cursor: pointer"
-              title="La precisión del modelo no es muy alta, Ya que esta por debajo del 85%&#10;Para estar mas seguro se recomienda crear otro con mas datos de entrenamiento."
+              title="La precisión del modelo no es muy alta, Ya que esta por debajo del 85%<br>Para estar mas seguro se recomienda crear otro con mas datos de entrenamiento."
             ></i>
         
               {% else %}
@@ -84,12 +92,31 @@
               <i
               class="fa fa-solid fa-check fa-lg text-success border-dark"
               data-toggle="tooltip"
+              data-html="true"
               data-placement="bottom"
               title="El entrenamiento del modelo al parecer es muy optimo por los valores acertados de la precision y deserción."
             ></i>
 
               {% endif %}
             </center>
+          </center>
+        </td>
+        <td>
+          <center>
+            <p data-toggle="tooltip"
+            data-html="true"
+            data-placement="bottom"
+            style="cursor: pointer"
+            title="{{e.fechaInicial}}<br>{{e.fechaFinal}}">
+            {% set minutes = e.duracion // 60 %}
+            {% set seconds = e.duracion % 60 %}
+            {{ minutes }} min {{ seconds }} sec
+            
+            <div hidden>
+              {{e.fechaInicial}}
+              {{e.fechaFinal}}
+            </div>
+            </p>
           </center>
         </td>
         <td>
@@ -104,6 +131,7 @@
                 <button
                   type="submit"
                   data-toggle="tooltip"
+                  data-html="true"
                   data-placement="bottom"
                   title="Ver Detalle de Preparación"
                   class="btn btn-outline-dark btn-sm submit"
@@ -128,6 +156,7 @@
                 <button
                   type="submit"
                   data-toggle="tooltip"
+                  data-html="true"
                   data-placement="bottom"
                   title="Ver Detalle de Ejecución"
                   class="btn btn-outline-dark btn-sm submit"

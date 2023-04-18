@@ -24,16 +24,16 @@
         <table class="table table-hover table-sm" id="tabla">
           <thead>
             <tr>
-              <th scope="col" class="font-weight-normal">
+              <th scope="col" class="">
                 <center> Identificación </center>
               </th>
-              <th scope="col" class="font-weight-normal">
+              <th scope="col" class="">
                 <center> Nombre </center>
               </th>
-              <!-- <th scope="col" class="font-weight-normal">
+              <!-- <th scope="col" class="">
                   <center> Desertor </center>
                 </th> -->
-              <th scope="col" class="font-weight-normal">
+              <th scope="col" class="">
                 <center> Predicción </center>
               </th>
             </tr>
@@ -51,11 +51,11 @@
 
                   <i class="fas fa-exclamation-circle fa-lg text-warning border-dark" data-toggle="tooltip"
                     data-placement="bottom" style="cursor: pointer;"
-                    title="El modelo predijo que este estudiante&#10;podría ser un potencial desertor el próximo período,&#10;aunque no ha sido reportado como tal en el anterior."></i>
+                    title="El modelo predijo que este estudiante podría ser un potencial desertor.<br>Y NO ha sido reportado como tal."></i>
                   {% else %}
                   <i class="fas fa-check-circle text-secondary" data-toggle="tooltip" data-placement="bottom"
                     style="cursor: pointer;"
-                    title="Este estudiante fue reportado como desertor&#10;en el ultimo período; por lo tanto el modelo lo sigue&#10;considerando como desertor para el próximo."></i>
+                    title="Este Estudiante Ya ha sido reportado como desertor."></i>
                   {% endif %}
                 </center>
               </td>
@@ -68,12 +68,26 @@
     </div>
     {% endif %}
 
-    <div class="col ml-5">
+    <div class="col ml-2">
       <h5 class="mb-3 font-weight-bold">Resultados</h5>
+            
+      {% set fileds = [
+        'facultad',
+        'programa',
+        'periodo_a_predecir',
+        'estudiantes_analizados',
+        'desercion_prevista',
+        'clasificador',
+        'total_desertores',
+        'total_desertores_matriculados'
+        ] 
+        %}
       <br>
-      <table class="table table-bordered w-75 ml-3" style="max-width: 70%;">
+      <table class="table table-bordered ml-1" style="width: 95%;">
         <tbody>
           {% for key, value in resultados.items() %}
+    
+          {% if key in fileds %}
           <tr>
             {{KEY}}
             <td><strong>{{ key.title()|replace('_',' ') }}</strong></td>
@@ -89,6 +103,8 @@
               {% endif %}
             </td>
           </tr>
+          {% endif %}
+          
           {% endfor %}
         </tbody>
       </table>
@@ -109,10 +125,10 @@
       <br><br><br>
       {% endif %}
       <br>
-      <div class="col">
+      <div class="col" style="width: 95%;">
         <h5 class="mb-3 font-weight-bold ">Especificación</h5>
         
-        <table class="table table-bordered w-75">
+        <table class="table table-bordered">
           <tbody>
             {% for key, value in ejecucion.items() %}
             <tr>
@@ -134,8 +150,8 @@
       <br><br><br>
       <div class="text-center ml-0 pl-0 mr-5 pr-5">
         <!-- TODO NEW! version 2 v2.0.0 -->
-        <a class="btn btn-outline-dark ml-0 mr-3" href="{{url_for('Analista.entrenamientos')}}">Atras</a>
-        <!-- <a class="btn btn-outline-dark ml-0 mr-3" href="{{url_for('Resultado.ejecuciones')}}">Atras</a> -->
+        <a onclick="window.history.go(-1)" class="btn btn-outline-dark">Atras</a>
+        
       </div>
       <br>
 

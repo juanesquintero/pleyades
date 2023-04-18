@@ -8,16 +8,16 @@
 
 <form
   id="conjuntoForm"
-  action="{{url_for('Conjunto.crear')}}"
+  action="{{url_for('Analista.predecir_modelo')}}"
   method="POST"
   enctype="multipart/form-data"
   data-toggle="validator"
   class="jumbotron py-4 pr-2 bg-light"
-  style="width: 90%"
+  style="width: 65%"
 >
-  <div class="container">
+  <div class="container w-75 px-2">
     <div class="form-group row">
-      <div class="col-sm-5">
+      <div class="col-12">
         <label id="facultad_label">
           <i class="fa fa-university"></i>
           Facultad
@@ -30,55 +30,88 @@
           readonly
         />
       </div>
-      <div class="col-sm-6">
-        <label id="programa_label">
+    </div>
+    <div class="form-group row">
+      <div class="col-12">
+        <label for="programa">
           <i class="fa fa-graduation-cap"></i>
           Programa
         </label>
 
-        <input
-          id="programa"
-          value="{{modelo.resultados.idprograma}}"
-          hidden
-        />
+        <input id="programa" value="{{modelo.resultados.idprograma}}" hidden />
+        <input name="ejecucion" value="{{modelo}}" hidden />
+
         <input
           class="form-control"
           name="programa"
-          
           value="{{modelo.resultados.programa}}"
           required
           readonly
         />
       </div>
     </div>
+
     <div class="form-group row">
-      <div class="col-sm-2">
-        <label>
+      <div class="col-12">
+        <label for="programa">
           <i class="fa fa-calendar"></i>
-          Periodo Inicial
+          Periodos de Entrenamiento
         </label>
-        <select
-          name="periodoInicial"
-          id="periodoInicialID"
-          class="periodos-controls form-control input-sm"
-          required
-        >
-          <option disabled selected hidden></option>
-        </select>
+
+        {% set periodos = modelo.conjunto.split(' ')[1:3] %}
+
+        <div class="d-flex">
+          <input
+            class="form-control mr-4"
+            name="periodoInicial"
+            value="{{periodos[0]}}"
+            required
+            readonly
+          />
+          <input
+            class="form-control"
+            name="periodoFinal"
+            value="{{periodos[1]}}"
+            required
+            readonly
+          />
+        </div>
       </div>
-      <div class="col-sm-2">
+    </div>
+
+    <div class="form-group row">
+      <div class="col-12">
+        <label for="programa">
+          <i class="fa fa-robot"></i>
+          Clasificador/ Algoritmo
+        </label>
+
+        <input
+          class="form-control"
+          name="clasificador"
+          value="{{modelo.resultados.clasificador}}"
+          required
+          readonly
+        />
+      </div>
+    </div>
+
+    <div class="form-group row justify-content-center">
+      <div class="col-5">
         <label>
           <i class="fa fa-calendar-alt"></i>
-          Periodo Final
+          Periodo a Predecir
         </label>
-        <select
-          name="periodoFinal"
-          id="periodoFinalID"
-          class="periodos-controls form-control input-sm"
-          required
-        >
-          <option disabled selected hidden></option>
-        </select>
+        <div class="pr-3">
+          <select
+            name="periodo"
+            id="periodoID"
+            class="periodos-controls form-control input-sm mr-5"
+            required
+          >
+            <option disabled selected hidden></option>
+          </select>
+        </div>
       </div>
       <script>
         //LLenar con periodos del programa
@@ -90,33 +123,15 @@
           data: {},
           dataType: "json",
           success: function (data) {
-            var periodoInicial = document.getElementById("periodoInicialID");
-            var periodoFinal = document.getElementById("periodoFinalID");
+            var periodo = document.getElementById("periodoID");
             var i = 1;
             data.forEach((p) => {
-              periodoInicial.options[i] = new Option(p, p);
-              periodoFinal.options[i] = new Option(p, p);
+              periodo.options[i] = new Option(p, p);
               i = i + 1;
             });
           },
         });
-
-        // Validar Periodo
-        $(".periodos-controls").on("change", function () {
-          if ($("#periodoInicialID").val() >= $("#periodoFinalID").val()) {
-            $("#periodoInicialID")[0].setCustomValidity("Periodo Invalido");
-          } else {
-            $("#periodoInicialID")[0].setCustomValidity("");
-          }
-
-          if ($("#periodoFinalID").val() <= $("#periodoInicialID").val()) {
-            $("#periodoFinalID")[0].setCustomValidity("Periodo Invalido");
-          } else {
-            $("#periodoFinalID")[0].setCustomValidity("");
-          }
-        });
       </script>
-
     </div>
 
     <!--Boton para validar campos-->

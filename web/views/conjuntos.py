@@ -14,7 +14,7 @@ from utils.modelo import preparar_data, verificar_data, ejecutar_modelo
 from views.auth import login_required
 from services.API import get, post, put
 
-from utils.mixins import actualizar_estado, guardar_archivo, guardar_ejecucion, guardar_preparacion, getNowDate, obtener_archivo_excel, obtener_nombre_conjunto
+from utils.mixins import actualizar_estado, guardar_archivo, guardar_ejecucion, guardar_preparacion, get_now_date, obtener_archivo_excel, obtener_nombre_conjunto
 
 model_logger = logging.getLogger('model_logger')
 error_logger = logging.getLogger('error_logger')
@@ -280,7 +280,7 @@ def preparar(conjunto=None):
     preparacion = {}
     preparacion['conjunto'] = conjunto['nombre']
     preparacion['preparador'] = session['user']['correo']
-    preparacion['fechaInicial'] = getNowDate()
+    preparacion['fechaInicial'] = get_now_date()
     # Obtener numero de preparacion para el conjunto
     status_p, body_p = get('preparaciones/nombre/'+nombre)
     if status_p:
@@ -359,7 +359,7 @@ def ejecutar(conjunto=None):
     ejecucion = {}
     ejecucion['conjunto'] = conjunto['nombre']
     ejecucion['ejecutor'] = session['user']['correo']
-    ejecucion['fechaInicial'] = getNowDate()
+    ejecucion['fechaInicial'] = get_now_date()
 
     # Obtener numero de ejecución para el conjunto
     status_p, body_p = get('ejecuciones/nombre/'+nombre)

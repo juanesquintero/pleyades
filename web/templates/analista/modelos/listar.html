@@ -2,7 +2,10 @@
 
 {% include 'components/sidebar.html' %}
 
-<h4>Modelos de Deserción</h4>
+<h4>
+  Modelos de Deserción
+  <i class="fas fa-robot fa-sm ml-1"></i>
+</h4>
 <br />
 
 <!-- Input de filtrado -->
@@ -22,28 +25,28 @@
   <table class="table table-hover table-sm" id="tabla">
     <thead>
       <tr class="border-top-0">
-        <th scope="col" class="col-3 border-top-0">
+        <th scope="col" class="col-4 border-top-0">
           <center><i>Programa</i></center>
         </th>
-        <th scope="col" class="border-top-0">
+        <th scope="col" class="col-2 border-top-0">
           <center><i>Info</i></center>
         </th>
-        <th scope="col" class="border-top-0">
+        <th scope="col" class="col-3 border-top-0">
           <center><i>Clasificador</i></center>
         </th>
-        <th scope="col" class="border-top-0">
+        <th scope="col" class="col-1 border-top-0">
           <center><i>Precisión</i></center>
         </th>
-        <th scope="col" class="border-top-0">
+        <th scope="col" class="col-1 border-top-0">
           <center><i>Deserción</i></center>
         </th>
         <th scope="col" class="col-2 border-top-0">
-          <center><i>Acciones</i></center>
+          
         </th>
       </tr>
     </thead>
     <tbody>
-      {% for m in modelos %} {% if m.estado=='Exitosa' %}
+      {% for m in modelos %} {% if m.estado=='Exitosa' and m.resultados.tipo == 'Entrenamiento' %}
       <tr>
         <td>
           <center>{{m.resultados.programa}}</center>
@@ -59,15 +62,17 @@
 
         <td>
           <center>
-            {{ m.resultados.precision }} % {% if (m.resultados.precision|float)
+            {{ '%0.0f' % m.resultados.precision|float }}% 
+            {% if (m.resultados.precision|float)
             < 85.00 %}
 
             <i
               class="fa fa-solid fa-exclamation-triangle fa-lg text-warning border-dark"
               data-toggle="tooltip"
+              data-html="true"
               data-placement="bottom"
               style="cursor: pointer"
-              title="La precisión del modelo no es muy alta, Ya que esta por debajo del 85%&#10;Para estar mas seguro se recomienda crear otro con mas datos de entrenamiento."
+              title="La precisión del modelo no es muy alta, Ya que esta por debajo del 85%<br>Para estar mas seguro se recomienda crear otro con mas datos de entrenamiento."
             ></i>
             {% endif %}
           </center>
@@ -77,13 +82,14 @@
           {% set proc = m.resultados.desercion_prevista * 100 %}
 
           <center>
-            {{ '%0.1f' % proc|float }} % {% if m.resultados.desercion_prevista >
+            {{ '%0.0f' % proc|float }}% {% if m.resultados.desercion_prevista >
             0.15 %}
             <i
               class="fa fa-solid fa-exclamation-triangle fa-lg text-danger border-dark"
               data-toggle="tooltip"
+              data-html="true"
               data-placement="bottom"
-              title="Deserción estudiantil por encima del 15% promediado&#10;Pudo ocurrir un error de entrenamiento&#10;El modelo de predicción parece NO ser confiable&#10;Se recomienda crear otro."
+              title="Deserción estudiantil por encima del 15% promediado<br>Pudo ocurrir un error de entrenamiento<br>El modelo de predicción parece NO ser confiable<br>Se recomienda crear otro."
             ></i>
             {% endif %}
           </center>
@@ -100,9 +106,10 @@
               <button
                 type="submit"
                 data-toggle="tooltip"
+                data-html="true"
                 data-placement="bottom"
                 title="Predecir"
-                class="btn my-primary text-white border border-info btn-sm submit"
+                class="btn my-primary text-white border border-white btn-sm submit"
                 role="status"
               >
                 <i class="fa fa-flask fa-lg" aria-hidden="true"></i>
@@ -120,11 +127,12 @@
             &nbsp;&nbsp;
 
             <!-- DESCARGAR-->
-            <form action="{{url_for('Analista.descargar')}}" method="POST">
+            <!-- <form action="{{url_for('Analista.descargar')}}" method="POST">
               <input type="hidden" name="modelo" value="{{m.conjunto}}" />
               <button
                 type="submit"
                 data-toggle="tooltip"
+                data-html="true"
                 data-placement="bottom"
                 title="Descargar Archivo"
                 class="btn btn-sm btn-link text-dark"
@@ -132,7 +140,7 @@
               >
                 <i class="fa fa-dark fa-file-download"></i>
               </button>
-            </form>
+            </form> -->
 
           </div>
         </td>
