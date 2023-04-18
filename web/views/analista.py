@@ -96,6 +96,7 @@ def predecir_modelo():
     form = dict(request.values)
     ejecucion = literal_eval(form.get('ejecucion'))
     ejecucion['fechaInicial'] = get_now_date()
+
     periodo = form.get('periodo')
     resultados = ejecucion.pop('resultados')
     modelo = ejecucion.get('conjunto')
