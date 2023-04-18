@@ -147,7 +147,7 @@ def predecir_modelo():
                 'Ocurrió un error insertando y/o actualizando los resultados')
     else:
         flash('No hay desertores para esta predicción', 'danger')
-        return redirect(url_for('Analista.predicciones'))
+        return redirect(url_for('Analista.modelos'))
         
 
     nombre_ejecucion = ejecucion.get('nombre').split('.')
