@@ -66,8 +66,8 @@ def actualizar():
     status,body = put('conjuntos/'+nombre,conjunto)
     if status:
         return redirect(url_for('ConjuntoAdmin.crudos'))
-    else:
-        return render_template('utils/mensaje.html', mensaje='No se pudo actualizar la conjunto', submensaje=body)
+    
+    return render_template('utils/mensaje.html', mensaje='No se pudo actualizar la conjunto', submensaje=body)
 
 @ConjuntoAdmin.route('/borrar',methods=['POST'])
 @only_admin

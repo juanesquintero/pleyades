@@ -1,10 +1,10 @@
 import os
 import pandas as pd
 from dotenv import load_dotenv
-from flask import request, session, Blueprint, render_template, send_file, redirect, url_for
+from flask import request, session, Blueprint, render_template, send_file
 from views.auth import login_required
 from services.API import get
-from utils.mixins import *
+from utils.mixins import guardar_archivo, obtener_archivo_json, set_date_format
 
 load_dotenv()
 

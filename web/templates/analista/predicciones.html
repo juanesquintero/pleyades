@@ -1,0 +1,223 @@
+{% include 'components/header.html' %} {% include 'components/sidebar.html' %}
+
+<h4>
+  Predicciones
+  <i class="fas fa-flask fa-sm ml-1"></i>
+</h4>
+<br />
+
+<!-- Input de filtrado -->
+<div class="row ml-1 mt-2">
+  &nbsp;<i class="fas fa-filter mr-2 mt-2"></i>&nbsp;
+  <input
+    type="text"
+    class="form-control form-control-sm w-25"
+    id="filtro_tabla"
+    placeholder="Filtrar tabla..."
+  />
+</div>
+<br />
+
+<!-- Tabla -->
+<div class="table-responsive-sm">
+  <table class="table table-hover table-sm" id="tabla">
+    <thead>
+      <tr class="border-top-0">
+        <th scope="col" colspan="2" class="col-10 border-top-0">
+          <center><i>Modelo de Deserción</i></center>
+        </th>
+      </tr>
+      <tr>
+        <th class="col-5 border-top-0">
+          <center><i>Programa</i></center>
+        </th>
+        <th class="col-3 border-top-0">
+          <center><i>Nombre</i></center>
+        </th>
+        <th scope="col" class="col-1 border-top-0">
+          <center><i>Duración</i></center>
+        </th>
+        <th scope="col" class="col-2 border-top-0">
+          <center><i>Resultado</i></center>
+        </th>
+        <th scope="col" class="col-1 border-top-0">
+          <center><i>Detalle</i></center>
+        </th>
+        <th scope="col" class="col-1 border-top-0">
+          <center><i>Replicar</i></center>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in predicciones %} {% if p.estado=='Exitosa' and p.resultados.tipo == 'Prediccion' %}
+      
+      <tr>
+  
+
+          <td>
+            <center>
+              {{p.resultados.programa}}
+            </center>
+          </td>
+          <td
+          data-toggle="tooltip"
+          data-html="true"
+          data-placement="bottom"
+          style="cursor: pointer"
+          title="<i>{{p.resultados.clasificador}}</i><br><b>{{p.numero}}<b>">
+            <center>
+              
+              
+              {{ p.conjunto }}
+              &nbsp;
+              <b>{{p.numero}}</b>
+              <div hidden>
+                {{p.resultados.clasificador}}
+                {{p.nombre}}
+              </div>
+              
+            </center>
+          </td>
+        
+        <td>
+          <center>
+            <p data-toggle="tooltip"
+            data-html="true"
+            data-placement="bottom"
+            style="cursor: pointer"
+            title="{{p.fechaInicial}}<br>{{p.fechaFinal}}">
+            {{p.duracion}} sec
+            <div hidden>
+              {{p.fechaInicial}}
+              {{p.fechaFinal}}
+            </div>
+            </p>
+          </center>
+        </td>
+        
+        <td>
+          {% set proc = p.resultados.desercion_prevista * 100 %}
+          <center>
+            
+              {% if p.resultados.desercion_prevista > 0.15  %}
+              <i
+              class="fa fa-solid fa-exclamation-triangle fa-lg text-danger border-dark"
+              data-toggle="tooltip"
+              data-html="true"
+              data-placement="bottom"
+              title="Deserción estudiantil por encima del 15% promediado ({{p.resultados.desercion_prevista*100}} %).<br>Esta predicción parece NO ser confiable.<br>Se recomienda ejecutar otra o crear otro Modelo."
+            ></i>
+            
+            
+              {% elif (p.resultados.precision|float) < 85.00 %}
+              <i
+              class="fa fa-solid fa-exclamation-triangle fa-lg text-warning border-dark"
+              data-toggle="tooltip"
+              data-html="true"
+              data-placement="bottom"
+              style="cursor: pointer"
+              title="La precisión del modelo no es muy alta, Ya que esta por debajo del 85%<br>Para estar mas seguro se recomienda crear otro con mas datos de entrenamiento."
+            ></i>
+        
+              {% elif (p.resultados.precision|float) < 85.00 %}
+              <i
+              class="fa fa-solid fa-exclamation-triangle fa-lg text-warning border-dark"
+              data-toggle="tooltip"
+              data-html="true"
+              data-placement="bottom"
+              style="cursor: pointer"
+              title="La precisión del modelo no es muy alta, Ya que esta por debajo del 85%<br>Para estar mas seguro se recomienda crear otro con mas datos de entrenamiento."
+            ></i>
+        
+              {% else %}
+
+              
+              <i
+              class="fa fa-solid fa-check fa-lg text-success border-dark"
+              data-toggle="tooltip"
+              data-html="true"
+              data-placement="bottom"
+              title="La prediccion tiene al parecer valores acertados de la precision y deserción."
+            ></i>
+
+              {% endif %}
+            </center>
+          </center>
+        </td>
+        
+        <td>
+            <div class="row d-flex justify-content-center">       
+            <!-- DETALLE -->
+            <form
+              action="{{url_for('Resultado.ejecucion_detalle')}}"
+              method="POST"
+            >
+              <input type="hidden" name="ejecucion" value="{{p.nombre}}" />
+              <button
+                type="submit"
+                data-toggle="tooltip"
+                data-html="true"
+                data-placement="bottom"
+                title="Desertores Potenciales"
+                class="btn btn-outline-dark btn-sm submit"
+                role="status"
+              >
+              <i class="fas fa-search-plus"></i>
+              </button>
+            </form>
+          </div>
+        </td>
+        <td>
+          <div class="row d-flex justify-content-center">       
+            <!-- PREDECIR -->
+            <form action="{{url_for('Analista.predecir')}}" method="POST">
+              <input type="hidden" name="modelo" value="{{p}}" />
+              <button
+                type="submit"
+                data-toggle="tooltip"
+                data-html="true"
+                data-placement="bottom"
+                title="Predecir con el mismo Modelo."
+                class="btn my-primary text-white border border-white btn-sm submit"
+                role="status"
+              >
+                <i class="fa fa-flask fa-lg" aria-hidden="true"></i>
+              </button>
+
+              <button
+                class="btn btn-outline-dark btn-sm btn-loading"
+                type="button"
+                style="display: none"
+              >
+                <i class="fas fa-spinner fa-spin fa-lg" aria-hidden="true"></i>
+              </button>
+            </form>
+            
+          </div>       
+        </td>
+      </tr>
+      {% endif %} {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% if error %}
+<br />
+{% with titulo='No se pudieron cargar los predicciones',error=error %} {%
+include "components/alert.html" %} {% endwith %}
+<br />
+{% endif %}
+
+<br />
+
+<script>
+  // Cargando si se esta validando y guardando la data del modelo
+  $(".submit").click(function () {
+    handleModal(
+      "Su modelo aparecera cuando acabe el proceso (recuerde refrescar la página)",
+      "{{url_for('Analista.predicciones')}}"
+    );
+  });
+</script>
+
+{% include 'components/footer.html' %}
