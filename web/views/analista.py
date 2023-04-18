@@ -146,7 +146,9 @@ def predecir_modelo():
             raise Exception(
                 'Ocurrió un error insertando y/o actualizando los resultados')
     else:
-        raise Exception('No hay desertores para esta predicción')
+        flash('No hay desertores para esta predicción', 'danger')
+        return redirect(url_for('Analista.predicciones'))
+        
 
     nombre_ejecucion = ejecucion.get('nombre').split('.')
     siguiente_ejecucion = int(nombre_ejecucion[1]) + 1
