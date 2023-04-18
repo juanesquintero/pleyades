@@ -124,15 +124,17 @@ def predecir_modelo():
     resultados_modelo, resultados_desertores = Modelo.predecir(
         data_preparada, periodo, basic_info
     )
-    resultados_desertores['idprograma'] = resultados_desertores['idprograma'].astype(int)
-    resultados_desertores['semestre_prediccion'] = resultados_desertores['semestre_prediccion'].astype(int)
+    resultados_desertores['idprograma'] = resultados_desertores['idprograma'].astype(
+        int)
+    resultados_desertores['semestre_prediccion'] = resultados_desertores['semestre_prediccion'].astype(
+        int)
 
     # Insertar los resultados
     if resultados_desertores.any().any():
         resultados_insert = json.loads(
             resultados_desertores.to_json(orient='records')
         )
-        
+
         status_insert, body_insert = post(
             'desercion/resultados',
             resultados_insert
@@ -148,7 +150,6 @@ def predecir_modelo():
     else:
         flash('No hay desertores para esta predicción', 'danger')
         return redirect(url_for('Analista.modelos'))
-        
 
     nombre_ejecucion = ejecucion.get('nombre').split('.')
     siguiente_ejecucion = int(nombre_ejecucion[1]) + 1
@@ -162,7 +163,7 @@ def predecir_modelo():
         resultados_modelo.pop('desertores'), ruta, 'json'
     )
 
-    # Guardar ejecución 
+    # Guardar ejecución
     resultados_modelo['duracion'] = ejecucion.pop('duracion')
     guardar_ejecucion(ejecucion, resultados_modelo, 'Exitosa')
     flash('Predicción exitosa!!', 'success')
