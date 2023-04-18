@@ -28,20 +28,20 @@
         <th scope="col" class="col-4 border-top-0">
           <center><i>Programa</i></center>
         </th>
-        <th scope="col" class="border-top-0">
+        <th scope="col" class="col-2 border-top-0">
           <center><i>Info</i></center>
         </th>
-        <th scope="col" class="border-top-0">
+        <th scope="col" class="col-3 border-top-0">
           <center><i>Clasificador</i></center>
         </th>
-        <th scope="col" class="border-top-0">
+        <th scope="col" class="col-1 border-top-0">
           <center><i>Precisión</i></center>
         </th>
-        <th scope="col" class="border-top-0">
+        <th scope="col" class="col-1 border-top-0">
           <center><i>Deserción</i></center>
         </th>
         <th scope="col" class="col-2 border-top-0">
-          <center><i>Acciones</i></center>
+          
         </th>
       </tr>
     </thead>
@@ -62,7 +62,8 @@
 
         <td>
           <center>
-            {{ m.resultados.precision }} % {% if (m.resultados.precision|float)
+            {{ '%0.0f' % m.resultados.precision|float }}% 
+            {% if (m.resultados.precision|float)
             < 85.00 %}
 
             <i
@@ -81,7 +82,7 @@
           {% set proc = m.resultados.desercion_prevista * 100 %}
 
           <center>
-            {{ '%0.1f' % proc|float }} % {% if m.resultados.desercion_prevista >
+            {{ '%0.0f' % proc|float }}% {% if m.resultados.desercion_prevista >
             0.15 %}
             <i
               class="fa fa-solid fa-exclamation-triangle fa-lg text-danger border-dark"
@@ -126,7 +127,7 @@
             &nbsp;&nbsp;
 
             <!-- DESCARGAR-->
-            <form action="{{url_for('Analista.descargar')}}" method="POST">
+            <!-- <form action="{{url_for('Analista.descargar')}}" method="POST">
               <input type="hidden" name="modelo" value="{{m.conjunto}}" />
               <button
                 type="submit"
@@ -139,7 +140,7 @@
               >
                 <i class="fa fa-dark fa-file-download"></i>
               </button>
-            </form>
+            </form> -->
 
           </div>
         </td>
