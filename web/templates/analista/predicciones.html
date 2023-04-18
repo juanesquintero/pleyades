@@ -22,14 +22,22 @@
 <div class="table-responsive-sm">
   <table class="table table-hover table-sm" id="tabla">
     <thead>
-      <tr>
-        <th class="col-2 border-top-0">
-          <center><i>Modelo</i></center>
+      <tr class="border-top-0">
+        <th scope="col" colspan="2" class="col-10 border-top-0">
+          <center><i>Modelo de Deserción</i></center>
         </th>
-        <th scope="col" class="col-2 border-top-0">
-          <center><i>Duracion</i></center>
+      </tr>
+      <tr>
+        <th class="col-5 border-top-0">
+          <center><i>Programa</i></center>
+        </th>
+        <th class="col-3 border-top-0">
+          <center><i>Nombre</i></center>
         </th>
         <th scope="col" class="col-1 border-top-0">
+          <center><i>Duración</i></center>
+        </th>
+        <th scope="col" class="col-2 border-top-0">
           <center><i>Resultado</i></center>
         </th>
         <th scope="col" class="col-1 border-top-0">
@@ -44,23 +52,33 @@
       {% for p in predicciones %} {% if p.estado=='Exitosa' and p.resultados.tipo == 'Prediccion' %}
       
       <tr>
-        <td>
-          <center>
-            <!-- {{p}} -->
-            <p
-              data-toggle="tooltip"
-              data-html="true"
-              data-placement="bottom"
-              style="cursor: pointer"
-              title="{{p.resultados.programa}}<br>{{p.resultados.clasificador}}<br>{{p.resultados.desercion_prevista*100}} %">
-              {{ p.nombre }}
+  
+
+          <td>
+            <center>
+              {{p.resultados.programa}}
+            </center>
+          </td>
+          <td
+          data-toggle="tooltip"
+          data-html="true"
+          data-placement="bottom"
+          style="cursor: pointer"
+          title="<i>{{p.resultados.clasificador}}</i><br><b>{{p.numero}}<b>">
+            <center>
+              
+              
+              {{ p.conjunto }}
+              &nbsp;
+              <b>{{p.numero}}</b>
               <div hidden>
-                {{p.resultados.programa}}
                 {{p.resultados.clasificador}}
+                {{p.nombre}}
               </div>
-            </p>
-          </center>
-        </td>
+              
+            </center>
+          </td>
+        
         <td>
           <center>
             <p data-toggle="tooltip"
@@ -68,7 +86,7 @@
             data-placement="bottom"
             style="cursor: pointer"
             title="{{p.fechaInicial}}<br>{{p.fechaFinal}}">
-            {{p.duracion}} segundos
+            {{p.duracion}} sec
             <div hidden>
               {{p.fechaInicial}}
               {{p.fechaFinal}}
@@ -87,7 +105,7 @@
               data-toggle="tooltip"
               data-html="true"
               data-placement="bottom"
-              title="Deserción estudiantil por encima del 15% promediado.<br>Esta predicción parece NO ser confiable.<br>Se recomienda ejecutar otra o crear otro Modelo."
+              title="Deserción estudiantil por encima del 15% promediado ({{p.resultados.desercion_prevista*100}} %).<br>Esta predicción parece NO ser confiable.<br>Se recomienda ejecutar otra o crear otro Modelo."
             ></i>
             
             
@@ -140,7 +158,7 @@
                 data-toggle="tooltip"
                 data-html="true"
                 data-placement="bottom"
-                title="Ver Detalle"
+                title="Desertores Potenciales"
                 class="btn btn-outline-dark btn-sm submit"
                 role="status"
               >
@@ -159,7 +177,7 @@
                 data-toggle="tooltip"
                 data-html="true"
                 data-placement="bottom"
-                title="Hacer otra Predicción con este Mismo Modelo."
+                title="Predecir con el mismo Modelo."
                 class="btn my-primary text-white border border-white btn-sm submit"
                 role="status"
               >
