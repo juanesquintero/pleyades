@@ -126,6 +126,29 @@
            
             &nbsp;&nbsp;
 
+            
+            <!-- Entrenamiento-->
+            <div class="btn-group" role="group" aria-label="Basic example">
+              <form
+                action="{{url_for('Analista.entrenamientos')}}"
+                method="GET"
+              >
+                <input type="hidden" name="modelo" value="{{m.nombre}}" />
+                <button
+                  type="submit"
+                  data-toggle="tooltip"
+                  data-html="true"
+                  data-placement="bottom"
+                  title="Ver Entrenamientos"
+                  class="btn btn-outline-dark btn-sm submit"
+                  role="status"
+                >
+                  <i class="fa fa-sm fa-dumbbell"></i>
+                </button>
+              </form>
+            </div>
+            
+
             <!-- DESCARGAR-->
             <!-- <form action="{{url_for('Analista.descargar')}}" method="POST">
               <input type="hidden" name="modelo" value="{{m.conjunto}}" />

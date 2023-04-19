@@ -8,9 +8,9 @@
 }
 
 #sidebar-container {
-    min-height: 90.5vh;
+    min-height: 91.5vh;
     padding: 0;
-    /* flex: unset; */
+    flex: unset;
 }
 
 .sidebar-expanded {
