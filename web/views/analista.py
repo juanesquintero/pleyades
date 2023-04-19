@@ -32,7 +32,7 @@ def modelos():
     success, body = get_modelos()
 
     if not success:
-        flash(body.get('error'))
+        flash(body.get('error'), 'info')
         body = []
 
     return render_template(
@@ -66,7 +66,7 @@ def entrenamientos():
     success, body = get_modelos()
 
     if not success:
-        flash(body.get('error'))
+        flash(body.get('error'), 'info')
         body = []
 
     return render_template(
@@ -82,7 +82,7 @@ def predicciones():
     success, body = get_modelos()
 
     if not success:
-        flash(body.get('error'))
+        flash(body.get('error'), 'info')
         body = []
 
     return render_template(
