@@ -42,7 +42,6 @@
           >Entrenamientos</span
         >
       </a>
-   
 
       <!-- CONJUNTOS MENU -->
       <!-- <a href="#menuConjuntos" data-toggle="collapse" aria-expanded="false"
@@ -147,19 +146,33 @@
       <!-- END Entidades -->
 
       <!-- COLLAPSE Button -->
-      <a
-        href="#"
-        data-toggle="sidebar-colapse"
-        class="list-group-item align-items-center border border-right-0 my-secondary align-bottom"
-        style="margin-top: auto; margin-left: -0.8px; margin-bottom: 0px"
-      >
-        <div class="mt-0 d-flex w-100 justify-content-start align-items-center">
-          <center>
-            <span id="collapse-icon" class="fa fa-2x mr-3 text-white"></span>
-          </center>
-          <!-- <span id="collapse-text" class="menu-collapsed text-white">Collapse</span> -->
-        </div>
-      </a>
+      <div style="margin-top: auto; margin-left: -0.8px; margin-bottom: 0px">
+        <b>
+          <p
+            class="text-white my-3 mx-2 pl-1 w-25"
+            data-toggle="tooltip"
+            data-placement="top"
+            data-html="true"
+            title="<i>04/2023</i>"
+          >
+            v2.0.0
+          </p>
+        </b>
+        <a
+          href="#"
+          data-toggle="sidebar-colapse"
+          class="list-group-item align-items-center border border-right-0 my-secondary align-bottom"
+        >
+          <div
+            class="mt-0 d-flex w-100 justify-content-start align-items-center"
+          >
+            <center>
+              <i id="collapse-icon" class="fa fa-lg mr-3 text-white"></i>
+            </center>
+            <!-- <span id="collapse-text" class="menu-collapsed text-white">Collapse</span> -->
+          </div>
+        </a>
+      </div>
     </ul>
     <!-- List Group END-->
   </div>
@@ -173,3 +186,4 @@
   <div class="col m-4 px-3 py-2">
     
     {% include 'utils/messages.html' %}
+

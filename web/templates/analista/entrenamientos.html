@@ -28,13 +28,13 @@
         </th>
       </tr>
       <tr>
-        <th class="col-4 border-top-0">
+        <th class="col-6 border-top-0">
           <center><i>Programa</i></center>
         </th>
         <th class="col-2 border-top-0">
           <center><i>Info</i></center>
         </th>
-        <th scope="col" class="col-2 border-top-0">
+        <th scope="col" class="col-1 border-top-0">
           <center><i>Estado</i></center>
         </th>
 
@@ -43,11 +43,11 @@
         </th>
 
         <th scope="col" class="col-1 border-top-0">
-          <center><i>Preparación</i></center>
-        </th>
+          <!-- <center><i>Preparación</i></center> -->
+        <!-- </th>
 
-        <th scope="col" class="col-1 border-top-0">
-          <center><i>Ejecución</i></center>
+        <th scope="col" class="col-1 border-top-0"> -->
+          <!-- <center><i>Ejecución</i></center> -->
         </th>
       </tr>
     </thead>
@@ -73,7 +73,7 @@
               data-toggle="tooltip"
               data-html="true"
               data-placement="bottom"
-              title="Deserción estudiantil por encima del 15% promediado<br>Pudo ocurrir un error de entrenamiento<br>El modelo de predicción parece NO ser confiable<br>Se recomienda crear otro."
+              title="Deserción estudiantil por encima del 15% <br>Pudo ocurrir un error de entrenamiento<br>El modelo de predicción parece NO ser confiable<br>Se recomienda crear otro."
             ></i>
             
               {% elif (e.resultados.precision|float) < 85.00 %}
@@ -141,13 +141,13 @@
                 </button>
               </form>
             </div>
-          </div>
+          <!-- </div>
         </td>
 
         <td>
-          <div class="row d-flex justify-content-center">
+          <div class="row d-flex justify-content-center"> -->
             <!-- Ejecución-->
-            <div class="btn-group" role="group" aria-label="Basic example">
+            <div class="btn-group ml-2" role="group" aria-label="Basic example">
               <form
                 action="{{url_for('Resultado.ejecucion_detalle')}}"
                 method="POST"

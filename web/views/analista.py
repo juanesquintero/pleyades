@@ -8,7 +8,7 @@ from flask import request, session, Blueprint, render_template, send_file, redir
 from views.auth import login_required
 import views.conjuntos as conjuntos
 import utils.tableros.data_ies as DataIES
-from utils.mixins import guardar_archivo, guardar_ejecucion, get_now_date
+from utils.mixins import guardar_archivo, guardar_ejecucion, get_now_date, obtener_nombre_ejecucion
 import utils.tableros.data_ies as Data
 import utils.modelo as Modelo
 from services.API import get, post
@@ -32,7 +32,7 @@ def modelos():
     success, body = get_modelos()
 
     if not success:
-        flash(body.get('error'))
+        flash('Usuario aùn no tiene modelos de deserción', 'warning')
         body = []
 
     return render_template(
@@ -66,7 +66,7 @@ def entrenamientos():
     success, body = get_modelos()
 
     if not success:
-        flash(body.get('error'))
+        flash('Usuario aùn no tiene entrenamientos', 'info')
         body = []
 
     return render_template(
@@ -82,7 +82,7 @@ def predicciones():
     success, body = get_modelos()
 
     if not success:
-        flash(body.get('error'))
+        flash('Usuario aùn no tiene predicciones', 'info')
         body = []
 
     return render_template(
@@ -124,15 +124,17 @@ def predecir_modelo():
     resultados_modelo, resultados_desertores = Modelo.predecir(
         data_preparada, periodo, basic_info
     )
-    resultados_desertores['idprograma'] = resultados_desertores['idprograma'].astype(int)
-    resultados_desertores['semestre_prediccion'] = resultados_desertores['semestre_prediccion'].astype(int)
+    resultados_desertores['idprograma'] = resultados_desertores['idprograma'].astype(
+        int)
+    resultados_desertores['semestre_prediccion'] = resultados_desertores['semestre_prediccion'].astype(
+        int)
 
     # Insertar los resultados
     if resultados_desertores.any().any():
         resultados_insert = json.loads(
             resultados_desertores.to_json(orient='records')
         )
-        
+
         status_insert, body_insert = post(
             'desercion/resultados',
             resultados_insert
@@ -147,13 +149,10 @@ def predecir_modelo():
                 'Ocurrió un error insertando y/o actualizando los resultados')
     else:
         flash('No hay desertores para esta predicción', 'danger')
-        return redirect(url_for('Analista.predicciones'))
-        
+        return redirect(url_for('Analista.modelos'))
 
-    nombre_ejecucion = ejecucion.get('nombre').split('.')
-    siguiente_ejecucion = int(nombre_ejecucion[1]) + 1
-    ejecucion['nombre'] = f'{nombre_ejecucion[0]}.{siguiente_ejecucion}'
-    ejecucion['numero'] = siguiente_ejecucion
+    
+    ejecucion['nombre'], ejecucion['numero'] = obtener_nombre_ejecucion(modelo)
 
     # Guardar desertotres
     archivo_desertores = f"D {ejecucion.get('nombre')}.json"
@@ -162,7 +161,7 @@ def predecir_modelo():
         resultados_modelo.pop('desertores'), ruta, 'json'
     )
 
-    # Guardar ejecución 
+    # Guardar ejecución
     resultados_modelo['duracion'] = ejecucion.pop('duracion')
     guardar_ejecucion(ejecucion, resultados_modelo, 'Exitosa')
     flash('Predicción exitosa!!', 'success')

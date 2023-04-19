@@ -5,7 +5,7 @@ import logging
 import pandas as pd
 from flask import render_template
 from datetime import datetime
-from services.API import post, put
+from services.API import post, put, get
 
 error_logger = logging.getLogger('error_logger')
 
@@ -156,6 +156,15 @@ def obtener_nombre_conjunto(conjunto):
 
     error_logger.error('API ERROR: {} {}'.format(status_n, body_n))
     return False, render_template('utils/mensaje.html', mensaje='No se pudo obtener el nombre del conjunto', submensaje=body_n)
+
+def obtener_nombre_ejecucion(conjunto):
+    # Obtener nombre de la ejecucion desde el api
+    status_n, body_n = get(f'ejecuciones/nombre/{conjunto}')
+    if status_n:
+        return body_n['nombre'], body_n['numero']
+
+    error_logger.error('API ERROR: {} {}'.format(status_n, body_n))
+    raise Exception('No se pudo obtener el nombre de la ejecución')
 
 
 def obtener_ies_config():

@@ -50,16 +50,18 @@
                   {% if d.desertor==0 %}
 
                   <i class="fas fa-exclamation-circle fa-lg text-warning border-dark" data-toggle="tooltip"
+                  data-html="true"
                     data-placement="bottom" style="cursor: pointer;"
-                    title="El modelo predijo que este estudiante podría ser un potencial desertor.<br>Y NO ha sido reportado como tal."></i>
+                    title="El modelo predijo que este estudiante podría ser un potencial desertor<br><br>Y aún NO ha sido reportado como tal."></i>
                   {% else %}
                   <i class="fas fa-check-circle text-secondary" data-toggle="tooltip" data-placement="bottom"
+                  data-html="true"
                     style="cursor: pointer;"
                     title="Este Estudiante Ya ha sido reportado como desertor."></i>
                   {% endif %}
                 </center>
               </td>
-              <!-- <td>{{ d.prediccion }}</td> -->
+              <!-- <td>{{ d.predicción }}</td> -->
             </tr>
             {% endfor %}
           </tbody>
@@ -76,6 +78,7 @@
         'programa',
         'periodo_a_predecir',
         'estudiantes_analizados',
+        'precision',
         'desercion_prevista',
         'clasificador',
         'total_desertores',
@@ -92,14 +95,71 @@
             {{KEY}}
             <td><strong>{{ key.title()|replace('_',' ') }}</strong></td>
             <td class="bg-light">
-              {% if key=='desercion_prevista' %}
-                {% set proc = value * 100 %}
-                {{ '%0.2f' % proc|float }} %
+              
+              {% if 'desercion' in key %}
+              
+                {% set deser = (value * 100)|float %}
+                {{ '%0.0f' % deser }} %
+
+
+                {% if deser > 15 or  deser < 1 %}
+                  <i
+                    class="fa fa-solid fa-exclamation-triangle fa-lg text-danger border-dark"
+                    data-toggle="tooltip"
+                    data-html="true"
+                    data-placement="bottom"
+                    title="Deserción estudiantil por encima del 15% o muy cerca al 0%.<br>Recuerde predecir para periodos finalizados."
+                  ></i>
+                
+                {% else %}
+  
+                  <i
+                    class="fa fa-solid fa-check fa-lg text-success border-dark"
+                    data-toggle="tooltip"
+                    data-html="true"
+                    data-placement="bottom"
+                    title="El modelo tiene al parecer valores acertados de la precisión."
+                  ></i>
+  
+                {% endif %}
+
+
               {% else %}
+
                 {{ value }}
                 {% if key=='precision' %}
                 %
+
+                {% if (value|float) < 85.00 %}
+
+                  <i
+                  class="fa fa-solid fa-exclamation-triangle fa-lg text-warning border-dark"
+                  data-toggle="tooltip"
+                  data-html="true"
+                  data-placement="bottom"
+                  style="cursor: pointer"
+                  title="Precisión del modelo no muy alta, debajo del 85%<br>No significa que la predicción no sea confiable"
+                ></i>
+                <small>
+                  <i>
+                    Para más precisión creer otro con mas datos de entrenamiento con periodos finalizados.
+                  </i>
+                </small>
+                
+                {% else %}
+
+                <i
+                  class="fa fa-solid fa-check fa-lg text-success border-dark"
+                  data-toggle="tooltip"
+                  data-html="true"
+                  data-placement="bottom"
+                  title="El modelo tiene una precisión acertada. (Por encima del 85%)"
+                ></i>
                 {% endif %}
+                
+              
+              {% endif %}
+
               {% endif %}
             </td>
           </tr>
@@ -110,19 +170,19 @@
       </table>
       
       {% if desertores %}
-      <div class="d-flex justify-content-center align-items-center  ml-0 pl-0 mr-5 pr-5">
-        <i class="fa fa-download" aria-hidden="true"></i>
-        &nbsp;
-        <div class="ml-0 pl-0 mr-2 d-flex ">Descargar: </div>
-        &nbsp;&nbsp;
-        <a class="btn bg-light btn-sm border text-dark px-2" type=" button"
-          href="{{url_for('Resultado.descargar',ejecucion=ejecucion.nombre)}}">
-          <i class="fas fa-file-excel mr-1" aria-hidden="true"></i>
-          Desertores
-        </a>
-      </div>
-      
-      <br><br><br>
+        <div class="d-flex justify-content-center align-items-center  ml-0 pl-0 mr-5 pr-5">
+          <i class="fa fa-download" aria-hidden="true"></i>
+          &nbsp;
+          <div class="ml-0 pl-0 mr-2 d-flex ">Descargar: </div>
+          &nbsp;&nbsp;
+          <a class="btn bg-light btn-sm border text-dark px-2" type=" button"
+            href="{{url_for('Resultado.descargar',ejecucion=ejecucion.nombre)}}">
+            <i class="fas fa-file-excel mr-1" aria-hidden="true"></i>
+            Desertores
+          </a>
+        </div>
+        
+        <br><br><br>
       {% endif %}
       <br>
       <div class="col" style="width: 95%;">
@@ -133,14 +193,23 @@
             {% for key, value in ejecucion.items() %}
             <tr>
               <td><strong>{{ key.title()|replace('_',' ') }}</strong></td>
+              
               <td class="bg-light">
+                
                 {{ value }}
+                
                 {% if key=='duracion' %}
-                seg
+                
+                sec
+                
                 {% endif %}
+
               </td>
+
             </tr>
+            
             {% endfor %}
+
           </tbody>
         </table>
       </div>

@@ -89,7 +89,7 @@
               data-toggle="tooltip"
               data-html="true"
               data-placement="bottom"
-              title="Deserción estudiantil por encima del 15% promediado<br>Pudo ocurrir un error de entrenamiento<br>El modelo de predicción parece NO ser confiable<br>Se recomienda crear otro."
+              title="Deserción estudiantil por encima del 15% <br>Pudo ocurrir un error de entrenamiento<br>El modelo de predicción parece NO ser confiable<br>Se recomienda crear otro."
             ></i>
             {% endif %}
           </center>
@@ -125,6 +125,29 @@
             </form>
            
             &nbsp;&nbsp;
+
+            
+            <!-- Entrenamiento-->
+            <div class="btn-group" role="group" aria-label="Basic example">
+              <form
+                action="{{url_for('Analista.entrenamientos')}}"
+                method="GET"
+              >
+                <input type="hidden" name="modelo" value="{{m.nombre}}" />
+                <button
+                  type="submit"
+                  data-toggle="tooltip"
+                  data-html="true"
+                  data-placement="bottom"
+                  title="Ver Entrenamientos"
+                  class="btn btn-outline-dark btn-sm submit"
+                  role="status"
+                >
+                  <i class="fa fa-sm fa-dumbbell"></i>
+                </button>
+              </form>
+            </div>
+            
 
             <!-- DESCARGAR-->
             <!-- <form action="{{url_for('Analista.descargar')}}" method="POST">

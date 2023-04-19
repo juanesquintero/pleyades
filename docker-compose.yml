@@ -70,7 +70,7 @@ services:
   db-ies:
     image: mcr.microsoft.com/mssql/server:2019-CU3-ubuntu-18.04
     user: '0:0'
-    container_name: pleyades-client-db
+    container_name: pleyades-ies-db
     ports:
       - 1433:1433
     env_file:
