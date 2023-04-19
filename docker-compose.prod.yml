@@ -42,7 +42,7 @@ services:
     networks:
       deploy-net:
         aliases:
-          - web-host
+          - web
 
     command: gunicorn __init__:app --preload --bind 0.0.0.0:80 --workers 3 --timeout=90
     depends_on:

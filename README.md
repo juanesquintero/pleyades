@@ -137,7 +137,7 @@ $     ...    web/logs/GENERALS.log
 
 # Aplicar cambios 
 ```console
-$ git pull origin --force
+$ git pull origin develop
 $ docker-compose -f docker-compose.prod.yml stop
 $ docker-compose -f docker-compose.prod.yml rm -f
 $ docker-compose -f docker-compose.prod.yml up nginx -d
