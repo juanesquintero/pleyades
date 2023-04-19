@@ -67,7 +67,7 @@ services:
     networks:
       deploy-net:
         aliases:
-          - api-host
+          - api
 
     command: gunicorn wsgi:app --bind 0.0.0.0:80 --workers 3 --timeout=90
 
