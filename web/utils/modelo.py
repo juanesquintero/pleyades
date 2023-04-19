@@ -273,24 +273,18 @@ def ejecutar_modelo(data, conjunto=''):
     predc_sem_act['prediccion'] = mejor_clasificador.predict(
         data_a_predecir[col_preparadas])
 
-    potenciales_desertores = predc_sem_act.query('prediccion==1 & desertor!=1')
     # TODO filtro de idestado
-    potenciales_desertores_matriculados = potenciales_desertores.query('idestado==6')
-
-    # Eliminar valores repetidos
-    potenciales_desertores = potenciales_desertores.drop_duplicates(
+    potenciales_desertores = predc_sem_act.query('prediccion==1 & desertor!=1').drop_duplicates(
         subset=['documento'],
         keep='first'
     ).reset_index()
+    potenciales_desertores_matriculados = potenciales_desertores.query(
+        'idestado==6')
 
     # Setear resultados para insertar en la BD
     potenciales_desertores['semestre_prediccion'] = periodo_a_predecir
 
     resultados_desertores = potenciales_desertores
-    potenciales_desertores = potenciales_desertores.drop(
-        ['idprograma', 'semestre_prediccion'],
-        axis=1
-    )
 
     ''' FASE 3 '''
     pd.crosstab(predc_sem_act.prediccion, predc_sem_act.desertor, margins=True)
@@ -302,6 +296,7 @@ def ejecutar_modelo(data, conjunto=''):
 
     total_desertores = len(potenciales_desertores.index)
     total_estudiantes_analizados = len(predc_sem_act['documento'].unique())
+
     potenciales_desertores.drop(['index'], axis=1, inplace=True)
 
     periodo_a_predecir_mas_1 = f'{periodo_a_predecir} + 1'
@@ -364,24 +359,17 @@ def predecir(data_a_predecir, periodo_a_predecir, basic_info):
         data_a_predecir[col_preparadas]
     )
 
-    potenciales_desertores = predc_sem_act.query('prediccion==1 & desertor!=1')
     # TODO filtro de idestado
-    potenciales_desertores_matriculados = potenciales_desertores.query('idestado==6')
-
-    # Eliminar valores repetidos
-    potenciales_desertores = potenciales_desertores.drop_duplicates(
+    potenciales_desertores = predc_sem_act.query('prediccion==1 & desertor!=1').drop_duplicates(
         subset=['documento'],
         keep='first'
     ).reset_index()
+    potenciales_desertores_matriculados = potenciales_desertores.query(
+        'idestado==6')
 
     # Setear resultados para insertar en la BD
     potenciales_desertores['semestre_prediccion'] = periodo_a_predecir
-
     resultados_desertores = potenciales_desertores
-    potenciales_desertores = potenciales_desertores.drop(
-        ['idprograma', 'semestre_prediccion'],
-        axis=1
-    )
 
     ''' FASE 3 '''
     pd.crosstab(predc_sem_act.prediccion, predc_sem_act.desertor, margins=True)
@@ -391,9 +379,10 @@ def predecir(data_a_predecir, periodo_a_predecir, basic_info):
 
     total_desertores = len(potenciales_desertores.index)
     total_estudiantes_analizados = len(predc_sem_act['documento'].unique())
-    potenciales_desertores.drop(['index'], axis=1, inplace=True)
     desercion_prevista = int(total_desertores) / \
         int(total_estudiantes_analizados)
+
+    potenciales_desertores.drop(['index'], axis=1, inplace=True)
 
     resultados = {
         **basic_info,
