@@ -44,7 +44,9 @@ services:
     links:
       - api:api
     networks:
-      - deploy-net
+      deploy-net:
+        aliases:
+          - web
     command: gunicorn __init__:app --preload --bind 0.0.0.0:80 --workers 3 --timeout=90
     depends_on:
       - api
@@ -66,7 +68,9 @@ services:
     volumes:
       - ./api:/app
     networks:
-      - deploy-net
+      deploy-net:
+        aliases:
+          - api
     command: gunicorn wsgi:app --bind 0.0.0.0:80 --workers 3 --timeout=90
 
 networks:
