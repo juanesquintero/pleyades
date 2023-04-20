@@ -21,8 +21,7 @@ msg_exito = {'msg': 'Operación completada con exito!'}, 200
 @Resultado.route('/ultimo/<programa>/<int:semestre>', methods=['PUT'])
 @jwt_required()
 def put_ultimo(semestre, programa):
-    sql = "UPDATE {} SET blnultimo=0 WHERE semestre_prediccion={} AND idprograma={};".format(
-        tabla, semestre, programa)
+    sql = f'UPDATE {tabla} SET blnultimo=0 WHERE semestre_prediccion={semestre} AND idprograma={programa};'
     result = db.execute(sql)
     ex = exception(result)
     if ex:
@@ -36,15 +35,19 @@ def put_ultimo(semestre, programa):
 @jwt_required()
 def post_insertar_resultados():
     body = request.get_json()
-    if not(validate_post_schema(body)):
-        return {'error': "body invalido"}, 400
-    if not(body):
+    if not validate_post_schema(body):
+        return {'error': 'body invalido'}, 400
+    if not body:
         return msg_error
     data = pd.DataFrame(body)
+    data = data[
+        ['documento', 'nombre_completo', 'idprograma',
+            'prediccion', 'desertor', 'semestre_prediccion']
+    ]
     result = db.multi_insert(data, tabla)
     ex = exception(result)
     if ex:
         return ex
-    if not(result):
+    if not result:
         return msg_error
     return msg_exito

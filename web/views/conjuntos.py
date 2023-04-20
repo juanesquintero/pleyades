@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 from ast import literal_eval
 from googletrans import Translator
 
-from utils.modelo import preparar_data, verificar_data, ejecutar_modelo
+from utils.modelo import prepare_data, verify_data, execute_model
 from views.auth import login_required
 from services.API import get, post, put
 
@@ -188,7 +188,7 @@ def guardar(conjunto=None):
 
         # VERIFICACION de formato
         data = pd.read_excel(archivo)
-        validacion, mensaje_error, data_verificada, periodoInicial = verificar_data(
+        validacion, mensaje_error, data_verificada, periodoInicial = verify_data(
             data, conjunto.get('periodoInicial'), conjunto.get('periodoFinal'), conjunto.get('programa'))
         conjunto['periodoInicial'] = periodoInicial
 
@@ -222,7 +222,7 @@ def guardar(conjunto=None):
             return render_template('utils/mensaje.html', mensaje='Consulta fallida a la base de datos')
 
         # VERIFICACION de formato
-        validacion, mensaje_error, data_verificada, periodoInicial = verificar_data(
+        validacion, mensaje_error, data_verificada, periodoInicial = verify_data(
             data, conjunto.get('periodoInicial'), conjunto.get('periodoFinal'), conjunto.get('programa'))
         conjunto['periodoInicial'] = periodoInicial
 
@@ -300,7 +300,7 @@ def preparar(conjunto=None):
 
     # Algoritmo de preparacion
     try:
-        data_preparada = preparar_data(data_cruda)
+        data_preparada = prepare_data(data_cruda)
     except Exception as e:
         model_logger.error(e)
         model_logger.error(traceback.format_exc())
@@ -384,7 +384,7 @@ def ejecutar(conjunto=None):
     # except Exception as e:
     #   pass
     try:
-        resultados_modelo, resultados_desertores = ejecutar_modelo(
+        resultados_modelo, resultados_desertores = execute_model(
             data_preparada,
             nombre
         )
@@ -420,13 +420,15 @@ def ejecutar(conjunto=None):
     # Actualizar los resultados a ultimo
     endpoint_ultimo = 'desercion/resultados/ultimo/{}/{}'
     endpoint_ultimo_values = endpoint_ultimo.format(
-        conjunto['programa'], conjunto['periodoFinal'])
+        conjunto['programa'], conjunto['periodoFinal']
+    )
     status_update, body_update = put(endpoint_ultimo_values, {})
 
     # Insertar los resultados
     if resultados_desertores.any().any():
         resultados_insert = json.loads(
-            resultados_desertores.to_json(orient='records'))
+            resultados_desertores.to_json(orient='records')
+        )
         status_insert, body_insert = post(
             'desercion/resultados', resultados_insert)
         if not status_update or not status_insert:
@@ -449,7 +451,8 @@ def ejecutar(conjunto=None):
         archivo_desertores = 'D '+ejecucion['nombre']+'.json'
         ruta = upload_folder+'/desertores/'+archivo_desertores
         exito, pagina_error = guardar_archivo(
-            resultados_modelo.pop('desertores'), ruta, 'json')
+            resultados_modelo.pop('desertores'), ruta, 'json'
+        )
         if not(exito):
             return pagina_error
 
