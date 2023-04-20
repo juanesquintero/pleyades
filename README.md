@@ -91,6 +91,18 @@ Evidenciar contenedores corriendo
 $ docker ps -a
 ```
 
+<small>
+
+Conectar contenedores productivos (pleyades-api) con bases de datos locales de desarrollo.
+
+```console
+$ docker-compose up -d
+$ docker-compose -f docker-compose.prod.yml up -d
+$ docker network connect pleyades-dev_dev-net pleyades-api
+```
+
+</small> 
+
 
 # Detención 
 
@@ -140,7 +152,7 @@ $     ...    web/logs/GENERALS.log
 $ git pull origin develop
 $ docker-compose -f docker-compose.prod.yml stop
 $ docker-compose -f docker-compose.prod.yml rm -f
-$ docker-compose -f docker-compose.prod.yml up nginx -d
+$ docker-compose -f docker-compose.prod.yml up -d
 ````
 
 <br>

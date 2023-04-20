@@ -5,13 +5,13 @@ import pandas as pd
 from ast import literal_eval
 from dotenv import load_dotenv
 from flask import request, session, Blueprint, render_template, send_file, redirect, url_for, jsonify, flash
-from views.auth import login_required
-import views.conjuntos as conjuntos
-import utils.tableros.data_ies as DataIES
-from utils.mixins import guardar_archivo, guardar_ejecucion, get_now_date, obtener_nombre_ejecucion
-import utils.tableros.data_ies as Data
+
 import utils.modelo as Modelo
 from services.API import get, post
+import views.conjuntos as conjuntos
+from views.auth import login_required
+import utils.tableros.data_ies as DataIES
+from utils.mixins import guardar_archivo, guardar_ejecucion, get_now_date, obtener_nombre_ejecucion
 
 load_dotenv()
 
@@ -32,7 +32,7 @@ def modelos():
     success, body = get_modelos()
 
     if not success:
-        flash('Usuario aùn no tiene modelos de deserción', 'warning')
+        flash('Usuario aún no tiene modelos de deserción', 'warning')
         body = []
 
     return render_template(
@@ -66,7 +66,7 @@ def entrenamientos():
     success, body = get_modelos()
 
     if not success:
-        flash('Usuario aùn no tiene entrenamientos', 'info')
+        flash('Usuario aún no tiene entrenamientos', 'info')
         body = []
 
     return render_template(
@@ -82,7 +82,7 @@ def predicciones():
     success, body = get_modelos()
 
     if not success:
-        flash('Usuario aùn no tiene predicciones', 'info')
+        flash('Usuario aún no tiene predicciones', 'info')
         body = []
 
     return render_template(
@@ -111,17 +111,17 @@ def predecir_modelo():
     }
 
     # Obtener estudiantes a predecir
-    data_a_predecir = Data.get_estudiantes_periodo_programa(
+    data_a_predecir = DataIES.get_estudiantes_periodo_programa(
         periodo, idprograma
     )
 
     # Preparar data
     df_data_a_predecir = pd.DataFrame(data_a_predecir)
-    data_preparada = Modelo.preparar_data(df_data_a_predecir)
+    data_preparada = Modelo.prepare_data(df_data_a_predecir)
     data_preparada = data_preparada.rename(columns={'REGISTRO': 'registro'})
 
     # Predecir resultados
-    resultados_modelo, resultados_desertores = Modelo.predecir(
+    resultados_modelo, resultados_desertores = Modelo.predict(
         data_preparada, periodo, basic_info
     )
     resultados_desertores['idprograma'] = resultados_desertores['idprograma'].astype(

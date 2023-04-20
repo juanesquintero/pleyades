@@ -93,9 +93,6 @@ services:
       - db-ies:db-ies
     networks:
       - dev-net
-      # - pleyades-prod_deploy-net
 networks:
   dev-net:
     driver: bridge
-  # pleyades-prod_deploy-net:
-  #   external: true

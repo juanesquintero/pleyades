@@ -25,14 +25,14 @@
           <thead>
             <tr>
               <th scope="col" class="">
+                <center> Semestre </center>
+              </th>
+              <th scope="col" class="">
                 <center> Identificación </center>
               </th>
               <th scope="col" class="">
                 <center> Nombre </center>
               </th>
-              <!-- <th scope="col" class="">
-                  <center> Desertor </center>
-                </th> -->
               <th scope="col" class="">
                 <center> Predicción </center>
               </th>
@@ -41,6 +41,7 @@
           <tbody class="bg-light rounded">
             {% for d in desertores %}
             <tr>
+              <td><center>{{ d.semestre }}</center></td>
               <td>
                 <center>{{ d.documento }}</center>
               </td>
@@ -82,6 +83,8 @@
         'desercion_prevista',
         'clasificador',
         'total_desertores',
+        'total_potenciales_desertores',
+        'total_desertores_reportados',
         'total_desertores_matriculados'
         ] 
         %}

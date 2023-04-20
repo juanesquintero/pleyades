@@ -13,7 +13,7 @@ post_schema = {
                 "semestre_prediccion": {"type": "integer", "maxLength": 30},
             },
         "required": ["documento", "nombre_completo", "idprograma", "prediccion", "semestre_prediccion", "desertor"],
-        "additionalProperties": False
+        "additionalProperties": True
     }
 
 }

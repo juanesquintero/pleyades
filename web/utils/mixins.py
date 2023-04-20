@@ -130,15 +130,14 @@ def guardar_preparacion(preparacion, observaciones, estado):
 
 
 def guardar_ejecucion(ejecucion, resultados, estado):
-    # Guardar REGISTRO de ejecución
-    ejecucion['precision_modelo'] = resultados.get('precision', None) 
-    ejecucion['fechaFinal'] = get_now_date()
-    ejecucion['resultados'] = resultados
-    ejecucion['estado'] = estado
-    
-    print(ejecucion, flush=True)
 
-    status, body = post('ejecuciones', ejecucion)
+    # Guardar REGISTRO de ejecución
+    ejecucion['precision_modelo'] = resultados.get('precision', None)
+    ejecucion['fechaFinal'] = get_now_date()
+    ejecucion['resultados'] = dict(resultados)
+    ejecucion['estado'] = estado
+
+    status, body = post('ejecuciones', dict(ejecucion))
 
     if not status:
         raise Exception(
@@ -156,6 +155,7 @@ def obtener_nombre_conjunto(conjunto):
 
     error_logger.error('API ERROR: {} {}'.format(status_n, body_n))
     return False, render_template('utils/mensaje.html', mensaje='No se pudo obtener el nombre del conjunto', submensaje=body_n)
+
 
 def obtener_nombre_ejecucion(conjunto):
     # Obtener nombre de la ejecucion desde el api
