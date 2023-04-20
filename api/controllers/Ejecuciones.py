@@ -56,9 +56,18 @@ def get_by_conjunto(conjunto):
 @Ejecucion.route('/ejecutor/<ejecutor>')
 @jwt_required()
 def get_by_usuario(ejecutor):
+    conjunto = request.args.get('conjunto')
+    nombre = request.args.get('nombre')
     if not exists_usuario(ejecutor):
         return {'error': 'usuario no existe'}, 400
-    query = ejecucion_model.get_ejecutor(ejecutor)
+    
+    if nombre:
+        query = ejecucion_model.get_ejecutor_one(ejecutor, nombre)
+    elif conjunto:
+        query = ejecucion_model.get_ejecutor_conjunto(ejecutor, conjunto)
+    else:
+        query = ejecucion_model.get_ejecutor(ejecutor)
+
     ex = exception(query)
     if ex:
         return ex

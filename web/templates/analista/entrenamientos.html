@@ -22,12 +22,10 @@
 <div class="table-responsive-sm">
   <table class="table table-hover table-sm" id="tabla">
     <thead>
-      <tr class="border-top-0">
-        <th scope="col" colspan="3" class="col-10 border-top-0">
-          <center><i>Modelo de Deserción</i></center>
-        </th>
-      </tr>
       <tr>
+        <th class="border-top-0">
+          
+        </th>
         <th class="col-6 border-top-0">
           <center><i>Programa</i></center>
         </th>
@@ -53,14 +51,19 @@
     </thead>
     <tbody>
       {% for e in entrenamientos %} {% if e.estado=='Exitosa' and e.resultados.tipo == 'Entrenamiento' %}
+      {% set info_array = e.conjunto.split(' ')[1:] %}
       <tr>
+        <td>
+          <h6 >
+            {{ info_array[2:3][0] }}
+          </h6>
+        </td>
         <td>
           <center>{{e.resultados.programa}}</center>
         </td>
         <td>
           <center>
-            {% set info_array = e.conjunto.split(' ')[1:] %} {{
-            info_array|join(' ') }}
+            {{info_array|join(' ') }}
           </center>
         </td>
         <td>

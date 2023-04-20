@@ -251,6 +251,10 @@ class Ejecucion(db.Model, SerializerMixin):
     def get_ejecutor(ejecutor):
         query = Ejecucion.query.filter(Ejecucion.ejecutor == ejecutor).all()
         return [row.to_dict() for row in query]
+    
+    def get_ejecutor_one(ejecutor, conjunto):
+        query = Ejecucion.query.filter(Ejecucion.ejecutor == ejecutor, Ejecucion.conjunto == conjunto).all()
+        return [row.to_dict() for row in query]
 
     def _get_one(nombre):
         return Ejecucion.query.filter(Ejecucion.nombre == nombre).first_or_404()

@@ -123,7 +123,7 @@ def elimination(data, periodo_a_predecir=None, predicir=False,):
         data.loc[indice_fila, 'edad'] = x[fila['semestre']]
 
     # Elminar desercíon temprana
-    # data = data.query('semestre != 1 & promedio_acumulado > 1')
+    data = data.query('semestre > 1 & promedio_acumulado > 2')
 
     ''' FASE 1 '''
     if predicir:
@@ -235,9 +235,8 @@ def execute_model(data, conjunto=''):
         'periodo_a_predecir': int(periodo_a_predecir),
         'estudiantes_analizados': result.get('total_analizados'),
         'desercion_prevista': result.get('desercion'),
-        'total_desertores_reportados':  int(len(data_a_predecir[data_a_predecir['desertor'] == 1])),
-        'total_potenciales_desertores': result.get('total'),
-        'total_desertores_matriculados': result.get('matriculados'),
+        'desertores_reportados':  int(len(data_a_predecir[data_a_predecir['desertor'] == 1])),
+        'potenciales_desertores': result.get('total'),   
     }
 
     return resultados, result.get('resultado')
@@ -269,8 +268,7 @@ def predict(data_a_predecir, periodo_a_predecir, basic_info):
         'periodo_a_predecir': int(periodo_a_predecir),
         'estudiantes_analizados': result.get('total_analizados'),
         'desercion_prevista': result.get('desercion'),
-        'total_desertores': result.get('total'),
-        'total_desertores_matriculados': result.get('matriculados'),
+        'potenciales_desertores': result.get('total'),
         'clasificador': str(mejor_clasificador.__class__.__name__),
     }
 
@@ -294,13 +292,14 @@ def predict_classifier(data_a_predecir, periodo_a_predecir, mejor_clasificador):
 
     # # Elminar desercíon temprana
     potenciales_desertores = potenciales_desertores.query(
-        'semestre != 1 & promedio_acumulado > 1'
+        'semestre > 1 & promedio_acumulado > 2'
     )
 
     # TODO filtro de idestado
     # Elminar no matriculados
-    potenciales_desertores_matriculados = potenciales_desertores.query(
-        'idestado==6')
+    potenciales_desertores = potenciales_desertores.query(
+        'idestado == 6'
+    )
 
     # Re asignar tipos
     potenciales_desertores['semestre'] = potenciales_desertores['semestre'].astype(
@@ -340,7 +339,6 @@ def predict_classifier(data_a_predecir, periodo_a_predecir, mejor_clasificador):
     return {
         'resultado': resultados_desertores,
         'desertores': potenciales_desertores,
-        'matriculados': int(len(potenciales_desertores_matriculados)),
         'total': int(total_desertores),
         'total_analizados': int(total_estudiantes_analizados),
         'desercion': float(round(desercion_prevista, 2))

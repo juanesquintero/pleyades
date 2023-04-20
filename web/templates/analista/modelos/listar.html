@@ -1,6 +1,4 @@
-{% include 'components/header.html' %} 
-
-{% include 'components/sidebar.html' %}
+{% include 'components/header.html' %} {% include 'components/sidebar.html' %}
 
 <h4>
   Modelos de Deserción
@@ -25,35 +23,50 @@
   <table class="table table-hover table-sm" id="tabla">
     <thead>
       <tr class="border-top-0">
-        <th scope="col" class="col-4 border-top-0">
+        <th scope="col" class="border-top-0">
+        
+        </th>
+        <th scope="col" class="col-5 border-top-0">
           <center><i>Programa</i></center>
         </th>
-        <th scope="col" class="col-2 border-top-0">
+        <th scope="col" class="col-1 border-top-0">
           <center><i>Info</i></center>
         </th>
-        <th scope="col" class="col-3 border-top-0">
+        <th scope="col" class="col-3 ml-5 border-top-0">
           <center><i>Clasificador</i></center>
         </th>
         <th scope="col" class="col-1 border-top-0">
           <center><i>Precisión</i></center>
         </th>
         <th scope="col" class="col-1 border-top-0">
-          <center><i>Deserción</i></center>
+          <center>
+            <small>
+              <i>
+                <b> Deserción Prevista </b>
+              </i>
+            </small>
+          </center>
         </th>
-        <th scope="col" class="col-2 border-top-0">
-          
-        </th>
+        <th scope="col" class="col-1 border-top-0"></th>
       </tr>
     </thead>
     <tbody>
-      {% for m in modelos %} {% if m.estado=='Exitosa' and m.resultados.tipo == 'Entrenamiento' %}
+      {% for m in modelos %} {% if m.estado=='Exitosa' and m.resultados.tipo ==
+      'Entrenamiento' %}
+      {% set info_array = m.conjunto.split(' ')[1:] %}
       <tr>
+        <td>
+          <h6 >
+            {{ info_array[2:3][0] }}
+          </h6>
+        </td>
         <td>
           <center>{{m.resultados.programa}}</center>
         </td>
         <td>
-          {% set info_array = m.conjunto.split(' ')[1:] %}
-          <center>{{ info_array|join(' ') }}</center>
+          
+          <center>{{ info_array[:2]|join(' ') }} 
+        </center>
         </td>
 
         <td>
@@ -62,9 +75,8 @@
 
         <td>
           <center>
-            {{ '%0.0f' % m.resultados.precision|float }}% 
-            {% if (m.resultados.precision|float)
-            < 85.00 %}
+            {{ '%0.0f' % m.resultados.precision|float }}% {% if
+            (m.resultados.precision|float) < 85.00 %}
 
             <i
               class="fa fa-solid fa-exclamation-triangle fa-lg text-warning border-dark"
@@ -98,6 +110,30 @@
         <td>
           <!-- ACCCIONES -->
           <div class="row d-flex justify-content-center">
+            
+
+            <!-- Entrenamiento-->
+            <div class="btn-group" role="group" aria-label="Basic example">
+              <form
+                action="{{url_for('Analista.entrenamientos')}}"
+                method="GET"
+              >
+                <input type="hidden" name="modelo" value="{{m.conjunto}}" />
+                <button
+                  type="submit"
+                  data-toggle="tooltip"
+                  data-html="true"
+                  data-placement="bottom"
+                  title="Ver Entrenamientos"
+                  class="btn btn-outline-dark btn-sm submit"
+                  role="status"
+                >
+                  <i class="fa fa-sm fa-dumbbell"></i>
+                </button>
+              </form>
+            </div>
+            
+            &nbsp;&nbsp;
 
             <!-- PREDECIR -->
             <form action="{{url_for('Analista.predecir')}}" method="POST">
@@ -123,31 +159,8 @@
                 <i class="fas fa-spinner fa-spin fa-lg" aria-hidden="true"></i>
               </button>
             </form>
-           
-            &nbsp;&nbsp;
 
-            
-            <!-- Entrenamiento-->
-            <div class="btn-group" role="group" aria-label="Basic example">
-              <form
-                action="{{url_for('Analista.entrenamientos')}}"
-                method="GET"
-              >
-                <input type="hidden" name="modelo" value="{{m.nombre}}" />
-                <button
-                  type="submit"
-                  data-toggle="tooltip"
-                  data-html="true"
-                  data-placement="bottom"
-                  title="Ver Entrenamientos"
-                  class="btn btn-outline-dark btn-sm submit"
-                  role="status"
-                >
-                  <i class="fa fa-sm fa-dumbbell"></i>
-                </button>
-              </form>
-            </div>
-            
+
 
             <!-- DESCARGAR-->
             <!-- <form action="{{url_for('Analista.descargar')}}" method="POST">
@@ -164,7 +177,6 @@
                 <i class="fa fa-dark fa-file-download"></i>
               </button>
             </form> -->
-
           </div>
         </td>
       </tr>

@@ -22,17 +22,14 @@
 <div class="table-responsive-sm">
   <table class="table table-hover table-sm" id="tabla">
     <thead>
-      <tr class="border-top-0">
-        <th scope="col" colspan="2" class="col-10 border-top-0">
+      <tr>
+        <th scope="col" class="border-top-0">
+        </th>
+        <th class="col-6 border-top-0">
           <center><i>Modelo de Deserción</i></center>
         </th>
-      </tr>
-      <tr>
-        <th class="col-5 border-top-0">
-          <center><i>Programa</i></center>
-        </th>
-        <th class="col-3 border-top-0">
-          <center><i>Nombre</i></center>
+        <th class="col-2 border-top-0">
+          <center><i>Período a Predecir</i></center>
         </th>
         <th scope="col" class="col-1 border-top-0">
           <center><i>Duración</i></center>
@@ -40,44 +37,55 @@
         <th scope="col" class="col-2 border-top-0">
           <center><i>Resultado</i></center>
         </th>
-        <th scope="col" class="col-1 border-top-0">
-          <center><i>Detalle</i></center>
+        <th scope="col" class="col-2 border-top-0">
         </th>
-        <th scope="col" class="col-1 border-top-0">
-          <center><i>Replicar</i></center>
-        </th>
+
       </tr>
     </thead>
     <tbody>
       {% for p in predicciones %} {% if p.estado=='Exitosa' and p.resultados.tipo == 'Prediccion' %}
+      {% set info_array = p.nombre.split(' ')[1:] %}
+      {% set conjunto = p.conjunto.split(' ')[3:] %}
       
       <tr>
-  
+        <td>
+          <h6>
+            {{ info_array[2:3][0] }}
+          </h6>
+        </td>
 
-          <td>
-            <center>
-              {{p.resultados.programa}}
-            </center>
-          </td>
-          <td
-          data-toggle="tooltip"
-          data-html="true"
-          data-placement="bottom"
-          style="cursor: pointer"
-          title="<i>{{p.resultados.clasificador}}</i><br><b>{{p.numero}}<b>">
-            <center>
-              
-              
-              {{ p.conjunto }}
-              &nbsp;
-              <b>{{p.numero}}</b>
-              <div hidden>
-                {{p.resultados.clasificador}}
-                {{p.nombre}}
-              </div>
-              
-            </center>
-          </td>
+        <td>
+          <center>
+            <b>
+              {{ conjunto[0] }}
+            </b>
+            &nbsp;
+            {{p.resultados.programa}}
+            &nbsp;
+            <b>
+              {{ info_array[:2]|join(' ') }}
+            </b>
+          </center>
+        </td>
+        
+        <td
+        data-toggle="tooltip"
+        data-html="true"
+        data-placement="bottom"
+        style="cursor: pointer"
+        title="<i>{{p.resultados.clasificador}}</i><br><b>{{info_array[2:3][0]}}<b>">
+          <center>
+            {{ p.resultados.get('periodo_a_predecir') }}
+            
+          
+
+            <div hidden>
+              {{p.resultados.clasificador}}
+              {{p.nombre}}
+            </div>
+            
+          </center>
+        </td>
         
         <td>
           <center>
@@ -164,11 +172,8 @@
               >
               <i class="fas fa-search-plus"></i>
               </button>
-            </form>
-          </div>
-        </td>
-        <td>
-          <div class="row d-flex justify-content-center">       
+            </form>  
+            &nbsp;&nbsp;
             <!-- PREDECIR -->
             <form action="{{url_for('Analista.predecir')}}" method="POST">
               <input type="hidden" name="modelo" value="{{p}}" />

@@ -29,7 +29,8 @@ modelos_folder = f'{upload_folder}/modelos'
 @Analista.route('/modelos/', methods=['GET'])
 @login_required
 def modelos():
-    success, body = get_modelos()
+    modelo = request.args.get('modelo')
+    success, body = get_modelos(modelo)
 
     if not success:
         flash('Usuario aún no tiene modelos de deserción', 'warning')
@@ -63,7 +64,8 @@ def predecir():
 @Analista.route('/entrenamientos/', methods=['GET'])
 @login_required
 def entrenamientos():
-    success, body = get_modelos()
+    modelo = request.args.get('modelo')
+    success, body = get_modelos(modelo)
 
     if not success:
         flash('Usuario aún no tiene entrenamientos', 'info')
@@ -79,7 +81,8 @@ def entrenamientos():
 @Analista.route('/predicciones/', methods=['GET'])
 @login_required
 def predicciones():
-    success, body = get_modelos()
+    modelo = request.args.get('modelo')
+    success, body = get_modelos(modelo)
 
     if not success:
         flash('Usuario aún no tiene predicciones', 'info')
@@ -200,9 +203,14 @@ def get_periodos_programa(programa):
     return jsonify([])
 
 
-def get_modelos():
+def get_modelos(nombre=None, conjunto=None):
     user = session.get('user', {'correo': ''}).get('correo')
-    return get(f'ejecuciones/ejecutor/{user}')
+    endopoint = f'ejecuciones/ejecutor/{user}'
+    if nombre:
+        endopoint += f'?nombre={nombre}'
+    elif conjunto:
+        endopoint += f'?conjunto={conjunto}'
+    return get(endopoint)
 
 
 def formulario_entrenar():
