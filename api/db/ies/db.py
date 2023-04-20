@@ -16,7 +16,7 @@ _password = os.getenv('CLI_DB_PASSWORD')
 
 ies_name = os.getenv('CLI_IES_NAME')
 
-str_conn = f'mssql+pyodbc://{_user}:{_password}@{_host}:1433/{_db}?driver=ODBC+Driver+17+for+SQL+SERVER'
+str_conn = f'mssql+pyodbc://{_user}:{_password}@{_host}:1433/{_db}?driver=ODBC+Driver+17+for+SQL+SERVER&timeout=45'
 
 conn_fail_msg = f'Conexión caida BD Institución!! (SQL Server - {ies_name})'
 
@@ -31,17 +31,18 @@ def log_error(e):
 def validate_connection(f):
     @wraps(f)
     def decorated_function(self, *args, **kwargs):
-        if not(self.cnx):
+        if not self.cnx:
             self.connect()
             raise Exception(conn_fail_msg)
-        else:
-            try:
-                return f(self, *args, **kwargs)
-            except Exception as e:
-                self.close_connection()
-                log_error(e)
-                self.connect()
-                raise Exception(conn_fail_msg)
+
+        try:
+            return f(self, *args, **kwargs)
+        except Exception as e:
+            self.close_connection()
+            log_error(e)
+            self.connect()
+            raise Exception(conn_fail_msg)
+
     return decorated_function
 
 
