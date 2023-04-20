@@ -4,30 +4,26 @@ import logging
 import warnings
 import pandas as pd
 from flask import flash
-import utils.constants as CONSTANTS
-# Algoritmos comunes para clasificación
-# Apoyo para la validación cruzada
-from sklearn import (
-    svm,
-    tree,
-    linear_model,
-    neighbors,
-    naive_bayes,
-    ensemble,
-    discriminant_analysis,
-    model_selection
+from sklearn import model_selection
+from utils.constants import (
+    AML,
+    col_preparadas,
+    columnas_eliminar_nulos,
+    columnas_eliminar_1,
+    columnas_eliminar_1_anteriores,
+    columnas_eliminar_2,
+    columnas_eliminar_2_anteriores,
+    condiciones
 )
 
 
-# TODO NEW! version 2 v2.0.0
 modelos_folder = os.getcwd()+'/uploads/modelos'
-
 error_logger = logging.getLogger('error_logger')
 
 ############################################################################################################# VERIFICACION DE DATOS CONJUNTO ##############################################################################################################
 
 
-def verificar_data(data, periodoInicial, periodoFinal, programa):
+def verify_data(data, periodoInicial, periodoFinal, programa):
     columnas = list(condiciones.keys())
 
     # Verificar si conjunto tiene columnas en str y la primera fila
@@ -48,7 +44,7 @@ def verificar_data(data, periodoInicial, periodoFinal, programa):
         return False, 'El conjunto ingresado tiene mas columnas de las requeridas', None, periodoInicial
     # Verificar si los tipos de datos de colunma son correctos
     try:
-        data_verificada = asignar_tipos(data)
+        data_verificada = assign_types(data)
     except Exception as e:
         error_logger.error(e)
         return False, 'El conjunto ingresado no tiene los tipos de dato por columna requeridos', None, periodoInicial
@@ -71,7 +67,7 @@ def verificar_data(data, periodoInicial, periodoFinal, programa):
 
 
 ################################################################################################################ PREPARACION DE DATOS DE UN CONJUNTO ##############################################################################################################
-def preparar_data(data):
+def prepare_data(data):
     # Condiciones Precisas
     condiciones = [
         ('jornada', 'DIURNA'),
@@ -98,19 +94,19 @@ def preparar_data(data):
         yes_value, no_value = cond[2], cond[3]
         columna, criterios = cond[0], cond[1]
 
-        def func(row):
+        def func1(row):
             return yes_value if any(
                 c.lower() in row[columna].lower() for c in criterios
             ) else no_value
-        data[columna] = data.apply(func, axis=1)
+        data[columna] = data.apply(func1, axis=1)
 
     # Condiciones Especiales
-    def func(row):
+    def func2(row):
         return 0 if (
             row['etnia'] == 'NO APLICA' or
             row['etnia'] == None
         ) else 1
-    data['etnia'] = data.apply(func, axis=1)
+    data['etnia'] = data.apply(func2, axis=1)
 
     return data
 
@@ -118,26 +114,30 @@ def preparar_data(data):
 ############################################################################################################## EJECUCION DE MODELO CON UN CONJUNTO ##############################################################################################################
 
 
-def eliminacion(data, periodo_a_predecir=None, predicir=False,):
-
+def elimination(data, periodo_a_predecir=None, predicir=False,):
     warnings.filterwarnings('ignore')
+
+    ''' FASE 2 '''
+    x = data.groupby('semestre')['edad'].mean()
+    for indice_fila, fila in data.loc[data.edad.isnull()].iterrows():
+        data.loc[indice_fila, 'edad'] = x[fila['semestre']]
+
+    # Elminar desercíon temprana
+    # data = data.query('semestre != 1 & promedio_acumulado > 1')
 
     ''' FASE 1 '''
     if predicir:
         data_a_predecir = data
     else:
         periodo_a_predecir = data['registro'].max()
-
         data_a_predecir = data[data['registro'] >= periodo_a_predecir]
-        # data = data[data['semestre']>1]
+        data = data[data['semestre'] > 1]
         data = data[data['registro'] < periodo_a_predecir]
 
     try:
-        data = data.drop(CONSTANTS.columnas_eliminar_1, axis=1)
+        data = data.drop(columnas_eliminar_1, axis=1)
     except Exception as e:
-        data = data.drop(CONSTANTS.columnas_eliminar_1_anteriores, axis=1)
-
-    columnas_eliminar_nulos = CONSTANTS.columnas_eliminar_nulos
+        data = data.drop(columnas_eliminar_1_anteriores, axis=1)
 
     data.dropna(subset=columnas_eliminar_nulos, how='any', inplace=True)
     data_a_predecir.dropna(
@@ -146,17 +146,11 @@ def eliminacion(data, periodo_a_predecir=None, predicir=False,):
         inplace=True
     )
 
-    ''' FASE 2 '''
-    x = data.groupby('semestre')['edad'].mean()
-
-    for indice_fila, fila in data.loc[data.edad.isnull()].iterrows():
-        data.loc[indice_fila, 'edad'] = x[fila['semestre']]
-
     ''' FASE 3 '''
     try:
-        data = data.drop(CONSTANTS.columnas_eliminar_2, axis=1)
+        data = data.drop(columnas_eliminar_2, axis=1)
     except Exception as e:
-        data = data.drop(CONSTANTS.columnas_eliminar_2_anteriores, axis=1)
+        data = data.drop(columnas_eliminar_2_anteriores, axis=1)
 
     if predicir:
         return data_a_predecir
@@ -164,55 +158,24 @@ def eliminacion(data, periodo_a_predecir=None, predicir=False,):
     return data, data_a_predecir, periodo_a_predecir
 
 
-def ejecutar_modelo(data, conjunto=''):
+def execute_model(data, conjunto=''):
+    basic_info = {
+        'idprograma': int(data['idprograma'][0]),
+        'programa': str(data['programa'][0]),
+        'idfacultad': int(data['idfacultad'][0]),
+        'facultad': str(data['facultad'][0]),
+        'tipo': 'Entrenamiento',
+    }
 
-    idprograma = int(data['idprograma'][0])
-    nombre_programa = str(data['programa'][0])
+    # Eliminacion depuracion de columnas 
+    data, data_a_predecir, periodo_a_predecir = elimination(data)
 
-    idfacultad = int(data['idfacultad'][0])
-    nombre_facultad = str(data['facultad'][0])
-
-    data, data_a_predecir, periodo_a_predecir = eliminacion(data)
+    basic_info['periodo_a_predecir_mas_1'] = f'{periodo_a_predecir} + 1'
 
     if len(data_a_predecir) <= 0:
         return False, 'No hay suficientes datos en el periodo final, revisa el conjunto.'
 
     ''' FASE 1 '''
-    # Algoritmos de Machine Learning (AML)
-    AML = [
-        # Métodos Combinados
-        ensemble.AdaBoostClassifier(),
-        ensemble.BaggingClassifier(),
-        ensemble.ExtraTreesClassifier(),
-        ensemble.GradientBoostingClassifier(),
-        ensemble.RandomForestClassifier(),
-
-        # Modelo Lineal Generalizado (GLM)
-        linear_model.LogisticRegressionCV(),
-        linear_model.PassiveAggressiveClassifier(),
-        linear_model.RidgeClassifierCV(),
-        linear_model.SGDClassifier(),
-        linear_model.Perceptron(),
-
-        # Navies Bayes
-        naive_bayes.BernoulliNB(),
-        naive_bayes.GaussianNB(),
-
-        # K-Nearest Neighbor
-        neighbors.KNeighborsClassifier(),
-
-        # Máquina de Vectores de Soporte (SVM)
-        svm.SVC(probability=True),
-        svm.LinearSVC(),
-
-        # Árboles de Decisión
-        tree.DecisionTreeClassifier(),
-        tree.ExtraTreeClassifier(),
-
-        # Análisis Discriminante (Discriminant Analysis)
-        discriminant_analysis.LinearDiscriminantAnalysis(),
-        discriminant_analysis.QuadraticDiscriminantAnalysis(),
-    ]
 
     cv_split = model_selection.ShuffleSplit(
         n_splits=10, test_size=.3, train_size=.6, random_state=0
@@ -225,15 +188,11 @@ def ejecutar_modelo(data, conjunto=''):
                    'Tiempo'
                    ]
     AML_compare = pd.DataFrame(columns=AML_columns)
-
-    col_preparadas = CONSTANTS.col_preparadas
-
     Target = ['desertor']
     AML_predict = data[Target]
-
     row_index = 0
-    for alg in AML:
 
+    for alg in AML:
         AML_nombre = alg.__class__.__name__
         AML_compare.loc[row_index, 'Nombre'] = AML_nombre
         AML_compare.loc[row_index, 'Parametros'] = str(alg.get_params())
@@ -255,146 +214,121 @@ def ejecutar_modelo(data, conjunto=''):
     AML_compare.sort_values(
         by=['Precision Media de Prueba'], ascending=False, inplace=True)
 
-    ''' FASE 2 '''
-    x = data_a_predecir.groupby('semestre')['edad'].mean()
-    for indice_fila, fila in data_a_predecir.loc[data_a_predecir.edad.isnull()].iterrows():
-        data_a_predecir.loc[indice_fila, 'edad'] = x[fila['semestre']]
-
-    ''' FASE 2 '''
     AML_best = AML_compare.head(1)
     mejor_clasificador = AML_best['objeto'].tolist()[0]
 
-    # TODO NEW! version 2 v2.0.0
-    guardar_clasificador(mejor_clasificador, conjunto)
+    # Guardar clasificador
+    save_classifire(mejor_clasificador, conjunto)
 
-    predc_sem_act = data_a_predecir[[
-        'documento', 'nombre_completo', 'desertor', 'idprograma', 'idestado']]
+    # Usar mejor clasificador para predecir
+    result = predict_classifier(
+        data_a_predecir, periodo_a_predecir, mejor_clasificador)
 
-    predc_sem_act['prediccion'] = mejor_clasificador.predict(
-        data_a_predecir[col_preparadas])
-
-    # TODO filtro de idestado
-    potenciales_desertores = predc_sem_act.query('prediccion==1 & desertor!=1').drop_duplicates(
-        subset=['documento'],
-        keep='first'
-    ).reset_index()
-    potenciales_desertores_matriculados = potenciales_desertores.query(
-        'idestado==6')
-
-    # Setear resultados para insertar en la BD
-    potenciales_desertores['semestre_prediccion'] = periodo_a_predecir
-
-    resultados_desertores = potenciales_desertores
-
-    ''' FASE 3 '''
-    pd.crosstab(predc_sem_act.prediccion, predc_sem_act.desertor, margins=True)
-    matriz_confusion = pd.crosstab(
-        predc_sem_act.prediccion,
-        predc_sem_act.desertor,
-        margins=True
-    )
-
-    total_desertores = len(potenciales_desertores.index)
-    total_estudiantes_analizados = len(predc_sem_act['documento'].unique())
-
-    potenciales_desertores.drop(['index'], axis=1, inplace=True)
-
-    periodo_a_predecir_mas_1 = f'{periodo_a_predecir} + 1'
     precision_modelo = AML_best['Precision Media de Prueba'].tolist()[0] * 100
-    desercion_prevista = int(total_desertores) / \
-        int(total_estudiantes_analizados)
 
     resultados = {
-        'idprograma': idprograma,
-        'programa': nombre_programa,
-        'idfacultad': idfacultad,
-        'tipo': 'Entrenamiento',
-        'facultad': nombre_facultad,
-        'periodo_a_predecir': periodo_a_predecir_mas_1,
-        'desertores': potenciales_desertores,
-        'estudiantes_analizados': int(total_estudiantes_analizados),
-        'desercion_prevista': float(round(desercion_prevista, 2)),
+        **basic_info,
         'clasificador': str(AML_best['Nombre'].tolist()[0]),
         'precision': float(round(precision_modelo, 2)),
-        'periodo_anterior': str(periodo_a_predecir),
-        'total_potenciales_desertores': int(total_desertores),
-        'total_desertores':  str(len(data_a_predecir[data_a_predecir['desertor'] == 1])),
-        'total_desertores_matriculados':  str(len(potenciales_desertores_matriculados)),
+        'periodo_anterior': int(periodo_a_predecir),
+        'desertores': result.get('desertores'),
+        'periodo_a_predecir': int(periodo_a_predecir),
+        'estudiantes_analizados': result.get('total_analizados'),
+        'desercion_prevista': result.get('desercion'),
+        'total_desertores_reportados':  int(len(data_a_predecir[data_a_predecir['desertor'] == 1])),
+        'total_potenciales_desertores': result.get('total'),
+        'total_desertores_matriculados': result.get('matriculados'),
     }
 
-    # Reasignar el tipo de la columna documento
-    resultados_desertores['documento'] = resultados_desertores['documento'].astype(
-        str, copy=False)
-    resultados_desertores = resultados_desertores[[
-        'documento', 'nombre_completo', 'desertor', 'prediccion', 'semestre_prediccion', 'idprograma'
-    ]]
-
-    return resultados, resultados_desertores
+    return resultados, result.get('resultado')
 
 
 # TODO NEW! version 2 v2.0.0
-def predecir(data_a_predecir, periodo_a_predecir, basic_info):
-    if len(data_a_predecir) < 5:
+def predict(data_a_predecir, periodo_a_predecir, basic_info):
+    if len(data_a_predecir) < 3:
         raise Exception(
-            f'Hay muy pocos registros para el periodo {periodo_a_predecir} (menos de 5)'
+            f'Hay muy pocos registros para el periodo {periodo_a_predecir} (menos de 3)'
         )
 
-    # Eliminacion y Relleno
-    data_a_predecir = eliminacion(data_a_predecir, periodo_a_predecir, True)
-    x = data_a_predecir.groupby('semestre')['edad'].mean()
-    for indice_fila, fila in data_a_predecir.loc[data_a_predecir.edad.isnull()].iterrows():
-        data_a_predecir.loc[indice_fila, 'edad'] = x[fila['semestre']]
+    # Eliminacion depuracion de columnas 
+    data_a_predecir = elimination(data_a_predecir, periodo_a_predecir, True)
 
+    # Obtener el clasificador como archivo local
     nombre_modelo = basic_info.get('modelo')
-    mejor_clasificador = cargar_clasificador(nombre_modelo)
-    col_preparadas = CONSTANTS.col_preparadas
+    mejor_clasificador = load_classifer(nombre_modelo)
 
-    # data_a_predecir.to_excel('data.xlsx')
+    # Predecir
+    result = predict_classifier(
+        data_a_predecir, periodo_a_predecir, mejor_clasificador
+    )
 
+    resultados = {
+        **basic_info,
+        'tipo': 'Prediccion',
+        'desertores': result.get('desertores'),
+        'periodo_a_predecir': int(periodo_a_predecir),
+        'estudiantes_analizados': result.get('total_analizados'),
+        'desercion_prevista': result.get('desercion'),
+        'total_desertores': result.get('total'),
+        'total_desertores_matriculados': result.get('matriculados'),
+        'clasificador': str(mejor_clasificador.__class__.__name__),
+    }
+
+    return resultados, result.get('resultado')
+
+
+def predict_classifier(data_a_predecir, periodo_a_predecir, mejor_clasificador):
     predc_sem_act = data_a_predecir[
-        ['documento', 'nombre_completo', 'desertor', 'idprograma', 'idestado']
+        ['semestre', 'documento', 'nombre_completo', 'desertor',
+            'idprograma', 'idestado', 'promedio_acumulado']
     ]
 
     predc_sem_act['prediccion'] = mejor_clasificador.predict(
         data_a_predecir[col_preparadas]
     )
 
-    # TODO filtro de idestado
-    potenciales_desertores = predc_sem_act.query('prediccion==1 & desertor!=1').drop_duplicates(
+    potenciales_desertores = predc_sem_act.query('prediccion == 1 & desertor != 1').drop_duplicates(
         subset=['documento'],
         keep='first'
     ).reset_index()
+
+    # # Elminar desercíon temprana
+    potenciales_desertores = potenciales_desertores.query(
+        'semestre != 1 & promedio_acumulado > 1'
+    )
+
+    # TODO filtro de idestado
+    # Elminar no matriculados
     potenciales_desertores_matriculados = potenciales_desertores.query(
         'idestado==6')
 
+    # Re asignar tipos
+    potenciales_desertores['semestre'] = potenciales_desertores['semestre'].astype(
+        int, copy=False
+    )
+    potenciales_desertores['documento'] = potenciales_desertores['documento'].astype(
+        str, copy=False
+    )
+
     # Setear resultados para insertar en la BD
     potenciales_desertores['semestre_prediccion'] = periodo_a_predecir
+
     resultados_desertores = potenciales_desertores
 
     ''' FASE 3 '''
     pd.crosstab(predc_sem_act.prediccion, predc_sem_act.desertor, margins=True)
+
     matriz_confusion = pd.crosstab(
         predc_sem_act.prediccion, predc_sem_act.desertor, margins=True
     )
 
     total_desertores = len(potenciales_desertores.index)
     total_estudiantes_analizados = len(predc_sem_act['documento'].unique())
+
     desercion_prevista = int(total_desertores) / \
         int(total_estudiantes_analizados)
 
     potenciales_desertores.drop(['index'], axis=1, inplace=True)
-
-    resultados = {
-        **basic_info,
-        'tipo': 'Prediccion',
-        'desertores': potenciales_desertores,
-        'periodo_a_predecir': periodo_a_predecir,
-        'estudiantes_analizados': int(total_estudiantes_analizados),
-        'desercion_prevista': float(round(desercion_prevista, 2)),
-        'clasificador': str(mejor_clasificador.__class__.__name__),
-        'total_desertores': int(total_desertores),
-        'total_desertores_matriculados':  str(len(potenciales_desertores_matriculados)),
-    }
 
     # Reasignar el tipo de la columna documento
     resultados_desertores['documento'] = resultados_desertores['documento'].astype(
@@ -403,11 +337,17 @@ def predecir(data_a_predecir, periodo_a_predecir, basic_info):
         'documento', 'nombre_completo', 'desertor', 'prediccion', 'semestre_prediccion', 'idprograma'
     ]]
 
-    return resultados, resultados_desertores
+    return {
+        'resultado': resultados_desertores,
+        'desertores': potenciales_desertores,
+        'matriculados': int(len(potenciales_desertores_matriculados)),
+        'total': int(total_desertores),
+        'total_analizados': int(total_estudiantes_analizados),
+        'desercion': float(round(desercion_prevista, 2))
+    }
 
 
-# TODO NEW! version 2 v2.0.0
-def guardar_clasificador(mejor_clasificador, conjunto=''):
+def save_classifire(mejor_clasificador, conjunto=''):
     clf_file = f'{modelos_folder}/{conjunto}.pkl'
     with open(clf_file, 'wb') as f:
         pickle.dump(mejor_clasificador, f)
@@ -415,8 +355,7 @@ def guardar_clasificador(mejor_clasificador, conjunto=''):
         f'{modelos_folder}/{conjunto}.sav', 'wb'))
 
 
-# TODO NEW! version 2 v2.0.0
-def cargar_clasificador(conjunto):
+def load_classifer(conjunto):
     clf_file = f'{modelos_folder}/{conjunto}.pkl'
     with open(clf_file, 'rb') as f:
         clf = pickle.load(f)
@@ -426,19 +365,10 @@ def cargar_clasificador(conjunto):
 
 ############################################################################################################### FUNCION DE ASIGNACION DE TIPOS DE DATOS CORRECTOS ###########################################################################################################################################
 
-
-condiciones = CONSTANTS.condiciones
-
-
-def asignar_tipos(data):
-    # # Cambiar valores NaN por None
-    # data.replace([np.inf, -np.inf], None, inplace=True)
-    # data.replace({np.nan: None}, inplace=True)
-
+def assign_types(data):
     # Asignar tipos de datos en cada columna
     for key, value in condiciones.items():
         # Obtener los valores de cada columna que no sean nulos
         # y asignarle el tipo requerido para la columna
         data[key][data[key].notna()] = data[key][data[key].notna()].astype(value)
-
     return data
