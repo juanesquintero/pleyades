@@ -2,14 +2,15 @@
     <!-- Flash Messages -->
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
-        <div class="py-2 w-100">    
+        <div class="p-0 m-0 w-100">    
             {% for category, message in messages %}
-                {% if category != 'http' %}
-                    <div class="alert alert-{{ category }} alert-dismissible fade show itemsali" role="alert">
-                        {{ message | safe }}
-                        <!-- <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> -->
-                    </div>
-                {% endif %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show itemsali py-2 px-3 m-0 mb-3" role="alert">
+                    {{ message | safe }}
+                    <button type="button" class="close my-0 py-1" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true" class="fa fa-times"></span>
+                    </button>
+                </div>
+                
             {% endfor %}
         </div>
         {% endif %}
