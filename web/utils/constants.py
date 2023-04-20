@@ -1,3 +1,43 @@
+# Algoritmos comunes para clasificación
+# Apoyo para la validación cruzada
+from sklearn import svm, tree, linear_model, neighbors, naive_bayes, ensemble, discriminant_analysis
+
+# Algoritmos de Machine Learning (AML)
+AML = [
+    # Métodos Combinados
+    ensemble.AdaBoostClassifier(),
+    ensemble.BaggingClassifier(),
+    ensemble.ExtraTreesClassifier(),
+    ensemble.GradientBoostingClassifier(),
+    ensemble.RandomForestClassifier(),
+
+    # Modelo Lineal Generalizado (GLM)
+    linear_model.LogisticRegressionCV(),
+    linear_model.PassiveAggressiveClassifier(),
+    linear_model.RidgeClassifierCV(),
+    linear_model.SGDClassifier(),
+    linear_model.Perceptron(),
+
+    # Navies Bayes
+    naive_bayes.BernoulliNB(),
+    naive_bayes.GaussianNB(),
+
+    # K-Nearest Neighbor
+    neighbors.KNeighborsClassifier(),
+
+    # Máquina de Vectores de Soporte (SVM)
+    svm.SVC(probability=True),
+    svm.LinearSVC(),
+
+    # Árboles de Decisión
+    tree.DecisionTreeClassifier(),
+    tree.ExtraTreeClassifier(),
+
+    # Análisis Discriminante (Discriminant Analysis)
+    discriminant_analysis.LinearDiscriminantAnalysis(),
+    discriminant_analysis.QuadraticDiscriminantAnalysis(),
+]
+
 colores = [
     'rgb(30, 75, 131)', 
     'rgb(25, 95, 201)', 
@@ -34,6 +74,7 @@ columnas_eliminar_1_anteriores = [
     'quimica',
     'razonamiento_cuantitativo',
     'sociales_y_ciudadanas',
+    'promedio_semestre',
     'programa',
     'tipo_programa',
     'idfacultad',
@@ -68,6 +109,7 @@ columnas_eliminar_1 = [
     'quimica',
     'razonamiento_cuantitativo',
     'sociales_y_ciudadanas',
+    'promedio_semestre',
     'programa',
     'tipo_programa',
     'idfacultad',
@@ -86,7 +128,7 @@ columnas_eliminar_1 = [
 ]
 
 columnas_eliminar_nulos = [ 'semestre', 'jornada', 'genero', 'estado_civil', 'lugar_residencia_sede', 'etnia', 'victima',
-                            'pertenece_grupo_vulnerable', 'promedio_acumulado','promedio_semestre', 'creditos_programa',  
+                            'pertenece_grupo_vulnerable', 'promedio_acumulado', 'creditos_programa',  
                             'creditos_aprobados_sem', 'creditos_aprobados_acum','creditos_reprobados_sem', 'creditos_reprobados_acum',
                             'creditos_cancelados_sem', 'creditos_cancelados_acum', 'creditos_matriculados_sem','intersemestral','creditos_matriculados_acum'
                         ]
@@ -95,7 +137,7 @@ columnas_eliminar_2_anteriores = ['asignaturas_aprobadas_acum','asignaturas_repr
 columnas_eliminar_2 = ['asignaturas_aprobadas_acum','asignaturas_reprobadas_acum', 'asignaturas_programa', 'asignaturas_canceladas_sem','asignaturas_canceladas_acum',]
 
 col_preparadas = ['semestre', 'jornada', 'edad', 'genero', 'estado_civil', 'lugar_residencia_sede', 'etnia', 'victima',
-                    'pertenece_grupo_vulnerable', 'promedio_semestre', 'creditos_programa',  'creditos_aprobados_sem', 'creditos_aprobados_acum',
+                    'pertenece_grupo_vulnerable', 'creditos_programa',  'creditos_aprobados_sem', 'creditos_aprobados_acum',
                     'asignaturas_aprobadas_sem', 'creditos_reprobados_sem', 'creditos_reprobados_acum', 'asignaturas_reprobadas_sem',
                     'creditos_cancelados_sem', 'creditos_cancelados_acum', 'creditos_matriculados_sem', 'creditos_matriculados_acum',
                     'promedio_acumulado', 'intersemestral'
