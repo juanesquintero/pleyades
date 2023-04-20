@@ -51,7 +51,10 @@ class Usuario(db.Model, SerializerMixin):
         )
         if not row:
             return None
-        return row.one().to_dict()
+        try:
+            return row.one().to_dict()
+        except:
+            return None
 
     def insert(fields):
         return DTO.insert(Usuario, fields)
