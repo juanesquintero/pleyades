@@ -19,6 +19,9 @@ services:
       - ${PUBLIC_PORT}:80
     networks:
       - deploy-net
+    links:
+      - web:web
+      - api:api
     depends_on:
       - web
 
@@ -38,16 +41,14 @@ services:
       - FLASK_DEBUG=0
       - FLASK_APP=__init__:app
       - CLI_IES_NAME=${IES_CLIENT}
-      
     networks:
-      deploy-net:
-        aliases:
-          - web
-
+      - deploy-net
+    links:
+      - api:api
     command: gunicorn __init__:app --preload --bind 0.0.0.0:80 --workers 3 --timeout=90
     depends_on:
       - api
-  
+
   api:
     restart: always
     container_name: pleyades-api
@@ -65,9 +66,7 @@ services:
     volumes:
       - ./api:/app
     networks:
-      deploy-net:
-        aliases:
-          - api
+      - deploy-net
 
     command: gunicorn wsgi:app --bind 0.0.0.0:80 --workers 3 --timeout=90
 

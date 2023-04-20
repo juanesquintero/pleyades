@@ -22,5 +22,5 @@ def handle_500(e):
 
 @Error.app_errorhandler(Exception)
 def handle_exception(e):
-    error_logger.error('EXCEPTION: '+str(e), exc_info=True)
-    return render_template('utils/error.html', exception=True, mensaje=str(e)), 500
+    error_logger.error(f'EXCEPTION: {e}', exc_info=True)
+    return render_template('utils/error.html', exception=True, mensaje=str(e), status=404), 500
