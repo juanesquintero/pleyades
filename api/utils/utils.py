@@ -5,29 +5,33 @@ from decimal import Decimal
 
 error_logger = logging.getLogger('error_logger')
 
+
 def exception(op):
-    if isinstance(op, Exception): 
-        message, exception_info = 'EXCEPTION: {}'.format(op), traceback.format_exc()
+    if isinstance(op, Exception) or op is None:
+        message, exception_info = 'EXCEPTION: {}'.format(
+            op), traceback.format_exc()
         if exception_info:
-            message += '   ---->   {}'.format(exception_info) 
+            message += '   ---->   {}'.format(exception_info)
         error_logger.error(message, exc_info=True)
-        return {'error': 'Ha ocurrido un error en la ejecución del servidor, si es necesario contacte al Admin del sistema para verificar el error.'}, 500 
-    else:
-        return False
-        
+        return {'error': 'Ha ocurrido un error en la ejecución del servidor, si es necesario contacte al Admin del sistema para verificar el error.'}, 500
+    
+    return False
+
+
 def clean_exception(exp):
     ip_port = '[0-9]+(?:\.[0-9]+){3}(:[0-9]+)?'
-    error = re.sub(ip_port,'',str(exp))
-    
-    words = ['MYSQL', 'SQL', 'MARIADB', 'MICROSOFT','SQL SERVER','ODBC']
+    error = re.sub(ip_port, '', str(exp))
+
+    words = ['MYSQL', 'SQL', 'MARIADB', 'MICROSOFT', 'SQL SERVER', 'ODBC']
     for word in words:
-        error = re.sub(word+'(?i)','',error)
-    
-    symbols = ['[',']','"']    
+        error = re.sub(word+'(?i)', '', error)
+
+    symbols = ['[', ']', '"']
     for symbol in symbols:
-        error = error.replace(symbol,'')
+        error = error.replace(symbol, '')
 
     return error
+
 
 def decimal_format(obj: dict):
     for k, v in obj.items():
@@ -35,10 +39,11 @@ def decimal_format(obj: dict):
             obj[k] = int(v)
     return obj
 
+
 def _format(query):
-    if isinstance(query , list):
+    if isinstance(query, list):
         for obj in query:
-            if isinstance(obj, dict):   
+            if isinstance(obj, dict):
                 obj = decimal_format(obj)
             else:
                 break

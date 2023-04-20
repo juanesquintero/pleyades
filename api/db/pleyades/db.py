@@ -48,8 +48,10 @@ class Usuario(db.Model, SerializerMixin):
         row = Usuario.query.filter(
             Usuario.correo == correo,
             Usuario.clave == clave
-        ).one()
-        return row.to_dict()
+        )
+        if not row:
+            return None
+        return row.one().to_dict()
 
     def insert(fields):
         return DTO.insert(Usuario, fields)
