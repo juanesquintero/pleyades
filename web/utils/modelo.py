@@ -123,10 +123,11 @@ def elimination(data, periodo_a_predecir=None, predicir=False,):
         data.loc[indice_fila, 'edad'] = x[fila['semestre']]
 
     # Elminar desercíon temprana
-    data = data.query('semestre > 1 & promedio_acumulado > 2')
+    data = data.query('semestre != 1 & promedio_acumulado > 0.5')
 
     ''' FASE 1 '''
     if predicir:
+        data = data.query(f'idestado == 6 & registro == {periodo_a_predecir}')
         data_a_predecir = data
     else:
         periodo_a_predecir = data['registro'].max()
@@ -285,20 +286,20 @@ def predict_classifier(data_a_predecir, periodo_a_predecir, mejor_clasificador):
         data_a_predecir[col_preparadas]
     )
 
-    potenciales_desertores = predc_sem_act.query('prediccion == 1 & desertor != 1').drop_duplicates(
+    potenciales_desertores = predc_sem_act.query('prediccion == 1 & desertor == 0').drop_duplicates(
         subset=['documento'],
         keep='first'
     ).reset_index()
 
-    # # Elminar desercíon temprana
+    # Elminar desercíon temprana
     potenciales_desertores = potenciales_desertores.query(
-        'semestre > 1 & promedio_acumulado > 2'
+        'semestre != 1 & promedio_acumulado > 0.5'
     )
 
     # TODO filtro de idestado
     # Elminar no matriculados
     potenciales_desertores = potenciales_desertores.query(
-        'idestado == 6'
+        f'idestado == 6 & registro == {periodo_a_predecir}'
     )
 
     # Re asignar tipos
