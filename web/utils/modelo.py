@@ -380,8 +380,8 @@ def predict_classifier(data_a_predecir, periodo_a_predecir, mejor_clasificador):
     total_desertores, desercion_prevista = calculate_desercion(total_estudiantes_analizados, potenciales_desertores)
 
     # Filtrar bajo promedio por alta deserción
-    if desercion_prevista > 0.20:
-        potenciales_desertores = potenciales_desertores.query('promedio_acumulado < 3.7')
+    if desercion_prevista > 0.25:
+        potenciales_desertores = potenciales_desertores.query('promedio_acumulado < 3.9')
         total_desertores, desercion_prevista = calculate_desercion(total_estudiantes_analizados, potenciales_desertores)
 
     resultados_desertores = potenciales_desertores
