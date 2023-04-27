@@ -153,7 +153,7 @@ def obtener_nombre_conjunto(conjunto):
     if status_n:
         return body_n['nombre'], body_n['numero']
 
-    error_logger.error('API ERROR: {} {}'.format(status_n, body_n))
+    error_logger.error(f'API ERROR: {status_n} {body_n}')
     return False, render_template('utils/mensaje.html', mensaje='No se pudo obtener el nombre del conjunto', submensaje=body_n)
 
 
@@ -163,7 +163,7 @@ def obtener_nombre_ejecucion(conjunto):
     if status_n:
         return body_n['nombre'], body_n['numero']
 
-    error_logger.error('API ERROR: {} {}'.format(status_n, body_n))
+    error_logger.error(f'API ERROR: {status_n} {body_n}')
     raise Exception('No se pudo obtener el nombre de la ejecución')
 
 

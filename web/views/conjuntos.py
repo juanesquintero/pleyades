@@ -5,7 +5,7 @@ import json
 import logging
 import utils.tableros.data_ies as DataIES
 
-from flask import request, session, Blueprint, render_template, redirect, send_file, url_for, jsonify
+from flask import request, session, Blueprint, render_template, redirect, send_file, url_for, jsonify, flash
 from dotenv import load_dotenv
 from ast import literal_eval
 from googletrans import Translator
@@ -458,6 +458,7 @@ def ejecutar(conjunto=None):
             return pagina_error
 
     else:
+        flash('El modelo detectó 0 desertores, Deserción 0%, porfavor escoja un periodo final diferente', 'danger')
         resultados_modelo.pop('desertores')
         estado_ejecucion = 'Fallida'
     # Guardar registro de ejecución en la BD

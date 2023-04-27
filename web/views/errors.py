@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, app, url_for
+from flask import Blueprint, render_template, app, url_for, flash, redirect
 import logging
 import os
 
@@ -22,5 +22,9 @@ def handle_500(e):
 
 @Error.app_errorhandler(Exception)
 def handle_exception(e):
+    if len(e.args) > 1 and e.args[1]:
+        flash(f'<b>{e.args[0]}</b>', 'danger')
+        return redirect(url_for('Analista.modelos'))
+
     error_logger.error(f'EXCEPTION: {e}', exc_info=True)
     return render_template('utils/error.html', exception=True, mensaje=str(e), status=404), 500

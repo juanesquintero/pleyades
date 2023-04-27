@@ -18,7 +18,8 @@ from utils.constants import (
 
 
 modelos_folder = os.getcwd()+'/uploads/modelos'
-error_logger = logging.getLogger('error_logger')
+
+model_logger = logging.getLogger('model_logger')
 
 ############################################################################################################# VERIFICACION DE DATOS CONJUNTO ##############################################################################################################
 
@@ -30,7 +31,7 @@ def verify_data(data, periodoInicial, periodoFinal, programa):
     try:
         data.columns = map(str.lower, data.columns)
     except Exception as e:
-        error_logger.error(e)
+        model_logger.error(e)
         return False, 'El conjunto no tiene columnas', None, periodoInicial
 
     # Verificar si hay registros
@@ -46,7 +47,7 @@ def verify_data(data, periodoInicial, periodoFinal, programa):
     try:
         data_verificada = assign_types(data)
     except Exception as e:
-        error_logger.error(e)
+        model_logger.error(e)
         return False, 'El conjunto ingresado no tiene los tipos de dato por columna requeridos', None, periodoInicial
     # Verificar si en conjunto posee mas de un  valor en la columna programa
     if not(len(set(data_verificada['programa'].tolist())) == 1):
@@ -113,51 +114,65 @@ def prepare_data(data):
 
 ############################################################################################################## EJECUCION DE MODELO CON UN CONJUNTO ##############################################################################################################
 
-def elimination(data, periodo_a_predecir=None, predicir=False,):
+def elimination(data):
     warnings.filterwarnings('ignore')
 
-    ''' FASE 2 '''
     x = data.groupby('semestre')['edad'].mean()
     for indice_fila, fila in data.loc[data.edad.isnull()].iterrows():
         data.loc[indice_fila, 'edad'] = x[fila['semestre']]
 
     # Elminar desercíon temprana
     data = data.query('semestre != 1 & promedio_acumulado > 0.5')
+ 
+    periodo_a_predecir = data['registro'].max()
+    
+    # Separar data a predecir y a entrenar
+    data_a_predecir = data.query(f'registro >= {periodo_a_predecir}')
+    data = data.query(f'registro < {periodo_a_predecir}')
 
-    ''' FASE 1 '''
-    if predicir:
-        data = data.query(f'idestado == 6 & registro == {periodo_a_predecir}')
-        data_a_predecir = data
-    else:
-        periodo_a_predecir = data['registro'].max()
-        periodo_anterior = data['registro'].nlargest(2).iloc[-1]
-        data_a_predecir = data[data['registro'] >= periodo_a_predecir]
-        # Desercion temprana
-        data = data[data['semestre'] > 1]
-        # data = data[data['registro'] < periodo_a_predecir]
+    # Insertar el 70% de la data a predecir en entrenamiento
+    n_rows = int(data_a_predecir.shape[0] * 0.75)
+    data_proxima = data_a_predecir.iloc[:n_rows]
+    data = data.append(data_proxima)
 
+    # Eliminar columnas inecesarias y nulos 
+    data = drop_columns(data)
+    data_a_predecir = drop_nulls(data_a_predecir)
+
+    return data, data_a_predecir, periodo_a_predecir
+
+def elimination_predict(data):
+    warnings.filterwarnings('ignore')
+
+    # Rellenar la edad con promedio por semestre(nivel)
+    x = data.groupby('semestre')['edad'].mean()
+    for indice_fila, fila in data.loc[data.edad.isnull()].iterrows():
+        data.loc[indice_fila, 'edad'] = x[fila['semestre']]
+    
+    # Elminar desercíon temprana
+    # data = data.query('semestre != 1 & promedio_acumulado > 0.5')
+
+    return drop_nulls(data)
+
+
+def drop_columns(data):
     try:
         data = data.drop(columnas_eliminar_1, axis=1)
     except Exception as e:
         data = data.drop(columnas_eliminar_1_anteriores, axis=1)
 
-    data.dropna(subset=columnas_eliminar_nulos, how='any', inplace=True)
-    data_a_predecir.dropna(
-        subset=columnas_eliminar_nulos,
-        how='any',
-        inplace=True
-    )
+    data = drop_nulls(data)
 
-    ''' FASE 3 '''
     try:
         data = data.drop(columnas_eliminar_2, axis=1)
     except Exception as e:
         data = data.drop(columnas_eliminar_2_anteriores, axis=1)
 
-    if predicir:
-        return data_a_predecir
+    return data
 
-    return data, data_a_predecir, periodo_a_predecir
+def drop_nulls(data):
+    data.dropna(subset=columnas_eliminar_nulos, how='any', inplace=True)
+    return data
 
 
 def execute_model(data, conjunto=''):
@@ -233,7 +248,7 @@ def execute_model(data, conjunto=''):
     # Guardar clasificador
     save_classifire(mejor_clasificador, conjunto)
 
-    # Usar mejor clasificador para predecir
+    # Usar mejor clasificador para prediction
     result = predict_classifier(
         data_a_predecir, periodo_a_predecir, mejor_clasificador
     )
@@ -260,11 +275,11 @@ def execute_model(data, conjunto=''):
 def predict(data_a_predecir, periodo_a_predecir, basic_info):
     if len(data_a_predecir) < 3:
         raise Exception(
-            f'Hay muy pocos registros para el periodo {periodo_a_predecir} (menos de 3)'
+            f'Hay muy pocos registros para el periodo {periodo_a_predecir} (menos de 3)', True
         )
 
     # Eliminacion depuracion de columnas
-    data_a_predecir = elimination(data_a_predecir, periodo_a_predecir, True)
+    data_a_predecir = elimination_predict(data_a_predecir)
 
     # Obtener el clasificador como archivo local
     nombre_modelo = basic_info.get('modelo')
@@ -297,25 +312,36 @@ def predict_classifier(data_a_predecir, periodo_a_predecir, mejor_clasificador):
         ]
     ]
 
-    predc_sem_act['prediccion'] = mejor_clasificador.predict(
-        data_a_predecir[col_preparadas]
-    )
+    if data_a_predecir.empty:
+        raise Exception('No se detectaron potenciales desertores! en esta predicción', True)
+
+    try:
+        predc_sem_act['prediccion'] = mejor_clasificador.predict(
+            data_a_predecir[col_preparadas]
+        )
+    except Exception as e:
+        model_logger.error(e)
+        raise Exception(
+            f'Ocurrió un error al ejecutar la predicción! por favor intente con otro periodo o modelo', True
+        )
 
     potenciales_desertores = predc_sem_act.query('prediccion == 1 & desertor == 0').drop_duplicates(
         subset=['documento'],
         keep='first'
     ).reset_index()
 
-    # Elminar desercíon temprana
-    potenciales_desertores = potenciales_desertores.query(
-        'semestre != 1 & promedio_acumulado > 0.5'
-    )
-
     # TODO filtro de idestado
     # Elminar no matriculados
     potenciales_desertores = potenciales_desertores.query(
-        f'idestado == 6 & registro == {periodo_a_predecir}'
+        f"idestado == 6 & registro == '{periodo_a_predecir}'"
     )
+
+    # Elminar desercíon temprana
+    no_desercion_temprana = potenciales_desertores.query(
+        'semestre != 1 & promedio_acumulado > 0.5'
+    )
+    if not no_desercion_temprana.empty:
+        potenciales_desertores = no_desercion_temprana
 
     potenciales_desertores = potenciales_desertores.drop('registro', axis=1)
 

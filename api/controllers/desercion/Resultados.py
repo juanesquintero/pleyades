@@ -35,14 +35,14 @@ def put_ultimo(semestre, programa):
 @jwt_required()
 def post_insertar_resultados():
     body = request.get_json()
-    if not validate_post_schema(body):
+    if not body or not validate_post_schema(body):
         return {'error': 'body invalido'}, 400
-    if not body:
-        return msg_error
     data = pd.DataFrame(body)
     data = data[
-        ['documento', 'nombre_completo', 'idprograma',
-            'prediccion', 'desertor', 'semestre_prediccion']
+        [
+            'documento', 'nombre_completo', 'idprograma',
+            'prediccion', 'desertor', 'semestre_prediccion'
+        ]
     ]
     result = db.multi_insert(data, tabla)
     ex = exception(result)
