@@ -101,10 +101,9 @@
               {% if 'desercion' in key %}
               
                 {% set deser = (value * 100)|float %}
-                {{ '%0.0f' % deser }} %
+                {{ '%0.1f' % deser }} %
 
-
-                {% if deser > 15 or  deser < 1 %}
+                {% if deser > 15 or  deser < 0.3 %}
                   <i
                     class="fa fa-solid fa-exclamation-triangle fa-lg text-danger border-dark"
                     data-toggle="tooltip"

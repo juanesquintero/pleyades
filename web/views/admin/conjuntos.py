@@ -115,16 +115,25 @@ def eliminar():
 def eliminar_todos():
     estado = dict(request.values).pop('estado')
     status, body = delete(f'conjuntos/todos/{estado}')
+
     if status:
-
         # Eliminar archivos relacionados en el servidor
-        for conjunto in body.get('data'):
-            exito, pagina_error = eliminar_archivo(
-                f'{upload_folder}/crudos/C {conjunto}.xls')
-            if not(exito):
-                return pagina_error
-
+        remove_all_files(f'{upload_folder}/{estado}')
         route = estado.replace(' ', '_')
         return redirect(url_for(f'ConjuntoAdmin.{route}'))
 
     return render_template('utils/mensaje.html', mensaje='No se pudo Eliminar los conjuntos', submensaje=body)
+
+
+def remove_all_files(folder_path):
+    file_to_keep = '.gitignore'
+    # Iterate over all files in the folder
+    if os.path.exists(folder_path):
+        for filename in os.listdir(folder_path):
+            file_path = os.path.join(folder_path, filename)
+            # Check if the file is not the one to keep
+            if filename != file_to_keep:
+                # Check if the path is a file (not a directory)
+                if os.path.isfile(file_path):
+                    # Delete the file
+                    os.remove(file_path)

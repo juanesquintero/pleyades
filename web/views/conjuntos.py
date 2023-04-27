@@ -166,6 +166,12 @@ def guardar(conjunto=None):
         conjunto = dict(request.values)
     # Preparar conjunto para la insercion
     del conjunto['facultad']
+
+    # TODO NEW! version 2 v2.0.0
+    session['periodo_cerrado'] = (conjunto.get('periodo_cerrado') == 'on')
+    if session.get('periodo_cerrado'):
+        del conjunto['periodo_cerrado']
+
     conjunto['estado'] = 'Crudos'
     conjunto['periodoInicial'] = int(conjunto['periodoInicial'])
     conjunto['periodoFinal'] = int(conjunto['periodoFinal'])

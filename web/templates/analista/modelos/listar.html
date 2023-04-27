@@ -94,7 +94,7 @@
           {% set proc = m.resultados.desercion_prevista * 100 %}
 
           <center>
-            {{ '%0.0f' % proc|float }}% {% if m.resultados.desercion_prevista >
+            ~ {{ '%0.0f' % proc|float }}% {% if m.resultados.desercion_prevista >
             0.15 %}
             <i
               class="fa fa-solid fa-exclamation-triangle fa-lg text-danger border-dark"

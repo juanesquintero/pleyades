@@ -26,7 +26,7 @@
         <th class="border-top-0">
           
         </th>
-        <th class="col-6 border-top-0">
+        <th class="col-5 border-top-0">
           <center><i>Programa</i></center>
         </th>
         <th class="col-2 border-top-0">
@@ -41,11 +41,6 @@
         </th>
 
         <th scope="col" class="col-1 border-top-0">
-          <!-- <center><i>Preparación</i></center> -->
-        <!-- </th>
-
-        <th scope="col" class="col-1 border-top-0"> -->
-          <!-- <center><i>Ejecución</i></center> -->
         </th>
       </tr>
     </thead>
@@ -144,13 +139,8 @@
                 </button>
               </form>
             </div>
-          <!-- </div>
-        </td>
-
-        <td>
-          <div class="row d-flex justify-content-center"> -->
             <!-- Ejecución-->
-            <div class="btn-group ml-2" role="group" aria-label="Basic example">
+            <div class="btn-group mx-1" role="group" aria-label="Basic example">
               <form
                 action="{{url_for('Resultado.ejecucion_detalle')}}"
                 method="POST"
@@ -169,6 +159,31 @@
                 </button>
               </form>
             </div>
+
+            
+            <!-- PREDECIR -->
+            <form action="{{url_for('Analista.predecir')}}" method="POST">
+              <input type="hidden" name="modelo" value="{{e}}" />
+              <button
+                type="submit"
+                data-toggle="tooltip"
+                data-html="true"
+                data-placement="bottom"
+                title="Predecir con este Modelo"
+                class="btn my-primary text-white border border-white btn-sm submit"
+                role="status"
+              >
+                <i class="fa fa-flask fa-lg" aria-hidden="true"></i>
+              </button>
+
+              <button
+                class="btn btn-outline-dark btn-sm btn-loading"
+                type="button"
+                style="display: none"
+              >
+                <i class="fas fa-spinner fa-spin fa-lg" aria-hidden="true"></i>
+              </button>
+            </form>
           </div>
         </td>
       </tr>

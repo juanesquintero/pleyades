@@ -135,7 +135,7 @@ def predecir_modelo():
 
     # Insertar los resultados
     if resultados_desertores.empty:
-        flash('No hay desertores para esta predicción', 'danger')
+        flash('No hay desertores para esta predicción', 'warning')
         return redirect(url_for('Analista.modelos'))
     else:
         resultados_insert = json.loads(

@@ -3,7 +3,7 @@ import pickle
 import logging
 import warnings
 import pandas as pd
-from flask import flash
+from flask import flash, session
 from sklearn import model_selection
 from utils.constants import (
     AML,
@@ -128,23 +128,31 @@ def elimination(data):
 
     # Elminar desercíon temprana
     data = data.query('semestre != 1 & promedio_acumulado > 0.5')
- 
+
     periodo_a_predecir = data['registro'].max()
-    
+
     # Separar data a predecir y a entrenar
     data_a_predecir = data.query(f"registro >= {periodo_a_predecir}")
     data = data.query(f'registro < {periodo_a_predecir}')
 
     # Insertar el N% de la data a predecir en entrenamiento
-    n_rows = int(data_a_predecir.shape[0] * 0.5)
+    periodo_cerrado = session.get('periodo_cerrado')
+    # 80% sin cerrar/ 10% cerrado
+    umbral = 0.85
+    if periodo_cerrado:
+        umbral = 0
+
+    n_rows = int(data_a_predecir.shape[0] * umbral)
     data_proxima = data_a_predecir.iloc[:n_rows]
+
     data = data.append(data_proxima)
 
-    # Eliminar columnas inecesarias y nulos 
+    # Eliminar columnas inecesarias y nulos
     data = drop_columns(data)
     data_a_predecir = drop_nulls(data_a_predecir)
 
     return data, data_a_predecir, periodo_a_predecir
+
 
 def elimination_predict(data):
     warnings.filterwarnings('ignore')
@@ -153,9 +161,9 @@ def elimination_predict(data):
     x = data.groupby('semestre')['edad'].mean()
     for indice_fila, fila in data.loc[data.edad.isnull()].iterrows():
         data.loc[indice_fila, 'edad'] = x[fila['semestre']]
-    
+
     # Elminar desercíon temprana
-    # data = data.query('semestre != 1 & promedio_acumulado > 0.5')
+    data = data.query('semestre != 1 & promedio_acumulado > 0.5')
 
     return drop_nulls(data)
 
@@ -174,6 +182,7 @@ def drop_columns(data):
         data = data.drop(columnas_eliminar_2_anteriores, axis=1)
 
     return data
+
 
 def drop_nulls(data):
     data.dropna(subset=columnas_eliminar_nulos, how='any', inplace=True)
@@ -280,7 +289,7 @@ def execute_model(data, conjunto=''):
 
 # TODO NEW! version 2 v2.0.0
 def predict(data_a_predecir, periodo_a_predecir, basic_info):
-    
+
     data_a_predecir['registro'] = data_a_predecir['registro'].astype(int)
 
     if len(data_a_predecir) < 3:
@@ -323,7 +332,8 @@ def predict_classifier(data_a_predecir, periodo_a_predecir, mejor_clasificador):
     ]
 
     if data_a_predecir.empty:
-        raise Exception('No se detectaron potenciales desertores! en esta predicción', True)
+        raise Exception(
+            'No se detectaron potenciales desertores! en esta predicción', True)
 
     try:
         predc_sem_act['prediccion'] = mejor_clasificador.predict(
@@ -334,7 +344,7 @@ def predict_classifier(data_a_predecir, periodo_a_predecir, mejor_clasificador):
         raise Exception(
             f'Ocurrió un error al ejecutar la predicción! por favor intente con otro periodo o modelo', True
         )
-
+    total_estudiantes_analizados = len(predc_sem_act['documento'].unique())
     potenciales_desertores = predc_sem_act.query('prediccion == 1 & desertor == 0').drop_duplicates(
         subset=['documento'],
         keep='first'
@@ -345,13 +355,6 @@ def predict_classifier(data_a_predecir, periodo_a_predecir, mejor_clasificador):
     potenciales_desertores = potenciales_desertores.query(
         f"idestado == 6 & registro == {periodo_a_predecir}"
     )
-
-    # Elminar desercíon temprana
-    no_desercion_temprana = potenciales_desertores.query(
-        'semestre != 1 & promedio_acumulado > 0.5'
-    )
-    if not no_desercion_temprana.empty:
-        potenciales_desertores = no_desercion_temprana
 
     potenciales_desertores = potenciales_desertores.drop('registro', axis=1)
 
@@ -366,6 +369,21 @@ def predict_classifier(data_a_predecir, periodo_a_predecir, mejor_clasificador):
     # Setear resultados para insertar en la BD
     potenciales_desertores['semestre_prediccion'] = periodo_a_predecir
 
+    # Elminar desercíon temprana
+    no_desercion_temprana = potenciales_desertores.query(
+        'semestre != 1 & promedio_acumulado > 0.5 & promedio_acumulado < 4.0'
+    )
+
+    if not no_desercion_temprana.empty:
+        potenciales_desertores = no_desercion_temprana
+
+    total_desertores, desercion_prevista = calculate_desercion(total_estudiantes_analizados, potenciales_desertores)
+
+    # Filtrar bajo promedio por alta deserción
+    if desercion_prevista > 0.20:
+        potenciales_desertores = potenciales_desertores.query('promedio_acumulado < 3.7')
+        total_desertores, desercion_prevista = calculate_desercion(total_estudiantes_analizados, potenciales_desertores)
+
     resultados_desertores = potenciales_desertores
 
     ''' FASE 3 '''
@@ -374,12 +392,6 @@ def predict_classifier(data_a_predecir, periodo_a_predecir, mejor_clasificador):
     matriz_confusion = pd.crosstab(
         predc_sem_act.prediccion, predc_sem_act.desertor, margins=True
     )
-
-    total_desertores = len(potenciales_desertores.index)
-    total_estudiantes_analizados = len(predc_sem_act['documento'].unique())
-
-    desercion_prevista = int(total_desertores) / \
-        int(total_estudiantes_analizados)
 
     potenciales_desertores.drop(['index'], axis=1, inplace=True)
 
@@ -395,8 +407,15 @@ def predict_classifier(data_a_predecir, periodo_a_predecir, mejor_clasificador):
         'desertores': potenciales_desertores,
         'total': int(total_desertores),
         'total_analizados': int(total_estudiantes_analizados),
-        'desercion': float(round(desercion_prevista, 2))
+        'desercion': float(round(desercion_prevista, 3))
     }
+
+def calculate_desercion(total_estudiantes, potenciales_desertores):
+    total_desertores = len(potenciales_desertores.index)
+    desercion_prevista = int(total_desertores) / \
+        int(total_estudiantes)
+        
+    return total_desertores,desercion_prevista
 
 
 def save_classifire(mejor_clasificador, conjunto=''):
