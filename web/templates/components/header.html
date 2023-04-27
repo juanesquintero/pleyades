@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="icon" type="image/vnd.microsoft.icon" href="{{url_for('static', filename='images/favicon.png')}}"
-        sizes="16x16">
+    <link
+      rel="icon"
+      type="image/vnd.microsoft.icon"
+      href="{{url_for('static', filename='images/favicon.png')}}"
+      sizes="16x16"
+    />
 
     <title>Pleyades Desertion Analytics</title>
 
@@ -29,139 +32,184 @@
         -->
 
     <!-- FRAMEWORKS FILES SOURCE  -->
-    <link rel="stylesheet" href="{{url_for('static', filename='dist/frameworks/bootstrap/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{url_for('static', filename='dist/frameworks/fontawesome/css/all.min.css')}}">
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='dist/frameworks/bootstrap/css/bootstrap.min.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='dist/frameworks/fontawesome/css/all.min.css')}}"
+    />
     <!-- Frameworks js -->
     <script src="{{url_for('static', filename='dist/frameworks/jquery-3.4.1.min.js')}}"></script>
     <script src="{{url_for('static', filename='dist/frameworks/popper.min.js')}}"></script>
     <script src="{{url_for('static', filename='dist/frameworks/bootstrap/js/bootstrap.min.js')}}"></script>
 
-
     <!-- Coustum css -->
-    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='dist/styles/main.css')}}">
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{url_for('static', filename='dist/styles/main.css')}}"
+    />
     <script>
-        function openModal() {
-            $('.submit').css('display', 'none')
-            $('.btn-loading').css('display', 'inline')
-            $('#myModal').modal({
-                keyboard: true,
-                backdrop: 'static'
-            })
-            $('#myModal').modal('show');
-        }
-        // Funcion para manejar el modal
-        function handleModal(mensaje, ruta) {
-            $('.submit').css('display', 'none')
-            $('.btn-loading').css('display', 'inline')
-            $('#myModal').modal({
-                keyboard: true,
-                backdrop: 'static'
-            })
-            $('#myModal').modal('show');
-            $(document).keydown(function (e) {
-                if (e.which == 27) {
-                    alert(mensaje)
-                    $('#myModal').modal('hide');
-                    e.preventDefault();
-                    window.location.href = ruta
-                }
-            });
-        }
-        
-        function goBack() {
-            $('#myModal').modal('hide');
-            window.history.back();
-        }
-    
-    </script>
-</head>
+      function openModal() {
+        $(".submit").css("display", "none");
+        $(".btn-loading").css("display", "inline");
+        $("#myModal").modal({
+          keyboard: true,
+          backdrop: "static",
+        });
+        $("#myModal").modal("show");
+      }
+      // Funcion para manejar el modal
+      function handleModal(mensaje, ruta) {
+        $(".submit").css("display", "none");
+        $(".btn-loading").css("display", "inline");
+        $("#myModal").modal({
+          keyboard: true,
+          backdrop: "static",
+        });
+        $("#myModal").modal("show");
+        $(document).keydown(function (e) {
+          if (e.which == 27) {
+            alert(mensaje);
+            $("#myModal").modal("hide");
+            e.preventDefault();
+            window.location.href = ruta;
+          }
+        });
+      }
 
-<header>
+      function goBack() {
+        $("#myModal").modal("hide");
+        $(".submit").css("display", "inline");
+        $(".btn-loading").css("display", "none");
+        console.log('1238612931239adasfsdfdsfsdf435k243jg');
+        window.history.back();
+      }
+    </script>
+  </head>
+
+  <header>
     <!-- Top Nav Bar  -->
     <nav class="navbar navbar-expand-md my-primary">
-        <a class="m-0 mr-2" href="{{url_for('inicio') }}" style="height:1%;">
-            <img src="{{url_for('static', filename='images/logo.png')}}" class="d-inline-block align-top" title="inicio"
-                style="height:40px;">
-        </a>
-        <div class="justify-content-start">
-            <h3 class="font-weight-bold text-white" style="margin-bottom: -5px; letter-spacing: 6px;">
-                PLEYADES
-            </h3>
-            <small class="text-white font-italic" style="letter-spacing: -0.5px;">PLataforma de Exploración Y Analítica
-                para la Desercion EStudiantil</small>
+      <a class="m-0 mr-2" href="{{url_for('inicio') }}" style="height: 1%">
+        <img
+          src="{{url_for('static', filename='images/logo.png')}}"
+          class="d-inline-block align-top"
+          title="inicio"
+          style="height: 40px"
+        />
+      </a>
+      <div class="justify-content-start">
+        <h3
+          class="font-weight-bold text-white"
+          style="margin-bottom: -5px; letter-spacing: 6px"
+        >
+          PLEYADES
+        </h3>
+        <small class="text-white font-italic" style="letter-spacing: -0.5px"
+          >PLataforma de Exploración Y Analítica para la Desercion
+          EStudiantil</small
+        >
+      </div>
+
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a
+              class="nav-link ml-5 border-bottom text-white my-primary"
+              href="{{url_for('inicio') }}"
+              >Inicio</a
+            >
+          </li>
+
+          <li class="nav-item">
+            <a
+              class="nav-link ml-2 border-bottom text-white my-primary"
+              href="{{url_for('contactanos')}}"
+              >Contáctanos</a
+            >
+          </li>
+        </ul>
+      </div>
+
+      <!-- User options-->
+      {% if session['user'] %}
+
+      <div class="dropdown">
+        <button
+          type="button"
+          class="btn btn-sm bg-white dropdown-toggle"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          {% if session['user']['rol'] == 'Admin' %}
+          <i class="fas fa-user-shield fa-fw fa-sm"></i>
+          {% else %}
+          <span class="fa fa-user-circle fa-fw fa-sm"></span>
+          {% endif %} &nbsp;
+          <span
+            >{{session.get('user').get('nombre').split(' ')[0].upper()}}
+            &nbsp;</span
+          >
+        </button>
+        <div
+          class="dropdown-menu dropdown-menu-right border border-dark"
+          style="right: 0 !important; left: auto !important"
+        >
+          <span class="dropdown-item">
+            <em><strong>{{session['user']['rol']}}</strong></em></span
+          >
+          <span class="dropdown-item"
+            >{{session['user']['nombre'].title()}}</span
+          >
+          <span class="dropdown-item">{{session['user']['correo']}}</span>
+          <div class="dropdown-divider"></div>
+          <button class="dropdown-item" type="button">
+            <span class="fa fa-user fa-fw"></span>
+            <span class="">Perfil</span>
+          </button>
+          <button class="dropdown-item" type="button">
+            <span class="fa fa-cog fa-fw"></span>
+            <span class="">Ajustes</span>
+          </button>
+          <a
+            class="dropdown-item"
+            type="button"
+            href="{{url_for('auth.logout') }}"
+          >
+            <span class="fas fa-sign-out-alt fa-fw"></span>
+            <span class="">Salir</span>
+          </a>
         </div>
+      </div>
 
-
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav">
-
-                <li class="nav-item">
-                    <a class="nav-link ml-5 border-bottom  text-white my-primary"
-                        href="{{url_for('inicio') }}">Inicio</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link ml-2 border-bottom  text-white my-primary"
-                        href="{{url_for('contactanos')}}">Contáctanos</a>
-                </li>
-
-            </ul>
-        </div>
-
-        <!-- User options-->
-        {% if session['user'] %}
-
-        <div class="dropdown">
-            <button type="button" class="btn btn-sm bg-white dropdown-toggle" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-
-                {% if session['user']['rol'] == 'Admin' %}
-                <i class="fas fa-user-shield fa-fw fa-sm"></i>
-                {% else %}
-                <span class="fa fa-user-circle fa-fw fa-sm"></span>
-                {% endif %}
-
-                &nbsp;
-                <span>{{session.get('user').get('nombre').split(' ')[0].upper()}} &nbsp;</span>
-            </button>
-            <div class="dropdown-menu dropdown-menu-right border border-dark"
-                style="right: 0 !important; left: auto !important; ">
-                <span class="dropdown-item"> <em><strong>{{session['user']['rol']}}</strong></em></span>
-                <span class="dropdown-item ">{{session['user']['nombre'].title()}}</span>
-                <span class="dropdown-item">{{session['user']['correo']}}</span>
-                <div class="dropdown-divider"></div>
-                <button class="dropdown-item" type="button">
-                    <span class="fa fa-user fa-fw "></span>
-                    <span class="">Perfil</span>
-                </button>
-                <button class="dropdown-item" type="button">
-                    <span class="fa fa-cog fa-fw "></span>
-                    <span class="">Ajustes</span>
-                </button>
-                <a class="dropdown-item" type="button" href="{{url_for('auth.logout') }}">
-                    <span class="fas fa-sign-out-alt fa-fw"></span>
-                    <span class="">Salir</span>
-                </a>
-            </div>
-        </div>
-
-
-        {% else %}
-
-        {% if request.path=='/login' %}
-        <a class="nav-link mx-3 border text-white my-primary rounded py-1 px-2" href="{{url_for('auth.login') }}">
-            Iniciar Sesión
-            <i class="fa fa-sign-in-alt fa-fw ml-2 text-white" aria-hidden="true"></i>
-        </a>
-        {% else %}
-        <a class="nav-link mx-3 border text-white my-primary rounded py-1 px-2" href="{{url_for('auth.login') }}">
-            Iniciar Sesión
-            <i class="fa fa-sign-in-alt fa-fw ml-2 text-white" aria-hidden="true"></i>
-        </a>
-        {% endif %}
-
-        {% endif %}
+      {% else %} {% if request.path=='/login' %}
+      <a
+        class="nav-link mx-3 border text-white my-primary rounded py-1 px-2"
+        href="{{url_for('auth.login') }}"
+      >
+        Iniciar Sesión
+        <i
+          class="fa fa-sign-in-alt fa-fw ml-2 text-white"
+          aria-hidden="true"
+        ></i>
+      </a>
+      {% else %}
+      <a
+        class="nav-link mx-3 border text-white my-primary rounded py-1 px-2"
+        href="{{url_for('auth.login') }}"
+      >
+        Iniciar Sesión
+        <i
+          class="fa fa-sign-in-alt fa-fw ml-2 text-white"
+          aria-hidden="true"
+        ></i>
+      </a>
+      {% endif %} {% endif %}
     </nav>
-</header>
+  </header>
 
-<body>
+  <body>

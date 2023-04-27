@@ -105,6 +105,7 @@
         
         <td>
           {% set proc = p.resultados.desercion_prevista * 100 %}
+    
           <center>
             
               {% if p.resultados.desercion_prevista > 0.15  %}
@@ -115,31 +116,9 @@
               data-placement="bottom"
               title="Deserción estudiantil por encima del 15%  ({{p.resultados.desercion_prevista*100}} %).<br>Esta predicción parece NO ser confiable.<br>Se recomienda ejecutar otra o crear otro Modelo."
             ></i>
-            
-            
-              {% elif (p.resultados.get('precision')|float) < 85.00 %}
-              <i
-              class="fa fa-solid fa-exclamation-triangle fa-lg text-warning border-dark"
-              data-toggle="tooltip"
-              data-html="true"
-              data-placement="bottom"
-              style="cursor: pointer"
-              title="La precisión del modelo no es muy alta, Ya que esta por debajo del 85%<br>Para estar mas seguro se recomienda crear otro con mas datos de entrenamiento."
-            ></i>
-        
-              {% elif (p.resultados.get('precision')|float) < 85.00 %}
-              <i
-              class="fa fa-solid fa-exclamation-triangle fa-lg text-warning border-dark"
-              data-toggle="tooltip"
-              data-html="true"
-              data-placement="bottom"
-              style="cursor: pointer"
-              title="La precisión del modelo no es muy alta, Ya que esta por debajo del 85%<br>Para estar mas seguro se recomienda crear otro con mas datos de entrenamiento."
-            ></i>
         
               {% else %}
-
-              
+            
               <i
               class="fa fa-solid fa-check fa-lg text-success border-dark"
               data-toggle="tooltip"

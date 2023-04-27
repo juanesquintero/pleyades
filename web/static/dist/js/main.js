@@ -42,11 +42,4 @@ $(document).ready(function () {
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
     });
-
-    $(window).on('beforeunload', function () {
-        $('#myModal').modal('hide');
-    });
-    $(window).on('afterunload', function () {
-        $('#myModal').modal('hide');
-    });
 });
