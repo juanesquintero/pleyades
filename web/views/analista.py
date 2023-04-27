@@ -121,7 +121,6 @@ def predecir_modelo():
     # Preparar data
     df_data_a_predecir = pd.DataFrame(data_a_predecir)
     data_preparada = Modelo.prepare_data(df_data_a_predecir)
-    data_preparada = data_preparada.rename(columns={'REGISTRO': 'registro'})
 
     # Predecir resultados
     resultados_modelo, resultados_desertores = Modelo.predict(

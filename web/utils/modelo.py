@@ -109,12 +109,17 @@ def prepare_data(data):
         ) else 1
     data['etnia'] = data.apply(func2, axis=1)
 
-    return data
+    # corregir tipos y nombre de la base de datos de deserción
+    data_preparada = data.rename(columns={'REGISTRO': 'registro'})
+    data_preparada['registro'] = data_preparada['registro'].astype(int)
+
+    return data_preparada
 
 
 ############################################################################################################## EJECUCION DE MODELO CON UN CONJUNTO ##############################################################################################################
 
 def elimination(data):
+    data['registro'] = data['registro'].astype(int)
     warnings.filterwarnings('ignore')
 
     x = data.groupby('semestre')['edad'].mean()
@@ -127,11 +132,11 @@ def elimination(data):
     periodo_a_predecir = data['registro'].max()
     
     # Separar data a predecir y a entrenar
-    data_a_predecir = data.query(f'registro >= {periodo_a_predecir}')
+    data_a_predecir = data.query(f"registro >= {periodo_a_predecir}")
     data = data.query(f'registro < {periodo_a_predecir}')
 
-    # Insertar el 70% de la data a predecir en entrenamiento
-    n_rows = int(data_a_predecir.shape[0] * 0.75)
+    # Insertar el N% de la data a predecir en entrenamiento
+    n_rows = int(data_a_predecir.shape[0] * 0.5)
     data_proxima = data_a_predecir.iloc[:n_rows]
     data = data.append(data_proxima)
 
@@ -176,6 +181,8 @@ def drop_nulls(data):
 
 
 def execute_model(data, conjunto=''):
+    data['registro'] = data['registro'].astype(int)
+
     basic_info = {
         'idprograma': int(data['idprograma'][0]),
         'programa': str(data['programa'][0]),
@@ -273,6 +280,9 @@ def execute_model(data, conjunto=''):
 
 # TODO NEW! version 2 v2.0.0
 def predict(data_a_predecir, periodo_a_predecir, basic_info):
+    
+    data_a_predecir['registro'] = data_a_predecir['registro'].astype(int)
+
     if len(data_a_predecir) < 3:
         raise Exception(
             f'Hay muy pocos registros para el periodo {periodo_a_predecir} (menos de 3)', True
@@ -333,7 +343,7 @@ def predict_classifier(data_a_predecir, periodo_a_predecir, mejor_clasificador):
     # TODO filtro de idestado
     # Elminar no matriculados
     potenciales_desertores = potenciales_desertores.query(
-        f"idestado == 6 & registro == '{periodo_a_predecir}'"
+        f"idestado == 6 & registro == {periodo_a_predecir}"
     )
 
     # Elminar desercíon temprana

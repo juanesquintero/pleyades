@@ -95,6 +95,8 @@
             style="cursor: pointer"
             title="{{p.fechaInicial}}<br>{{p.fechaFinal}}">
             {{p.duracion}} sec
+            &nbsp;
+            {{p.fechaFinal.split(' ')[1].split(':')[:2]|join(':') }}
             <div hidden>
               {{p.fechaInicial}}
               {{p.fechaFinal}}
