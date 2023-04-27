@@ -101,9 +101,16 @@
 {% with titulo='No se pudieron cargar los conjuntos',error=error %}
 {% include "components/alert.html" %}
 {% endwith %}
-<br>
 {% endif %}
 
+<br>
+
+<br>
+
+
+{% with estado = 'procesados' %}
+{% include 'utils/borrar_conjuntos.html' %}
+{% endwith %}
 
 
 {% include 'components/footer.html' %}

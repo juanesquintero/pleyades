@@ -430,7 +430,8 @@ def ejecutar(conjunto=None):
             resultados_desertores.to_json(orient='records')
         )
         status_insert, body_insert = post(
-            'desercion/resultados', resultados_insert)
+            'desercion/resultados', resultados_insert
+        )
         if not status_update or not status_insert:
             act_estado = actualizar_estado(nombre, 'Procesados')
             if act_estado:

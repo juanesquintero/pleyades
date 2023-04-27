@@ -113,7 +113,6 @@ def prepare_data(data):
 
 ############################################################################################################## EJECUCION DE MODELO CON UN CONJUNTO ##############################################################################################################
 
-
 def elimination(data, periodo_a_predecir=None, predicir=False,):
     warnings.filterwarnings('ignore')
 
@@ -131,9 +130,11 @@ def elimination(data, periodo_a_predecir=None, predicir=False,):
         data_a_predecir = data
     else:
         periodo_a_predecir = data['registro'].max()
+        periodo_anterior = data['registro'].nlargest(2).iloc[-1]
         data_a_predecir = data[data['registro'] >= periodo_a_predecir]
+        # Desercion temprana
         data = data[data['semestre'] > 1]
-        data = data[data['registro'] < periodo_a_predecir]
+        # data = data[data['registro'] < periodo_a_predecir]
 
     try:
         data = data.drop(columnas_eliminar_1, axis=1)
@@ -168,7 +169,7 @@ def execute_model(data, conjunto=''):
         'tipo': 'Entrenamiento',
     }
 
-    # Eliminacion depuracion de columnas 
+    # Eliminacion depuracion de columnas
     data, data_a_predecir, periodo_a_predecir = elimination(data)
 
     basic_info['periodo_a_predecir_mas_1'] = f'{periodo_a_predecir} + 1'
@@ -179,7 +180,7 @@ def execute_model(data, conjunto=''):
     ''' FASE 1 '''
 
     cv_split = model_selection.ShuffleSplit(
-        n_splits=10, test_size=.3, train_size=.6, random_state=0
+        n_splits=10, test_size=.3, train_size=.7, random_state=42
     )
     AML_columns = ['Nombre',
                    'objeto',
@@ -198,13 +199,21 @@ def execute_model(data, conjunto=''):
         AML_compare.loc[row_index, 'Nombre'] = AML_nombre
         AML_compare.loc[row_index, 'Parametros'] = str(alg.get_params())
         cv_results = model_selection.cross_validate(
-            alg, data[col_preparadas], data[Target], cv=cv_split)
+            alg,
+            data[col_preparadas],
+            data[Target],
+            cv=cv_split
+        )
 
-        AML_compare.loc[row_index,
-                        'Precision Media de Prueba'] = cv_results['test_score'].mean()
+        AML_compare.loc[
+            row_index,
+            'Precision Media de Prueba'
+        ] = cv_results['test_score'].mean()
         # Si es una muestra aleatoria sin sesgo, entonces la media +/- 3*(desviación estándar), deberían capturar el 99.7% de los subconjuntos
-        AML_compare.loc[row_index,
-                        'STD de la Precision * 3'] = cv_results['test_score'].std()*3
+        AML_compare.loc[
+            row_index,
+            'STD de la Precision * 3'
+        ] = cv_results['test_score'].std()*3
         AML_compare.loc[row_index, 'Tiempo'] = cv_results['fit_time'].mean()
 
         alg.fit(data[col_preparadas], data[Target])
@@ -213,7 +222,10 @@ def execute_model(data, conjunto=''):
         row_index += 1
 
     AML_compare.sort_values(
-        by=['Precision Media de Prueba'], ascending=False, inplace=True)
+        by=['Precision Media de Prueba'],
+        ascending=False,
+        inplace=True
+    )
 
     AML_best = AML_compare.head(1)
     mejor_clasificador = AML_best['objeto'].tolist()[0]
@@ -223,7 +235,8 @@ def execute_model(data, conjunto=''):
 
     # Usar mejor clasificador para predecir
     result = predict_classifier(
-        data_a_predecir, periodo_a_predecir, mejor_clasificador)
+        data_a_predecir, periodo_a_predecir, mejor_clasificador
+    )
 
     precision_modelo = AML_best['Precision Media de Prueba'].tolist()[0] * 100
 
@@ -237,7 +250,7 @@ def execute_model(data, conjunto=''):
         'estudiantes_analizados': result.get('total_analizados'),
         'desercion_prevista': result.get('desercion'),
         'desertores_reportados':  int(len(data_a_predecir[data_a_predecir['desertor'] == 1])),
-        'potenciales_desertores': result.get('total'),   
+        'potenciales_desertores': result.get('total'),
     }
 
     return resultados, result.get('resultado')
@@ -250,7 +263,7 @@ def predict(data_a_predecir, periodo_a_predecir, basic_info):
             f'Hay muy pocos registros para el periodo {periodo_a_predecir} (menos de 3)'
         )
 
-    # Eliminacion depuracion de columnas 
+    # Eliminacion depuracion de columnas
     data_a_predecir = elimination(data_a_predecir, periodo_a_predecir, True)
 
     # Obtener el clasificador como archivo local
@@ -278,8 +291,10 @@ def predict(data_a_predecir, periodo_a_predecir, basic_info):
 
 def predict_classifier(data_a_predecir, periodo_a_predecir, mejor_clasificador):
     predc_sem_act = data_a_predecir[
-        ['semestre', 'documento', 'nombre_completo', 'desertor',
-            'idprograma', 'idestado', 'promedio_acumulado']
+        [
+            'registro', 'semestre', 'documento', 'nombre_completo',
+            'desertor', 'idprograma', 'idestado', 'promedio_acumulado'
+        ]
     ]
 
     predc_sem_act['prediccion'] = mejor_clasificador.predict(
@@ -301,6 +316,8 @@ def predict_classifier(data_a_predecir, periodo_a_predecir, mejor_clasificador):
     potenciales_desertores = potenciales_desertores.query(
         f'idestado == 6 & registro == {periodo_a_predecir}'
     )
+
+    potenciales_desertores = potenciales_desertores.drop('registro', axis=1)
 
     # Re asignar tipos
     potenciales_desertores['semestre'] = potenciales_desertores['semestre'].astype(
