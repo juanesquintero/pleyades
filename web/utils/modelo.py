@@ -137,10 +137,10 @@ def elimination(data):
 
     # Insertar el N% de la data a predecir en entrenamiento
     periodo_cerrado = session.get('periodo_cerrado')
-    # 80% sin cerrar/ 10% cerrado
+    # 85% sin cerrar/ 15% cerrado
     umbral = 0.85
     if periodo_cerrado:
-        umbral = 0
+        umbral = 0.15
 
     n_rows = int(data_a_predecir.shape[0] * umbral)
     data_proxima = data_a_predecir.iloc[:n_rows]
@@ -371,7 +371,7 @@ def predict_classifier(data_a_predecir, periodo_a_predecir, mejor_clasificador):
 
     # Elminar desercíon temprana
     no_desercion_temprana = potenciales_desertores.query(
-        'semestre != 1 & promedio_acumulado > 0.5 & promedio_acumulado < 4.0'
+        'semestre != 1 & promedio_acumulado > 0.5'
     )
 
     if not no_desercion_temprana.empty:

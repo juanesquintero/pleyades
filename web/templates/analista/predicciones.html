@@ -62,9 +62,9 @@
             &nbsp;
             {{p.resultados.programa}}
             &nbsp;
-            <b>
+            
               {{ info_array[:2]|join(' ') }}
-            </b>
+            
           </center>
         </td>
         
@@ -75,7 +75,9 @@
         style="cursor: pointer"
         title="<i>{{p.resultados.clasificador}}</i><br><b>{{info_array[2:3][0]}}<b>">
           <center>
-            {{ p.resultados.get('periodo_a_predecir') }}
+            <b>
+              {{ p.resultados.get('periodo_a_predecir') }}
+            </b>
             
           
 
