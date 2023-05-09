@@ -138,9 +138,9 @@ def elimination(data):
     # Insertar el N% de la data a predecir en entrenamiento
     periodo_cerrado = session.get('periodo_cerrado')
     # 85% sin cerrar/ 15% cerrado
-    umbral = 0.85
+    umbral = 0.75
     if periodo_cerrado:
-        umbral = 0.15
+        umbral = 0.05
 
     n_rows = int(data_a_predecir.shape[0] * umbral)
     data_proxima = data_a_predecir.iloc[:n_rows]
@@ -280,7 +280,7 @@ def execute_model(data, conjunto=''):
         'periodo_a_predecir': int(periodo_a_predecir),
         'estudiantes_analizados': result.get('total_analizados'),
         'desercion_prevista': result.get('desercion'),
-        'desertores_reportados':  int(len(data_a_predecir[data_a_predecir['desertor'] == 1])),
+        'desertores_reportados':  int(len(data_a_predecir.query(f'desertor == 1 & registro == {periodo_a_predecir}'))),
         'potenciales_desertores': result.get('total'),
     }
 
@@ -381,8 +381,12 @@ def predict_classifier(data_a_predecir, periodo_a_predecir, mejor_clasificador):
 
     # Filtrar bajo promedio por alta deserción
     if desercion_prevista > 0.25:
-        potenciales_desertores = potenciales_desertores.query('promedio_acumulado < 3.9')
-        total_desertores, desercion_prevista = calculate_desercion(total_estudiantes_analizados, potenciales_desertores)
+        _potenciales_desertores = potenciales_desertores.query('promedio_acumulado < 3.9')
+        _total_desertores, _desercion_prevista = calculate_desercion(total_estudiantes_analizados, potenciales_desertores)
+        
+        if _desercion_prevista > 0.5:
+            potenciales_desertores = _potenciales_desertores
+            total_desertores, desercion_prevista = _total_desertores, _desercion_prevista
 
     resultados_desertores = potenciales_desertores
 

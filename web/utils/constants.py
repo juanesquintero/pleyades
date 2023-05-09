@@ -54,6 +54,8 @@ columnas_eliminar_1_anteriores = [
     'nombre_completo',
     'tipo_documento',
     'documento',
+    'jornada',
+    'lugar_residencia_sede',
     'trabaja',
     'puntaje_icfes',
     'beca',
@@ -89,6 +91,8 @@ columnas_eliminar_1 = [
     'nombre_completo',
     'tipo_documento',
     'documento',
+    'jornada',
+    'lugar_residencia_sede',
     'trabaja',
     'puntaje_icfes',
     'beca',
@@ -127,18 +131,22 @@ columnas_eliminar_1 = [
     'idestado '
 ]
 
-columnas_eliminar_nulos = ['semestre', 'jornada', 'genero', 'estado_civil', 'lugar_residencia_sede', 'etnia', 'victima',
-                           'pertenece_grupo_vulnerable', 'promedio_acumulado', 'creditos_programa',
-                           'creditos_aprobados_sem', 'creditos_aprobados_acum', 'creditos_reprobados_sem', 'creditos_reprobados_acum',
-                           'creditos_cancelados_sem', 'creditos_cancelados_acum', 'creditos_matriculados_sem', 'intersemestral', 'creditos_matriculados_acum'
-                           ]
+columnas_eliminar_nulos = [
+    'semestre', 'genero', 'estado_civil', 'etnia', 'victima',
+    'pertenece_grupo_vulnerable', 'promedio_acumulado', 'creditos_programa',
+    'creditos_aprobados_sem', 'creditos_aprobados_acum', 'creditos_reprobados_sem', 'creditos_reprobados_acum',
+    'creditos_cancelados_sem', 'creditos_cancelados_acum', 'creditos_matriculados_sem', 'intersemestral', 'creditos_matriculados_acum'
+]
 
 columnas_eliminar_2_anteriores = [
-    'asignaturas_aprobadas_acum', 'asignaturas_reprobadas_acum']
-columnas_eliminar_2 = ['asignaturas_aprobadas_acum', 'asignaturas_reprobadas_acum',
-                       'asignaturas_programa', 'asignaturas_canceladas_sem', 'asignaturas_canceladas_acum', ]
+    'asignaturas_aprobadas_acum', 'asignaturas_reprobadas_acum'
+]
+columnas_eliminar_2 = [
+    'asignaturas_aprobadas_acum', 'asignaturas_reprobadas_acum',
+    'asignaturas_programa', 'asignaturas_canceladas_sem', 'asignaturas_canceladas_acum',
+]
 
-col_preparadas = ['semestre', 'jornada', 'edad', 'genero', 'estado_civil', 'lugar_residencia_sede', 'etnia', 'victima',
+col_preparadas = ['semestre', 'edad', 'genero', 'estado_civil', 'etnia', 'victima',
                   'pertenece_grupo_vulnerable', 'creditos_programa',  'creditos_aprobados_sem', 'creditos_aprobados_acum',
                   'asignaturas_aprobadas_sem', 'creditos_reprobados_sem', 'creditos_reprobados_acum', 'asignaturas_reprobadas_sem',
                   'creditos_cancelados_sem', 'creditos_cancelados_acum', 'creditos_matriculados_sem', 'creditos_matriculados_acum',

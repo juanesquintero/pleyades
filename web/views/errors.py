@@ -23,7 +23,7 @@ def handle_500(e):
 @Error.app_errorhandler(Exception)
 def handle_exception(e):
     if len(e.args) > 1 and e.args[1]:
-        flash(f'<b>{e.args[0]}</b>', 'danger')
+        flash(f'<b>{e.args[0]}</b>', 'warning')
         return redirect(url_for('Analista.modelos'))
 
     error_logger.error(f'EXCEPTION: {e}', exc_info=True)
