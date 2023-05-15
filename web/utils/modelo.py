@@ -132,7 +132,7 @@ def elimination(data, no_desertion=False):
     periodo_a_predecir = data['registro'].max()
 
     if no_desertion:
-        data_a_predecir = data
+        data_a_predecir = data.copy()
     else:
         # Separar data a predecir y a entrenar
         data_a_predecir = data.query(f'registro >= {periodo_a_predecir}')
@@ -156,8 +156,6 @@ def elimination(data, no_desertion=False):
     data = drop_columns(data)
     data_a_predecir = drop_nulls(data_a_predecir)
     
-    print(data, data_a_predecir, flush=True)
-
     return data, data_a_predecir, periodo_a_predecir
 
 
@@ -458,7 +456,6 @@ def load_classifer(conjunto):
 def assign_types(data):
     # Asignar tipos de datos en cada columna
     for key, value in condiciones.items():
-        # Obtener los valores de cada columna que no sean nulos
-        # y asignarle el tipo requerido para la columna
-        data[key][data[key].notna()] = data[key][data[key].notna()].astype(value)
+        mask = data[key].notna() 
+        data.loc[mask, key] = data.loc[mask, key].astype(value)
     return data
