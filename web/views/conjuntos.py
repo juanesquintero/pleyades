@@ -464,7 +464,9 @@ def ejecutar(conjunto=None):
             return pagina_error
 
     else:
-        flash('El modelo detectó 0 desertores, Deserción 0%, porfavor escoja un periodo final diferente', 'danger')
+        # TODO data 
+        flash('<b>El modelo detectó 0 desertores, Deserción 0%</b>', 'danger')
+        flash('Revise si hay estudiantes ó desertores suficientes en el programa', 'warning')
         resultados_modelo.pop('desertores')
         estado_ejecucion = 'Fallida'
     # Guardar registro de ejecución en la BD
