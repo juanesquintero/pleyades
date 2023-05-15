@@ -118,7 +118,7 @@ def prepare_data(data):
 
 ############################################################################################################## EJECUCION DE MODELO CON UN CONJUNTO ##############################################################################################################
 
-def elimination(data):
+def elimination(data, no_desertion=False):
     data['registro'] = data['registro'].astype(int)
     warnings.filterwarnings('ignore')
 
@@ -131,25 +131,32 @@ def elimination(data):
 
     periodo_a_predecir = data['registro'].max()
 
-    # Separar data a predecir y a entrenar
-    data_a_predecir = data.query(f"registro >= {periodo_a_predecir}")
-    data = data.query(f'registro < {periodo_a_predecir}')
+    if no_desertion:
+        data_a_predecir = data
+    else:
+        # Separar data a predecir y a entrenar
+        data_a_predecir = data.query(f'registro >= {periodo_a_predecir}')
+        data = data.query(f'registro < {periodo_a_predecir}')
 
-    # Insertar el N% de la data a predecir en entrenamiento
-    periodo_cerrado = session.get('periodo_cerrado')
-    # 85% sin cerrar/ 15% cerrado
-    umbral = 0.75
-    if periodo_cerrado:
-        umbral = 0.05
+        # Insertar el N% de la data a predecir en entrenamiento
+        periodo_cerrado = session.get('periodo_cerrado')
+        # 85% sin cerrar/ 15% cerrado
 
-    n_rows = int(data_a_predecir.shape[0] * umbral)
-    data_proxima = data_a_predecir.iloc[:n_rows]
+        if periodo_cerrado:
+            umbral = 0.05
+        else:
+            umbral = 0.75
 
-    data = data.append(data_proxima)
+        n_rows = int(data_a_predecir.shape[0] * umbral)
+        data_proxima = data_a_predecir.iloc[:n_rows]
+
+        data = data.append(data_proxima)
 
     # Eliminar columnas inecesarias y nulos
     data = drop_columns(data)
     data_a_predecir = drop_nulls(data_a_predecir)
+    
+    print(data, data_a_predecir, flush=True)
 
     return data, data_a_predecir, periodo_a_predecir
 
@@ -189,7 +196,8 @@ def drop_nulls(data):
     return data
 
 
-def execute_model(data, conjunto=''):
+def execute_model(data, conjunto, no_desertion=False):
+    initial_data = data
     data['registro'] = data['registro'].astype(int)
 
     basic_info = {
@@ -201,7 +209,7 @@ def execute_model(data, conjunto=''):
     }
 
     # Eliminacion depuracion de columnas
-    data, data_a_predecir, periodo_a_predecir = elimination(data)
+    data, data_a_predecir, periodo_a_predecir = elimination(data, no_desertion)
 
     basic_info['periodo_a_predecir_mas_1'] = f'{periodo_a_predecir} + 1'
 
@@ -213,45 +221,47 @@ def execute_model(data, conjunto=''):
     cv_split = model_selection.ShuffleSplit(
         n_splits=10, test_size=.3, train_size=.7, random_state=42
     )
-    AML_columns = ['Nombre',
-                   'objeto',
-                   'Parametros',
-                   'Precision Media de Prueba',
-                   'STD de la Precision * 3',
-                   'Tiempo'
-                   ]
+    AML_columns = [
+        'Nombre',
+        'objeto',
+        'Parametros',
+        'Precision Media de Prueba',
+        'STD de la Precision * 3',
+        'Tiempo'
+        ]
     AML_compare = pd.DataFrame(columns=AML_columns)
     Target = ['desertor']
     AML_predict = data[Target]
     row_index = 0
 
     for alg in AML:
-        AML_nombre = alg.__class__.__name__
-        AML_compare.loc[row_index, 'Nombre'] = AML_nombre
-        AML_compare.loc[row_index, 'Parametros'] = str(alg.get_params())
-        cv_results = model_selection.cross_validate(
-            alg,
-            data[col_preparadas],
-            data[Target],
-            cv=cv_split
-        )
+        try:
+            AML_nombre = alg.__class__.__name__
+            AML_compare.loc[row_index, 'Nombre'] = AML_nombre
+            AML_compare.loc[row_index, 'Parametros'] = str(alg.get_params())
+            cv_results = model_selection.cross_validate(
+                alg,
+                data[col_preparadas],
+                data[Target],
+                cv=cv_split
+            )
 
-        AML_compare.loc[
-            row_index,
-            'Precision Media de Prueba'
-        ] = cv_results['test_score'].mean()
-        # Si es una muestra aleatoria sin sesgo, entonces la media +/- 3*(desviación estándar), deberían capturar el 99.7% de los subconjuntos
-        AML_compare.loc[
-            row_index,
-            'STD de la Precision * 3'
-        ] = cv_results['test_score'].std()*3
-        AML_compare.loc[row_index, 'Tiempo'] = cv_results['fit_time'].mean()
-
-        alg.fit(data[col_preparadas], data[Target])
-        AML_predict[AML_nombre] = alg.predict(data[col_preparadas])
-        AML_compare.loc[row_index, 'objeto'] = alg
-        row_index += 1
-
+            AML_compare.loc[
+                row_index,
+                'Precision Media de Prueba'
+            ] = cv_results['test_score'].mean()
+            # Si es una muestra aleatoria sin sesgo, entonces la media +/- 3*(desviación estándar), deberían capturar el 99.7% de los subconjuntos
+            AML_compare.loc[
+                row_index,
+                'STD de la Precision * 3'
+            ] = cv_results['test_score'].std()*3
+            AML_compare.loc[row_index, 'Tiempo'] = cv_results['fit_time'].mean()
+            alg.fit(data[col_preparadas], data[Target])
+            AML_predict[AML_nombre] = alg.predict(data[col_preparadas])
+            AML_compare.loc[row_index, 'objeto'] = alg
+            row_index += 1
+        except:
+            continue
     AML_compare.sort_values(
         by=['Precision Media de Prueba'],
         ascending=False,
@@ -261,13 +271,17 @@ def execute_model(data, conjunto=''):
     AML_best = AML_compare.head(1)
     mejor_clasificador = AML_best['objeto'].tolist()[0]
 
-    # Guardar clasificador
-    save_classifire(mejor_clasificador, conjunto)
 
     # Usar mejor clasificador para prediction
     result = predict_classifier(
         data_a_predecir, periodo_a_predecir, mejor_clasificador
     )
+
+    if not result.get('resultado').any().any() and not no_desertion:
+        execute_model(initial_data, conjunto, True)
+
+    # Guardar clasificador
+    save_classifire(mejor_clasificador, conjunto)
 
     precision_modelo = AML_best['Precision Media de Prueba'].tolist()[0] * 100
 
@@ -333,7 +347,7 @@ def predict_classifier(data_a_predecir, periodo_a_predecir, mejor_clasificador):
 
     if data_a_predecir.empty:
         raise Exception(
-            'No se detectaron potenciales desertores! en esta predicción', True)
+            'No estudiantes para predecir en ese conjunto!', True)
 
     try:
         predc_sem_act['prediccion'] = mejor_clasificador.predict(
@@ -341,6 +355,7 @@ def predict_classifier(data_a_predecir, periodo_a_predecir, mejor_clasificador):
         )
     except Exception as e:
         model_logger.error(e)
+        # TODO Exception true in error
         raise Exception(
             f'Ocurrió un error al ejecutar la predicción! por favor intente con otro periodo o modelo', True
         )
