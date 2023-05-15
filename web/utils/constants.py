@@ -38,6 +38,19 @@ AML = [
     discriminant_analysis.QuadraticDiscriminantAnalysis(),
 ]
 
+
+# ExtraTreesClassifier
+
+# LinearSVC
+
+# RandomForestClassifier
+
+# BaggingClassifier
+
+# GradientBoostingClassifier
+
+# BernoulliNB
+
 colores = [
     'rgb(30, 75, 131)',
     'rgb(25, 95, 201)',
