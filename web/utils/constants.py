@@ -2,7 +2,27 @@
 # Apoyo para la validación cruzada
 from sklearn import svm, tree, linear_model, neighbors, naive_bayes, ensemble, discriminant_analysis
 
+colores = [
+    'rgb(30, 75, 131)',
+    'rgb(25, 95, 201)',
+    'rgb(186, 41, 41)',
+    'rgb(30, 59, 87)',
+    'rgb(85, 128, 168)',
+    'rgb(0, 27, 53)',
+    'rgb(184, 210, 235)',
+    'rgb(88, 173, 199)'
+]
+
+
 # Algoritmos de Machine Learning (AML)
+'''
+ExtraTreesClassifier
+LinearSVC
+RandomForestClassifier
+BaggingClassifier
+GradientBoostingClassifier
+BernoulliNB
+'''
 AML = [
     # Métodos Combinados
     ensemble.AdaBoostClassifier(),
@@ -38,29 +58,6 @@ AML = [
     discriminant_analysis.QuadraticDiscriminantAnalysis(),
 ]
 
-
-# ExtraTreesClassifier
-
-# LinearSVC
-
-# RandomForestClassifier
-
-# BaggingClassifier
-
-# GradientBoostingClassifier
-
-# BernoulliNB
-
-colores = [
-    'rgb(30, 75, 131)',
-    'rgb(25, 95, 201)',
-    'rgb(186, 41, 41)',
-    'rgb(30, 59, 87)',
-    'rgb(85, 128, 168)',
-    'rgb(0, 27, 53)',
-    'rgb(184, 210, 235)',
-    'rgb(88, 173, 199)'
-]
 
 columnas_eliminar_1_anteriores = [
     'registro',
@@ -154,17 +151,19 @@ columnas_eliminar_nulos = [
 columnas_eliminar_2_anteriores = [
     'asignaturas_aprobadas_acum', 'asignaturas_reprobadas_acum'
 ]
+
 columnas_eliminar_2 = [
     'asignaturas_aprobadas_acum', 'asignaturas_reprobadas_acum',
     'asignaturas_programa', 'asignaturas_canceladas_sem', 'asignaturas_canceladas_acum',
 ]
 
-col_preparadas = ['semestre', 'edad', 'genero', 'estado_civil', 'etnia', 'victima',
-                  'pertenece_grupo_vulnerable', 'creditos_programa',  'creditos_aprobados_sem', 'creditos_aprobados_acum',
-                  'asignaturas_aprobadas_sem', 'creditos_reprobados_sem', 'creditos_reprobados_acum', 'asignaturas_reprobadas_sem',
-                  'creditos_cancelados_sem', 'creditos_cancelados_acum', 'creditos_matriculados_sem', 'creditos_matriculados_acum',
-                  'promedio_acumulado', 'intersemestral'
-                  ]
+col_preparadas = [
+    'semestre', 'edad', 'genero', 'estado_civil', 'etnia', 'victima',
+    'pertenece_grupo_vulnerable', 'creditos_programa',  'creditos_aprobados_sem', 'creditos_aprobados_acum',
+    'asignaturas_aprobadas_sem', 'creditos_reprobados_sem', 'creditos_reprobados_acum', 'asignaturas_reprobadas_sem',
+    'creditos_cancelados_sem', 'creditos_cancelados_acum', 'creditos_matriculados_sem', 'creditos_matriculados_acum',
+    'promedio_acumulado', 'intersemestral'
+]
 
 condiciones = {
     'registro':                                 int,

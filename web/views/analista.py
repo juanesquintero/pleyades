@@ -137,24 +137,24 @@ def predecir_modelo():
     if resultados_desertores.empty:
         flash('No hay desertores para esta predicción', 'warning')
         return redirect(url_for('Analista.modelos'))
-    else:
-        resultados_insert = json.loads(
-            resultados_desertores.to_json(orient='records')
-        )
 
-        status_insert, body_insert = post(
-            'desercion/resultados',
-            resultados_insert
-        )
+    resultados_insert = json.loads(
+        resultados_desertores.to_json(orient='records')
+    )
 
-        if not status_insert:
-            error_logger.error(
-                'Error insertando los nuevos desertores'.format(
-                    json.dumps(body_insert))
-            )
-            raise Exception(
-                'Ocurrió un error insertando y/o actualizando los resultados'
-            )
+    status_insert, body_insert = post(
+        'desercion/resultados',
+        resultados_insert
+    )
+
+    if not status_insert:
+        error_logger.error(
+            'Error insertando los nuevos desertores'.format(
+                json.dumps(body_insert))
+        )
+        raise Exception(
+            'Ocurrió un error insertando y/o actualizando los resultados'
+        )
 
     ejecucion['nombre'], ejecucion['numero'] = obtener_nombre_ejecucion(modelo)
 
