@@ -1,5 +1,6 @@
 import logging
 import pandas as pd
+from flask import flash
 from utils.constants import col_preparadas
 from .model import load_classifer
 from .preparation import elimination_predict
@@ -60,18 +61,17 @@ def predict_classifier(data_a_predecir, periodo_a_predecir, mejor_clasificador):
 
     if data_a_predecir.empty:
         raise Exception(
-            'No estudiantes para predecir en ese conjunto!', True)
+            'No estudiantes para predecir en ese conjunto!', True
+        )
 
     try:
         predc_sem_act['prediccion'] = mejor_clasificador.predict(
             data_a_predecir[col_preparadas]
         )
-    except Exception as exp:
-        model_logger.error(exp)
-        # TODO Exception true in error
-        raise Exception(
-            f'Ocurrió un error al ejecutar la predicción! por favor intente con otro periodo o modelo', True
-        )
+    except Exception as excep:
+        model_logger.error(excep)
+        flash('Por favor intente con otro periodo o programa', 'warning')
+        raise Exception('<b>Ocurrió un error al ejecutar la predicción!</b>')
     total_estudiantes_analizados = len(predc_sem_act['documento'].unique())
     potenciales_desertores = predc_sem_act.query('prediccion == 1 & desertor == 0').drop_duplicates(
         subset=['documento'],

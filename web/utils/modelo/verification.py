@@ -22,8 +22,8 @@ def verify_data(data, periodo_inicial, periodo_final, programa):
     # Verificar si conjunto tiene columnas en str y la primera fila
     try:
         data.columns = map(str.lower, data.columns)
-    except Exception as exp:
-        model_logger.error(exp)
+    except Exception as excep:
+        model_logger.error(excep)
         return False, 'El conjunto no tiene columnas', None, periodo_inicial
 
     # Verificar si hay registros
@@ -41,8 +41,8 @@ def verify_data(data, periodo_inicial, periodo_final, programa):
     # Verificar si los tipos de datos de colunma son correctos
     try:
         data_verificada = assign_types(data)
-    except Exception as exp:
-        model_logger.error(exp)
+    except Exception as excep:
+        model_logger.error(excep)
         msg = 'El conjunto ingresado no tiene los tipos de dato por columna requeridos'
         return False, msg, None, periodo_inicial
 

@@ -18,9 +18,9 @@ def exception(op):
     return False
 
 
-def clean_exception(exp):
+def clean_exception(excep):
     ip_port = '[0-9]+(?:\.[0-9]+){3}(:[0-9]+)?'
-    error = re.sub(ip_port, '', str(exp))
+    error = re.sub(ip_port, '', str(excep))
 
     words = ['MYSQL', 'SQL', 'MARIADB', 'MICROSOFT', 'SQL SERVER', 'ODBC']
     for word in words:

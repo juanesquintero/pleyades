@@ -10,7 +10,6 @@ from utils.constants import (
 
 ################################################################################################################ PREPARACION DE DATOS DE UN CONJUNTO ##############################################################################################################
 
-
 def prepare_data(data):
     # Condiciones Precisas
     condiciones = [
@@ -74,14 +73,13 @@ def elimination(data, no_desertion=False):
 
     periodo_a_predecir = data['registro'].max()
 
-
     # Separar data a predecir y a entrenar
     data_a_predecir = data.query(f'registro >= {periodo_a_predecir}')
     data = data.query(f'registro < {periodo_a_predecir}')
 
     # Insertar el N% de la data a predecir en entrenamiento
     periodo_cerrado = session.get('periodo_cerrado')
-    
+
     # 75% sin cerrar/ 15% cerrado
     if no_desertion:
         umbral = 1
@@ -106,9 +104,9 @@ def elimination_predict(data):
     warnings.filterwarnings('ignore')
 
     # Rellenar la edad con promedio por semestre(nivel)
-    x = data.groupby('semestre')['edad'].mean()
+    average = data.groupby('semestre')['edad'].mean()
     for indice_fila, fila in data.loc[data.edad.isnull()].iterrows():
-        data.loc[indice_fila, 'edad'] = x[fila['semestre']]
+        data.loc[indice_fila, 'edad'] = average[fila['semestre']]
 
     # Elminar desercíon temprana
     data = data.query('semestre != 1 & promedio_acumulado > 0.5')
@@ -119,14 +117,14 @@ def elimination_predict(data):
 def drop_columns(data):
     try:
         data = data.drop(columnas_eliminar_1, axis=1)
-    except Exception as e:
+    except Exception as excep:
         data = data.drop(columnas_eliminar_1_anteriores, axis=1)
 
     data = drop_nulls(data)
 
     try:
         data = data.drop(columnas_eliminar_2, axis=1)
-    except Exception as e:
+    except Exception as excep:
         data = data.drop(columnas_eliminar_2_anteriores, axis=1)
 
     return data

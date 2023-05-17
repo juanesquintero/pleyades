@@ -1,6 +1,5 @@
-from flask import Blueprint, render_template, app, url_for, flash, redirect
 import logging
-import os
+from flask import Blueprint, render_template, app, url_for, flash, redirect
 
 error_logger = logging.getLogger('error_logger')
 
