@@ -21,14 +21,16 @@ IES_CLIENT=ies_client_short_name
 DB_ROOT_PWD=pleyades_db_root_password
 PUBLIC_PORT=pleyades_server_public_port
 ```
-<small>DB_ROOT_PWD es opcional (es necesaria solo si la bd de Pleyades MySQL esta dockerizada)</small>
-
+<small>"DB_ROOT_PWD" es opcional (es necesaria solo si la bd de Pleyades MySQL esta dockerizada)</small>
 
 Institución de Educación Superior (IES) - Cliente de Educatic
+
+<small>"IES_CLIENT" es el acronimo de la IES
+
+Revisar el archivo "ies.json" ahií podra encontrar los posibles valores del nombre corto del cliente ies</small>
+
 <br>
-<small>Revisar el archivo ies.json para escoger el nombre corto del ies cliente</small>
-<br>
-<br>
+
 
 ###  web/.env
 ```env
