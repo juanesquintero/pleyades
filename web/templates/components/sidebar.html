@@ -93,13 +93,22 @@
       <!--  ADMINISTRACIÓN -->
       {% if session['user']['rol']=='Admin' %}
       <li
-        class="list-group-item sidebar-separator-title text-white d-flex align-items-center menu-collapsed text-white border-right-0 border-left-0 mt-5 my-secondary"
+        class="list-group-item sidebar-separator-title text-white d-flex align-items-center menu-collapsed text-white mb-1 border-bottom border-right-0 border-left-0 mt-5 my-secondary"
       >
         <small>ADMINISTRACIÓN</small>
       </li>
       <a
+        href="{{url_for('Estudiante.listar')}}"
+        class="list-group-item my-secondary"
+      >
+        <div class="d-flex w-100 justify-content-start align-items-center">
+          <span class="fa fad fa-user-graduate fa-fw mr-3 text-white"></span>
+          <span class="menu-collapsed text-white">Estudiantes</span>
+        </div>
+      </a>
+      <a
         href="{{url_for('Facultad.listar')}}"
-        class="list-group-item border-right-0 border-top my-secondary"
+        class="list-group-item border-right-0 my-secondary"
       >
         <div class="d-flex w-100 justify-content-start align-items-center">
           <span class="fa fa-university fa-fw mr-3 text-white"></span>

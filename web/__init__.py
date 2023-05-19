@@ -41,14 +41,10 @@ def contactanos():
 
 
 '''ROUTES'''
-from views.tableros import Tablero
+# from views.tableros import Tablero
 from views.resultados import Resultado
 from views.conjuntos import Conjunto
-from views.admin.resultados import ResultadoAdmin
-from views.admin.conjuntos import ConjuntoAdmin
-from views.admin.facultades import Facultad
-from views.admin.programas import Programa
-from views.admin.usuarios import Usuario
+from views.admin import ResultadoAdmin, ConjuntoAdmin, Facultad, Programa, Estudiante, Usuario
 from views.auth import Auth
 from views.errors import Error
 from views.analista import Analista
@@ -58,6 +54,7 @@ app.register_blueprint(Auth, url_prefix=base_path)
 app.register_blueprint(Analista, url_prefix=base_path)
 app.register_blueprint(Facultad, url_prefix=base_path+'admin/facultades')
 app.register_blueprint(Programa, url_prefix=base_path+'admin/programas')
+app.register_blueprint(Estudiante, url_prefix=base_path+'admin/estudiantes')
 app.register_blueprint(Usuario, url_prefix=base_path+'admin/usuarios')
 app.register_blueprint(Conjunto, url_prefix=base_path+'conjuntos')
 app.register_blueprint(Resultado, url_prefix=base_path+'resultados')
@@ -71,8 +68,11 @@ app.register_blueprint(ResultadoAdmin, url_prefix=base_path+'admin/resultados')
 LOG_FORMAT = '%(levelname)s %(asctime)s - %(message)s'
 
 # GENERAL (ALL) LOGS
-logging.basicConfig(filename=os.getcwd()+'/logs/GENERALS.log',
-                    level=logging.DEBUG, format=LOG_FORMAT)
+logging.basicConfig(
+    filename=os.getcwd()+'/logs/GENERALS.log',
+    level=logging.DEBUG,
+    format=LOG_FORMAT
+)
 
 # APP ERROR LOGS
 error_logger = logging.getLogger('error_logger')
