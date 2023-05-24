@@ -78,13 +78,14 @@ Modo desarrollo
 $ docker-compose up -d
 ```
 
-Modo producción (NGINX)
+Modo producción 
 ```console
-$ docker-compose -f docker-compose.prod.yml up nginx -d
+$ docker-compose -f docker-compose.prod.yml up -d
 ```
 
 ... incluyendo la base de datos dockerizada
 ```console
+$ docker-compose up db db-ies -d
 $ docker-compose -f docker-compose.prod.yml up -d
 ```
 
