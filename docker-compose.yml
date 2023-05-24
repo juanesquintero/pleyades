@@ -2,7 +2,7 @@ version: '3.8'
 name: pleyades
 services:
   
-  web:
+  web_dev:
     container_name: pleyades-web_dev
     build:
       context: ./web
@@ -21,14 +21,14 @@ services:
     ports:
       - 5000:80
     links:
-      - api:api
+       - 'api_dev:api'
     networks:
       - dev-net
     depends_on:
-      - api
+      - api_dev
     command: flask run --host 0.0.0.0 --port 80
 
-  api:
+  api_dev:
     container_name: pleyades-api_dev
     build:
       context: ./api
