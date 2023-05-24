@@ -1,6 +1,7 @@
 version: '3.8'
-name: pleyades-dev
+name: pleyades
 services:
+  
   web:
     container_name: pleyades-web_dev
     build:
@@ -66,6 +67,7 @@ services:
       - ./api/db/pleyades/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - dev-net
+      - deploy-net
 
   db-ies:
     image: mcr.microsoft.com/mssql/server:2019-CU3-ubuntu-18.04
@@ -81,6 +83,7 @@ services:
       - ./api/db/ies/init.sh:/tmp/init.sh
     networks:
       - dev-net
+      - deploy-net
     command: /bin/bash -c "/opt/mssql/bin/sqlservr && /tmp/init.sh"
         
   adminer:
@@ -93,6 +96,10 @@ services:
       - db-ies:db-ies
     networks:
       - dev-net
+
 networks:
   dev-net:
+    driver: bridge
+
+  deploy-net:
     driver: bridge
