@@ -158,6 +158,16 @@ docker-compose -f docker-compose.prod.yml rm -f &&
 docker-compose -f docker-compose.prod.yml up -d
 ````
 
+# Eliminar imagenes de Docker para actualización 
+Producción
+```console
+$ docker-compose -f docker-compose.prod.yml down --rmi all
+```
+Desarrollo
+```console
+$ docker-compose down --rmi all
+```
+
 <br>
 <br>
 
