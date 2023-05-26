@@ -45,8 +45,8 @@ services:
     ports:
       - 3000:80
     links:
-      - db:db
-      - db-ies:db-ies
+      - db
+      - db-ies
     networks:
       - dev-net
     depends_on:
@@ -72,7 +72,7 @@ services:
   db-ies:
     image: mcr.microsoft.com/mssql/server:2019-CU3-ubuntu-18.04
     user: '0:0'
-    container_name: pleyades-ies-db
+    container_name: pleyades-db-ies
     ports:
       - 1433:1433
     env_file:
@@ -92,8 +92,8 @@ services:
     ports:
       - 8080:8080
     links:
-      - db:db
-      - db-ies:db-ies
+      - db
+      - db-ies
     networks:
       - dev-net
 

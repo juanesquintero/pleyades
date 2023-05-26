@@ -56,7 +56,6 @@ services:
       context: ./api
       dockerfile: ./Dockerfile
     image: pleyades-api:1.0.0
-    # image: juanesquintero/pleyades-api:1.0.1
     env_file:
       - ./api/.env
     environment:
