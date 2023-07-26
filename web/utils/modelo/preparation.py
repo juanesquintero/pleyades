@@ -1,3 +1,5 @@
+import math
+import pandas as pd
 import warnings
 from flask import session
 from utils.constants import (
@@ -9,6 +11,7 @@ from utils.constants import (
 )
 
 ################################################################################################################ PREPARACION DE DATOS DE UN CONJUNTO ##############################################################################################################
+
 
 def prepare_data(data):
     # Condiciones Precisas
@@ -69,9 +72,18 @@ def elimination(data, no_desertion=False):
         data.loc[indice_fila, 'edad'] = x[fila['semestre']]
 
     # Elminar desercíon temprana
-    data = data.query('semestre != 1 & promedio_acumulado > 0.5')
+    data = data.query('semestre != 1')
 
+    if not pd.isna(data['promedio_acumulado']).all():
+        data = data.query(
+            'promedio_acumulado > 0.5'
+        )
+
+    # Obtener ultimo periodo a predecir
     periodo_a_predecir = data['registro'].max()
+
+    if not periodo_a_predecir or math.isnan(periodo_a_predecir):
+        raise Exception('Período a predecir (REGISTRO maximo) indefinido.')
 
     # Separar data a predecir y a entrenar
     data_a_predecir = data.query(f'registro >= {periodo_a_predecir}')
