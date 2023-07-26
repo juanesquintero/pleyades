@@ -8,13 +8,12 @@ error_logger = logging.getLogger('error_logger')
 
 def exception(op):
     if isinstance(op, Exception) or op is None:
-        message, exception_info = 'EXCEPTION: {}'.format(
-            op), traceback.format_exc()
+        message, exception_info = f'EXCEPTION: {op}', traceback.format_exc()
         if exception_info:
-            message += '   ---->   {}'.format(exception_info)
+            message += f'   ---->   {exception_info}'
         error_logger.error(message, exc_info=True)
         return {'error': 'Ha ocurrido un error en la ejecución del servidor, si es necesario contacte al Admin del sistema para verificar el error.'}, 500
-    
+
     return False
 
 

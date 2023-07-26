@@ -124,9 +124,9 @@ def app_routes(app):
 
 def app_errors(app, error_logger):
     def exception(e):
-        message, exception_info = 'EXCEPTION: {}'.format(e), traceback.format_exc()
+        message, exception_info = f'EXCEPTION: {e}', traceback.format_exc()
         if exception_info:
-            message += '   ---->   {}'.format(exception_info) 
+            message += f'   ---->   {exception_info}'
             logging.getLogger('error_logger').error(message, exc_info=True)
 
     @app.errorhandler(404)
