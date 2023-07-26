@@ -86,11 +86,11 @@ def put(correo):
         if not exists_programa(body['programa']): return {'error': 'programa no existe'}, 404
     if 'clave' in body.keys():
         body['clave'] = str(md5(body['clave'].encode()).hexdigest())
-        
+
     # Uptade
     update = usuario_model.update(correo, body)
     ex = exception(update)
-    if ex: 
+    if ex:
         return ex
     return {'msg': 'Usuario actualizado'}, 200
 
@@ -101,27 +101,25 @@ def delete_one(correo):
         return {'error': 'indique el correo por el path'}, 404
     # sql validations
     if not exists(correo):  return {'error': 'Usuario no existe'}, 404
-    # delete 
+    # delete
     delete = usuario_model.delete(correo)
     ex = exception(delete) 
-    if ex: 
+    if ex:
         return ex
     return {'msg': 'Usuario eliminado'}, 200
-    
+
 def exists(correo):
     query = usuario_model.get_all()
     if exception(query):
         return False
-    lista = map(lambda u : u['correo'], query) 
+    lista = map(lambda u : u['correo'], query)
     return True if correo in lista else False
 
 
 def auth(correo, clave):
     query = usuario_model.get_login(correo,clave)
-    ex = exception(query)
-    if ex:
-        return False, ex
+
     if query:
         return True, query
-    else:
-        return False, None
+
+    return False, None
