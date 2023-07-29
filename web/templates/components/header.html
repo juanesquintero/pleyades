@@ -84,7 +84,6 @@
         $("#myModal").modal("hide");
         $(".submit").css("display", "inline");
         $(".btn-loading").css("display", "none");
-        console.log('1238612931239adasfsdfdsfsdf435k243jg');
         window.history.back();
       }
     </script>
@@ -186,30 +185,23 @@
         </div>
       </div>
 
-      {% else %} {% if request.path=='/login' %}
+      {% else %} 
+    
       <a
         class="nav-link mx-3 border text-white my-primary rounded py-1 px-2"
-        href="{{url_for('auth.login') }}"
+        href="{{ url_for('auth.login') if request.path != '/login' else '#' }}"
       >
-        Iniciar Sesión
-        <i
-          class="fa fa-sign-in-alt fa-fw ml-2 text-white"
-          aria-hidden="true"
-        ></i>
+        <span>
+          <p class="d-none d-md-inline">Iniciar Sesión</p>
+          <i
+            class="fa fa-sign-in-alt fa-fw ml-2 text-white"
+            aria-hidden="true"
+          ></i>
+        </span>
       </a>
-      {% else %}
-      <a
-        class="nav-link mx-3 border text-white my-primary rounded py-1 px-2"
-        href="{{url_for('auth.login') }}"
-      >
-        Iniciar Sesión
-        <i
-          class="fa fa-sign-in-alt fa-fw ml-2 text-white"
-          aria-hidden="true"
-        ></i>
-      </a>
-      {% endif %} {% endif %}
+      {% endif %}
     </nav>
   </header>
 
-  <body>
+  <body></body>
+</html>
