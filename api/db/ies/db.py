@@ -5,7 +5,6 @@ from functools import wraps
 from dotenv import load_dotenv
 from sqlalchemy import create_engine
 
-
 load_dotenv()
 error_logger = logging.getLogger('error_logger')
 
@@ -16,9 +15,9 @@ _password = os.getenv('CLI_DB_PASSWORD')
 
 ies_name = os.getenv('CLI_IES_NAME')
 
-str_conn = f'mssql+pyodbc://{_user}:{_password}@{_host}:1433/{_db}?driver=ODBC+Driver+17+for+SQL+SERVER&timeout=135'
+str_conn = f'mssql+pyodbc://{_user}:{_password}@{_host}:1433/{_db}?driver=ODBC+Driver+17+for+SQL+SERVER&timeout=90'
 
-conn_fail_msg = f'Conexión caida BD Institución!! (SQL Server - {ies_name})'
+conn_fail_msg = f'Conexión caída BD Institución!! (SQL Server - {ies_name})'
 
 # _drivers = [d for d in pyodbc.drivers()]
 # driver = _drivers[-1] if _drivers else 'SQL Server'
@@ -51,12 +50,12 @@ class DB:
 
     @staticmethod
     def getInstance():
-        if DB.__instance == None:
+        if DB.__instance is None:
             DB()
         return DB.__instance
 
     def __init__(self):
-        if DB.__instance != None:
+        if DB.__instance is not None:
             raise Exception('Esta clase es un Singleton!')
         else:
             self.cnx = None
@@ -81,26 +80,21 @@ class DB:
         try:
             if self.cnx is None:
                 self.connect()
-                return self.exception
-            cur = self.cnx.cursor()
-            cur.execute(sql)
+                return None
+            with self.cnx.cursor() as cur:
+                cur.execute(sql)
+                rows = cur.fetchall()
+                columns = [i[0] for i in cur.description]
+                lista = []
+                for row in rows:
+                    REGISTRO = dict(zip(columns, row))
+                    json = dict(REGISTRO)
+                    lista.append(json)
+                return lista
         except Exception as e:
             log_error(e)
             self.connect()
-            return e
-
-        lista = []
-        rows = cur.fetchall()
-        columns = [i[0] for i in cur.description]
-        for row in rows:
-            # Create a zip object from two lists
-            REGISTRO = dict(zip(columns, row))
-            # Create a dictionary from zip object
-            json = dict(REGISTRO)
-            lista.append(json)
-        cur.close
-        self.cnx.close
-        return lista
+            raise e
 
     @validate_connection
     def insert(self, body, tabla):
@@ -124,15 +118,13 @@ class DB:
         registros = list(tuple(row) for row in data.values)
 
         try:
-            cur = self.cnx.cursor()
-            cur.executemany(sql, registros)
-            cur.close
+            with self.cnx.cursor() as cur:
+                cur.executemany(sql, registros)
             self.cnx.commit()
+            return True
         except Exception as e:
             log_error(e)
-            return e
-        self.cnx.close
-        return True
+            raise e
 
     def sql(self, sql):
         # Sentencia SQL
@@ -154,18 +146,14 @@ class DB:
 
     @validate_connection
     def execute(self, sql):
-        # Manejar error de ejecución
         try:
             if self.cnx is None:
                 self.connect()
-                return self.exception
-            cur = self.cnx.cursor()
-            cur.execute(sql)
-            self.cnx.commit()
-            cur.close
-            self.cnx.close
-            return cur
+                return None
+            with self.cnx.cursor() as cur:
+                cur.execute(sql)
+                self.cnx.commit()
+                return cur
         except Exception as e:
             log_error(e)
-            self.connect()
-            return e
+            raise e
