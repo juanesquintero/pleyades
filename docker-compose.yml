@@ -1,7 +1,6 @@
-version: '3.8'
+version: "3.8"
 name: pleyades
 services:
-  
   web_dev:
     container_name: pleyades-web_dev
     build:
@@ -21,7 +20,7 @@ services:
     ports:
       - 5000:80
     links:
-       - 'api_dev:api'
+      - "api_dev:api"
     networks:
       - dev-net
     depends_on:
@@ -71,7 +70,7 @@ services:
 
   db-ies:
     image: mcr.microsoft.com/mssql/server:2019-CU3-ubuntu-18.04
-    user: '0:0'
+    user: "0:0"
     container_name: pleyades-db-ies
     ports:
       - 1433:1433
@@ -85,7 +84,7 @@ services:
       - dev-net
       - deploy-net
     command: /bin/bash -c "/opt/mssql/bin/sqlservr && /tmp/init.sh"
-        
+
   adminer:
     container_name: pleyades-adminer
     image: adminer:4
