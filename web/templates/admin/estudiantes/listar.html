@@ -41,7 +41,8 @@
             <div class="btn-group" role="group" aria-label="Basic example">
               <!-- detalle -->
               <form action="{{url_for('Estudiante.detalle')}}" method="POST">
-                <input type="hidden" name="estudiante" value="{{p.codigo}}">
+                <input type="hidden" name="idprograma" value="{{p.codigo}}">
+                <input type="hidden" name="programa" value="{{p.nombre}}">
                 <button type="submit" data-toggle="tooltip" data-placement="bottom" title="Ver datos de entrenamiento"
                   class="btn btn-outline-dark btn-sm submit" role="status">
                   <i class="fas fa-search-plus"></i>

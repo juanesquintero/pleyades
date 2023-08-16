@@ -20,8 +20,10 @@ def listar():
 @Estudiante.route('/detalle', methods=['POST'])
 @only_admin
 def detalle():
-    programa = dict(request.values).get('estudiante')
-    status, body = get(f'desercion/estudiantes/programa/{programa}')
+    form = dict(request.values)
+    idprograma = form.get('idprograma')
+    programa = form.get('programa')
+    status, body = get(f'desercion/estudiantes/programa/{idprograma}')
     if status:
-        return render_template('admin/'+endopoint+'detalle.html', estudiantes=body)
-    return render_template('admin/'+endopoint+'detalle.html', estudiantes=[], error=body)
+        return render_template('admin/'+endopoint+'detalle.html', estudiantes=body, programa=programa)
+    return render_template('admin/'+endopoint+'detalle.html', estudiantes=[], error=body, programa=programa)
