@@ -55,7 +55,9 @@ CLI_DB_NAME=educatic_ies_clien
 JWT_KEY=ies_pleyades_jwt_secret
 ```
 
-### Inicializar base de datos
+
+### Inicializar base de datos
+
 
 Si la base de datos de mysql para Pleyades no se encuentra contenerizada;
 por favor correr el siguiente archivo .sql, antes de correr el comando de ejecución 
