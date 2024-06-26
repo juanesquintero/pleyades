@@ -1,4 +1,3 @@
-version: "3.8"
 name: pleyades
 services:
   web_dev:
@@ -18,9 +17,9 @@ services:
       - TEMPLATES_AUTO_RELOAD=1
       - CLI_IES_NAME=${IES_CLIENT}
     ports:
-      - 5000:80
+      - 5001:80
     links:
-      - "api_dev:api"
+      - api_dev:api
     networks:
       - dev-net
     depends_on:
@@ -42,7 +41,7 @@ services:
       - FLASK_APP=__init__:create_app()
       - CLI_IES_NAME=${IES_CLIENT}
     ports:
-      - 3000:80
+      - 3001:80
     links:
       - db
       - db-ies
