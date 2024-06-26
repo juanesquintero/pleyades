@@ -63,12 +63,12 @@ def prepare_data(data):
         data[columna] = data.apply(condicion_conjunta_fn, axis=1)
 
     # # Condiciones Especiales
-    # def func2(row):
+    # def etnia_fn(row):
     #     return 0 if (
     #         row['etnia'] == 'NO APLICA' or
     #         row['etnia'] == None
     #     ) else 1
-    # data['etnia'] = data.apply(func2, axis=1)
+    # data['etnia'] = data.apply(etnia_fn, axis=1)
 
     # corregir tipos y nombre de la base de datos de deserción
     data_preparada = data.rename(columns={'REGISTRO': 'registro'})
