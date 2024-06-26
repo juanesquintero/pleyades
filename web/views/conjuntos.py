@@ -112,9 +112,9 @@ def crear():
 
     if status_f and status_p and periodos:
         return render_template(endopoint+'crear.html', facultades=body_f, programas=body_p)
-    elif not(status_f) and not(status_p):
+    elif not status_f and not status_p:
         error = {**body_f, **body_p}
-    elif not(status_f):
+    elif not status_f:
         error = body_f
     else:
         error = body_p
@@ -144,13 +144,13 @@ def detalle():
 
     if status_p and status_f and status_u and conjunto:
         return render_template(endopoint+'detalle.html', facultades=body_f, programas=body_p, usuarios=body_u, c=conjunto)
-    elif not(status_f) and not(status_p) and not(status_u):
+    elif not status_f and not status_p and not status_u:
         error = {**body_f, **body_p, **body_u}
-    elif not(status_f):
+    elif not status_f:
         error = body_f
-    elif not(status_p):
+    elif not status_p:
         error = body_p
-    elif not(conjunto):
+    elif not conjunto:
         return render_template('utils/mensaje.html', mensaje='No se encontro un conjunto para detallar')
     else:
         error = body_u
@@ -189,7 +189,7 @@ def guardar(conjunto=None):
         extension = '.'+archivo.filename.split('.')[1]
         # Guardar archivo de excel
 
-        if not (extension in ['.xls', '.xlsx']):
+        if extension not in ['.xls', '.xlsx']:
             return render_template('utils/mensaje.html', mensaje='Extension de archivo incorrecta: '+str(extension), submensaje='Solo se permiten archivos excel .xls & xlsx')
 
         # VERIFICACION de formato
@@ -301,7 +301,7 @@ def preparar(conjunto=None):
     archivo_crudo = 'C '+nombre
     ruta = upload_folder+'/crudos/'+archivo_crudo
     exito, data_cruda = obtener_archivo_excel(ruta)
-    if not(exito):
+    if not exito:
         return data_cruda
 
     # Algoritmo de preparacion
@@ -313,7 +313,7 @@ def preparar(conjunto=None):
         observaciones = {'error': str(e)}
         exito, pagina_error = guardar_preparacion(
             preparacion, observaciones, 'Fallida')
-        if not(exito):
+        if not exito:
             return pagina_error
         return render_template('utils/mensaje.html', mensaje='la preparación falló')
 
@@ -321,12 +321,12 @@ def preparar(conjunto=None):
     archivo_procesado = 'P '+nombre+'.xls'
     ruta = upload_folder+'/procesados/'+archivo_procesado
     exito, pagina_error = guardar_archivo(data_preparada, ruta, 'excel')
-    if not(exito):
+    if not exito:
         return pagina_error
 
     # Guardar registro de preparacion en la BD
     exito, pagina_error = guardar_preparacion(preparacion, None, 'Exitosa')
-    if not(exito):
+    if not exito:
         return pagina_error
 
     ########### FIN PREPARAR ############
@@ -381,7 +381,7 @@ def ejecutar(conjunto=None):
     archivo_procesado = 'P '+nombre
     ruta = upload_folder+'/procesados/'+archivo_procesado
     exito, data_preparada = obtener_archivo_excel(ruta)
-    if not(exito):
+    if not exito:
         return data_preparada
 
     # Algoritmo de ejecución
@@ -407,7 +407,7 @@ def ejecutar(conjunto=None):
         exito, pagina_error = guardar_ejecucion(
             ejecucion, resultados, 'Fallida')
         ejecucion_guardada = True
-        if not(exito):
+        if not exito:
             return pagina_error
         act_estado = actualizar_estado(nombre, 'Procesados')
         if act_estado:
@@ -460,20 +460,22 @@ def ejecutar(conjunto=None):
         exito, pagina_error = guardar_archivo(
             resultados_modelo.pop('desertores'), ruta, 'json'
         )
-        if not(exito):
+        if not exito:
             return pagina_error
 
     else:
-        # TODO data 
+        # TODO data
         flash('<b>El modelo detectó 0 desertores, Deserción 0%</b>', 'danger')
-        flash('Revise si hay estudiantes ó desertores suficientes en el programa', 'warning')
+        flash(
+            'Revise si hay estudiantes ó desertores suficientes en el programa', 'warning'
+        )
         resultados_modelo.pop('desertores')
         estado_ejecucion = 'Fallida'
     # Guardar registro de ejecución en la BD
     if not ejecucion_guardada:
         exito, pagina_error = guardar_ejecucion(
             ejecucion=ejecucion, resultados=resultados_modelo, estado=estado_ejecucion)
-        if not(exito):
+        if not exito:
             act_estado = actualizar_estado(nombre, 'Procesados')
             if act_estado:
                 return act_estado
