@@ -60,7 +60,8 @@ services:
     env_file:
       - ./api/.env
     environment:
-      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PWD}
+      - MYSQL_ALLOW_EMPTY_PASSWORD=1
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
     volumes:
       - ./api/db/pleyades/dev:/var/lib/mysql
       - ./api/db/pleyades/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
