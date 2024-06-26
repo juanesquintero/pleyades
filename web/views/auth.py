@@ -56,7 +56,11 @@ def login():
         # Obtener token
         token = body.get('access_token')
         # Setear usuario de la session
-        user = jwt.decode(token, os.getenv('JWT_KEY')).get('sub')
+        user = jwt.decode(
+            token,
+            os.getenv('JWT_KEY'),
+            algorithms=["HS256"],
+        ).get('sub')
         session['user'] = user
         # Definir objeto request para realizar peticiones  al API 
         session['headers'] = {'Authorization': 'Bearer ' + token}        
