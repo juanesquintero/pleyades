@@ -57,7 +57,7 @@ def prepare_data(data):
         def condicion_conjunta_fn(row):
             value = str(row[columna]).lower()
             return yes_value if any(
-                c.lower() in value for c in criterios
+                c.lower() if isinstance(c, str) else c in value for c in criterios
             ) else no_value
 
         data[columna] = data.apply(condicion_conjunta_fn, axis=1)
