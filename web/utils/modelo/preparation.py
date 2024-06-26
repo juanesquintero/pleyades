@@ -15,7 +15,7 @@ from utils.constants import (
 
 def prepare_data(data):
     # Condiciones Precisas
-    condiciones = [
+    condiciones_precisas = [
         ('jornada', 'DIURNA'),
         ('genero', 'MASCULINO'),
         ('estado_civil', 'SOLTERO(A)'),
@@ -26,25 +26,35 @@ def prepare_data(data):
         ('intersemestral', 'SI'),
         ('desertor', 'SI'),
     ]
-    for cond in condiciones:
+    for cond in condiciones_precisas:
         columna, criterio = cond[0], cond[1]
-        def func(row): return 1 if row[columna] == criterio else 0
-        data[columna] = data.apply(func, axis=1)
+
+        def condicion_precisa_fn(row): return 1 if row[columna] == criterio else 0
+
+        data[columna] = data.apply(condicion_precisa_fn, axis=1)
 
     # Condiciones conjuntas
-    condiciones = [
-        ('lugar_residencia_sede',  ['MEDELLIN', 'BELLO', 'ITAGUI',
-         'COPACABANA', 'ENVIGADO', 'SABANETA', 'BARBOSA', 'LA ESTRELLA'], 1, 0),
+    condiciones_conjuntas = [
+        (
+            'lugar_residencia_sede',
+            [ 'MEDELLIN', 'BELLO', 'ITAGUI', 'COPACABANA', 'ENVIGADO', 'SABANETA', 'BARBOSA', 'LA ESTRELLA'],
+            1,
+            0,
+        ),
     ]
-    for cond in condiciones:
-        yes_value, no_value = cond[2], cond[3]
-        columna, criterios = cond[0], cond[1]
 
-        def func1(row):
+
+    for cond in condiciones_conjuntas:
+        columna, criterios = cond[0], cond[1]
+        yes_value, no_value = cond[2], cond[3]
+
+        def condicion_conjunta_fn(row):
+            value = str(row[columna]).lower()
             return yes_value if any(
-                c.lower() in row[columna].lower() for c in criterios
+                c.lower() in value for c in criterios
             ) else no_value
-        data[columna] = data.apply(func1, axis=1)
+
+        data[columna] = data.apply(condicion_conjunta_fn, axis=1)
 
     # Condiciones Especiales
     def func2(row):
