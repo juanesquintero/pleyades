@@ -4,7 +4,7 @@ import datetime as dt
 from hashlib import md5
 
 from schemas.auth_schema import validate_login_schema
-from controllers.Usuarios import auth, post
+from controllers.Usuarios import auth, create_user
 
 Auth = Blueprint('auth', __name__)
 
@@ -37,4 +37,5 @@ def login():
 
 @Auth.route('/singup', methods=['POST'])
 def singup():
-    return post
+    body = request.get_json()
+    return create_user(body)
