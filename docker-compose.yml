@@ -83,7 +83,7 @@ services:
     networks:
       - dev-net
       - deploy-net
-    command: /bin/bash -c "/opt/mssql/bin/sqlservr & /tmp/init.sh"
+    command: /bin/bash -c "/opt/mssql/bin/sqlservr & /tmp/init.sh && wait"
 
   adminer:
     container_name: pleyades-adminer
