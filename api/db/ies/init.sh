@@ -7,21 +7,45 @@ sqlcmd='/opt/mssql-tools/bin/sqlcmd -S localhost -U'
 sqlcmd_sa=$sqlcmd" sa -P $MSSQL_SA_PASSWORD -i"
 sqlcmd_user=$sqlcmd" $MSSQL_DBUSER -P $MSSQL_DBUSERPWD -i"
 
-YELLOW=$(tput setaf 3)
-NC=$(tput setaf 7)
 
-## Execute initial sql files
+## Debugging: print variables
+echo "MSSQL_SA_PASSWORD: $MSSQL_SA_PASSWORD"
+echo "MSSQL_DBUSER: $MSSQL_DBUSER"
+echo "MSSQL_DBUSERPWD: $MSSQL_DBUSERPWD"
 
-echo "${YELLOW}Inicializando la base de datos de deserción de SQL Server...${NC}"
-$sqlcmd_sa /tmp/sql/init.sql
 
-echo "${YELLOW}Ejecutando creates.sql...${NC}"
-$sqlcmd_sa /tmp/sql/creates.sql
+## Wait for SQL Server to be ready
+echo "Esperando a que SQL Server este listo..."
+sleep 90s
 
-echo "${YELLOW}Ejecutando inserts dependencias.sql...${NC}"
-$sqlcmd_user /tmp/sql/inserts/dependencias.sql
+## Check if database already exists
+echo "Checking if database $MSSQL_DBNAME exists..."
 
-echo "${YELLOW}Ejecutando inserts desercion.sql...${NC}"
-$sqlcmd_user /tmp/sql/inserts/desercion.sql
+SQL_QUERY="IF DB_ID(N'$MSSQL_DBNAME') IS NOT NULL PRINT 'EXISTS'"
+echo "SQL Query: $SQL_QUERY"
 
-echo "${YELLOW}Finalizó la definicion de la bd de deserción!!!${NC}"
+SQLCMD_OUTPUT=$(/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "$MSSQL_SA_PASSWORD" -Q "$SQL_QUERY" -W)
+echo "SQLCMD Output: $SQLCMD_OUTPUT"
+
+DB_EXISTS=$(echo $SQLCMD_OUTPUT | grep -o "EXISTS")
+
+echo "DB_EXISTS: $DB_EXISTS"
+
+if [[ $DB_EXISTS == "EXISTS" ]]; then
+    echo "The database '$MSSQL_DBNAME' already exists."
+else
+    ## Execute initial sql files
+    echo "Inicializando la base de datos de deserción..."
+    $sqlcmd_sa /tmp/sql/init.sql
+
+    echo "Ejecutando creates.sql..."
+    $sqlcmd_sa /tmp/sql/creates.sql
+
+    echo "Ejecutando inserts dependencias.sql..."
+    $sqlcmd_user /tmp/sql/inserts/dependencias.sql
+
+    echo "Ejecutando inserts desercion.sql..."
+    $sqlcmd_user /tmp/sql/inserts/desercion.sql
+
+    echo "Finalizó la definicion de la bd de deserción!!!"
+fi
