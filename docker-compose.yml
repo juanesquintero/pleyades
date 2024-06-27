@@ -60,7 +60,7 @@ services:
       - ./api/.env
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD=1
-      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PWD}
     volumes:
       - ./api/db/pleyades/dev:/var/lib/mysql
       - ./api/db/pleyades/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -83,7 +83,7 @@ services:
     networks:
       - dev-net
       - deploy-net
-    command: /bin/bash -c "/opt/mssql/bin/sqlservr && /tmp/init.sh"
+    command: /bin/bash -c "/opt/mssql/bin/sqlservr & /tmp/init.sh"
 
   adminer:
     container_name: pleyades-adminer
