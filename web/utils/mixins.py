@@ -61,19 +61,16 @@ def str_to_date(fecha):
 def guardar_archivo(data, ruta, tipo):
     try:
         if tipo == 'excel':
-            data.to_excel(ruta, index=False)
+            data.to_excel(ruta, engine='openpyxl', index=False)
         elif tipo == 'json':
             data.to_json(ruta, orient='records')
         else:
-
             raise Exception(
                 'No se pudo guardar el archivo \n Tipo de archivo incorrecto'
             )
-            # return False, render_template('utils/mensaje.html', mensaje='No se pudo guardar el archivo', submensaje='Tipo de archivo incorrecto')
     except Exception as e:
         error_logger.error(e)
         raise Exception('No se pudo guardar el archivo')
-        # return False, render_template('utils/mensaje.html', mensaje='No se pudo guardar el archivo')
     return True, 'ERROR'
 
 

@@ -40,7 +40,7 @@ def listar(estado: str):
     status_c, body_c = get("conjuntos/estado/" + estado)
     if status_c and status_p:
         return render_template(
-            "admin/" + endopoint + estado + ".html", conjuntos=body_c, programas=body_p
+            "admin/" + endopoint + estado.replace(" ", "_") + ".html", conjuntos=body_c, programas=body_p
         )
 
     if not (status_c) and not (status_p):
