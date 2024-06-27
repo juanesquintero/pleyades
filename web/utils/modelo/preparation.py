@@ -29,7 +29,8 @@ def prepare_data(data):
     for cond in condiciones_precisas:
         columna, criterio = cond[0], cond[1]
 
-        def condicion_precisa_fn(row): return 1 if row[columna] == criterio else 0
+        def condicion_precisa_fn(
+            row): return 1 if row[columna] == criterio else 0
 
         data[columna] = data.apply(condicion_precisa_fn, axis=1)
 
@@ -37,18 +38,18 @@ def prepare_data(data):
     condiciones_conjuntas = [
         (
             'lugar_residencia_sede',
-            [ 'MEDELLIN', 'BELLO', 'ITAGUI', 'COPACABANA', 'ENVIGADO', 'SABANETA', 'BARBOSA', 'LA ESTRELLA'],
+            ['MEDELLIN', 'BELLO', 'ITAGUI', 'COPACABANA',
+                'ENVIGADO', 'SABANETA', 'BARBOSA', 'LA ESTRELLA'],
             1,
             0,
         ),
         (
             'etnia',
-            [ 'NO APLICA', None],
+            ['NO APLICA', None],
             0,
             1,
         ),
     ]
-
 
     for cond in condiciones_conjuntas:
         columna, criterios = cond[0], cond[1]
@@ -119,7 +120,7 @@ def elimination(data, no_desertion=False):
     n_rows = int(data_a_predecir.shape[0] * umbral)
     data_proxima = data_a_predecir.iloc[:n_rows]
 
-    data = data.append(data_proxima)
+    data = pd.concat([data, data_proxima], ignore_index=True)
 
     # Eliminar columnas inecesarias y nulos
     data = drop_columns(data)
