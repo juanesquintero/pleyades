@@ -60,7 +60,7 @@ def listar(estado, conjunto=None):
         if conjunto:
             body_c = [d for d in body_c if conjunto in d['nombre']]
         return render_template(
-            endopoint+estado+'.html',
+            endopoint+estado.replace(' ', '_')+'.html',
             conjuntos=body_c,
             programas=body_p
         )
@@ -72,7 +72,7 @@ def listar(estado, conjunto=None):
     else:
         error = body_p
     return render_template(
-        endopoint+estado+'.html',
+        endopoint+estado.replace(' ', '_')+'.html',
         conjuntos=[],
         error=error
     )
@@ -202,12 +202,15 @@ def guardar(conjunto=None):
         nombre, numero = obtener_nombre_conjunto(conjunto)
         if not nombre:
             return numero
-        archivo_guardar = 'C ' + nombre + '.xls'
+        archivo_guardar = 'C ' + nombre + '.xlsx'
 
         if validacion:
             try:
-                data_verificada.to_excel(ruta+'/'+archivo_guardar, index=False)
-                # archivo.save(os.path.join(ruta, nombre + extension))
+                data_verificada.to_excel(
+                    ruta+'/'+archivo_guardar,
+                    engine='openpyxl',
+                    index=False
+                )
             except Exception as e:
                 error_logger.error(e)
                 return render_template('utils/mensaje.html', mensaje='Ocurrió un error guardando el conjunto de datos')
@@ -236,12 +239,16 @@ def guardar(conjunto=None):
         nombre, numero = obtener_nombre_conjunto(conjunto)
         if not nombre:
             return numero
-        archivo_guardar = 'C ' + nombre + '.xls'
+        archivo_guardar = 'C ' + nombre + '.xlsx'
 
         if validacion:
             # Guardar tabla sql como excel
             try:
-                data_verificada.to_excel(ruta+'/'+archivo_guardar, index=False)
+                data_verificada.to_excel(
+                    ruta+'/'+archivo_guardar,
+                    engine='openpyxl',
+                    index=False
+                )
             except Exception as e:
                 error_logger.error(e)
                 return render_template('utils/mensaje.html', mensaje='Ocurrió un error guardando el conjunto de datos')
