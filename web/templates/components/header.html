@@ -81,6 +81,7 @@
       }
 
       function goBack() {
+        //event.preventDefault();
         $("#myModal").modal("hide");
         $(".submit").css("display", "inline");
         $(".btn-loading").css("display", "none");
@@ -185,8 +186,8 @@
         </div>
       </div>
 
-      {% else %} 
-    
+      {% else %}
+
       <a
         class="nav-link mx-3 border text-white my-primary rounded py-1 px-2"
         href="{{ url_for('auth.login') if request.path != '/login' else '#' }}"
