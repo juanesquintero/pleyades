@@ -22,7 +22,7 @@ def get():
     ex = exception(query)
     if ex:
         return ex
-    if not(query):
+    if not query:
         return {'msg': 'No hay Conjuntos'}, 404
     return jsonify(query)
 
@@ -34,50 +34,50 @@ def get_one(nombre):
     ex = exception(query)
     if ex:
         return ex
-    if not(query):
+    if not query:
         return {'msg': 'No hay concidencias'}, 404
     return jsonify(query)
 
 
 @Conjunto.route('/estado/<estado>')
 @jwt_required()
-def getByEstado(estado):
+def get_by_estado(estado):
     query = conjunto_model.get_estado(estado)
     ex = exception(query)
     if ex:
         return ex
-    if not(query):
+    if not query:
         return {'msg': 'No hay concidencias'}, 404
     return jsonify(query)
 
 
 @Conjunto.route('/tipo/<tipo>')
 @jwt_required()
-def getByTipo(tipo):
+def get_by_tipo(tipo):
     query = conjunto_model.get_tipo(tipo)
     ex = exception(query)
     if ex:
         return ex
-    if not(query):
+    if not query:
         return {'msg': 'No hay concidencias'}, 404
     return jsonify(query)
 
 
 @Conjunto.route('/programa/<int:programa>')
 @jwt_required()
-def getByPrograma(programa):
+def get_by_programa(programa):
     query = conjunto_model.get_programa(programa)
     ex = exception(query)
     if ex:
         return ex
-    if not(query):
+    if not query:
         return {'msg': 'No hay concidencias'}, 404
     return jsonify(query)
 
 
 @Conjunto.route('encargado/<encargado>')
 @jwt_required()
-def getByEncargado(encargado):
+def get_by_encargado(encargado):
     estado = request.args.get('estado')
     if estado:
         if estado.lower().strip() in ['crudos', 'procesados', 'en proceso']:
@@ -89,19 +89,19 @@ def getByEncargado(encargado):
     ex = exception(query)
     if ex:
         return ex
-    if not(query):
+    if not query:
         return {'msg': 'No hay concidencias'}, 404
     return jsonify(query)
 
 
 @Conjunto.route('/periodos/<int:inicio>/<int:fin>')
 @jwt_required()
-def getByPeriodos(inicio, fin):
+def get_by_periodos(inicio, fin):
     query = conjunto_model.get_rango(inicio, fin)
     ex = exception(query)
     if ex:
         return ex
-    if not(query):
+    if not query:
         return {'msg': 'No hay concidencias'}, 404
     return jsonify(query)
 
@@ -144,7 +144,7 @@ def post2():
 def nombre():
     body = request.get_json()
     # validate schema
-    if not(validate_nombre_schema(body)):
+    if not validate_nombre_schema(body):
         return {'error': 'body invalido'}, 400
     # sql validations
     if not exists_usuario(body['encargado']):
@@ -194,7 +194,7 @@ def delete_many(estado):
     ex = exception(query)
     if ex:
         return ex
-    if not(query):
+    if not query:
         return {'msg': 'No hay concidencias'}, 404
 
     conjuntos_nombres = [ c['nombre'] for c in query]
