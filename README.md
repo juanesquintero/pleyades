@@ -17,18 +17,20 @@ Crear los .env desde los .env.template
 
 ###  /.env
 ```env
-PLEYADES_IES_CLIENT=ies_client_short_name
-PLEYADES_MYSQL_ROOT_PASSWORD=pleyades_db_root_password
+IES_CLIENT=ies_client_short_name
+DB_ROOT_PWD=pleyades_db_root_password
 PUBLIC_PORT=pleyades_server_public_port
 ```
-<small>PLEYADES_MYSQL_ROOT_PASSWORD es opcional (es necesaria solo si la bd esta dockerizada)</small>
-
+<small>"DB_ROOT_PWD" es opcional (es necesaria solo si la bd de Pleyades MySQL esta dockerizada)</small>
 
 Institución de Educación Superior (IES) - Cliente de Educatic
+
+<small>"IES_CLIENT" es el acronimo de la IES
+
+Revisar el archivo "ies.json" ahií podra encontrar los posibles valores del nombre corto del cliente ies</small>
+
 <br>
-<small>Revisar el archivo ies.json para escoger el nombre corto del ies cliente</small>
-<br>
-<br>
+
 
 ###  web/.env
 ```env
@@ -53,7 +55,9 @@ CLI_DB_NAME=educatic_ies_clien
 JWT_KEY=ies_pleyades_jwt_secret
 ```
 
-### Inicializar base de datos
+
+### Inicializar base de datos
+
 
 Si la base de datos de mysql para Pleyades no se encuentra contenerizada;
 por favor correr el siguiente archivo .sql, antes de correr el comando de ejecución 
@@ -76,13 +80,14 @@ Modo desarrollo
 $ docker-compose up -d
 ```
 
-Modo producción (NGINX)
+Modo producción 
 ```console
-$ docker-compose -f docker-compose.prod.yml up nginx -d
+$ docker-compose -f docker-compose.prod.yml up -d
 ```
 
 ... incluyendo la base de datos dockerizada
 ```console
+$ docker-compose up db db-ies -d
 $ docker-compose -f docker-compose.prod.yml up -d
 ```
 
@@ -90,6 +95,18 @@ Evidenciar contenedores corriendo
 ```console
 $ docker ps -a
 ```
+
+<small>
+
+Conectar contenedores productivos (pleyades-api) con bases de datos locales de desarrollo.
+
+```console
+$ docker-compose up -d
+$ docker-compose -f docker-compose.prod.yml up -d
+$ docker network connect pleyades-dev_dev-net pleyades-api
+```
+
+</small> 
 
 
 # Detención 
@@ -137,11 +154,21 @@ $     ...    web/logs/GENERALS.log
 
 # Aplicar cambios 
 ```console
-$ git pull origin --force
-$ docker-compose -f docker-compose.prod.yml stop
-$ docker-compose -f docker-compose.prod.yml rm -f
-$ docker-compose -f docker-compose.prod.yml up nginx -d
+$ git pull origin develop
+$ docker-compose -f docker-compose.prod.yml stop &&
+docker-compose -f docker-compose.prod.yml rm -f &&
+docker-compose -f docker-compose.prod.yml up -d
 ````
+
+# Eliminar imagenes de Docker para actualización 
+Producción
+```console
+$ docker-compose -f docker-compose.prod.yml down --rmi all
+```
+Desarrollo
+```console
+$ docker-compose down --rmi all
+```
 
 <br>
 <br>

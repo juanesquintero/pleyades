@@ -69,7 +69,6 @@ def app_db(app):
     def query(sql):
         cur = db.session.execute(text(sql))
         rows = cur.fetchall()
-        print(rows.__str__())
         columns = [i[0] for i in cur.description]
         return  [dict(zip(columns, row)) for row in rows]
     
@@ -125,9 +124,9 @@ def app_routes(app):
 
 def app_errors(app, error_logger):
     def exception(e):
-        message, exception_info = 'EXCEPTION: {}'.format(e), traceback.format_exc()
+        message, exception_info = f'EXCEPTION: {e}', traceback.format_exc()
         if exception_info:
-            message += '   ---->   {}'.format(exception_info) 
+            message += f'   ---->   {exception_info}'
             logging.getLogger('error_logger').error(message, exc_info=True)
 
     @app.errorhandler(404)

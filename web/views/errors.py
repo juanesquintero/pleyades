@@ -1,6 +1,5 @@
-from flask import Blueprint, render_template, app, url_for
 import logging
-import os
+from flask import Blueprint, render_template, app, url_for, flash, redirect
 
 error_logger = logging.getLogger('error_logger')
 
@@ -18,9 +17,13 @@ def method_not_allow(e):
 @Error.route('/error')
 def handle_500(e):
     error_logger.error(e)
-    return render_template('utils/error.html',error=str(e)), 500
+    return render_template('utils/error.html', error=str(e)), 500
 
 @Error.app_errorhandler(Exception)
 def handle_exception(e):
-    error_logger.error('EXCEPTION: '+str(e), exc_info=True)
-    return render_template('utils/error.html', exception=True), 500
+    if len(e.args) > 1 and e.args[1]:
+        flash(f'<b>{e.args[0]}</b>', 'warning')
+        return redirect(url_for('Analista.modelos'))
+
+    error_logger.error(f'EXCEPTION: {e}', exc_info=True)
+    return render_template('utils/error.html', exception=True, mensaje=str(e), status=404), 500

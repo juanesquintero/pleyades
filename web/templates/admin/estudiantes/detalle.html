@@ -1,0 +1,133 @@
+{% include 'components/header.html' %}
+
+{% include 'components/sidebar.html' %}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
+
+<h4>Estudiantes {{programa}}</h4>
+<h6 class="text-muted"><i class="fas fa-user-shield fa-sm"></i> Admin</h6>
+<br>
+
+<!-- Input de filtrado -->
+<strong>
+    Filtrar por Columna...
+</strong>
+<div class="row" style="margin: 2px 0px -64px">
+    <input type="text" class="form-control form-control-sm w-25" id="filtroTabla"
+        placeholder="columna1:valor1,columna2:valor2">
+    <button id="filterButton" class="btn btn-light border mx-2">
+        <i class="fas fa-search""></i>
+    </button>  
+  </div>
+  <br>
+
+<!-- Tabla para listar -->
+<div class=" table-responsive-sm">
+            <table class="table table-hover table-sm p-5" id="myTable" data-toggle="table" data-pagination="true"
+                data-search="true" data-page-size="25">
+                <thead>
+                    <tr>
+                        <th data-field="REGISTRO">
+                            REGISTRO
+                        </th>
+                        <th data-field="semestre">
+                            semestre
+                        </th>
+                        <th data-field="nombre_completo">
+                            nombre_completo
+                        </th>
+                        <th data-field="documento">
+                            documento
+                        </th>
+                        <th data-field="promedio_acumulado">
+                            promedio_acumulado
+                        </th>
+                        <th data-field="desertor">
+                            desertor
+                        </th>
+                        <th data-field="idestado">
+                            idestado
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for est in estudiantes %}
+                    <tr>
+                        <td>{{ est.REGISTRO }}</td>
+                        <td>{{ est.semestre }}</td>
+                        <td>{{ est.nombre_completo }}</td>
+                        <td>{{ est.documento }}</td>
+                        <td>{{ est.promedio_acumulado }}</td>
+                        <td>{{ est.desertor }}</td>
+                        <td>{{ est.idestado }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+</div>
+
+{% if error %}
+<br>
+{% with titulo='No se pudieron cargar los estudiantes',error=error %}
+{% include "components/alert.html" %}
+{% endwith %}
+<br>
+{% endif %}
+
+<br>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
+
+<script>
+    $(document).ready(() => {
+        $('#myTable').bootstrapTable({
+            onLoadSuccess: function (data) {
+                applyFilter();
+            }
+        });
+
+
+        function filterByColumn(filter) {
+            const [columnName, searchText] = filter.split(':');
+            return {
+                [columnName]: [searchText],
+            }
+        }
+
+
+        function applyFilter() {
+            const searchPattern = $('#filtroTabla').val();
+            let filterOptions;
+
+            if (searchPattern.includes(':')) {
+                if (searchPattern.includes(',')) {
+                    const filters = searchPattern.split(',');
+                    for (filter of filters) {
+                        filterOptions = {
+                            ...filterOptions,
+                            ...filterByColumn(filter),
+                        };
+                    }
+                } else {
+                    filterOptions = filterByColumn(searchPattern);
+                }
+            } else {
+                return
+            }
+
+            $('#myTable').bootstrapTable('filterBy', filterOptions);
+        }
+
+        // Filter by specific column
+        $('#filterButton').click(() => {
+            applyFilter();
+        });
+    });
+</script>
+
+
+{% include 'components/footer.html' %}

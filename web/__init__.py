@@ -1,5 +1,5 @@
 import os
-import sys 
+import sys
 import locale
 import logging
 import datetime
@@ -9,23 +9,12 @@ from dotenv import load_dotenv
 
 
 # Config root path and language
-locale.setlocale(locale.LC_ALL, 'es_MX.UTF-8') 
+locale.setlocale(locale.LC_ALL, 'es_MX.UTF-8')
 sys.path.append('./')
 load_dotenv()
 
 # Import controllers
-from views.errors import Error
-from views.auth import Auth
 
-from views.admin.usuarios import Usuario
-from views.admin.programas import Programa
-from views.admin.facultades import Facultad
-from views.admin.conjuntos import ConjuntoAdmin
-from views.admin.resultados import ResultadoAdmin
-
-from views.conjuntos import Conjunto
-from views.resultados import Resultado
-from views.tableros import Tablero
 
 app = Flask(__name__, template_folder='templates', static_url_path='/static')
 
@@ -33,16 +22,18 @@ app = Flask(__name__, template_folder='templates', static_url_path='/static')
 from utils.mixins import obtener_ies_config
 IES = obtener_ies_config()
 ies_name = os.getenv('CLI_IES_NAME')
-# base_path = ('/' + ies_name) if ies_name else '/'
-base_path = '/'
+base_path = '/' # base_path = ('/' + ies_name) if ies_name else '/'
+excel_enabled = os.getenv('EXCEL', 'false').lower() in ('true', '1', 't')
 
 # Variables de sesion
 app.config['SECRET_KEY'] = os.getenv('SESSION_KEY')
+
 
 @app.route(base_path)
 @app.route(base_path+'inicio')
 def inicio():
     return render_template('utils/inicio.html'), 200
+
 
 @app.route(base_path+'contactanos')
 def contactanos():
@@ -50,10 +41,20 @@ def contactanos():
 
 
 '''ROUTES'''
+# from views.tableros import Tablero
+from views.resultados import Resultado
+from views.conjuntos import Conjunto
+from views.admin import ResultadoAdmin, ConjuntoAdmin, Facultad, Programa, Estudiante, Usuario
+from views.auth import Auth
+from views.errors import Error
+from views.analista import Analista
+
 app.register_blueprint(Error, url_prefix=base_path)
 app.register_blueprint(Auth, url_prefix=base_path)
+app.register_blueprint(Analista, url_prefix=base_path)
 app.register_blueprint(Facultad, url_prefix=base_path+'admin/facultades')
 app.register_blueprint(Programa, url_prefix=base_path+'admin/programas')
+app.register_blueprint(Estudiante, url_prefix=base_path+'admin/estudiantes')
 app.register_blueprint(Usuario, url_prefix=base_path+'admin/usuarios')
 app.register_blueprint(Conjunto, url_prefix=base_path+'conjuntos')
 app.register_blueprint(Resultado, url_prefix=base_path+'resultados')
@@ -67,7 +68,11 @@ app.register_blueprint(ResultadoAdmin, url_prefix=base_path+'admin/resultados')
 LOG_FORMAT = '%(levelname)s %(asctime)s - %(message)s'
 
 # GENERAL (ALL) LOGS
-logging.basicConfig(filename=os.getcwd()+'/logs/GENERALS.log',level=logging.DEBUG,format=LOG_FORMAT)
+logging.basicConfig(
+    filename=os.getcwd()+'/logs/GENERALS.log',
+    level=logging.DEBUG,
+    format=LOG_FORMAT
+)
 
 # APP ERROR LOGS
 error_logger = logging.getLogger('error_logger')
@@ -85,21 +90,26 @@ model_logger.addHandler(file_handler)
 
 '''END LOGGING CONFIGURATION'''
 
+
 @app.before_request
-def make_session_permanent():
+def before_each_request():
+    # Excel data loading enabled
+    session['excel'] = excel_enabled
+    # Session permanent
     session.modified = True
     session.permanent = True
     app.permanent_session_lifetime = datetime.timedelta(hours=2)
 
+
 if __name__ == '__main__':
-    # Sesion login usuario config   
+    # Sesion login usuario config
     app.config['SESSION_PERMANENT'] = True
     app.config['SESSION_TYPE'] = 'filesystem'
     app.config['PERMANENT_SESSION_LIFETIME'] = datetime.timedelta(hours=2)
-    app.config['SESSION_FILE_THRESHOLD'] = 100 
-    #Iniciar sesion de login usuario
-    sess = Session() 
+    app.config['SESSION_FILE_THRESHOLD'] = 100
+    # Iniciar sesion de login usuario
+    sess = Session()
     sess.init_app(app)
-    
+
     # Run server
     app.run(host='0.0.0.0')

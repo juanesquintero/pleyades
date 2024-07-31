@@ -1,9 +1,6 @@
 import utils.tableros.data_ies as Data
 import numpy as np
 import pandas as pd
-import json
-import statistics
-from itertools import chain
 
 import plotly.graph_objs as go
 import plotly.express as px

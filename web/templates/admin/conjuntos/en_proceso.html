@@ -2,13 +2,14 @@
 
 {% include 'components/sidebar.html' %}
 
-<h4>Conjuntos de Datos</h4><h6 class="text-muted" ><i class="fas fa-user-shield fa-sm"></i> Admin</h6>
+<h4>Conjuntos de Datos</h4>
+<h6 class="text-muted"><i class="fas fa-user-shield fa-sm"></i> Admin</h6>
 <br>
 
 <!-- Input de filtrado -->
 <div class="row ml-1 mt-2">
   &nbsp;<i class="fas fa-filter mr-2 mt-2""></i>&nbsp;
-  <input type="text" class="form-control form-control-sm w-25" id="filtro_tabla" placeholder="Filtrar tabla...">
+  <input type=" text" class="form-control form-control-sm w-25" id="filtroTabla" placeholder="Filtrar tabla...">
 </div>
 <br>
 
@@ -71,22 +72,22 @@
         <td>
           <!-- ACCCIONES -->
           <div class="row d-flex justify-content-center">
-            
-              <div class="btn-group" role="group" aria-label="Basic example">
-                <!-- Editar -->
-                <form action="{{url_for('ConjuntoAdmin.editar')}}" method="POST">
-                  <input type="hidden" name="conjunto" value="{{c}}">
-                  <input type="submit" data-toggle="tooltip" data-placement="bottom" title="Editar"
-                    class="btn btn-outline-dark btn-sm" value="&#9999;">
-                </form>
-                <!-- Eliminar -->
-                <form action="{{url_for('ConjuntoAdmin.borrar')}}" method="POST">
-                  <input type="hidden" name="conjunto" value="{{c}}">
-                  <input type="submit" data-toggle="tooltip" data-placement="bottom" title="Eliminar"
-                    class="btn btn-outline-dark btn-sm" value="&#128465;">
-                </form>
-  
-              </div>
+
+            <div class="btn-group" role="group" aria-label="Basic example">
+              <!-- Editar -->
+              <form action="{{url_for('ConjuntoAdmin.editar')}}" method="POST">
+                <input type="hidden" name="conjunto" value="{{c}}">
+                <input type="submit" data-toggle="tooltip" data-placement="bottom" title="Editar"
+                  class="btn btn-outline-dark btn-sm" value="&#9999;">
+              </form>
+              <!-- Eliminar -->
+              <form action="{{url_for('ConjuntoAdmin.borrar')}}" method="POST">
+                <input type="hidden" name="conjunto" value="{{c}}">
+                <input type="submit" data-toggle="tooltip" data-placement="bottom" title="Eliminar"
+                  class="btn btn-outline-dark btn-sm" value="&#128465;">
+              </form>
+
+            </div>
 
           </div>
         </td>
@@ -106,5 +107,6 @@
 {% endif %}
 
 <br>
+
 
 {% include 'components/footer.html' %}

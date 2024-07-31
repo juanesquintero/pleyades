@@ -5,7 +5,7 @@ import logging
 import pandas as pd
 from flask import render_template
 from datetime import datetime
-from services.API import post, put
+from services.API import post, put, get
 
 error_logger = logging.getLogger('error_logger')
 
@@ -35,7 +35,7 @@ def exception(op):
 ####################################### FUNCIONES logicas repetitivas ###############################################
 
 
-def getNowDate():
+def get_now_date():
     formato = '%Y-%m-%d %H:%M:%S'
     fecha = datetime.strftime(datetime.now(), formato)
     # Formateo para el api y la bd
@@ -61,14 +61,16 @@ def str_to_date(fecha):
 def guardar_archivo(data, ruta, tipo):
     try:
         if tipo == 'excel':
-            data.to_excel(ruta, index=False)
+            data.to_excel(ruta, engine='openpyxl', index=False)
         elif tipo == 'json':
             data.to_json(ruta, orient='records')
         else:
-            return False, render_template('utils/mensaje.html', mensaje='No se pudo guardar el archivo', submensaje='Tipo de archivo incorrecto')
+            raise Exception(
+                'No se pudo guardar el archivo \n Tipo de archivo incorrecto'
+            )
     except Exception as e:
         error_logger.error(e)
-        return False, render_template('utils/mensaje.html', mensaje='No se pudo guardar el archivo')
+        raise Exception('No se pudo guardar el archivo')
     return True, 'ERROR'
 
 
@@ -117,7 +119,7 @@ def actualizar_estado(nombre, estado):
 
 def guardar_preparacion(preparacion, observaciones, estado):
     # Guardar REGISTRO de preparacion
-    preparacion['fechaFinal'] = getNowDate()
+    preparacion['fechaFinal'] = get_now_date()
     preparacion['observaciones'] = observaciones
     preparacion['estado'] = estado
     post('preparaciones', preparacion)
@@ -125,13 +127,20 @@ def guardar_preparacion(preparacion, observaciones, estado):
 
 
 def guardar_ejecucion(ejecucion, resultados, estado):
+
     # Guardar REGISTRO de ejecución
-    ejecucion['precision_modelo'] = resultados['precision'] if 'precision' in resultados.keys(
-    ) else None
-    ejecucion['fechaFinal'] = getNowDate()
-    ejecucion['resultados'] = resultados
+    ejecucion['precision_modelo'] = resultados.get('precision', None)
+    ejecucion['fechaFinal'] = get_now_date()
+    ejecucion['resultados'] = dict(resultados)
     ejecucion['estado'] = estado
-    post('ejecuciones', ejecucion)
+
+    status, body = post('ejecuciones', dict(ejecucion))
+
+    if not status:
+        raise Exception(
+            f"No se pudo guardar la Ejecucion: {body.get('error')}"
+        )
+
     return True, 'ERROR'
 
 
@@ -140,9 +149,19 @@ def obtener_nombre_conjunto(conjunto):
     status_n, body_n = post('conjuntos/nombre', conjunto)
     if status_n:
         return body_n['nombre'], body_n['numero']
-    else:
-        error_logger.error('API ERROR: {} {}'.format(status_n, body_n))
-        return False, render_template('utils/mensaje.html', mensaje='No se pudo obtener el nombre del conjunto', submensaje=body_n)
+
+    error_logger.error(f'API ERROR: {status_n} {body_n}')
+    return False, render_template('utils/mensaje.html', mensaje='No se pudo obtener el nombre del conjunto', submensaje=body_n)
+
+
+def obtener_nombre_ejecucion(conjunto):
+    # Obtener nombre de la ejecucion desde el api
+    status_n, body_n = get(f'ejecuciones/nombre/{conjunto}')
+    if status_n:
+        return body_n['nombre'], body_n['numero']
+
+    error_logger.error(f'API ERROR: {status_n} {body_n}')
+    raise Exception('No se pudo obtener el nombre de la ejecución')
 
 
 def obtener_ies_config():

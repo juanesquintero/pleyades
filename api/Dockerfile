@@ -1,4 +1,4 @@
-FROM python:3.8-slim
+FROM python:3.12-slim
 
 WORKDIR /app
 RUN apt-get update && apt-get install -y gnupg curl openssl ca-certificates
@@ -23,7 +23,7 @@ RUN apt-get install -y libgssapi-krb5-2
 
 
 #······················ Python App ······················
-
+# Update and install needed packages
 RUN apt-get install -y python3-pymysql
 
 # Update pip

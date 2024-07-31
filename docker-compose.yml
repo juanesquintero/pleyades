@@ -1,7 +1,6 @@
-version: '3.8'
-name: pleyades-dev
+name: pleyades
 services:
-  web:
+  web_dev:
     container_name: pleyades-web_dev
     build:
       context: ./web
@@ -16,18 +15,18 @@ services:
       - FLASK_DEBUG=1
       - FLASK_APP=__init__:app
       - TEMPLATES_AUTO_RELOAD=1
-      - CLI_IES_NAME=${PLEYADES_IES_CLIENT}
+      - CLI_IES_NAME=${IES_CLIENT}
     ports:
-      - 5000:80
+      - 5001:80
     links:
-      - api:api
+      - api_dev:api
     networks:
       - dev-net
     depends_on:
-      - api
+      - api_dev
     command: flask run --host 0.0.0.0 --port 80
 
-  api:
+  api_dev:
     container_name: pleyades-api_dev
     build:
       context: ./api
@@ -40,12 +39,12 @@ services:
     environment:
       - FLASK_DEBUG=1
       - FLASK_APP=__init__:create_app()
-      - CLI_IES_NAME=${PLEYADES_IES_CLIENT}
+      - CLI_IES_NAME=${IES_CLIENT}
     ports:
-      - 3000:80
+      - 3001:80
     links:
-      - db:db
-      - db-ies:db-ies
+      - db
+      - db-ies
     networks:
       - dev-net
     depends_on:
@@ -60,17 +59,19 @@ services:
     env_file:
       - ./api/.env
     environment:
-      - MYSQL_ROOT_PASSWORD=${PLEYADES_MYSQL_ROOT_PASSWORD}
+      - MYSQL_ALLOW_EMPTY_PASSWORD=1
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PWD}
     volumes:
       - ./api/db/pleyades/dev:/var/lib/mysql
       - ./api/db/pleyades/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - dev-net
+      - deploy-net
 
   db-ies:
     image: mcr.microsoft.com/mssql/server:2019-CU3-ubuntu-18.04
-    user: '0:0'
-    container_name: pleyades-client-db
+    user: "0:0"
+    container_name: pleyades-db-ies
     ports:
       - 1433:1433
     env_file:
@@ -81,21 +82,23 @@ services:
       - ./api/db/ies/init.sh:/tmp/init.sh
     networks:
       - dev-net
-    command: /bin/bash -c "/tmp/init.sh"
-        
+      - deploy-net
+    command: /bin/bash -c "/opt/mssql/bin/sqlservr & /tmp/init.sh && wait"
+
   adminer:
     container_name: pleyades-adminer
     image: adminer:4
     ports:
       - 8080:8080
     links:
-      - db:db
-      - db-ies:db-ies
+      - db
+      - db-ies
     networks:
       - dev-net
-      # - pleyades-prod_deploy-net
+
 networks:
   dev-net:
     driver: bridge
-  # pleyades-prod_deploy-net:
-  #   external: true
+
+  deploy-net:
+    driver: bridge

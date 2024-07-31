@@ -10,3 +10,4 @@ flask_session/
 **/db/pleyades/prod
 web/ies.json
 sqlserver-data
+.idea

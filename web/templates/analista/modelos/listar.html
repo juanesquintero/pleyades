@@ -1,0 +1,214 @@
+{% include 'components/header.html' %} {% include 'components/sidebar.html' %}
+
+<h4>
+  Modelos de Deserción
+  <i class="fas fa-robot fa-sm ml-1"></i>
+</h4>
+<br />
+
+<!-- Input de filtrado -->
+<div class="row ml-1 mt-2">
+  &nbsp;<i class="fas fa-filter mr-2 mt-2"></i>&nbsp;
+  <input
+    type="text"
+    class="form-control form-control-sm w-25"
+    id="filtroTabla"
+    placeholder="Filtrar tabla..."
+  />
+</div>
+<br />
+
+<!-- Tabla -->
+<div class="table-responsive-sm">
+  <table class="table table-hover table-sm" id="tabla">
+    <thead>
+      <tr class="border-top-0">
+        <th scope="col" class="border-top-0">
+        
+        </th>
+        <th scope="col" class="col-5 border-top-0 sortable" data-sort="programa"  class="" data-sort="name">
+          <center><i>Programa</i></center>
+        </th>
+        <th scope="col" class="col-1 border-top-0 sortable" data-sort="info">
+          <center><i>Info</i></center>
+        </th>
+        <th scope="col" class="col-3 ml-5 border-top-0 sortable" data-sort="clasificador">
+          <center><i>Clasificador</i></center>
+        </th>
+        <th scope="col" class="col-1 border-top-0 sortable" data-sort="precisión">
+          <center><i>Precisión</i></center>
+        </th>
+        <th scope="col" class="col-1 border-top-0 sortable" data-sort="desercion">
+          <center>
+            <i>
+                Deserción 
+            </i>
+          </center>
+        </th>
+        <th scope="col" class="col-1 border-top-0"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for m in modelos %} {% if m.estado=='Exitosa' and m.resultados.tipo ==
+      'Entrenamiento' %}
+      {% set info_array = m.conjunto.split(' ')[1:] %}
+      <tr>
+        <td>
+          <h6 >
+            {{ info_array[2:3][0] }}
+          </h6>
+        </td>
+        <td>
+          <center>{{m.resultados.programa}}</center>
+        </td>
+        <td>
+          
+          <center>{{ info_array[:2]|join(' ') }} 
+        </center>
+        </td>
+
+        <td>
+          <center>{{ m.resultados.clasificador }}</center>
+        </td>
+
+        <td>
+          <center>
+            {{ '%0.0f' % m.resultados.precision|float }}% {% if
+            (m.resultados.precision|float) < 85.00 %}
+
+            <i
+              class="fa fa-solid fa-exclamation-triangle fa-lg text-warning border-dark"
+              data-toggle="tooltip"
+              data-html="true"
+              data-placement="bottom"
+              style="cursor: pointer"
+              title="La precisión del modelo no es muy alta, Ya que esta por debajo del 85%<br>Para estar mas seguro se recomienda crear otro con mas datos de entrenamiento."
+            ></i>
+            {% endif %}
+          </center>
+        </td>
+
+        <td>
+          {% set proc = m.resultados.desercion_prevista * 100 %}
+
+          <center>
+            ~ {{ '%0.0f' % proc|float }}% {% if m.resultados.desercion_prevista >
+            0.15 %}
+            <i
+              class="fa fa-solid fa-exclamation-triangle fa-lg text-danger border-dark"
+              data-toggle="tooltip"
+              data-html="true"
+              data-placement="bottom"
+              title="Deserción estudiantil por encima del 15% <br>Pudo ocurrir un error de entrenamiento<br>El modelo de predicción parece NO ser confiable<br>Se recomienda crear otro."
+            ></i>
+            {% endif %}
+          </center>
+        </td>
+
+        <td>
+          <!-- ACCCIONES -->
+          <div class="row d-flex justify-content-center">
+            
+
+            <!-- Entrenamiento-->
+            <div class="btn-group" role="group" aria-label="Basic example">
+              <form
+                action="{{url_for('Analista.entrenamientos')}}"
+                method="GET"
+              >
+                <input type="hidden" name="modelo" value="{{m.conjunto}}" />
+                <button
+                  type="submit"
+                  data-toggle="tooltip"
+                  data-html="true"
+                  data-placement="bottom"
+                  title="Ver Entrenamientos"
+                  class="btn btn-outline-dark btn-sm submit"
+                  role="status"
+                >
+                  <i class="fa fa-sm fa-dumbbell"></i>
+                </button>
+              </form>
+            </div>
+            
+            &nbsp;&nbsp;
+
+            <!-- PREDECIR -->
+            <form action="{{url_for('Analista.predecir')}}" method="POST">
+              <input type="hidden" name="modelo" value="{{m}}" />
+              <!-- Boton para predecir con un modelo -->
+              <button
+                type="submit"
+                data-toggle="tooltip"
+                data-html="true"
+                data-placement="bottom"
+                title="Predecir"
+                class="btn my-primary text-white border border-white btn-sm submit"
+                role="status"
+              >
+                <i class="fa fa-flask fa-lg" aria-hidden="true"></i>
+              </button>
+
+              <button
+                class="btn btn-outline-dark btn-sm btn-loading"
+                type="button"
+                style="display: none"
+              >
+                <i class="fas fa-spinner fa-spin fa-lg" aria-hidden="true"></i>
+              </button>
+            </form>
+
+
+
+            <!-- DESCARGAR-->
+            <!-- <form action="{{url_for('Analista.descargar')}}" method="POST">
+              <input type="hidden" name="modelo" value="{{m.conjunto}}" />
+              <button
+                type="submit"
+                data-toggle="tooltip"
+                data-html="true"
+                data-placement="bottom"
+                title="Descargar Archivo"
+                class="btn btn-sm btn-link text-dark"
+                role="status"
+              >
+                <i class="fa fa-dark fa-file-download"></i>
+              </button>
+            </form> -->
+          </div>
+        </td>
+      </tr>
+      {% endif %} {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% if error %}
+<br />
+{% with titulo='No se pudieron cargar los modelos',error=error %} {% include
+"components/alert.html" %} {% endwith %}
+<br />
+{% endif %}
+
+<br />
+
+<a
+  href="{{url_for('Analista.entrenar') }}"
+  type="button"
+  class="btn btn-dark text-white my-primary mt-4"
+>
+  Nuevo
+  <i class="fa fa-robot ml-1"></i>
+</a>
+
+<script>
+  // Cargando si se esta validando y guardando la data del modelo
+  $(".submit").click(function () {
+    handleModal(
+      "Su modelo aparecera cuando acabe el proceso (recuerde refrescar la página)",
+      "{{url_for('Analista.predicciones')}}"
+    );
+  });
+</script>
+
+{% include 'components/footer.html' %}
