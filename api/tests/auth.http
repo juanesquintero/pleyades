@@ -1,0 +1,19 @@
+POST http://localhost:3001/auth/login
+Content-Type: application/json
+
+{
+  "correo": "admin@pleyades.com",
+  "clave": "12345678"
+}
+
+###
+
+POST http://localhost:3001/auth/singup
+Content-Type: application/json
+
+{
+  "nombre":  "Juan",
+  "correo": "juan@pleyades.com",
+  "clave": "12345678",
+  "rol":  "Admin"
+}
