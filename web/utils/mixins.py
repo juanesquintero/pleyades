@@ -81,6 +81,8 @@ def eliminar_archivo(ruta):
         except Exception as e:
             error_logger.error(e)
             return False, render_template('utils/mensaje.html', mensaje='No se pudo eliminar el archivo')
+    # else:
+    #     return False, render_template('utils/mensaje.html', mensaje='No se pudo eliminar el archivo', submensaje='El archivo no existe')
     return True, 'ERROR'
 
 
