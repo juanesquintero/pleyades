@@ -3,9 +3,9 @@ proxy_set_header   "Connection" "";
 proxy_set_header Host $http_host;
 proxy_redirect off;
 
-proxy_connect_timeout 600s;
-proxy_read_timeout 600s;
-proxy_send_timeout 600s;
+proxy_connect_timeout 1200s;
+proxy_read_timeout 1200s;
+proxy_send_timeout 1200s;
 
 proxy_set_header X-Real-IP $remote_addr;
 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -17,7 +17,7 @@ proxy_buffers 8 64k;
 proxy_busy_buffers_size 128k;
 
 client_max_body_size 10M;
-client_body_timeout 600s;
+client_body_timeout 1200s;
 
-fastcgi_read_timeout 600s;
-uwsgi_read_timeout 600s;
+fastcgi_read_timeout 1200s;
+uwsgi_read_timeout 1200s;
