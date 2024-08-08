@@ -44,7 +44,7 @@ services:
       - deploy-net
     links:
       - api:api
-    command: gunicorn __init__:app --preload --bind 0.0.0.0:80 --workers 3 --timeout=1800
+    command: gunicorn __init__:app --preload --bind 0.0.0.0:80 --workers 3 --timeout=3600
     depends_on:
       - api
 
@@ -65,7 +65,7 @@ services:
       - ./api:/app
     networks:
       - deploy-net
-    command: gunicorn wsgi:app --bind 0.0.0.0:80 --workers 3 --timeout=1800
+    command: gunicorn wsgi:app --bind 0.0.0.0:80 --workers 3 --timeout=3600
 
 networks:
   deploy-net:
