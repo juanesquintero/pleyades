@@ -28,7 +28,7 @@ def login():
 
     if user[0] is True:
         access_token = create_access_token(
-            identity=user[1], expires_delta=dt.timedelta(hours=2)
+            identity=user[1], expires_delta=dt.timedelta(hours=3)
         )
         return jsonify(access_token=access_token), 200
 
