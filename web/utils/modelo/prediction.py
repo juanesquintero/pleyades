@@ -14,7 +14,8 @@ def predict(data_a_predecir, periodo_a_predecir, basic_info):
 
     if len(data_a_predecir) < 3:
         raise Exception(
-            f'Hay muy pocos registros para el periodo {periodo_a_predecir} (menos de 3)', True
+            f'Hay muy pocos registros para el periodo {
+                periodo_a_predecir} (menos de 3)', True
         )
 
     # Eliminacion depuracion de columnas
@@ -118,7 +119,12 @@ def predict_classifier(data_a_predecir, periodo_a_predecir, mejor_clasificador):
     resultados_desertores['documento'] = resultados_desertores['documento'].astype(
         str, copy=False)
     resultados_desertores = resultados_desertores[[
-        'documento', 'nombre_completo', 'desertor', 'prediccion', 'semestre_prediccion', 'idprograma'
+        'documento',
+        'nombre_completo',
+        'desertor',
+        'prediccion',
+        'semestre_prediccion',
+        'idprograma'
     ]]
 
     return {
@@ -131,17 +137,17 @@ def predict_classifier(data_a_predecir, periodo_a_predecir, mejor_clasificador):
 
 
 def filter_high_desertion(desertores, total_estudiantes):
-    low_average = 3.9
+    low_average = 3.5
     level = 1
     total_desertores, desercion_prevista = calculate_desercion(
         total_estudiantes, desertores
     )
 
-    while desercion_prevista > 0.15:
+    while desercion_prevista > 0.25:
         # Elminar desercíon temprana
-        if level < 3:
+        if level < 2:
             no_desercion_temprana = desertores.query(
-                f'semestre > {level} & promedio_acumulado > 0.5'
+                f'semestre > {level} & promedio_acumulado > 0.4'
             )
             if not no_desercion_temprana.empty:
                 desertores = no_desercion_temprana
@@ -160,7 +166,7 @@ def filter_high_desertion(desertores, total_estudiantes):
 
         if _desercion_prevista > 0:
             desertores, total_desertores, desercion_prevista = _desertores, _total_desertores, _desercion_prevista
-            low_average -= .1
+            low_average -= 0.05
             level += 1
         else:
             continue

@@ -9,7 +9,7 @@ def save_classifirer(mejor_clasificador, conjunto=''):
     with open(clf_file, 'wb') as file:
         pickle.dump(mejor_clasificador, file)
     pickle.dump(
-        mejor_clasificador, 
+        mejor_clasificador,
         open(f'{modelos_folder}/{conjunto}.sav', 'wb')
     )
 
