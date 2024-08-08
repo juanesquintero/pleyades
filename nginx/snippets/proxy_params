@@ -3,21 +3,21 @@ proxy_set_header   "Connection" "";
 proxy_set_header Host $http_host;
 proxy_redirect off;
 
-proxy_connect_timeout 1200s;
-proxy_read_timeout 1200s;
-proxy_send_timeout 1200s;
+proxy_connect_timeout 1800s;
+proxy_read_timeout 1800s;
+proxy_send_timeout 1800s;
 
 proxy_set_header X-Real-IP $remote_addr;
 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 proxy_set_header X-Forwarded-Proto $scheme;
 
 proxy_buffering on;
-proxy_buffer_size 512k;
-proxy_buffers 32 512k;
-proxy_busy_buffers_size 1024k;
+proxy_buffer_size 2m;
+proxy_buffers 64 2m;
+proxy_busy_buffers_size 4m;
 
-client_max_body_size 10M;
-client_body_timeout 1200s;
+client_max_body_size 20M;
+client_body_timeout 1800s;
 
-fastcgi_read_timeout 1200s;
-uwsgi_read_timeout 1200s;
+fastcgi_read_timeout 1800s;
+uwsgi_read_timeout 1800s;
