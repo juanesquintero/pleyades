@@ -15,7 +15,7 @@ _password = os.getenv('CLI_DB_PASSWORD')
 
 ies_name = os.getenv('CLI_IES_NAME')
 
-str_conn = f'mssql+pyodbc://{_user}:{_password}@{_host}:1433/{_db}?driver=ODBC+Driver+17+for+SQL+SERVER&timeout=90'
+str_conn = f'mssql+pyodbc://{_user}:{_password}@{_host}:1433/{_db}?driver=ODBC+Driver+17+for+SQL+SERVER&timeout=120'
 
 conn_fail_msg = f'Conexión caída BD Institución!! (SQL Server - {ies_name})'
 
