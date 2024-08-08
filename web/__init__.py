@@ -7,6 +7,14 @@ from flask import Flask, session, render_template
 from flask_session import Session
 from dotenv import load_dotenv
 
+from views.analista import Analista
+from views.errors import Error
+from views.auth import Auth
+from views.admin import ResultadoAdmin, ConjuntoAdmin, Facultad, Programa, Estudiante, Usuario
+from views.conjuntos import Conjunto
+from views.resultados import Resultado
+from utils.mixins import obtener_ies_config
+
 
 # Config root path and language
 locale.setlocale(locale.LC_ALL, 'es_MX.UTF-8')
@@ -19,10 +27,9 @@ load_dotenv()
 app = Flask(__name__, template_folder='templates', static_url_path='/static')
 
 # IES config
-from utils.mixins import obtener_ies_config
 IES = obtener_ies_config()
 ies_name = os.getenv('CLI_IES_NAME')
-base_path = '/' # base_path = ('/' + ies_name) if ies_name else '/'
+base_path = '/'  # base_path = ('/' + ies_name) if ies_name else '/'
 excel_enabled = os.getenv('EXCEL', 'false').lower() in ('true', '1', 't')
 
 # Variables de sesion
@@ -42,12 +49,6 @@ def contactanos():
 
 '''ROUTES'''
 # from views.tableros import Tablero
-from views.resultados import Resultado
-from views.conjuntos import Conjunto
-from views.admin import ResultadoAdmin, ConjuntoAdmin, Facultad, Programa, Estudiante, Usuario
-from views.auth import Auth
-from views.errors import Error
-from views.analista import Analista
 
 app.register_blueprint(Error, url_prefix=base_path)
 app.register_blueprint(Auth, url_prefix=base_path)
@@ -98,14 +99,14 @@ def before_each_request():
     # Session permanent
     session.modified = True
     session.permanent = True
-    app.permanent_session_lifetime = datetime.timedelta(hours=2)
+    app.permanent_session_lifetime = datetime.timedelta(hours=3)
 
 
 if __name__ == '__main__':
     # Sesion login usuario config
     app.config['SESSION_PERMANENT'] = True
     app.config['SESSION_TYPE'] = 'filesystem'
-    app.config['PERMANENT_SESSION_LIFETIME'] = datetime.timedelta(hours=2)
+    app.config['PERMANENT_SESSION_LIFETIME'] = datetime.timedelta(hours=3)
     app.config['SESSION_FILE_THRESHOLD'] = 100
     # Iniciar sesion de login usuario
     sess = Session()

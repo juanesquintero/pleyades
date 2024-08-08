@@ -41,6 +41,7 @@ def delete(endpoint):
     status, body = res.status_code, res.json()
     return result(endpoint, status, body)
 
+
 def status_group(status):
     return int(str(status)[0])
 
@@ -48,15 +49,16 @@ def status_group(status):
 def result(endpoint, status, body):
     if status_group(status) == 2:
         return True, body
-    
+
     msg = body.get('msg')
     if msg:
-        if 'sesión' in msg  or 'expirado' in msg:
+        if 'sesión' in msg or 'expirado' in msg:
             raise Exception(body.get('msg'))
 
         if '/desercion/' in endpoint:
             if msg == 'No hay concidencias' or status == 404:
-                raise Exception('No se encontraron concidencias, por favor revise la base de datos', status=404)
+                raise Exception(
+                    'No se encontraron concidencias, por favor revise la base de datos', status=404)
 
     error_logger.error(f'\nAPI ERROR...{endpoint} - {status}: {body}\n')
     return False, body
