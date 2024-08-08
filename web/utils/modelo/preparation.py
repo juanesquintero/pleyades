@@ -93,7 +93,7 @@ def elimination(data, no_desertion=False):
 
     if not pd.isna(data['promedio_acumulado']).all():
         data = data.query(
-            'promedio_acumulado > 0.5'
+            'promedio_acumulado > 0.3'
         )
 
     # Obtener ultimo periodo a predecir
@@ -113,9 +113,9 @@ def elimination(data, no_desertion=False):
     if no_desertion:
         umbral = 1
     elif periodo_cerrado:
-        umbral = 0.05
+        umbral = 0.10
     else:
-        umbral = 0.75
+        umbral = 0.65
 
     n_rows = int(data_a_predecir.shape[0] * umbral)
     data_proxima = data_a_predecir.iloc[:n_rows]
