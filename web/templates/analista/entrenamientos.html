@@ -24,7 +24,7 @@
     <thead>
       <tr>
         <th class="border-top-0">
-          
+
         </th>
         <th class="col-5 border-top-0">
           <center><i>Programa</i></center>
@@ -64,16 +64,16 @@
         <td>
           {% set proc = e.resultados.desercion_prevista * 100 %}
           <center>
-            
+
               {% if e.resultados.desercion_prevista > 0.15  %}
               <i
               class="fa fa-solid fa-exclamation-triangle fa-lg text-danger border-dark"
               data-toggle="tooltip"
               data-html="true"
               data-placement="bottom"
-              title="Deserción estudiantil por encima del 15% <br>Pudo ocurrir un error de entrenamiento<br>El modelo de predicción parece NO ser confiable<br>Se recomienda crear otro."
+              title="Deserción estudiantil por encima del 15% <br>Pudo ocurrir un error de entrenamiento<br>Si es necesario, cree otro."
             ></i>
-            
+
               {% elif (e.resultados.precision|float) < 85.00 %}
               <i
               class="fa fa-solid fa-exclamation-triangle fa-lg text-warning border-dark"
@@ -83,10 +83,10 @@
               style="cursor: pointer"
               title="La precisión del modelo no es muy alta, Ya que esta por debajo del 85%<br>Para estar mas seguro se recomienda crear otro con mas datos de entrenamiento."
             ></i>
-        
+
               {% else %}
 
-              
+
               <i
               class="fa fa-solid fa-check fa-lg text-success border-dark"
               data-toggle="tooltip"
@@ -109,7 +109,7 @@
             {% set minutes = e.duracion // 60 %}
             {% set seconds = e.duracion % 60 %}
             {{ minutes }} min {{ seconds }} sec
-            
+
             <div hidden>
               {{e.fechaInicial}}
               {{e.fechaFinal}}
@@ -160,7 +160,7 @@
               </form>
             </div>
 
-            
+
             <!-- PREDECIR -->
             <form action="{{url_for('Analista.predecir')}}" method="POST">
               <input type="hidden" name="modelo" value="{{e}}" />
