@@ -143,7 +143,7 @@ def filter_high_desertion(desertores, total_estudiantes):
         total_estudiantes, desertores
     )
 
-    while desercion_prevista > 0.25:
+    while desercion_prevista > 0.19:
         # Elminar desercíon temprana
         if level < 2:
             no_desercion_temprana = desertores.query(
