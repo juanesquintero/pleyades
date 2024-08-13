@@ -67,7 +67,7 @@ def ejecucion_detalle():
         del body['precision_modelo']
         del body['numero']
         return render_template(endopoint+'ejecucion_detalle.html', desertores=desertores, resultados=body.pop('resultados'), ejecucion=body)
-    elif status and not(exito):
+    elif status and not (exito):
         if body['estado'] == 'Fallida':
             del body['precision_modelo']
             del body['numero']
@@ -107,7 +107,7 @@ def descargar(ejecucion):
         return render_template('utils/mensaje.html', mensaje='No se pudo abrir el archivo de desertores:', submensaje=str(e))
 
     exito, pagina_error = guardar_archivo(data, ruta+'.xls', 'excel')
-    if not(exito):
+    if not (exito):
         return pagina_error
 
     return send_file(ruta+'.xls', as_attachment=True)
