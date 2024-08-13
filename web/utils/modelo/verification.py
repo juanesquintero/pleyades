@@ -53,16 +53,18 @@ def verify_data(data, periodo_inicial, periodo_final, programa):
 
     # Verificar si en conjunto posee los valores de periodo Inicial y Final Correctamente
     if not data_verificada['registro'].max() == periodo_final:
-        msg = f'El conjunto no tiene como periodo final {periodo_final}, verifique los registros'
+        msg = f'El conjunto no tiene como periodo final {
+            periodo_final}, verifique los registros'
         return False, msg, None, periodo_inicial
 
     if not data_verificada['registro'].min() == periodo_inicial:
         _periodo_inicial = periodo_inicial
         periodo_inicial = data_verificada['registro'].min()
-        msg = f'El conjunto no tiene como periodo inicial {_periodo_inicial}, se reasignó a <b>{periodo_inicial}</b>'
+        msg = f'El conjunto no tiene como periodo inicial {
+            _periodo_inicial}, se reasignó a <b>{periodo_inicial}</b>'
         flash(msg, 'warning')
 
-    if not(data_verificada['idprograma'] == programa).all():
+    if not (data_verificada['idprograma'] == programa).all():
         msg = 'El conjunto no pertenece al programa indicado, verifique los registros'
         return False, msg, None, periodo_inicial
 
