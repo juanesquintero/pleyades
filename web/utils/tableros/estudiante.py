@@ -4,7 +4,7 @@ import pandas as pd
 import json
 import statistics
 from itertools import chain
-from statistics import mean 
+from statistics import mean
 
 import plotly.graph_objs as go
 import plotly.express as px
@@ -20,6 +20,8 @@ error_logger = logging.getLogger('error_logger')
 colores = CONSTANTS.colores
 
 #################################### FUNCIONES GLOBALES #############################################
+
+
 def estudiantes_programa(programa: str):
     try:
         data = Data.get_estudiantes_programa(programa)
@@ -48,14 +50,17 @@ class Estudiante:
         try:
             # Dataframe del programa
             data = self.df_ESTUDIANTE
-            programas_estudiante_filter = json.loads(data.drop_duplicates(subset=['idprograma']).to_json(orient='records'))
-            self.programas_estudiante = [ {'idprograma': p['idprograma'], 'programa': p['programa']} for p in programas_estudiante_filter]
+            programas_estudiante_filter = json.loads(data.drop_duplicates(
+                subset=['idprograma']).to_json(orient='records'))
+            self.programas_estudiante = [
+                {'idprograma': p['idprograma'], 'programa': p['programa']} for p in programas_estudiante_filter]
             self.periodos_estudiante_todos = list(data['REGISTRO'].unique())
-            self.periodos_estudiante = list(data['REGISTRO'].unique())   
+            self.periodos_estudiante = list(data['REGISTRO'].unique())
 
             # Filtrar Programa
             if self.programa:
-                data = data.query("idprograma == '{}'".format(self.programa['idprograma']))
+                data = data.query("idprograma == '{}'".format(
+                    self.programa['idprograma']))
                 self.periodos_estudiante = list(data['REGISTRO'].unique())
 
             # Filtrar Periodo
@@ -73,11 +78,12 @@ class Estudiante:
                 self.periodo = self.info['REGISTRO']
             if not self.programa:
                 self.programa = {
-                    'idprograma':self.info['idprograma'],
-                    'programa':self.info['programa']
+                    'idprograma': self.info['idprograma'],
+                    'programa': self.info['programa']
                 }
 
-            self.info['fecha_nacimiento'] = str(self.info['fecha_nacimiento'][:-8])
+            self.info['fecha_nacimiento'] = str(
+                self.info['fecha_nacimiento'][:-8])
 
             return self.info, self.periodos_estudiante, self.programas_estudiante
 
@@ -100,15 +106,17 @@ class Estudiante:
                     line=dict(color='black', width=2)
                 ),
                 orientation='h',
-                texttemplate='   <b>{:.0%}</b>'.format(creditos_reprobados_porcentaje),
-                hovertemplate='<b>{}</b> reprobados<br><b>{}</b> totales<extra></extra>'.format(creditos_reprobados, creditos_totales),
+                texttemplate='   <b>{:.0%}</b>'.format(
+                    creditos_reprobados_porcentaje),
+                hovertemplate='<b>{}</b> reprobados<br><b>{}</b> totales<extra></extra>'.format(
+                    creditos_reprobados, creditos_totales),
                 textposition='outside',
                 textfont=dict(
                     size=20,
                     color='black'
                 ),
             ))
-            
+
             if creditos_reprobados_porcentaje > 0.9:
                 maximo = creditos_totales*1.2
             else:
@@ -147,7 +155,8 @@ class Estudiante:
                     line=dict(color='black', width=2)
                 ),
                 orientation='h',
-                texttemplate='   <b>{:.0%}</b>'.format(creditos_aprobados_porcentaje),
+                texttemplate='   <b>{:.0%}</b>'.format(
+                    creditos_aprobados_porcentaje),
                 hovertemplate='<b>{}</b> aprobados<br><b>{}</b> totales<extra></extra>'.format(
                     creditos_aprobados, creditos_totales),
                 textposition='outside',
@@ -156,7 +165,7 @@ class Estudiante:
                     color='black'
                 )
             ))
-            
+
             if creditos_aprobados_porcentaje > 0.9:
                 maximo = creditos_totales*1.2
             else:
@@ -196,7 +205,8 @@ class Estudiante:
             #         'REGISTRO': list(estu['REGISTRO']),
             #         'promedio': list(estu['promedio_semestre'])
             #     }
-            estu = data.query("idprograma == '{}'".format(self.programa['idprograma']))
+            estu = data.query("idprograma == '{}'".format(
+                self.programa['idprograma']))
             estu = estu.sort_values(by=['REGISTRO'], ascending=[True])
             promedios[self.programa['idprograma']] = {
                 'programa': self.programa['programa'],
@@ -224,7 +234,7 @@ class Estudiante:
                 fig.add_trace(go.Scatter(
                     x=df['REGISTRO'],
                     y=df['promedio'],
-                    name= nombre_programa,
+                    name=nombre_programa,
                     mode='markers+lines+text',
                     text=list(df['promedio']),
                     textposition='top center',
