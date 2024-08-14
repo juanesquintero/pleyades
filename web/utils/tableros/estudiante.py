@@ -1,13 +1,8 @@
-import logging
-import numpy as np
-import pandas as pd
 import json
-import statistics
-from itertools import chain
-from statistics import mean
+import logging
+import pandas as pd
 
 import plotly.graph_objs as go
-import plotly.express as px
 from plotly.subplots import make_subplots
 import utils.constants as CONSTANTS
 
