@@ -42,6 +42,8 @@ def to_plotly_json(fig):
     return plt
 
 ############################################################## NIVEL MUNDO ################################################################
+
+
 @Tablero.route('/mundo')
 def mundo_dashboard():
     # Series Por pais
@@ -53,7 +55,7 @@ def mundo_dashboard():
             gastos), to_plotly_json(inscripciones)
         return jsonify([gastos, inscripciones])
     else:
-        pais= 'COL'
+        pais = 'COL'
         gastos, inscripciones = Mundo.series_pais(pais)
 
     clusters = to_plotly_json(Mundo.clusters())
@@ -67,10 +69,12 @@ def mundo_dashboard():
         inscrp_plot=inscripciones,
         mapa_plot=mapa,
         clusters_plot=clusters,
-        pais= pais
+        pais=pais
     )
 
 ############################################################## NIVEL PAIS ################################################################
+
+
 @Tablero.route('/pais')
 def pais_dashboard():
     # Series Por pais
@@ -170,6 +174,8 @@ def region_dashboard():
         barras_ies_plot=barras_ies,
     )
 ############################################################## NIVEL IES ################################################################
+
+
 @Tablero.route('/institucion')
 @login_required
 def ies_dashboard():
@@ -247,6 +253,8 @@ def ies_dashboard():
     )
 
 ############################################################## NIVEL PROGRAMA ################################################################
+
+
 @Tablero.route('/programa')
 @login_required
 def programa_dashboard():
@@ -358,8 +366,8 @@ def estudiante_dashboard():
     for p in programas:
         if str(p['idprograma']) == str(programa):
             programa = p
-    
-    if programa and not(isinstance(programa, dict)):
+
+    if programa and not (isinstance(programa, dict)):
         return render_template(
             endopoint+'estudiante.html',
             estudiante=None,
