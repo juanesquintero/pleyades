@@ -1,3 +1,4 @@
+import utils.constants as CONSTANTS
 import numpy as np
 import pandas as pd
 from sklearn.cluster import KMeans
@@ -10,17 +11,17 @@ from dotenv import load_dotenv
 load_dotenv()
 data_folder = os.getcwd()+'/utils/tableros/data'
 
-import utils.constants as CONSTANTS
 
 #################################### VARIABLES GLOBALES #############################################
-inscripciones = pd.read_excel(data_folder+'/mundo.xlsx',sheet_name='inscripciones')
-gastos = pd.read_excel(data_folder+'/mundo.xlsx',sheet_name='gastos')
+inscripciones = pd.read_excel(
+    data_folder+'/mundo.xlsx', sheet_name='inscripciones')
+gastos = pd.read_excel(data_folder+'/mundo.xlsx', sheet_name='gastos')
 
 periodos = list(inscripciones.columns)
 periodos.pop(0)
 periodos.pop(0)
 
-color_cluster_map={
+color_cluster_map = {
     'G Inf/I Alta':  CONSTANTS.colores[7],
     'G Sup/I Alta': '#adc4d1',
     'G Inf/I Baja': '#6ca4d3',
@@ -91,7 +92,7 @@ def series(df, y_variable, y_titulo, color):
         font=dict(
             size=10
         ),
-        margin=dict(l=0,r=0,b=0,t=10,pad=0),
+        margin=dict(l=0, r=0, b=0, t=10, pad=0),
         showlegend=False
     )
     fig.layout.plot_bgcolor = '#fff'
@@ -105,17 +106,23 @@ def series(df, y_variable, y_titulo, color):
 
     return fig
 
+
 def series_pais(codigo_pais):
     df = data_series(codigo_pais)
-    gastos = series(df,"gastos","Gasto público <br>en Educación", CONSTANTS.colores[1])
-    inscripciones = series(df,"inscripciones","Inscripciones en<br>Educación Terciaria", CONSTANTS.colores[0])
+    gastos = series(
+        df, "gastos", "Gasto público <br>en Educación", CONSTANTS.colores[1])
+    inscripciones = series(
+        df, "inscripciones", "Inscripciones en<br>Educación Terciaria", CONSTANTS.colores[0])
     return gastos, inscripciones
 
 ########################################################################################## CLUSTERS ###############################################################################################
+
+
 def grupos_clusters(data):
     # Escalar valores en ambos ejes de 0-1 para que ambos ejes influyan en la descision de clusters
     data['gastos'] = data['gastos'] / np.max(data['gastos'])
-    data['inscripciones'] = data['inscripciones'] /np.max(data['inscripciones'])
+    data['inscripciones'] = data['inscripciones'] / \
+        np.max(data['inscripciones'])
 
     # Algoritmo de clusters
     X = data[['gastos', 'inscripciones']]
@@ -129,10 +136,10 @@ def grupos_clusters(data):
     return grupos
 
 
-
 def data_clusters():
     # Sacar promedios de la ultima decada
-    inscripciones['promedio'] = inscripciones.loc[:,'2008':'2018'].mean(axis=1)
+    inscripciones['promedio'] = inscripciones.loc[:,
+                                                  '2008':'2018'].mean(axis=1)
     gastos['promedio'] = gastos.loc[:, '2008':'2018'].mean(axis=1)
 
     # Conjunto para graficar
@@ -171,8 +178,10 @@ def data_clusters():
 
     return data
 
-global df_clusters 
+
+global df_clusters
 df_clusters = data_clusters()
+
 
 def clusters(data=df_clusters):
 
@@ -183,7 +192,7 @@ def clusters(data=df_clusters):
         text="codigo_pais",
         custom_data=['codigo_pais', 'nombre_pais', 'gastos', 'inscripciones'],
         color='categoria',
-        color_discrete_map= color_cluster_map,
+        color_discrete_map=color_cluster_map,
     )
 
     fig.update_traces(
@@ -208,7 +217,7 @@ def clusters(data=df_clusters):
         font=dict(
             size=10,
         ),
-        margin=dict(l=0,r=0,b=0,t=10,pad=0),
+        margin=dict(l=0, r=0, b=0, t=10, pad=0),
         showlegend=False,
     )
 
@@ -242,7 +251,7 @@ def mapa(data=df_clusters):
         hovertemplate='<b>%{customdata[1]} (%{customdata[0]})</b><br>' +
         '<br>Gastos:           %{customdata[2]:.2f}' +
         '<br>Inscripciones:  %{customdata[3]:.2f}<extra></extra>',
-        hoverlabel = dict(bgcolor='white'),
+        hoverlabel=dict(bgcolor='white'),
     )
 
     fig.update_geos(projection_type="natural earth")
@@ -257,7 +266,7 @@ def mapa(data=df_clusters):
         font=dict(
             size=10,
         ),
-        margin=dict(l=0,r=0,b=0,t=0,pad=0),
+        margin=dict(l=0, r=0, b=0, t=0, pad=0),
         showlegend=False,
     )
 
