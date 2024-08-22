@@ -10,7 +10,6 @@ import logging
 error_logger = logging.getLogger('error_logger')
 
 # Data source
-import utils.tableros.data_ies as Data
 
 
 #################################### FUNCIONES GLOBALES #############################################
@@ -29,6 +28,8 @@ def agregar_indicador(anterior, actual, fig, i, j, mode):
     return fig
 
 # Funcion para agregar un grafico por periodo
+
+
 def barras_periodo(df, p, fig, i, azules):
 
     fig.append_trace(go.Bar(
@@ -44,7 +45,7 @@ def barras_periodo(df, p, fig, i, azules):
         hovertemplate='<b>Periodo:</b> {}'.format(
             p)+'<br><b>Nivel:</b> %{y}<br><b>Desertor(es):</b> %{x}<extra></extra>',
         textposition='outside',
-        
+
         textfont=dict(
             size=30,
             color='rgb(30, 75, 131)'
@@ -91,12 +92,15 @@ def barras_periodo(df, p, fig, i, azules):
     return fig
 
 # CLASE DE GRAFICOS PARA PROGRAMA
+
+
 class Programa:
 
     def __init__(self, periodo: int, programa: int, periodos: list):
         self.df_IES = Data.get_IES_programa(programa)
         self.df_ESTUDIANTES_total = Data.get_estudiantes_programa(programa)
-        self.df_ESTUDIANTES = self.df_ESTUDIANTES_total.query("REGISTRO == '{}'".format(periodo))
+        self.df_ESTUDIANTES = self.df_ESTUDIANTES_total.query(
+            "REGISTRO == '{}'".format(periodo))
         self.periodos_list = periodos
         self.periodo = periodo
         self.programa = programa
@@ -107,10 +111,11 @@ class Programa:
 
         if 0 <= index_periodo_actual <= len(self.periodos_list):
             periodo_anterior = self.periodos_list[index_periodo_actual-1]
-            if Data.check_IES_periodo_programa(periodo_anterior, programa):                
-                self.data_anterior = Data.get_IES_periodo_programa(periodo_anterior, programa)
+            if Data.check_IES_periodo_programa(periodo_anterior, programa):
+                self.data_anterior = Data.get_IES_periodo_programa(
+                    periodo_anterior, programa)
             else:
-                self.data_anterior = self.data_actual    
+                self.data_anterior = self.data_actual
         else:
             self.data_anterior = self.data_actual
 
@@ -121,7 +126,8 @@ class Programa:
             data_anterior = self.data_anterior
             data_actual = self.data_actual
 
-            variables_nombre = ['insc_total', 'admi_total', 'mat_total', 'desercion']
+            variables_nombre = ['insc_total',
+                                'admi_total', 'mat_total', 'desercion']
             variables_indicadores = []
             for v in variables_nombre:
                 variables_indicadores.append(
@@ -130,7 +136,8 @@ class Programa:
 
             # Crear conetenedor de sub graficos
             fig = make_subplots(
-                column_titles=['Inscritos', 'Admitidos', 'Matriculados', 'Deserción'],
+                column_titles=['Inscritos', 'Admitidos',
+                               'Matriculados', 'Deserción'],
                 rows=1, cols=cant_indicadores,
                 column_widths=[1/cant_indicadores]*cant_indicadores,
                 specs=[[{"type": "indicator"}]*cant_indicadores],
@@ -164,11 +171,13 @@ class Programa:
             data_ies = self.df_IES
 
             data = data_ies.dropna(subset=['periodo', 'mat_total'], axis=0)
-            periodos_list = sorted(data['periodo'].unique(),  reverse=True)[:12]
+            periodos_list = sorted(
+                data['periodo'].unique(),  reverse=True)[:12]
             periodos = [int(p) for p in periodos_list]
             matriculas = []
             for i, p in enumerate(periodos):
-                mat = data.query("periodo == '{}'".format(p))['mat_total'].values[0]
+                mat = data.query("periodo == '{}'".format(p))[
+                    'mat_total'].values[0]
                 matriculas.append(mat)
 
             df_matricula_radial = pd.DataFrame({
@@ -235,14 +244,15 @@ class Programa:
             estratos = []
             for e in estratos_str:
                 if any(char.isdigit() for char in e):
-                    estratos.append(int(e.replace('ESTRATO ','')))
+                    estratos.append(int(e.replace('ESTRATO ', '')))
 
-            estudiantes = [len(data.query("estrato_residencia == 'ESTRATO {}'".format(e))) for e in estratos]
+            estudiantes = [len(data.query(
+                "estrato_residencia == 'ESTRATO {}'".format(e))) for e in estratos]
             # TODO organizar el orden de los estratos
             estratos_str = ['Estrato {}'.format(e) for e in estratos]
             if len(estratos) <= 0:
                 raise Exception('No hay estratos')
-            
+
             fig = px.pie(
                 values=estudiantes,
                 names=estratos_str,
@@ -312,15 +322,16 @@ class Programa:
             # Recorrer los periodos y reliazar las graficas
             for i, p in enumerate(periodos):
                 data_periodo = data.query("REGISTRO == '{}'".format(p))
-                data_periodo = data_periodo.sort_values(by='semestre', ascending=True)
+                data_periodo = data_periodo.sort_values(
+                    by='semestre', ascending=True)
                 data_periodo = data_periodo.head(cant_niveles)
 
                 # llenar los demas semestres para que queden con el maximo de todos
                 if len(data_periodo) < cant_niveles:
-                    
+
                     for j in range(1, cant_niveles+1):
                         # Semestre-Nivel existe en el data frame
-                        if not(j <= len(data_periodo) and j in list(data_periodo['semestre'])):
+                        if not (j <= len(data_periodo) and j in list(data_periodo['semestre'])):
                             data_periodo = data_periodo.append(pd.DataFrame(
                                 [[j, p, 0]], columns=['semestre', 'REGISTRO', 'desertor']))
 
@@ -328,7 +339,7 @@ class Programa:
                         by='semestre', ascending=True)
 
                 fig = barras_periodo(data_periodo, p, fig, i+1, azules)
-            
+
             espaciado = float('0.'+str(abs(10-cant_niveles)))
             if (espaciado < 0.1 or cant_niveles > 10):
                 espaciado = 0.1
