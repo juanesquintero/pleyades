@@ -12,14 +12,14 @@ endopoint = 'facultades/'
 @Facultad.route('/')
 @only_admin
 def listar():
-    status,body = get(endopoint)
+    status, body = get(endopoint)
     if status:
-        return render_template('admin/'+endopoint+'listar.html',facultades=body)
+        return render_template('admin/'+endopoint+'listar.html', facultades=body)
     else:
-        return render_template('admin/'+endopoint+'listar.html', facultades=[],error=body)
-    
+        return render_template('admin/'+endopoint+'listar.html', facultades=[], error=body)
 
-@Facultad.route('/detalle',methods=['POST'])
+
+@Facultad.route('/detalle', methods=['POST'])
 @only_admin
 def detalle():
     body = dict(request.values)
