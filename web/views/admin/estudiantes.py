@@ -1,5 +1,4 @@
 from flask import request, Blueprint, render_template
-import utils.tableros.data_ies as Data
 from views.auth import only_admin
 from services.API import get
 

@@ -1,8 +1,8 @@
-from flask import request, session, redirect, Blueprint, render_template, url_for
+from flask import request, Blueprint, render_template
 from ast import literal_eval
 
 from views.auth import only_admin
-from services.API import get, post, put, delete
+from services.API import get
 
 Facultad = Blueprint('Facultad', __name__)
 

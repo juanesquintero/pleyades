@@ -1,4 +1,4 @@
-from flask import request, session, Blueprint, render_template, redirect, url_for
+from flask import request, Blueprint, render_template, redirect, url_for
 from ast import literal_eval
 
 from views.auth import only_admin

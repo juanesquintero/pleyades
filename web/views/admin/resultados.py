@@ -1,13 +1,12 @@
-from flask import request, session, Blueprint, render_template, redirect, send_file, url_for
-from dotenv import load_dotenv
-from ast import literal_eval
-from datetime import datetime
 import os
 import json
-import pandas as pd
+from ast import literal_eval
+from dotenv import load_dotenv
+from flask import request, Blueprint, render_template, redirect, url_for
+
 
 from views.auth import only_admin
-from services.API import get, post, put, delete
+from services.API import get, put, delete
 
 from utils.mixins import *
 
