@@ -11,7 +11,7 @@ endopoint = 'facultades/'
 
 @Facultad.route('/')
 @only_admin
-def listar():
+def get_list():
     status, body = get(endopoint)
     if status:
         return render_template('admin/'+endopoint+'listar.html', facultades=body)

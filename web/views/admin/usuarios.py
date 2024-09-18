@@ -11,7 +11,7 @@ endopoint = 'usuarios/'
 
 @Usuario.route('/')
 @only_admin
-def listar():
+def get_list():
     status, body = get(endopoint)
     if status:
         return render_template('admin/'+endopoint+'listar.html', usuarios=body)
@@ -20,13 +20,13 @@ def listar():
 
 @Usuario.route('/crear')
 @only_admin
-def crear():
+def post_create():
     return render_template('admin/'+endopoint+'crear.html')
 
 
 @Usuario.route('/crear', methods=['POST'])
 @only_admin
-def guardar():
+def post_save():
     usuario = dict(request.values)
     status, body = post(endopoint, usuario)
     if status:
@@ -37,7 +37,7 @@ def guardar():
 
 @Usuario.route('/editar', methods=['POST'])
 @only_admin
-def editar():
+def post_edit():
     body = dict(request.values)
     usuario = literal_eval(body['usuario'])
     if usuario:
@@ -48,7 +48,7 @@ def editar():
 
 @Usuario.route('/actualizar', methods=['POST'])
 @only_admin
-def actualizar():
+def update():
     usuario = dict(request.values)
     if 'clave' in usuario.keys():
         if len(usuario['clave']) < 8:
@@ -64,7 +64,7 @@ def actualizar():
 
 @Usuario.route('/borrar', methods=['POST'])
 @only_admin
-def borrar():
+def remove():
     body = dict(request.values)
     usuario = literal_eval(body['usuario'])
     if usuario:
@@ -75,7 +75,7 @@ def borrar():
 
 @Usuario.route('/eliminar', methods=['POST'])
 @only_admin
-def eliminar():
+def delete():
     usuario = dict(request.values)
     correo = usuario.pop('correo')
     status, body = delete(endopoint+correo)

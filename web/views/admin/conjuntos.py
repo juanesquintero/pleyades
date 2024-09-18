@@ -20,22 +20,22 @@ upload_folder = os.getcwd() + "/uploads"
 @ConjuntoAdmin.route("/crudos")
 @only_admin
 def crudos():
-    return listar("crudos")
+    return get_list("crudos")
 
 
 @ConjuntoAdmin.route("/enproceso")
 @only_admin
 def en_proceso():
-    return listar("en proceso")
+    return get_list("en proceso")
 
 
 @ConjuntoAdmin.route("/procesados")
 @only_admin
 def procesados():
-    return listar("procesados")
+    return get_list("procesados")
 
 
-def listar(estado: str):
+def get_list(estado: str):
     status_p, body_p = get("programas")
     status_c, body_c = get("conjuntos/estado/" + estado)
     if status_c and status_p:
@@ -58,7 +58,7 @@ def listar(estado: str):
 
 @ConjuntoAdmin.route("/editar", methods=["POST"])
 @only_admin
-def editar():
+def post_edit():
     body = dict(request.values)
     conjunto = literal_eval(body["conjunto"])
     status_p, body_p = get("programas")
@@ -76,7 +76,7 @@ def editar():
 
 @ConjuntoAdmin.route("/actualizar", methods=["POST"])
 @only_admin
-def actualizar():
+def update():
     conjunto = dict(request.values)
     nombre = conjunto.pop("nombre")
 
@@ -93,7 +93,7 @@ def actualizar():
 
 @ConjuntoAdmin.route("/borrar", methods=["POST"])
 @only_admin
-def borrar():
+def delete():
     body = dict(request.values)
     conjunto = literal_eval(body["conjunto"])
     status_p, body_p = get("programas")

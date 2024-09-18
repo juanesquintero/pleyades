@@ -9,7 +9,7 @@ endopoint = 'estudiantes/'
 
 @Estudiante.route('/')
 @only_admin
-def listar():
+def get_list():
     status, body = get('programas')
     if status:
         return render_template('admin/'+endopoint+'listar.html', programas=body)
@@ -24,5 +24,14 @@ def detalle():
     programa = form.get('programa')
     status, body = get(f'desercion/estudiantes/programa/{idprograma}')
     if status:
-        return render_template('admin/'+endopoint+'detalle.html', estudiantes=body, programa=programa)
-    return render_template('admin/'+endopoint+'detalle.html', estudiantes=[], error=body, programa=programa)
+        return render_template(
+            'admin/'+endopoint+'detalle.html',
+            estudiantes=body,
+            programa=programa
+        )
+    return render_template(
+        'admin/'+endopoint+'detalle.html',
+        estudiantes=[],
+        error=body,
+        programa=programa
+    )
