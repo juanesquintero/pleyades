@@ -48,7 +48,7 @@ def entrenar():
     if request.method == 'GET':
         return formulario_entrenar()
     conjunto = dict(request.values)
-    return conjuntos.guardar(conjunto)
+    return conjuntos.post_save(conjunto)
 
 
 @Analista.route('/modelos/predecir', methods=['POST'])

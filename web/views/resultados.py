@@ -21,7 +21,7 @@ upload_folder = os.getcwd()+'/uploads'
 def preparaciones(conjunto=None):
     if conjunto:
         return listar_conjunto('preparaciones', conjunto)
-    return listar('preparaciones')
+    return get_list('preparaciones')
 
 
 @Resultado.route('/ejecuciones')
@@ -30,10 +30,10 @@ def preparaciones(conjunto=None):
 def ejecuciones(conjunto=None):
     if conjunto:
         return listar_conjunto('ejecuciones', conjunto)
-    return listar('ejecuciones')
+    return get_list('ejecuciones')
 
 
-def listar(resultados):
+def get_list(resultados):
     rol = 'preparador' if resultados == 'preparaciones' else 'ejecutor'
     status, body = get(resultados+'/'+rol+'/'+session['user']['correo'])
     if status:

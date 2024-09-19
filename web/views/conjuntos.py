@@ -36,7 +36,7 @@ translator = Translator()
 @Conjunto.route('/crudos/')
 @login_required
 def crudos():
-    return listar('crudos')
+    return get_list('crudos')
 
 
 @Conjunto.route('/procesados')
@@ -45,11 +45,11 @@ def crudos():
 @login_required
 def procesados(conjunto=None):
     if conjunto:
-        return listar('procesados', str(conjunto))
-    return listar('procesados')
+        return get_list('procesados', str(conjunto))
+    return get_list('procesados')
 
 
-def listar(estado, conjunto=None):
+def get_list(estado, conjunto=None):
     user = session.get('user', {'correo': ''}).get('correo')
     status_p, body_p = get('programas')
     status_c, body_c = get(
@@ -105,7 +105,7 @@ def descargar(estado, nombre):
 @Conjunto.route('/crear')
 @Conjunto.route('/crear/')
 @login_required
-def crear():
+def post_create():
     periodos = DataIES.get_periodos_origen()
     status_f, body_f = get('facultades')
     status_p, body_p = get('programas')
@@ -160,7 +160,7 @@ def detalle():
 @Conjunto.route('/crear', methods=['POST'])
 @Conjunto.route('/crear/', methods=['POST'])
 @login_required
-def guardar(conjunto=None):
+def post_save(conjunto=None):
     if not conjunto:
         # Obtener Lo valores del formulario
         conjunto = dict(request.values)
@@ -268,7 +268,7 @@ def guardar(conjunto=None):
 
     # TODO NEW! version 2 v2.0.0
     if status:
-        # preparar() luego de guardar()
+        # preparar() luego de post_save()
         return preparar(conjunto)
 
     return render_template('utils/mensaje.html', mensaje='No se pudo guardar el conjunto', submensaje=body)
