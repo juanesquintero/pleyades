@@ -99,7 +99,7 @@
                 &nbsp;
                 <strong class="mr-2 d-flex ">Descargar: </strong>
                 &nbsp;&nbsp;
-                <a class="btn bg-white btn-sm border text-dark" type="button" href="{{url_for('Conjunto.descargar',estado='crudos',nombre=c.nombre)}}">
+                <a class="btn bg-white btn-sm border text-dark" type="button" href="{{url_for('Conjunto.download',estado='crudos',nombre=c.nombre)}}">
                     <i class="fas fa-file-excel mr-1"></i>
                     Crudo
                 </a>
@@ -148,14 +148,14 @@
                     <div class="dropdown-menu d-menu border">
 
                         <!-- ARCHIVO CRUDOS-->
-                        <a class="dropdown-item w-100" type="button" href="{{url_for('Conjunto.descargar',estado='crudos',nombre=c.nombre)}}">
+                        <a class="dropdown-item w-100" type="button" href="{{url_for('Conjunto.download',estado='crudos',nombre=c.nombre)}}">
                             <small>
                                 <i class="fas fa-file-excel mr-1"></i>
                                 Crudo
                             </small>
                         </a>
                         <!-- ARCHIVO PROCESADOS-->
-                        <a class="dropdown-item" type="button"  href="{{url_for('Conjunto.descargar', estado='procesados' ,nombre=c.nombre) }}">
+                        <a class="dropdown-item" type="button"  href="{{url_for('Conjunto.download', estado='procesados' ,nombre=c.nombre) }}">
                             <small><i class="fas fa-file-excel mr-1"></i>
                                 Procesado
                             </small>
