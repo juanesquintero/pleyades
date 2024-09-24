@@ -20,7 +20,7 @@ upload_folder = os.getcwd()+'/uploads'
 @login_required
 def preparaciones(conjunto=None):
     if conjunto:
-        return listar_conjunto('preparaciones', conjunto)
+        return list_set('preparaciones', conjunto)
     return get_list('preparaciones')
 
 
@@ -29,7 +29,7 @@ def preparaciones(conjunto=None):
 @login_required
 def ejecuciones(conjunto=None):
     if conjunto:
-        return listar_conjunto('ejecuciones', conjunto)
+        return list_set('ejecuciones', conjunto)
     return get_list('ejecuciones')
 
 
@@ -42,7 +42,7 @@ def get_list(resultados):
         return render_template(endopoint+resultados+'.html', resultados=[], error=body)
 
 
-def listar_conjunto(resultados, conjunto):
+def list_set(resultados, conjunto):
     status, body = get(resultados+'/conjunto/'+conjunto)
     if status:
         return render_template(endopoint+resultados+'.html', resultados=set_date_format(body))
@@ -71,11 +71,20 @@ def ejecucion_detalle():
         if body['estado'] == 'Fallida':
             del body['precision_modelo']
             del body['numero']
-            return render_template(endopoint+'ejecucion_detalle.html', desertores=None, resultados=body.pop('resultados'), ejecucion=body)
+            return render_template(
+                endopoint+'ejecucion_detalle.html',
+                desertores=None,
+                resultados=body.pop('resultados'),
+                ejecucion=body
+            )
         else:
             return desertores
     else:
-        return render_template('utils/mensaje.html', mensaje='No se obtener la ejecución', submensaje=body)
+        return render_template(
+            'utils/mensaje.html',
+            mensaje='No se obtener la ejecución',
+            submensaje=body
+        )
 
 
 @Resultado.route('/preparacion/detalle', methods=['POST'])
@@ -87,14 +96,22 @@ def preparacion_detalle():
 
     if status:
         del body['numero']
-        return render_template(endopoint+'preparacion_detalle.html', observaciones=body.pop('observaciones'), p=body)
+        return render_template(
+            endopoint+'preparacion_detalle.html',
+            observaciones=body.pop('observaciones'),
+            p=body
+        )
     else:
-        return render_template('utils/mensaje.html', mensaje='No se obtener los resultaods de la ejecución', submensaje=body)
+        return render_template(
+            'utils/mensaje.html',
+            mensaje='No se obtener los resultaods de la ejecución',
+            submensaje=body
+        )
 
 
 @Resultado.route('/descargar/desertores/<ejecucion>', methods=['GET'])
 @login_required
-def descargar(ejecucion):
+def download(ejecucion):
     status_c, body_c = get('ejecuciones/'+ejecucion)
     if not status_c:
         return render_template('utils/mensaje.html', mensaje='No existe esa ejecución')
@@ -104,7 +121,11 @@ def descargar(ejecucion):
     try:
         data = pd.read_json(ruta+'.json')
     except Exception as e:
-        return render_template('utils/mensaje.html', mensaje='No se pudo abrir el archivo de desertores:', submensaje=str(e))
+        return render_template(
+            'utils/mensaje.html',
+            mensaje='No se pudo abrir el archivo de desertores:',
+            submensaje=str(e)
+        )
 
     exito, pagina_error = guardar_archivo(data, ruta+'.xls', 'excel')
     if not (exito):

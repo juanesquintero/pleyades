@@ -25,7 +25,7 @@ upload_folder = os.getcwd()+'/uploads'
 @only_admin
 def preparaciones(conjunto=None):
     if conjunto:
-        return listar_conjunto('preparaciones', conjunto)
+        return list_set('preparaciones', conjunto)
     return get_list('preparaciones')
 
 
@@ -34,7 +34,7 @@ def preparaciones(conjunto=None):
 @only_admin
 def ejecuciones(conjunto=None):
     if conjunto:
-        return listar_conjunto('ejecuciones', conjunto)
+        return list_set('ejecuciones', conjunto)
     return get_list('ejecuciones')
 
 
@@ -46,7 +46,7 @@ def get_list(resultados):
         return render_template('admin/'+endopoint+resultados+'.html', resultados=[], error=body)
 
 
-def listar_conjunto(resultados, conjunto):
+def list_set(resultados, conjunto):
     status, body = get(resultados+'/conjunto/'+conjunto)
     if status:
         return render_template('admin/'+endopoint+resultados+'.html', resultados=body)

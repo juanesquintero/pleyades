@@ -175,7 +175,7 @@ def predecir_modelo():
 
 @Analista.route('/modelos/descargar', methods=['POST'])
 @login_required
-def descargar():
+def download():
     modelo = dict(request.values).get('modelo')
     ruta = f'{modelos_folder}/{modelo}.pkl'
 

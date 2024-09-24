@@ -79,7 +79,7 @@ def get_list(estado, conjunto=None):
 
 
 @Conjunto.route('/descargar/<estado>/<nombre>')
-def descargar(estado, nombre):
+def download(estado, nombre):
 
     status_c, body_c = get('conjuntos/'+nombre)
     if not status_c:
