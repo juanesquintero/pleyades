@@ -1,4 +1,4 @@
-import utils.tableros.data_ies as Data
+import logging
 import numpy as np
 import pandas as pd
 
@@ -6,7 +6,8 @@ import plotly.graph_objs as go
 import plotly.express as px
 from plotly.subplots import make_subplots
 
-import logging
+import utils.tableros.data_ies as Data
+
 error_logger = logging.getLogger('error_logger')
 
 # Data source
