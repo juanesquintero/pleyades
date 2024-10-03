@@ -58,7 +58,7 @@ CREATE TABLE [dbo].[VWDATADESERCION](
 	[beca] [varchar](2) NOT NULL,
 	[intersemestral] [varchar](2) NOT NULL,
 	[desertor] [varchar](2) NOT NULL,
-	[periodo_ingreso] [varchar](61) NULL,
+	[period_ingreso] [varchar](61) NULL,
 	[ultimo_periodo] [varchar](61) NULL,
 	[biologia] [float] NULL,
 	[ciencias_naturales] [float] NULL,

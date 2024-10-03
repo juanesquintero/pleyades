@@ -24,7 +24,7 @@ def get_periodo(periodo: int):
     ex = exception(query)
     if ex:
         return ex
-    if not(query):
+    if not (query):
         return msg_error
     return jsonify(_format(query))
 
@@ -37,7 +37,7 @@ def get_totales_periodo(periodo: int):
     ex = exception(query)
     if ex:
         return ex
-    if not(query):
+    if not (query):
         return msg_error
     return jsonify(_format(query))
 
@@ -50,21 +50,21 @@ def get_programa(programa: int):
     ex = exception(query)
     if ex:
         return ex
-    if not(query):
+    if not (query):
         return msg_error
     return jsonify(_format(query))
 
 
 @IES.route('/programa/<int:programa>/<int:periodo>')
 @jwt_required()
-def get_periodo_programa(programa: int, periodo: int):
+def get_period_programa(programa: int, periodo: int):
     sql = "SELECT * FROM {} WHERE periodo={} and idprograma={}".format(
         tabla, periodo, programa)
     query = db.select(sql)
     ex = exception(query)
     if ex:
         return ex
-    if not(query):
+    if not (query):
         return msg_error
     return jsonify(_format(query))
 
@@ -82,7 +82,7 @@ def get_periodos():
         return msg_error
     periodos_list = [int(p['periodo']) for p in query]
     periodos = sorted(periodos_list)
-    if not(periodos):
+    if not (periodos):
         return msg_error
     return jsonify(_format(periodos))
 
@@ -102,7 +102,7 @@ def get_programas():
         by='programa', ascending=True)
     programas_df['idprograma'] = programas_df['idprograma'].astype(int)
     programas = json.loads(programas_df.to_json(orient='records'))
-    if not(programas):
+    if not (programas):
         return msg_error
     return jsonify(_format(programas))
 
@@ -123,6 +123,6 @@ def get_programas_by_periodo(periodo: int):
         by='programa', ascending=True)
     programas_df['idprograma'] = programas_df['idprograma'].astype(int)
     programas = json.loads(programas_df.to_json(orient='records'))
-    if not(programas):
+    if not (programas):
         return msg_error
     return jsonify(_format(programas))

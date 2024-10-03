@@ -21,7 +21,8 @@ msg_error = {'msg': 'No hay concidencias'}, 404
 @Estudiante.route('/conjunto/<int:programa>/<int:periodoInicio>/<int:periodoFin>')
 @jwt_required()
 def get_conjunto_estudiantes(programa, periodoInicio, periodoFin):
-    sql = f'SELECT * FROM {tabla} WHERE idprograma={programa} AND REGISTRO >= {periodoInicio} AND REGISTRO <= {periodoFin} ORDER BY REGISTRO;'
+    sql = f'SELECT * FROM {tabla} WHERE idprograma={programa} AND REGISTRO >= {
+        periodoInicio} AND REGISTRO <= {periodoFin} ORDER BY REGISTRO;'
     query = db.select(sql)
     ex = exception(query)
     if ex:
@@ -59,8 +60,9 @@ def get_programa(programa):
 
 @Estudiante.route('/programa/<int:programa>/<int:periodo>')
 @jwt_required()
-def get_periodo_programa(programa, periodo):
-    sql = f'SELECT * FROM {tabla} WHERE REGISTRO={periodo} and idprograma={programa}'
+def get_period_programa(programa, periodo):
+    sql = f'SELECT * FROM {tabla} WHERE REGISTRO={
+        periodo} and idprograma={programa}'
     query = db.select(sql)
     ex = exception(query)
     if ex:
