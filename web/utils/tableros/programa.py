@@ -99,7 +99,7 @@ class Programa:
 
     def __init__(self, periodo: int, programa: int, periodos: list):
         self.df_IES = Data.get_IES_programa(programa)
-        self.df_ESTUDIANTES_total = Data.get_estudiantes_programa(programa)
+        self.df_ESTUDIANTES_total = Data.get_students_programa(programa)
         self.df_ESTUDIANTES = self.df_ESTUDIANTES_total.query(
             "REGISTRO == '{}'".format(periodo))
         self.periodos_list = periodos
@@ -107,14 +107,14 @@ class Programa:
         self.programa = programa
 
         # Obtener data anterior
-        index_periodo_actual = self.periodos_list.index(self.periodo)
-        self.data_actual = Data.get_IES_periodo_programa(periodo, programa)
+        index_period_actual = self.periodos_list.index(self.periodo)
+        self.data_actual = Data.get_IES_period_programa(periodo, programa)
 
-        if 0 <= index_periodo_actual <= len(self.periodos_list):
-            periodo_anterior = self.periodos_list[index_periodo_actual-1]
-            if Data.check_IES_periodo_programa(periodo_anterior, programa):
-                self.data_anterior = Data.get_IES_periodo_programa(
-                    periodo_anterior, programa)
+        if 0 <= index_period_actual <= len(self.periodos_list):
+            period_anterior = self.periodos_list[index_period_actual-1]
+            if Data.check_IES_period_programa(period_anterior, programa):
+                self.data_anterior = Data.get_IES_period_programa(
+                    period_anterior, programa)
             else:
                 self.data_anterior = self.data_actual
         else:
@@ -147,10 +147,10 @@ class Programa:
 
             # Agregar cada indicador por variable
             for i, var in enumerate(variables_indicadores):
-                periodo_anterior = var[0]
-                periodo_actual = var[1]
+                period_anterior = var[0]
+                period_actual = var[1]
                 fig = agregar_indicador(
-                    periodo_anterior, periodo_actual, fig, 1, i+1, 'number+delta')
+                    period_anterior, period_actual, fig, 1, i+1, 'number+delta')
 
             # Personalizar la grafica
             fig.update_layout(

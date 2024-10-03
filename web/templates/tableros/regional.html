@@ -14,7 +14,7 @@
         <!-- Controles -->
         <div class="row ml-auto mr-1">
             <div class="col-7">
-                <label for="periodo_select" class="text-white">Selecciona una región:</label>
+                <label for="period_select" class="text-white">Selecciona una región:</label>
                 <br>
                 <select id="dpto_select" class="form-control-sm w-100">
                     {% for d in dptos_list %}
@@ -24,9 +24,9 @@
 
             </div>
             <div class="col-5 pl-1">
-                <label for="periodo_select" class="text-white">Selecciona un período:</label>
+                <label for="period_select" class="text-white">Selecciona un período:</label>
                 <br>
-                <select id="periodo_select" class="form-control-sm w-75">
+                <select id="period_select" class="form-control-sm w-75">
                     {% for p in periodos_list %}
                     <option value="{{p}}" {% if p|string==periodo|string %} selected {% endif %}>{{p}}</option>
                     {% endfor %}
@@ -37,7 +37,7 @@
     <script>
         var dpto = '{{ dpto }}';
         var periodo = '{{ periodo }}';
-        $('#periodo_select').on('change', function () {
+        $('#period_select').on('change', function () {
             openModal();
             window.location.href = "{{url_for('Tablero.region_dashboard')}}" + "?dpto=" + dpto + "&periodo=" + this.value;
         })

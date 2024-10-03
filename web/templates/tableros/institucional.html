@@ -15,9 +15,9 @@
         <!-- Controles -->
         <div class="row ml-auto mr-3">
             <div class="col">
-                <label for="periodo_select" class="text-white ">Selecciona un período:</label>
+                <label for="period_select" class="text-white ">Selecciona un período:</label>
                 <br>
-                <select id="periodo_select" class="form-control-sm">
+                <select id="period_select" class="form-control-sm">
                     {% for p in periodos_list %}
                     <option value="{{p}}" {% if p|string==periodo|string %} selected {% endif %}>{{p}}</option>
                     {% endfor %}
@@ -27,7 +27,7 @@
     </div>
     <script>
         var periodo = '{{ periodo }}';
-        $('#periodo_select').on('change', function () {
+        $('#period_select').on('change', function () {
             openModal();
              
             window.location.href = "{{url_for('Tablero.ies_dashboard')}}" + "?periodo=" + this.value;

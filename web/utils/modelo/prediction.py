@@ -8,14 +8,14 @@ from .preparation import elimination_predict
 model_logger = logging.getLogger('model_logger')
 
 
-def predict(data_a_predecir, periodo_a_predecir, basic_info):
+def predict(data_a_predecir, period_a_predecir, basic_info):
 
     data_a_predecir['registro'] = data_a_predecir['registro'].astype(int)
 
     if len(data_a_predecir) < 3:
         raise Exception(
             f'Hay muy pocos registros para el periodo {
-                periodo_a_predecir} (menos de 3)', True
+                period_a_predecir} (menos de 3)', True
         )
 
     # Eliminacion depuracion de columnas
@@ -27,15 +27,15 @@ def predict(data_a_predecir, periodo_a_predecir, basic_info):
 
     # Predecir
     result = predict_classifier(
-        data_a_predecir, periodo_a_predecir, mejor_clasificador
+        data_a_predecir, period_a_predecir, mejor_clasificador
     )
 
     resultados = {
         **basic_info,
         'tipo': 'Prediccion',
         'desertores': result.get('desertores'),
-        'periodo_a_predecir': int(periodo_a_predecir),
-        'estudiantes_analizados': result.get('total_analizados'),
+        'period_a_predecir': int(period_a_predecir),
+        'students_analizados': result.get('total_analizados'),
         'desercion_prevista': result.get('desercion'),
         'potenciales_desertores': result.get('total'),
         'clasificador': str(mejor_clasificador.__class__.__name__),
@@ -52,7 +52,7 @@ def calculate_desercion(total_estudiantes, potenciales_desertores):
     return total_desertores, desercion_prevista
 
 
-def predict_classifier(data_a_predecir, periodo_a_predecir, mejor_clasificador):
+def predict_classifier(data_a_predecir, period_a_predecir, mejor_clasificador):
     predc_sem_act = data_a_predecir[
         [
             'registro', 'semestre', 'documento', 'nombre_completo',
@@ -73,7 +73,7 @@ def predict_classifier(data_a_predecir, periodo_a_predecir, mejor_clasificador):
         model_logger.error(excep)
         flash('Por favor intente con otro periodo o programa', 'warning')
         raise Exception('<b>Ocurrió un error al ejecutar la predicción!</b>')
-    total_estudiantes_analizados = len(predc_sem_act['documento'].unique())
+    total_students_analizados = len(predc_sem_act['documento'].unique())
     potenciales_desertores = predc_sem_act.query('prediccion == 1 & desertor == 0').drop_duplicates(
         subset=['documento'],
         keep='first'
@@ -82,7 +82,7 @@ def predict_classifier(data_a_predecir, periodo_a_predecir, mejor_clasificador):
     # TODO filtro de idestado
     # Elminar no matriculados
     potenciales_desertores = potenciales_desertores.query(
-        f"idestado == 6 & registro == {periodo_a_predecir}"
+        f"idestado == 6 & registro == {period_a_predecir}"
     )
 
     potenciales_desertores = potenciales_desertores.drop('registro', axis=1)
@@ -96,12 +96,12 @@ def predict_classifier(data_a_predecir, periodo_a_predecir, mejor_clasificador):
     )
 
     # Setear resultados para insertar en la BD
-    potenciales_desertores['semestre_prediccion'] = periodo_a_predecir
+    potenciales_desertores['semestre_prediccion'] = period_a_predecir
 
     # Filtar desertores si desercio alta
     potenciales_desertores, total_desertores, desercion_prevista = filter_high_desertion(
         potenciales_desertores,
-        total_estudiantes_analizados
+        total_students_analizados
     )
 
     resultados_desertores = potenciales_desertores
@@ -131,7 +131,7 @@ def predict_classifier(data_a_predecir, periodo_a_predecir, mejor_clasificador):
         'resultado': resultados_desertores,
         'desertores': potenciales_desertores,
         'total': int(total_desertores),
-        'total_analizados': int(total_estudiantes_analizados),
+        'total_analizados': int(total_students_analizados),
         'desercion': float(round(desercion_prevista, 3))
     }
 

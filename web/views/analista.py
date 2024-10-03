@@ -114,7 +114,7 @@ def predecir_modelo():
     }
 
     # Obtener estudiantes a predecir
-    data_a_predecir = DataIES.get_estudiantes_periodo_programa(
+    data_a_predecir = DataIES.get_students_period_programa(
         periodo, idprograma
     )
 

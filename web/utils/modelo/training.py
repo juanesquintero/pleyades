@@ -19,9 +19,9 @@ def execute_model(data, conjunto, no_desertion=False):
     }
 
     # Eliminacion depuracion de columnas
-    data, data_a_predecir, periodo_a_predecir = elimination(data, no_desertion)
+    data, data_a_predecir, period_a_predecir = elimination(data, no_desertion)
 
-    basic_info['periodo_a_predecir_mas_1'] = f'{periodo_a_predecir} + 1'
+    basic_info['period_a_predecir_mas_1'] = f'{period_a_predecir} + 1'
 
     if len(data_a_predecir) <= 0:
         return False, 'No hay suficientes datos en el periodo final, revisa el conjunto.'
@@ -84,7 +84,7 @@ def execute_model(data, conjunto, no_desertion=False):
 
     # Usar mejor clasificador para prediction
     result = predict_classifier(
-        data_a_predecir, periodo_a_predecir, mejor_clasificador
+        data_a_predecir, period_a_predecir, mejor_clasificador
     )
 
     if not result.get('resultado').any().any() and not no_desertion:
@@ -99,12 +99,12 @@ def execute_model(data, conjunto, no_desertion=False):
         **basic_info,
         'clasificador': str(AML_best['Nombre'].tolist()[0]),
         'precision': float(round(precision_modelo, 2)),
-        'periodo_anterior': int(periodo_a_predecir),
+        'period_anterior': int(period_a_predecir),
         'desertores': result.get('desertores'),
-        'periodo_a_predecir': int(periodo_a_predecir),
-        'estudiantes_analizados': result.get('total_analizados'),
+        'period_a_predecir': int(period_a_predecir),
+        'students_analizados': result.get('total_analizados'),
         'desercion_prevista': result.get('desercion'),
-        'desertores_reportados':  int(len(data_a_predecir.query(f'desertor == 1 & registro == {periodo_a_predecir}'))),
+        'desertores_reportados':  int(len(data_a_predecir.query(f'desertor == 1 & registro == {period_a_predecir}'))),
         'potenciales_desertores': result.get('total'),
     }
 

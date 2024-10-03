@@ -404,15 +404,15 @@ def indicadores_dpto(dpto, periodo):
         # EXCEPTION: index 0 is out of bounds for axis 0 with size 0
         # Traceback (most recent call last):
         # File "D:\juaneschrome\UDEM\9no Semestre\Trabajo de Grado\Segundo Entregable\Aplicacion\web\utils\tableros\region.py", line 367, in indicadores_dpto
-        #     periodo_actual = df_var_ind[str(periodo)].values[0]*100
+        #     period_actual = df_var_ind[str(periodo)].values[0]*100
         # IndexError: index 0 is out of bounds for axis 0 with size 0
 
         # Agregar cada indicador por variable
         for i, df_var_ind in enumerate(variables_indicadores):
-            periodo_actual = df_var_ind[str(periodo)].values[0]*100
-            periodo_anterior = df_var_ind[str(
+            period_actual = df_var_ind[str(periodo)].values[0]*100
+            period_anterior = df_var_ind[str(
                 periodo-1)].values[0]*100 if str(periodo-1) in periodos else None
-            fig = agregar_indicador(periodo_anterior, periodo_actual, fig, i+1)
+            fig = agregar_indicador(period_anterior, period_actual, fig, i+1)
 
         # Personalizar la grafica
         fig.update_layout(
@@ -462,13 +462,13 @@ def IES_row(data, fig, i, periodos):
     )
 
     # Indicador
-    periodo_anterior = data.loc[len(data)-2, 'matricula']
-    periodo_actual = data.loc[len(data)-1, 'matricula']
+    period_anterior = data.loc[len(data)-2, 'matricula']
+    period_actual = data.loc[len(data)-1, 'matricula']
     fig.append_trace(go.Indicator(
         mode="delta",
-        delta={'reference': periodo_anterior,
+        delta={'reference': period_anterior,
                'relative': True, 'position': "bottom"},
-        value=periodo_actual,
+        value=period_actual,
     ),
         row=i, col=2
     )

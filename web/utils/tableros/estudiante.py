@@ -17,9 +17,9 @@ colores = CONSTANTS.colores
 #################################### FUNCIONES GLOBALES #############################################
 
 
-def estudiantes_programa(programa: str):
+def students_programa(programa: str):
     try:
-        data = Data.get_estudiantes_programa(programa)
+        data = Data.get_students_programa(programa)
         data = data[['documento', 'nombre_completo']]
         estudiantes = data.drop_duplicates()
         return estudiantes.to_dict(orient='records')
@@ -31,7 +31,7 @@ def estudiantes_programa(programa: str):
 class Estudiante:
 
     def __init__(self, identificacion, programa=None,  periodo=None, ):
-        self.df_ESTUDIANTE = Data.get_estudiantes_documento(identificacion)
+        self.df_ESTUDIANTE = Data.get_students_documento(identificacion)
         self.identificacion = identificacion
         self.periodo = periodo
         self.programa = programa

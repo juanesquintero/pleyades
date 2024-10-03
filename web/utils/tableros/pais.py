@@ -324,18 +324,18 @@ def indicadores(periodo):
     )
 
     # Desercion
-    periodo_actual = df[df['periodo'] == periodo]['desercion'].values[0]*100
-    periodo_anterior = df[df['periodo'] == periodo-1]['desercion'].values[0] * \
+    period_actual = df[df['periodo'] == periodo]['desercion'].values[0]*100
+    period_anterior = df[df['periodo'] == periodo-1]['desercion'].values[0] * \
         100 if not (periodo == min(df['periodo'])) else None
 
-    fig = agregar_indicador(periodo_anterior, periodo_actual, fig, 1)
+    fig = agregar_indicador(period_anterior, period_actual, fig, 1)
 
     # Graduados
-    periodo_actual = df[df['periodo'] == periodo]['graduandos_total'].values[0]
-    periodo_anterior = df[df['periodo'] == periodo -
-                          1]['graduandos_total'].values[0] if not (periodo == min(df['periodo'])) else None
+    period_actual = df[df['periodo'] == periodo]['graduandos_total'].values[0]
+    period_anterior = df[df['periodo'] == periodo -
+                         1]['graduandos_total'].values[0] if not (periodo == min(df['periodo'])) else None
 
-    fig = agregar_indicador(periodo_anterior, periodo_actual, fig, 2)
+    fig = agregar_indicador(period_anterior, period_actual, fig, 2)
 
     # Personalizar la grafica
     fig.update_layout(
@@ -364,22 +364,22 @@ def indicadores2(periodo):
     )
 
     # Inscritos
-    periodo_actual = df[df['periodo'] == periodo]['inscripcion'].values[0]*100
-    periodo_anterior = df[df['periodo'] == periodo-1]['inscripcion'].values[0] * \
+    period_actual = df[df['periodo'] == periodo]['inscripcion'].values[0]*100
+    period_anterior = df[df['periodo'] == periodo-1]['inscripcion'].values[0] * \
         100 if not (periodo == min(df['periodo'])) else None
-    fig = agregar_indicador(periodo_anterior, periodo_actual, fig, 1)
+    fig = agregar_indicador(period_anterior, period_actual, fig, 1)
 
     # Admitidos
-    periodo_actual = df[df['periodo'] == periodo]['admicion'].values[0]
-    periodo_anterior = df[df['periodo'] == periodo -
-                          1]['admicion'].values[0] if not (periodo == min(df['periodo'])) else None
-    fig = agregar_indicador(periodo_anterior, periodo_actual, fig, 2)
+    period_actual = df[df['periodo'] == periodo]['admicion'].values[0]
+    period_anterior = df[df['periodo'] == periodo -
+                         1]['admicion'].values[0] if not (periodo == min(df['periodo'])) else None
+    fig = agregar_indicador(period_anterior, period_actual, fig, 2)
 
     # Matriculados
-    periodo_actual = df[df['periodo'] == periodo]['matricula_total'].values[0]
-    periodo_anterior = df[df['periodo'] == periodo -
-                          1]['matricula_total'].values[0] if not (periodo == min(df['periodo'])) else None
-    fig = agregar_indicador(periodo_anterior, periodo_actual, fig, 3)
+    period_actual = df[df['periodo'] == periodo]['matricula_total'].values[0]
+    period_anterior = df[df['periodo'] == periodo -
+                         1]['matricula_total'].values[0] if not (periodo == min(df['periodo'])) else None
+    fig = agregar_indicador(period_anterior, period_actual, fig, 3)
 
     # Personalizar la grafica
     fig.update_layout(

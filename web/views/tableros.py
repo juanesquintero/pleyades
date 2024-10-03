@@ -278,7 +278,7 @@ def programa_dashboard():
             if str(p['idprograma']) == programa:
                 programa = p
 
-    if not DataIES.check_IES_periodo_programa(periodo, programa['idprograma']):
+    if not DataIES.check_IES_period_programa(periodo, programa['idprograma']):
         return render_template(
             endopoint+'programa.html',
             notfound=True,
@@ -347,10 +347,10 @@ def estudiante_dashboard():
 
     # Obtener la lista de estudiantes de un programa
     if programa and not documento:
-        estudiantes_programa = Estudiante_file.estudiantes_programa(programa)
+        students_programa = Estudiante_file.students_programa(programa)
         return render_template(
-            endopoint+'estudiantes_programa.html',
-            estudiantes_list=estudiantes_programa,
+            endopoint+'students_programa.html',
+            students_list=students_programa,
             programa=programa,
             programas_list=programas,
         )

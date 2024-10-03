@@ -97,22 +97,22 @@ def elimination(data, no_desertion=False):
         )
 
     # Obtener ultimo periodo a predecir
-    periodo_a_predecir = data['registro'].max()
+    period_a_predecir = data['registro'].max()
 
-    if not periodo_a_predecir or math.isnan(periodo_a_predecir):
+    if not period_a_predecir or math.isnan(period_a_predecir):
         raise Exception('Período a predecir (REGISTRO maximo) indefinido.')
 
     # Separar data a predecir y a entrenar
-    data_a_predecir = data.query(f'registro >= {periodo_a_predecir}')
-    data = data.query(f'registro < {periodo_a_predecir}')
+    data_a_predecir = data.query(f'registro >= {period_a_predecir}')
+    data = data.query(f'registro < {period_a_predecir}')
 
     # Insertar el N% de la data a predecir en entrenamiento
-    periodo_cerrado = session.get('periodo_cerrado')
+    period_closed = session.get('period_closed')
 
     # 75% sin cerrar/ 15% cerrado
     if no_desertion:
         umbral = 1
-    elif periodo_cerrado:
+    elif period_closed:
         umbral = 0.10
     else:
         umbral = 0.65
@@ -126,7 +126,7 @@ def elimination(data, no_desertion=False):
     data = drop_columns(data)
     data_a_predecir = drop_nulls(data_a_predecir)
 
-    return data, data_a_predecir, periodo_a_predecir
+    return data, data_a_predecir, period_a_predecir
 
 
 def elimination_predict(data):

@@ -34,23 +34,23 @@ def agregar_indicador(anterior, actual, fig, i, j, mode):
 
 def crear_indicador(data, variable, i, j, fig, tipo):
     # Indicador
-    periodo_anterior = data.loc[len(
+    period_anterior = data.loc[len(
         data)-2, variable]*100 if len(data)-2 > 0 else None
-    periodo_actual = data.loc[len(data)-1, variable] * \
+    period_actual = data.loc[len(data)-1, variable] * \
         100 if len(data)-1 > 0 else None
 
-    # if periodo_actual == periodo_anterior:
-    #     periodo_actual = None
-    #     periodo_anterior = None
+    # if period_actual == period_anterior:
+    #     period_actual = None
+    #     period_anterior = None
 
-    if periodo_anterior == 0:
-        periodo_anterior = periodo_actual/2
+    if period_anterior == 0:
+        period_anterior = period_actual/2
 
     fig.append_trace(go.Indicator(
         mode=tipo,
-        delta={'reference': periodo_anterior,
+        delta={'reference': period_anterior,
                'relative': True, 'position': "bottom"},
-        value=periodo_actual,
+        value=period_actual,
     ),
         row=i, col=j
     )
@@ -101,25 +101,25 @@ def miniserie_programa_row(data, fig, i, dict_periodos):
 
         try:
             # Indicador
-            periodo_anterior = data.loc[len(data)-2, 'desercion']
-            periodo_actual = data.loc[len(data)-1, 'desercion']
+            period_anterior = data.loc[len(data)-2, 'desercion']
+            period_actual = data.loc[len(data)-1, 'desercion']
         except Exception as e:
-            periodo_actual = None
-            periodo_anterior = None
+            period_actual = None
+            period_anterior = None
 
-        if periodo_actual == periodo_anterior:
-            periodo_actual = None
-            periodo_anterior = None
+        if period_actual == period_anterior:
+            period_actual = None
+            period_anterior = None
 
-        if periodo_anterior == 0:
-            periodo_anterior = 1
-            periodo_actual = 2
+        if period_anterior == 0:
+            period_anterior = 1
+            period_actual = 2
 
         fig.append_trace(go.Indicator(
             mode="delta",
-            delta={'reference': periodo_anterior,
+            delta={'reference': period_anterior,
                    'relative': True, 'position': "bottom"},
-            value=periodo_actual,
+            value=period_actual,
         ),
             row=i, col=2
         )
@@ -175,25 +175,25 @@ class IES:
         self.periodo = periodo
 
         # Obtener data anterior
-        index_periodo_actual = self.periodos_list.index(self.periodo)
+        index_period_actual = self.periodos_list.index(self.periodo)
         self.data_actual = Data.get_IES_total_data(int(self.periodo))
 
-        if 0 <= index_periodo_actual <= len(self.periodos_list):
-            periodo_anterior = self.periodos_list[index_periodo_actual-1]
+        if 0 <= index_period_actual <= len(self.periodos_list):
+            period_anterior = self.periodos_list[index_period_actual-1]
         else:
-            periodo_anterior = periodo
+            period_anterior = periodo
 
-        self.data_anterior = Data.get_IES_total_data(int(periodo_anterior))
+        self.data_anterior = Data.get_IES_total_data(int(period_anterior))
 
-        self.programas_periodo_actual = Data.get_programas_by_periodo(periodo)
-        self.programas_periodo_anterior = Data.get_programas_by_periodo(
-            periodo_anterior)
+        self.programas_period_actual = Data.get_programas_by_periodo(periodo)
+        self.programas_period_anterior = Data.get_programas_by_periodo(
+            period_anterior)
 
     ############################################################### INDICADORES IES ####################################################################
 
     def indicadores1(self,):
         try:
-            periodo_actual = self.periodo
+            period_actual = self.periodo
 
             data_anterior = self.data_anterior
             data_actual = self.data_actual
@@ -215,10 +215,10 @@ class IES:
 
             # Agregar cada indicador por variable
             for j, var in enumerate(variables_indicadores):
-                periodo_anterior = var[0]
-                periodo_actual = var[1]
+                period_anterior = var[0]
+                period_actual = var[1]
                 fig = agregar_indicador(
-                    periodo_anterior, periodo_actual, fig, 1, j+1, 'number+delta')
+                    period_anterior, period_actual, fig, 1, j+1, 'number+delta')
 
             # Personalizar la grafica
             fig.update_layout(
@@ -243,15 +243,15 @@ class IES:
                 specs=[[{"type": "indicator"}, {"type": "indicator"}]],
             )
 
-            programas_periodo_actual, egresados_periodo_actual = len(
-                self.programas_periodo_actual), self.data_actual['egresados'][0]
-            programas_periodo_anterior, egresados_periodo_anterior = len(
-                self.programas_periodo_anterior), self.data_anterior['egresados'][0]
+            programas_period_actual, egresados_period_actual = len(
+                self.programas_period_actual), self.data_actual['egresados'][0]
+            programas_period_anterior, egresados_period_anterior = len(
+                self.programas_period_anterior), self.data_anterior['egresados'][0]
 
             fig = agregar_indicador(
-                programas_periodo_anterior, programas_periodo_actual, fig, 1, 1, 'number')
+                programas_period_anterior, programas_period_actual, fig, 1, 1, 'number')
             fig = agregar_indicador(
-                egresados_periodo_anterior, egresados_periodo_actual, fig, 1, 2, 'number')
+                egresados_period_anterior, egresados_period_actual, fig, 1, 2, 'number')
 
             # Personalizar la grafica
             fig.update_layout(
@@ -443,13 +443,13 @@ class IES:
     def indicadores_programas(self):
         try:
 
-            periodo_actual = self.periodo
+            period_actual = self.periodo
 
             # Programas
             data = self.df_IES.dropna(subset=['facultad'], axis=0)
             data = data.sort_values(
                 by=['periodo', 'mat_total'], ascending=[False, False])
-            list_programas = self.programas_periodo_actual
+            list_programas = self.programas_period_actual
             cant_programas = len(list_programas)
 
             # Crear conetenedor de sub graficos
@@ -470,19 +470,19 @@ class IES:
 
                 # Filtrar por periodo actual
                 data = data.sort_values(by=['periodo']).reset_index()
-                data_periodo_index = data.query(
-                    "periodo == '{}'".format(periodo_actual))
+                data_period_index = data.query(
+                    "periodo == '{}'".format(period_actual))
 
                 # Verificar si existe REGISTRO para ese periodo
-                if len(data_periodo_index) > 0:
-                    periodo_index = data_periodo_index.index[0]
+                if len(data_period_index) > 0:
+                    period_index = data_period_index.index[0]
 
                     # Verificar si existe dato en el periodo anterior
-                    if periodo_index-1 in data['index']:
-                        periodo_anterior = data.loc[periodo_index-1, 'periodo']
+                    if period_index-1 in data['index']:
+                        period_anterior = data.loc[period_index-1, 'periodo']
                         # Obtener registros de los dos ultimos periodos a partir del indicado
-                        data_periodo_index = data.query(
-                            "periodo == '{}' | periodo == '{}'".format(periodo_actual, periodo_anterior))
+                        data_period_index = data.query(
+                            "periodo == '{}' | periodo == '{}'".format(period_actual, period_anterior))
                         fig = indicadores_programa_row(data, fig, cont+1)
                         cont += 1
 
@@ -510,7 +510,7 @@ class IES:
         try:
             # Programas
             data = self.df_IES.dropna(subset=['facultad'], axis=0)
-            list_programas = self.programas_periodo_actual
+            list_programas = self.programas_period_actual
             cant_programas = len(list_programas)
 
             # Periodos

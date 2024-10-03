@@ -16,7 +16,7 @@
         {% if programa %}
         <div class="row ml-auto" style="width: 40%;;">
             <div class="col-10 ml-3">
-                <label for="periodo_select" class="text-white">Selecciona un programa:</label>
+                <label for="period_select" class="text-white">Selecciona un programa:</label>
                 <br>
                 <select id="programa_select" class="form-control-sm w-100">
                     {% for p in programas_list %}
@@ -39,7 +39,7 @@
 
 <!-- Contenedor Dasboard -->
 <div class="container m-0 p-3 mt-3 w-100 {% if session['user'] %} {% if session['user']['rol'] == 'Admin' %} h-75 {% else %} h-100 {% endif %} {% else %} h-dashboard {% endif %}">
-    {% if estudiantes_list %}
+    {% if students_list %}
     <div class="row w-50 mt-2">
         <div class="col-11 d-flex">
             &nbsp;<i class="fas fa-filter mr-2 mt-2""></i>&nbsp;
@@ -66,8 +66,8 @@
                 </tr>
             </thead>
             <tbody class="bg-light rounded">
-                {% if estudiantes_list|length > 0 %}
-                {% for e in estudiantes_list %}
+                {% if students_list|length > 0 %}
+                {% for e in students_list %}
                 <tr>
                     <td>
                         <center>{{ e.documento }}</center>

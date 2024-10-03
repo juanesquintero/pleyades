@@ -3,7 +3,7 @@ import pandas as pd
 from services.API import get
 
 ies_route = 'desercion/institucion/'
-estudiantes_route = 'desercion/estudiantes/'
+students_route = 'desercion/estudiantes/'
 error_logger = logging.getLogger('error_logger')
 
 
@@ -24,12 +24,12 @@ def get_IES_programa(programa: int):
     return validate(status, body, True)
 
 
-def get_IES_periodo_programa(periodo: int, programa: int):
+def get_IES_period_programa(periodo: int, programa: int):
     status, body = get(ies_route+'programa/{}/{}'.format(programa, periodo))
     return validate(status, body, True)
 
 
-def check_IES_periodo_programa(periodo: int, programa: int):
+def check_IES_period_programa(periodo: int, programa: int):
     status, body = get(ies_route+'programa/{}/{}'.format(programa, periodo))
     return status
 
@@ -56,28 +56,28 @@ def get_programa(programa: int):
 ########################################################### Vista VWDATADESERCION de estudiantes ##########################################################
 
 
-def get_estudiantes_periodo_programa(periodo: int, programa: int):
-    status, body = get(f'{estudiantes_route}programa/{programa}/{periodo}')
+def get_students_period_programa(periodo: int, programa: int):
+    status, body = get(f'{students_route}programa/{programa}/{periodo}')
     return validate(status, body, True)
 
 
-def get_estudiantes_programa(programa: str):
-    status, body = get(f'{estudiantes_route}programa/{programa}')
+def get_students_programa(programa: str):
+    status, body = get(f'{students_route}programa/{programa}')
     return validate(status, body, True)
 
 
-def get_estudiantes_documento(documento: str):
-    status, body = get(f'{estudiantes_route}documento/{documento}')
+def get_students_documento(documento: str):
+    status, body = get(f'{students_route}documento/{documento}')
     return validate(status, body, True)
 
 
 def get_periodos_origen():
-    status, body = get(estudiantes_route+'periodos')
+    status, body = get(students_route+'periodos')
     return validate(status, body)
 
 
 def get_programas_origen():
-    status, body = get(estudiantes_route+'programas')
+    status, body = get(students_route+'programas')
     return validate(status, body)
 
 

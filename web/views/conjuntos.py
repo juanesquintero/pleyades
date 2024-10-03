@@ -168,9 +168,9 @@ def post_save(conjunto=None):
     del conjunto['facultad']
 
     # TODO NEW! version 2 v2.0.0
-    session['periodo_cerrado'] = (conjunto.get('periodo_cerrado') == 'on')
-    if session.get('periodo_cerrado'):
-        del conjunto['periodo_cerrado']
+    session['period_closed'] = (conjunto.get('period_closed') == 'on')
+    if session.get('period_closed'):
+        del conjunto['period_closed']
 
     conjunto['estado'] = 'Crudos'
     conjunto['periodoInicial'] = int(conjunto['periodoInicial'])
