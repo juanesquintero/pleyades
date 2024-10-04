@@ -34,7 +34,7 @@ def get_conjunto_estudiantes(programa, periodoInicio, periodoFin):
 
 @Estudiante.route('/periodo/<int:periodo>')
 @jwt_required()
-def get_periodo(periodo):
+def get_period(periodo):
     sql = f'SELECT * FROM {tabla} WHERE REGISTRO={periodo};'
     query = db.select(sql)
     ex = exception(query)
@@ -87,7 +87,7 @@ def get_documento(documento):
 
 @Estudiante.route('/periodos')
 @jwt_required()
-def get_periodos():
+def get_periods():
     # Obtener datos desde la bd SQL server
     sql = f'SELECT DISTINCT REGISTRO FROM {tabla};'
     query = db.select(sql)
@@ -106,7 +106,7 @@ def get_periodos():
 
 @Estudiante.route('/periodos/programa/<int:programa>')
 @jwt_required()
-def get_periodos_programa(programa):
+def get_periods_programa(programa):
     # Obtener datos desde la bd SQL server
     sql = f'SELECT DISTINCT REGISTRO FROM {tabla} WHERE idprograma={programa};'
     query = db.select(sql)

@@ -96,7 +96,7 @@ def get_by_encargado(encargado):
 
 @Conjunto.route('/periodos/<int:inicio>/<int:fin>')
 @jwt_required()
-def get_by_periodos(inicio, fin):
+def get_by_periods(inicio, fin):
     query = conjunto_model.get_rango(inicio, fin)
     ex = exception(query)
     if ex:
@@ -111,7 +111,7 @@ def get_by_periodos(inicio, fin):
 def post():
     body = request.get_json()
     # validate schema
-    if not(validate_post_schema(body)):
+    if not (validate_post_schema(body)):
         return {'error': 'body invalido'}, 400
     # Logical Validations
     if body['periodoInicial'] > body['periodoFinal']:
@@ -183,11 +183,10 @@ def nombre():
     return {'nombre': nombre, 'numero': numero}, 200
 
 
-
 @Conjunto.route('/todos/<estado>', methods=['DELETE'])
 @jwt_required()
 def delete_many(estado):
-    if not(estado):
+    if not (estado):
         return {'error': 'indique el estado por el path'}, 400
     estado = estado.title()
     query = conjunto_model.get_estado(estado)
@@ -197,7 +196,7 @@ def delete_many(estado):
     if not query:
         return {'msg': 'No hay concidencias'}, 404
 
-    conjuntos_nombres = [ c['nombre'] for c in query]
+    conjuntos_nombres = [c['nombre'] for c in query]
     for conjunto in conjuntos_nombres:
         # delete conjunto
         delete = conjunto_model.delete(conjunto)
@@ -210,10 +209,11 @@ def delete_many(estado):
 
     return {'msg': 'Conjuntos eliminados', 'data': conjuntos_nombres}, 200
 
+
 @Conjunto.route('/<nombre>', methods=['DELETE'])
 @jwt_required()
 def delete_one(nombre):
-    if not(nombre):
+    if not (nombre):
         return {'error': 'indique el nombre por el path'}, 400
     # sql validations
     if not exists(nombre):
@@ -233,10 +233,10 @@ def delete_one(nombre):
 @jwt_required()
 def put(nombre):
     body = request.get_json()
-    if not(nombre):
+    if not (nombre):
         return {'error': 'indique el nombre por el path'}, 404
     # validate schema
-    if not(validate_put_schema(body)):
+    if not (validate_put_schema(body)):
         return {'error': 'body invalido'}, 400
     # sql validations
     if not exists(nombre):
