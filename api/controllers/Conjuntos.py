@@ -41,8 +41,8 @@ def get_one(nombre):
 
 @Conjunto.route('/estado/<estado>')
 @jwt_required()
-def get_by_estado(estado):
-    query = conjunto_model.get_estado(estado)
+def get_by_state(estado):
+    query = conjunto_model.get_state(estado)
     ex = exception(query)
     if ex:
         return ex
@@ -189,7 +189,7 @@ def delete_many(estado):
     if not (estado):
         return {'error': 'indique el estado por el path'}, 400
     estado = estado.title()
-    query = conjunto_model.get_estado(estado)
+    query = conjunto_model.get_state(estado)
     ex = exception(query)
     if ex:
         return ex

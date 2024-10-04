@@ -33,7 +33,7 @@ CREATE TABLE [dbo].[VWDATADESERCION](
 	[documento] [varchar](500) NULL,
 	[edad] [int] NULL,
 	[genero] [varchar](20) NULL,
-	[estado_civil] [varchar](50) NULL,
+	[state_civil] [varchar](50) NULL,
 	[lugar_residencia_sede] [varchar](507) NULL,
 	[trabaja] [varchar](2) NOT NULL,
 	[etnia] [varchar](50) NULL,

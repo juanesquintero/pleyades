@@ -83,7 +83,7 @@ class Conjunto(db.Model, SerializerMixin):
     def get_all():
         return [row.to_dict() for row in Conjunto.query.all()]
 
-    def get_estado(estado):
+    def get_state(estado):
         query = Conjunto.query.filter(Conjunto.estado == estado)
         return [row.to_dict() for row in query.all()]
 
@@ -251,9 +251,10 @@ class Ejecucion(db.Model, SerializerMixin):
     def get_ejecutor(ejecutor):
         query = Ejecucion.query.filter(Ejecucion.ejecutor == ejecutor).all()
         return [row.to_dict() for row in query]
-    
+
     def get_ejecutor_one(ejecutor, conjunto):
-        query = Ejecucion.query.filter(Ejecucion.ejecutor == ejecutor, Ejecucion.conjunto == conjunto).all()
+        query = Ejecucion.query.filter(
+            Ejecucion.ejecutor == ejecutor, Ejecucion.conjunto == conjunto).all()
         return [row.to_dict() for row in query]
 
     def _get_one(nombre):
