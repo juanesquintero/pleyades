@@ -85,7 +85,7 @@ def get_documento(documento):
     return jsonify(_format(query))
 
 
-@Estudiante.route('/periodos')
+@Estudiante.route('/periods')
 @jwt_required()
 def get_periods():
     # Obtener datos desde la bd SQL server
@@ -97,14 +97,14 @@ def get_periods():
     if not query:
         return msg_error
     periodos_list = [int(p['REGISTRO']) for p in query]
-    periodos = sorted(periodos_list)
+    periods = sorted(periodos_list)
 
-    if not periodos:
+    if not periods:
         return msg_error
-    return jsonify(_format(periodos))
+    return jsonify(_format(periods))
 
 
-@Estudiante.route('/periodos/programa/<int:programa>')
+@Estudiante.route('/periods/programa/<int:programa>')
 @jwt_required()
 def get_periods_programa(programa):
     # Obtener datos desde la bd SQL server
@@ -118,12 +118,12 @@ def get_periods_programa(programa):
     if not query:
         return msg_error
     periodos_list = [int(p.get('REGISTRO')) for p in query]
-    periodos = sorted(periodos_list)
+    periods = sorted(periodos_list)
 
-    if not periodos:
+    if not periods:
         return msg_error
 
-    return jsonify(_format(periodos))
+    return jsonify(_format(periods))
 
 
 @Estudiante.route('/programas')

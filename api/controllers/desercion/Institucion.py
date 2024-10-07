@@ -69,7 +69,7 @@ def get_period_programa(programa: int, periodo: int):
     return jsonify(_format(query))
 
 
-@IES.route('/periodos')
+@IES.route('/periods')
 @jwt_required()
 def get_periods():
     # Obtener datos desde la bd SQL server
@@ -81,10 +81,10 @@ def get_periods():
     if not query:
         return msg_error
     periodos_list = [int(p['periodo']) for p in query]
-    periodos = sorted(periodos_list)
-    if not (periodos):
+    periods = sorted(periodos_list)
+    if not (periods):
         return msg_error
-    return jsonify(_format(periodos))
+    return jsonify(_format(periods))
 
 
 @IES.route('/programas')

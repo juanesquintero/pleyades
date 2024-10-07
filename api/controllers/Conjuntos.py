@@ -1,6 +1,6 @@
 from flask import request, jsonify, Blueprint
 from db.ies.db import DB as db_ies
-from db.pleyades.db import Conjunto as conjunto_model, Ejecucion as ejecucion_model, Preparacion as preparacion_model
+from db.pleyades.db import StudentSet as conjunto_model, Ejecucion as ejecucion_model, Preparacion as preparacion_model
 from schemas.conjunto_schema import validate_post_schema, validate_put_schema, validate_nombre_schema
 from flask_jwt_extended import jwt_required
 from utils.utils import exception, _format
@@ -9,13 +9,13 @@ from utils.utils import exception, _format
 from controllers.Programas import exists as exists_programa
 from controllers.Usuarios import exists as exists_usuario
 
-Conjunto = Blueprint('Conjunto', __name__)
+StudentSet = Blueprint('StudentSet', __name__)
 execute = None
 db_ies = db_ies.getInstance()
 
 
-@Conjunto.route('')
-@Conjunto.route('/')
+@StudentSet.route('')
+@StudentSet.route('/')
 @jwt_required()
 def get():
     query = conjunto_model.get_all()
@@ -27,7 +27,7 @@ def get():
     return jsonify(query)
 
 
-@Conjunto.route('/<nombre>')
+@StudentSet.route('/<nombre>')
 @jwt_required()
 def get_one(nombre):
     query = conjunto_model.get_one(nombre)
@@ -39,7 +39,7 @@ def get_one(nombre):
     return jsonify(query)
 
 
-@Conjunto.route('/estado/<estado>')
+@StudentSet.route('/estado/<estado>')
 @jwt_required()
 def get_by_state(estado):
     query = conjunto_model.get_state(estado)
@@ -51,7 +51,7 @@ def get_by_state(estado):
     return jsonify(query)
 
 
-@Conjunto.route('/tipo/<tipo>')
+@StudentSet.route('/tipo/<tipo>')
 @jwt_required()
 def get_by_tipo(tipo):
     query = conjunto_model.get_tipo(tipo)
@@ -63,7 +63,7 @@ def get_by_tipo(tipo):
     return jsonify(query)
 
 
-@Conjunto.route('/programa/<int:programa>')
+@StudentSet.route('/programa/<int:programa>')
 @jwt_required()
 def get_by_programa(programa):
     query = conjunto_model.get_programa(programa)
@@ -75,7 +75,7 @@ def get_by_programa(programa):
     return jsonify(query)
 
 
-@Conjunto.route('encargado/<encargado>')
+@StudentSet.route('encargado/<encargado>')
 @jwt_required()
 def get_by_encargado(encargado):
     estado = request.args.get('estado')
@@ -94,7 +94,7 @@ def get_by_encargado(encargado):
     return jsonify(query)
 
 
-@Conjunto.route('/periodos/<int:inicio>/<int:fin>')
+@StudentSet.route('/periods/<int:inicio>/<int:fin>')
 @jwt_required()
 def get_by_periods(inicio, fin):
     query = conjunto_model.get_rango(inicio, fin)
@@ -106,7 +106,7 @@ def get_by_periods(inicio, fin):
     return jsonify(query)
 
 
-@Conjunto.route('', methods=['POST'])
+@StudentSet.route('', methods=['POST'])
 @jwt_required()
 def post():
     body = request.get_json()
@@ -133,13 +133,13 @@ def post():
     return {'msg': 'Conjunto creado'}, 200
 
 
-@Conjunto.route('/', methods=['POST'])
+@StudentSet.route('/', methods=['POST'])
 @jwt_required()
 def post2():
     return post()
 
 
-@Conjunto.route('/nombre', methods=['POST'])
+@StudentSet.route('/nombre', methods=['POST'])
 @jwt_required()
 def nombre():
     body = request.get_json()
@@ -183,7 +183,7 @@ def nombre():
     return {'nombre': nombre, 'numero': numero}, 200
 
 
-@Conjunto.route('/todos/<estado>', methods=['DELETE'])
+@StudentSet.route('/todos/<estado>', methods=['DELETE'])
 @jwt_required()
 def delete_many(estado):
     if not (estado):
@@ -210,7 +210,7 @@ def delete_many(estado):
     return {'msg': 'Conjuntos eliminados', 'data': conjuntos_nombres}, 200
 
 
-@Conjunto.route('/<nombre>', methods=['DELETE'])
+@StudentSet.route('/<nombre>', methods=['DELETE'])
 @jwt_required()
 def delete_one(nombre):
     if not (nombre):
@@ -229,7 +229,7 @@ def delete_one(nombre):
     return {'msg': 'Conjunto eliminado'}, 200
 
 
-@Conjunto.route('/<nombre>', methods=['PUT'])
+@StudentSet.route('/<nombre>', methods=['PUT'])
 @jwt_required()
 def put(nombre):
     body = request.get_json()
