@@ -195,10 +195,10 @@ def download():
     )
 
 
-@Analista.route('/modelos/periodos/<int:programa>')
+@Analista.route('/modelos/periods/<int:programa>')
 @login_required
-def get_periodos_programa(programa):
-    status, body = get(f'desercion/estudiantes/periodos/programa/{programa}')
+def get_periods_programa(programa):
+    status, body = get(f'desercion/estudiantes/periods/programa/{programa}')
     if status:
         return jsonify(body)
     return jsonify([])
@@ -215,11 +215,11 @@ def get_modelos(nombre=None, conjunto=None):
 
 
 def formulario_entrenar():
-    periodos = DataIES.get_periodos_origen()
+    periods = DataIES.get_periods_origen()
     status_f, body_f = get('facultades')
     status_p, body_p = get('programas')
 
-    if status_f and status_p and periodos:
+    if status_f and status_p and periods:
         return render_template(endopoint+'crear.html', facultades=body_f, programas=body_p)
 
     if not status_f and not status_p:

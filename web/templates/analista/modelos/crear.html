@@ -94,7 +94,7 @@
         <select
           name="periodoInicial"
           id="periodoInicialID"
-          class="periodos-controls form-control input-sm"
+          class="periods-controls form-control input-sm"
           required
         >
           <option disabled selected hidden></option>
@@ -108,7 +108,7 @@
         <select
             name="periodoFinal"
             id="periodoFinalID"
-            class="periodos-controls form-control input-sm"
+            class="periods-controls form-control input-sm"
             data-toggle="tooltip"
             data-html="true"
             data-placement="top"  
@@ -142,10 +142,10 @@
             options[i].remove();
           }
         }
-        //LLenar con periodos del programa
+        //LLenar con periods del programa
         $(".programa-change").on("change", function () {
           $.ajax({
-            url: "periodos/" + $("#programa_select").val(),
+            url: "periods/" + $("#programa_select").val(),
             type: "GET",
             contentType: "application/json;charset=UTF-8",
             data: {},
@@ -167,7 +167,7 @@
         });
 
         // Validar Periodo
-        $(".periodos-controls").on("change", function () {
+        $(".periods-controls").on("change", function () {
           if ($("#periodoInicialID").val() >= $("#periodoFinalID").val()) {
             $("#periodoInicialID")[0].setCustomValidity("Periodo Invalido");
           } else {

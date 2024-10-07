@@ -58,20 +58,20 @@
           Periodos de Entrenamiento
         </label>
 
-        {% set periodos = modelo.conjunto.split(' ')[1:3] %}
+        {% set periods = modelo.conjunto.split(' ')[1:3] %}
 
         <div class="d-flex">
           <input
             class="form-control mr-4"
             name="periodoInicial"
-            value="{{periodos[0]}}"
+            value="{{periods[0]}}"
             required
             readonly
           />
           <input
             class="form-control"
             name="periodoFinal"
-            value="{{periodos[1]}}"
+            value="{{periods[1]}}"
             required
             readonly
           />
@@ -106,7 +106,7 @@
           <select
             name="periodo"
             id="periodoID"
-            class="periodos-controls form-control input-sm mr-5"
+            class="periods-controls form-control input-sm mr-5"
             required
           >
             <option disabled selected hidden></option>
@@ -117,7 +117,7 @@
         //LLenar con periodos del programa
 
         $.ajax({
-          url: "periodos/" + $("#programa").val(),
+          url: "periods/" + $("#programa").val(),
           type: "GET",
           contentType: "application/json;charset=UTF-8",
           data: {},

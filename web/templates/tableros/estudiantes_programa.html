@@ -31,7 +31,7 @@
         var programa = '{{ programa }}';
         $('#programa_select').on('change', function () {
             openModal();
-            window.location.href ="{{url_for('Tablero.estudiante_dashboard')}}" + '?programa=' + this.value;
+            window.location.href ="{{url_for('Tablero.student_dashboard')}}" + '?programa=' + this.value;
         })
     </script>
 </div>
@@ -75,7 +75,7 @@
                     <td>{{ e.nombre_completo }}</td>
                     <td>
                         <center>
-                            <form action="{{url_for('Tablero.estudiante_dashboard')}}" method="GET"
+                            <form action="{{url_for('Tablero.student_dashboard')}}" method="GET"
                                 data-toggle="validator">
                                 <input type="text" name="documento" class="form-control-sm w-100" maxlength="50"
                                     value="{{e.documento}}" required hidden>

@@ -45,11 +45,11 @@ class Estudiante:
         try:
             # Dataframe del programa
             data = self.df_ESTUDIANTE
-            programas_estudiante_filter = json.loads(data.drop_duplicates(
+            programas_student_filter = json.loads(data.drop_duplicates(
                 subset=['idprograma']).to_json(orient='records'))
             self.programas_estudiante = [
-                {'idprograma': p['idprograma'], 'programa': p['programa']} for p in programas_estudiante_filter]
-            self.periodos_estudiante_todos = list(data['REGISTRO'].unique())
+                {'idprograma': p['idprograma'], 'programa': p['programa']} for p in programas_student_filter]
+            self.periodos_student_todos = list(data['REGISTRO'].unique())
             self.periodos_estudiante = list(data['REGISTRO'].unique())
 
             # Filtrar Programa
@@ -263,7 +263,7 @@ class Estudiante:
                 xaxis=dict(
                     title='Período',
                     showline=True, linewidth=2, linecolor='black', showgrid=True, gridwidth=1, gridcolor='#cccccc',
-                    type='category', categoryorder='array', categoryarray=sorted(self.periodos_estudiante_todos)
+                    type='category', categoryorder='array', categoryarray=sorted(self.periodos_student_todos)
                 ),
                 yaxis=dict(
                     title='Promedio',

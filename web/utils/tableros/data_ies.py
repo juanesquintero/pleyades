@@ -14,7 +14,7 @@ def get_IES_total_data(periodo: int):
     return validate(status, body, True)
 
 
-def get_IES_periodo(periodo: int):
+def get_IES_period(periodo: int):
     status, body = get(ies_route+'{}'.format(periodo))
     return validate(status, body, True)
 
@@ -34,8 +34,8 @@ def check_IES_period_programa(periodo: int, programa: int):
     return status
 
 
-def get_periodos():
-    status, body = get(ies_route+'periodos')
+def get_periods():
+    status, body = get(ies_route+'periods')
     return validate(status, body)
 
 
@@ -44,7 +44,7 @@ def get_programas():
     return validate(status, body)
 
 
-def get_programas_by_periodo(periodo: int):
+def get_programas_by_period(periodo: int):
     status, body = get(ies_route+'programas/{}'.format(periodo))
     return validate(status, body)
 
@@ -71,8 +71,8 @@ def get_students_documento(documento: str):
     return validate(status, body, True)
 
 
-def get_periodos_origen():
-    status, body = get(students_route+'periodos')
+def get_periods_origen():
+    status, body = get(students_route+'periods')
     return validate(status, body)
 
 

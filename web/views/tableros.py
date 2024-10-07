@@ -27,9 +27,9 @@ niveles = [
     {'nombre': 'Nivel Region', 'ruta': 'Tablero.region_dashboard'},
     {'nombre': 'Nivel IES', 'ruta': 'Tablero.ies_dashboard'},
     {'nombre': 'Nivel Programa', 'ruta': 'Tablero.programa_dashboard'},
-    {'nombre': 'Nivel Estudiante', 'ruta': 'Tablero.estudiante_dashboard'},
+    {'nombre': 'Nivel Estudiante', 'ruta': 'Tablero.student_dashboard'},
 ]
-periodos = np.arange(2010, 2019, 1)
+periods = np.arange(2010, 2019, 1)
 
 
 @Tablero.route('/')
@@ -97,7 +97,7 @@ def pais_dashboard():
         genero_plot=genero,
         indicadores_plot=indicadores,
         indicadores2_plot=indicadores2,
-        periodos_list=periodos,
+        periodos_list=periods,
         periodo=int(periodo),
     )
 
@@ -159,7 +159,7 @@ def region_dashboard():
         periodo=int(periodo),
         dpto=str(dpto),
 
-        periodos_list=periodos,
+        periodos_list=periods,
         dptos_list=dptos,
         ies_size=ies_size,
 
@@ -181,12 +181,12 @@ def region_dashboard():
 def ies_dashboard():
 
     periodo = request.args.get('periodo')
-    periodos = DataIES.get_periodos()
+    periods = DataIES.get_periods()
 
     try:
         periodo = int(periodo)
     except Exception as e:
-        periodo = max(periodos)
+        periodo = max(periods)
 
     ies = IES(periodo)
 
@@ -233,7 +233,7 @@ def ies_dashboard():
         endopoint+'institucional.html',
         periodo=int(periodo),
 
-        periodos_list=periodos,
+        periodos_list=periods,
 
         nombre_ies=obtener_ies_config().get('nombre'),
 
@@ -259,7 +259,7 @@ def ies_dashboard():
 @login_required
 def programa_dashboard():
 
-    periodos = DataIES.get_periodos_origen()
+    periods = DataIES.get_periods_origen()
     programas = DataIES.get_programas_origen()
 
     periodo = request.args.get('periodo')
@@ -268,7 +268,7 @@ def programa_dashboard():
     try:
         periodo = int(periodo)
     except Exception as e:
-        periodo = max(periodos)
+        periodo = max(periods)
 
     programas_id = [str(p['idprograma']) for p in programas]
     if not (programa in programas_id):
@@ -285,12 +285,12 @@ def programa_dashboard():
             periodo=int(periodo),
             programa=programa['idprograma'],
             nombre_programa=programa['programa'],
-            periodos_list=periodos,
+            periodos_list=periods,
             programas_list=programas,
         )
 
     programa_graph = Programa(
-        periodo=periodo, programa=programa['idprograma'], periodos=periodos)
+        periodo=periodo, programa=programa['idprograma'], periods=periods)
 
     # Indicadores Programa
     indicadores = programa_graph.indicadores()
@@ -305,13 +305,13 @@ def programa_dashboard():
     pastel = to_plotly_json(pastel) if pastel else None
 
     # Barras Desertores
-    barras, cant_niveles, cant_periodos = programa_graph.barras()
+    barras, cant_niveles, cant_periods = programa_graph.barras()
     barras = to_plotly_json(barras) if barras else None
-    if cant_periodos:
-        if cant_periodos < 10:
-            periodos_size = cant_periodos*2.5*10
+    if cant_periods:
+        if cant_periods < 10:
+            periodos_size = cant_periods*2.5*10
         else:
-            periodos_size = cant_periodos*1.3*10
+            periodos_size = cant_periods*1.3*10
     else:
         periodos_size = 0
 
@@ -322,7 +322,7 @@ def programa_dashboard():
 
         nombre_programa=programa['programa'],
         nombre_ies=os.getenv('CLI_IES_NAME'),
-        periodos_list=periodos,
+        periodos_list=periods,
         programas_list=programas,
 
         indicadores_plot=indicadores,
@@ -337,8 +337,8 @@ def programa_dashboard():
 ############################################################## NIVEL ESTUDIANTE ################################################################
 @Tablero.route('/estudiante')
 @login_required
-def estudiante_dashboard():
-    periodos = DataIES.get_periodos()
+def student_dashboard():
+    periods = DataIES.get_periods()
     programas = DataIES.get_programas()
 
     periodo = request.args.get('periodo')
@@ -359,7 +359,7 @@ def estudiante_dashboard():
     if not documento:
         return render_template(
             endopoint+'buscar_estudiante.html',
-            periodos_list=periodos,
+            periodos_list=periods,
             programas_list=programas,
         )
 
@@ -404,7 +404,7 @@ def estudiante_dashboard():
             periodo=periodo,
         )
 
-    # Validar los periodos y programas
+    # Validar los periods y programas
     if info:
         if not programa:
             for p in programas:

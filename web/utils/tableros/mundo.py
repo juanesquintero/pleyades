@@ -17,9 +17,9 @@ inscripciones = pd.read_excel(
     data_folder+'/mundo.xlsx', sheet_name='inscripciones')
 gastos = pd.read_excel(data_folder+'/mundo.xlsx', sheet_name='gastos')
 
-periodos = list(inscripciones.columns)
-periodos.pop(0)
-periodos.pop(0)
+periods = list(inscripciones.columns)
+periods.pop(0)
+periods.pop(0)
 
 color_cluster_map = {
     'G Inf/I Alta':  CONSTANTS.colores[7],
@@ -53,7 +53,7 @@ def data_series(codigo):
     data = pd.DataFrame({
         'codigo_pais': codigo,
         'nombre_pais': nombre,
-        'periodos': periodos,
+        'periods': periods,
         'gastos': gastos_pais.values[0],
         'inscripciones': inscrp_pais.values[0],
     })
@@ -63,7 +63,7 @@ def data_series(codigo):
 def series(df, y_variable, y_titulo, color):
     fig = px.line(
         df,
-        x="periodos",
+        x="periods",
         y=y_variable,
         color='codigo_pais',
         custom_data=['nombre_pais'],

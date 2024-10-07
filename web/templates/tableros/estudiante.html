@@ -36,7 +36,7 @@
                 </select>
             </div>
             <div class="col-1 m-0 pt-4 pr-5 h-100">
-                <a href="{{url_for('Tablero.estudiante_dashboard')}}" class="btn btn-outline-dark bg-light" style="height:90%;"><i class="fas fa-search mr-1"></i></a>
+                <a href="{{url_for('Tablero.student_dashboard')}}" class="btn btn-outline-dark bg-light" style="height:90%;"><i class="fas fa-search mr-1"></i></a>
             </div>
 
         </div>
@@ -48,11 +48,11 @@
         var documento = '{{ estudiante.documento }}';
         $('#period_select').on('change', function () {
             openModal();
-            window.location.href = "{{url_for('Tablero.estudiante_dashboard')}}" + "?documento=" + documento + '&programa=' + programa + '&periodo=' + this.value;
+            window.location.href = "{{url_for('Tablero.student_dashboard')}}" + "?documento=" + documento + '&programa=' + programa + '&periodo=' + this.value;
         })
         $('#programa_select').on('change', function () {
             openModal();
-            window.location.href =  "{{url_for('Tablero.estudiante_dashboard')}}" + "?documento=" + documento + '&programa=' + this.value;
+            window.location.href =  "{{url_for('Tablero.student_dashboard')}}" + "?documento=" + documento + '&programa=' + this.value;
         })
     </script>
 </div>
@@ -447,7 +447,7 @@
             </i>
 
             <br><br><br>
-            <a href="{{url_for('Tablero.estudiante_dashboard')}}" class="btn btn-outline-dark">Atras</a>
+            <a href="{{url_for('Tablero.student_dashboard')}}" class="btn btn-outline-dark">Atras</a>
         </div>
     </center>
 

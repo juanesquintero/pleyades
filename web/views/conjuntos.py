@@ -14,7 +14,7 @@ from utils.modelo import prepare_data, verify_data, execute_model
 from views.auth import login_required
 from services.API import get, post, put
 
-from utils.mixins import actualizar_estado, guardar_archivo, guardar_ejecucion, guardar_preparacion, get_now_date, obtener_archivo_excel, obtener_nombre_conjunto
+from utils.mixins import actualizar_state, guardar_archivo, guardar_ejecucion, guardar_preparacion, get_now_date, obtener_archivo_excel, obtener_nombre_conjunto
 
 model_logger = logging.getLogger('model_logger')
 error_logger = logging.getLogger('error_logger')
@@ -106,11 +106,11 @@ def download(estado, nombre):
 @Conjunto.route('/crear/')
 @login_required
 def post_create():
-    periodos = DataIES.get_periodos_origen()
+    periods = DataIES.get_periods_origen()
     status_f, body_f = get('facultades')
     status_p, body_p = get('programas')
 
-    if status_f and status_p and periodos:
+    if status_f and status_p and periods:
         return render_template(endopoint+'crear.html', facultades=body_f, programas=body_p)
     elif not status_f and not status_p:
         error = {**body_f, **body_p}
@@ -121,11 +121,11 @@ def post_create():
     return render_template('utils/mensaje.html', mensaje='No se pudieron cargar las programas y las facultades', submensaje=error)
 
 
-@Conjunto.route('crear/periodos/programa/<int:programa>')
+@Conjunto.route('crear/periods/programa/<int:programa>')
 @login_required
-def get_periodos_programa(programa):
+def get_periods_programa(programa):
     status, body = get(
-        'desercion/estudiantes/periodos/programa/{}'.format(programa))
+        'desercion/estudiantes/periods/programa/{}'.format(programa))
     if status:
         return jsonify(body)
     return jsonify([])
@@ -220,7 +220,7 @@ def post_save(conjunto=None):
     ############# CONSULTA ##############
     # elif tipo == 'consulta':
     else:
-        # Obtener datos de los estudiantes en ese programas y periodos
+        # Obtener datos de los estudiantes en ese programas y periods
         endpoint_conjunto = 'desercion/estudiantes/conjunto/{}/{}/{}'
         endpoint_conjunto_values = endpoint_conjunto.format(
             conjunto['programa'], conjunto['periodoInicial'], conjunto['periodoFinal'])
@@ -285,9 +285,9 @@ def preparar(conjunto=None):
     nombre = conjunto['nombre']
 
     # Actualizar conjunto de datos de crudo a en proceso
-    act_estado = actualizar_estado(nombre, 'En Proceso')
-    if act_estado:
-        return act_estado
+    act_state = actualizar_state(nombre, 'En Proceso')
+    if act_state:
+        return act_state
 
     # Crear prepraracion
     preparacion = {}
@@ -339,9 +339,9 @@ def preparar(conjunto=None):
     ########### FIN PREPARAR ############
 
     # Actualizar conjunto de datos de crudo a procesado
-    act_estado = actualizar_estado(nombre, 'Procesados')
-    if act_estado:
-        return act_estado
+    act_state = actualizar_state(nombre, 'Procesados')
+    if act_state:
+        return act_state
 
     # TODO DEPRECATED! version 1 v1.5.0
     # return redirect(url_for('Conjunto.procesados', conjunto=conjunto['nombre']))
@@ -364,9 +364,9 @@ def ejecutar(conjunto=None):
     nombre = conjunto['nombre']
 
     # Actualizar conjunto de datos de crudo a procesado
-    act_estado = actualizar_estado(nombre, 'En Proceso')
-    if act_estado:
-        return act_estado
+    act_state = actualizar_state(nombre, 'En Proceso')
+    if act_state:
+        return act_state
 
     # Crear prepraracion
     ejecucion = {}
@@ -416,16 +416,16 @@ def ejecutar(conjunto=None):
         ejecucion_guardada = True
         if not exito:
             return pagina_error
-        act_estado = actualizar_estado(nombre, 'Procesados')
-        if act_estado:
-            return act_estado
+        act_state = actualizar_state(nombre, 'Procesados')
+        if act_state:
+            return act_state
         return render_template('utils/mensaje.html', mensaje='La ejecución falló', submensaje=error_spa)
 
     if not resultados_modelo:
         # Actualizar conjunto de datos de crudo a procesado
-        act_estado = actualizar_estado(nombre, 'Procesados')
-        if act_estado:
-            return act_estado
+        act_state = actualizar_state(nombre, 'Procesados')
+        if act_state:
+            return act_state
         return render_template('utils/mensaje.html', mensaje='La ejecución falló', submensaje=resultados_desertores)
 
     # Guardar registro de los desertores en la BD del ies
@@ -446,9 +446,9 @@ def ejecutar(conjunto=None):
             'desercion/resultados', resultados_insert
         )
         if not status_update or not status_insert:
-            act_estado = actualizar_estado(nombre, 'Procesados')
-            if act_estado:
-                return act_estado
+            act_state = actualizar_state(nombre, 'Procesados')
+            if act_state:
+                return act_state
 
             if not status_insert:
                 error_logger.error(
@@ -460,7 +460,7 @@ def ejecutar(conjunto=None):
 
             return render_template('utils/mensaje.html', mensaje='Ocurrió un error insertando y/o actualizando los resultados'), 500
 
-        estado_ejecucion = 'Exitosa'
+        state_ejecucion = 'Exitosa'
         # Guardar resultados de desertotres en Upload folder desertores
         archivo_desertores = 'D '+ejecucion['nombre']+'.json'
         ruta = upload_folder+'/desertores/'+archivo_desertores
@@ -477,22 +477,22 @@ def ejecutar(conjunto=None):
             'Revise si hay estudiantes ó desertores suficientes en el programa', 'warning'
         )
         resultados_modelo.pop('desertores')
-        estado_ejecucion = 'Fallida'
+        state_ejecucion = 'Fallida'
     # Guardar registro de ejecución en la BD
     if not ejecucion_guardada:
         exito, pagina_error = guardar_ejecucion(
-            ejecucion=ejecucion, resultados=resultados_modelo, estado=estado_ejecucion)
+            ejecucion=ejecucion, resultados=resultados_modelo, estado=state_ejecucion)
         if not exito:
-            act_estado = actualizar_estado(nombre, 'Procesados')
-            if act_estado:
-                return act_estado
+            act_state = actualizar_state(nombre, 'Procesados')
+            if act_state:
+                return act_state
             return pagina_error
 
     ########### FIN EJECUTAR ############
     # Actualizar conjunto de datos de crudo a procesado
-    act_estado = actualizar_estado(nombre, 'Procesados')
-    if act_estado:
-        return act_estado
+    act_state = actualizar_state(nombre, 'Procesados')
+    if act_state:
+        return act_state
 
     # TODO DEPRECATED! version 1 v1.5.0
     # return redirect(url_for('Resultado.ejecuciones', conjunto=nombre))

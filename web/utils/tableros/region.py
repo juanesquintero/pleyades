@@ -177,7 +177,7 @@ def barras(dpto):
         df = df_dpto_des[df_dpto_des['departamento']
                          == dpto].drop(['departamento'], axis=1)
 
-        periodos = list(df.columns)
+        periods = list(df.columns)
         desercion = df[0:].values[0]
         retencion = [(1-d)*100 for d in desercion]
 
@@ -187,7 +187,7 @@ def barras(dpto):
         fig = go.Figure(
             # Barras
             go.Scatter(
-                x=periodos,
+                x=periods,
                 y=retencion,
                 mode='lines+markers',
                 name='Poblacion 17-21',
@@ -374,7 +374,7 @@ def indicadores_dpto(dpto, periodo):
         df_cob = df_dpto_cob[df_dpto_cob['departamento'] == dpto]
         df_mat = df_dpto_mat[df_dpto_mat['departamento'] == dpto]
         df_grad = df_dpto_grad[df_dpto_grad['departamento'] == dpto]
-        periodos = list(df_cob.columns)
+        periods = list(df_cob.columns)
 
         variables_indicadores = [df_des, df_cob, df_mat, df_grad]
 
@@ -411,7 +411,7 @@ def indicadores_dpto(dpto, periodo):
         for i, df_var_ind in enumerate(variables_indicadores):
             period_actual = df_var_ind[str(periodo)].values[0]*100
             period_anterior = df_var_ind[str(
-                periodo-1)].values[0]*100 if str(periodo-1) in periodos else None
+                periodo-1)].values[0]*100 if str(periodo-1) in periods else None
             fig = agregar_indicador(period_anterior, period_actual, fig, i+1)
 
         # Personalizar la grafica
@@ -429,11 +429,11 @@ def indicadores_dpto(dpto, periodo):
 
 ############################################################### INDICADORES IES ####################################################################
 # Funcion para agregar un REGISTRO de IES a la lista
-def IES_row(data, fig, i, periodos):
+def IES_row(data, fig, i, periods):
 
     # Mini Serie de tiempo
     fig.append_trace(go.Scatter(
-        x=periodos,
+        x=periods,
         y=data['matricula'],
         mode='markers+lines',
         marker=dict(
@@ -480,7 +480,7 @@ def indicadores_ies(dpto):
     try:
         df = df_IES[df_IES['departamento'] == dpto]
 
-        periodos = list(df.loc[:, '2010':'2018'].columns)
+        periods = list(df.loc[:, '2010':'2018'].columns)
         IES = df['nombre']
         IES_sigla = ['<b>'+sigla+'</b>' for sigla in df['nombre_corto']]
         cant_ies = len(IES)
@@ -494,7 +494,7 @@ def indicadores_ies(dpto):
         dfs = []
         for ies, m in zip(IES_sigla, matriculas):
             dfs.append(pd.DataFrame({
-                'IES': [ies]*len(periodos),
+                'IES': [ies]*len(periods),
                 'matricula': m,
             }))
 
@@ -512,7 +512,7 @@ def indicadores_ies(dpto):
 
         # Recorrer arreglo de IES y agregar cada fila con graficos
         for i in range(cant_ies):
-            fig = IES_row(dfs[i], fig, i+1, periodos)
+            fig = IES_row(dfs[i], fig, i+1, periods)
 
         # # Personalizar la grafica
         fig.update_layout(

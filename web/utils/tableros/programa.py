@@ -31,7 +31,7 @@ def agregar_indicador(anterior, actual, fig, i, j, mode):
 # Funcion para agregar un grafico por periodo
 
 
-def barras_periodo(df, p, fig, i, azules):
+def barras_period(df, p, fig, i, azules):
 
     fig.append_trace(go.Bar(
         x=df['desertor'],
@@ -97,12 +97,12 @@ def barras_periodo(df, p, fig, i, azules):
 
 class Programa:
 
-    def __init__(self, periodo: int, programa: int, periodos: list):
+    def __init__(self, periodo: int, programa: int, periods: list):
         self.df_IES = Data.get_IES_programa(programa)
         self.df_ESTUDIANTES_total = Data.get_students_programa(programa)
         self.df_ESTUDIANTES = self.df_ESTUDIANTES_total.query(
             "REGISTRO == '{}'".format(periodo))
-        self.periodos_list = periodos
+        self.periodos_list = periods
         self.periodo = periodo
         self.programa = programa
 
@@ -174,21 +174,21 @@ class Programa:
             data = data_ies.dropna(subset=['periodo', 'mat_total'], axis=0)
             periodos_list = sorted(
                 data['periodo'].unique(),  reverse=True)[:12]
-            periodos = [int(p) for p in periodos_list]
+            periods = [int(p) for p in periodos_list]
             matriculas = []
-            for i, p in enumerate(periodos):
+            for i, p in enumerate(periods):
                 mat = data.query("periodo == '{}'".format(p))[
                     'mat_total'].values[0]
                 matriculas.append(mat)
 
             df_matricula_radial = pd.DataFrame({
-                'periodo': periodos,
+                'periodo': periods,
                 'matricula': matriculas,
-                'teta': np.linspace(10, 350, num=len(periodos))
+                'teta': np.linspace(10, 350, num=len(periods))
             })
             azules = []
             i = 0
-            for _ in periodos:
+            for _ in periods:
                 if i == len(px.colors.sequential.Blues):
                     i = 0
                 azules.append(px.colors.sequential.Blues[i])
@@ -200,7 +200,7 @@ class Programa:
                 text=df_matricula_radial['periodo'],
                 hovertext=df_matricula_radial['matricula'],
                 hovertemplate='<b>%{text}</b><br>Matricula: %{hovertext}<extra></extra>',
-                width=[10]*len(periodos),
+                width=[10]*len(periods),
                 marker_color=azules,
                 marker_line_color="black",
                 marker_line_width=2,
@@ -217,7 +217,7 @@ class Programa:
                     ),
                     angularaxis=dict(
                         showticklabels=True,
-                        ticktext=periodos,
+                        ticktext=periods,
                         tickvals=df_matricula_radial['teta'],
                         ticks='inside',
                     )
@@ -291,11 +291,11 @@ class Programa:
                                       ].replace(['NO', 'SI'], [0, 1])
             data = data.groupby(['REGISTRO', 'semestre'], as_index=False).sum()
 
-            periodos = list(data['REGISTRO'].unique())
+            periods = list(data['REGISTRO'].unique())
 
             azules = []
             i = 0
-            for _ in periodos:
+            for _ in periods:
                 if i == len(px.colors.sequential.Blues):
                     i = 0
                 azules.append(px.colors.sequential.Blues[i])
@@ -305,41 +305,41 @@ class Programa:
             # Crear conetenedor de sub graficos
             fig = make_subplots(
                 start_cell='top-left',
-                column_titles=list(map(str, periodos)),
-                rows=1, cols=len(periodos),
+                column_titles=list(map(str, periods)),
+                rows=1, cols=len(periods),
                 # horizontal_spacing = 0.3,
             )
 
-            # Definir el mayor numeto de niveles-semestres para ese programa en todos los periodos
+            # Definir el mayor numeto de niveles-semestres para ese programa en todos los periods
             niveles = []
-            for p in periodos:
-                data_periodo = data.query("REGISTRO == '{}'".format(p))
-                niveles.append(len(data_periodo))
+            for p in periods:
+                data_period = data.query("REGISTRO == '{}'".format(p))
+                niveles.append(len(data_period))
             cant_niveles = max(niveles)
 
             if cant_niveles <= 0:
                 raise Exception('No hay niveles')
 
-            # Recorrer los periodos y reliazar las graficas
-            for i, p in enumerate(periodos):
-                data_periodo = data.query("REGISTRO == '{}'".format(p))
-                data_periodo = data_periodo.sort_values(
+            # Recorrer los periods y reliazar las graficas
+            for i, p in enumerate(periods):
+                data_period = data.query("REGISTRO == '{}'".format(p))
+                data_period = data_period.sort_values(
                     by='semestre', ascending=True)
-                data_periodo = data_periodo.head(cant_niveles)
+                data_period = data_period.head(cant_niveles)
 
                 # llenar los demas semestres para que queden con el maximo de todos
-                if len(data_periodo) < cant_niveles:
+                if len(data_period) < cant_niveles:
 
                     for j in range(1, cant_niveles+1):
                         # Semestre-Nivel existe en el data frame
-                        if not (j <= len(data_periodo) and j in list(data_periodo['semestre'])):
-                            data_periodo = data_periodo.append(pd.DataFrame(
+                        if not (j <= len(data_period) and j in list(data_period['semestre'])):
+                            data_period = data_period.append(pd.DataFrame(
                                 [[j, p, 0]], columns=['semestre', 'REGISTRO', 'desertor']))
 
-                    data_periodo = data_periodo.sort_values(
+                    data_period = data_period.sort_values(
                         by='semestre', ascending=True)
 
-                fig = barras_periodo(data_periodo, p, fig, i+1, azules)
+                fig = barras_period(data_period, p, fig, i+1, azules)
 
             espaciado = float('0.'+str(abs(10-cant_niveles)))
             if (espaciado < 0.1 or cant_niveles > 10):
@@ -357,7 +357,7 @@ class Programa:
                 margin=dict(l=0, r=0, b=15, t=30)
             )
 
-            return fig, cant_niveles, len(periodos)
+            return fig, cant_niveles, len(periods)
 
         except Exception as e:
             error_logger.error('EXCEPTION: '+str(e), exc_info=True)

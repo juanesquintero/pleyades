@@ -109,7 +109,7 @@ def obtener_archivo_json(ruta):
     return True, data
 
 
-def actualizar_estado(nombre, estado):
+def actualizar_state(nombre, estado):
     status, body = put('conjuntos/'+nombre, {'estado': estado})
     if not status:
         return render_template('utils/mensaje.html', mensaje='No fue posible actualizar el estado del conjunto a '+estado, submensaje=body)

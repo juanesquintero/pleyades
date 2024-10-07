@@ -59,23 +59,23 @@ def crear_indicador(data, variable, i, j, fig, tipo):
 # Funcion para agregar un REGISTRO de programas a la lista de graficos
 
 
-def miniserie_programa_row(data, fig, i, dict_periodos):
+def miniserie_programa_row(data, fig, i, dict_periods):
     try:
-        x_periodos = []
+        x_periods = []
         for p in data['periodo']:
-            x_periodos.append(dict_periodos[str(p)])
+            x_periods.append(dict_periods[str(p)])
 
-        periodos = [str(p) for p in data['periodo']]
+        periods = [str(p) for p in data['periodo']]
 
         # Mini Serie de tiempo
         fig.append_trace(go.Scatter(
-            x=x_periodos,
+            x=x_periods,
             y=data['desercion'],
             mode='lines+markers',
             marker=dict(
                 color=CONSTANTS.colores[1],
             ),
-            text=periodos,
+            text=periods,
             hovertemplate='<br>(%{text} , %{y:.1%}) <extra></extra>',
         ), row=i, col=1)
         fig.update_yaxes(
@@ -170,8 +170,8 @@ def indicadores_programa_row(data, fig, i):
 # CLASE DE GRAFICOS PARA IES
 class IES:
     def __init__(self, periodo: int):
-        self.df_IES = Data.get_IES_periodo(periodo)
-        self.periodos_list = Data.get_periodos()
+        self.df_IES = Data.get_IES_period(periodo)
+        self.periodos_list = Data.get_periods()
         self.periodo = periodo
 
         # Obtener data anterior
@@ -185,8 +185,8 @@ class IES:
 
         self.data_anterior = Data.get_IES_total_data(int(period_anterior))
 
-        self.programas_period_actual = Data.get_programas_by_periodo(periodo)
-        self.programas_period_anterior = Data.get_programas_by_periodo(
+        self.programas_period_actual = Data.get_programas_by_period(periodo)
+        self.programas_period_anterior = Data.get_programas_by_period(
             period_anterior)
 
     ############################################################### INDICADORES IES ####################################################################
@@ -480,7 +480,7 @@ class IES:
                     # Verificar si existe dato en el periodo anterior
                     if period_index-1 in data['index']:
                         period_anterior = data.loc[period_index-1, 'periodo']
-                        # Obtener registros de los dos ultimos periodos a partir del indicado
+                        # Obtener registros de los dos ultimos periods a partir del indicado
                         data_period_index = data.query(
                             "periodo == '{}' | periodo == '{}'".format(period_actual, period_anterior))
                         fig = indicadores_programa_row(data, fig, cont+1)
@@ -514,11 +514,11 @@ class IES:
             cant_programas = len(list_programas)
 
             # Periodos
-            list_periodos = self.periodos_list
+            list_periods = self.periodos_list
 
-            dict_periodos = {}
-            for i, p in enumerate(list_periodos):
-                dict_periodos[str(p)] = i
+            dict_periods = {}
+            for i, p in enumerate(list_periods):
+                dict_periods[str(p)] = i
 
             # Retencion
 
@@ -539,7 +539,7 @@ class IES:
                              'programa_nombre_corto', 'idprograma', 'desercion']]
                 data = data.dropna().reset_index()
                 # data['periodo'] = data['periodo'].astype(str)
-                fig = miniserie_programa_row(data, fig, i+1, dict_periodos)
+                fig = miniserie_programa_row(data, fig, i+1, dict_periods)
 
             # Personalizar la grafica
             fig.update_layout(
