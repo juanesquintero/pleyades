@@ -155,7 +155,7 @@ def nombre():
         return {'error': 'estado invalido'}, 400
     if not body['tipo'] in ['consulta', 'excel']:
         return {'error': 'tipo invalido'}, 400
-    # Obtener el numero consecutivo para el conjunto de datos
+    # Obtener el numero consecutivo para el student_set de datos
     query = conjunto_model.get_numero(
         body['programa'],
         body['periodoInicial'],
@@ -175,7 +175,7 @@ def nombre():
     if ex:
         return ex
     nombre_corto = programa[0]['nombre_corto']
-    # Definir el nombre del conjunto con la notacion
+    # Definir el nombre del student_set con la notacion
     nombre = nombre_corto+' ' + \
         str(body['periodoInicial'])+' ' + \
         str(body['periodoFinal'])+' '+str(numero)
@@ -197,7 +197,7 @@ def delete_many(estado):
         return {'msg': 'No hay concidencias'}, 404
 
     conjuntos_nombres = [c['nombre'] for c in query]
-    for conjunto in conjuntos_nombres:
+    for student_set in conjuntos_nombres:
         # delete conjunto
         delete = conjunto_model.delete(conjunto)
         # delete resultados

@@ -72,7 +72,7 @@ ALTER TABLE conjuntosdedatos ADD(
 -- For ejecuciones(fk_Preparacion_ConjuntoDeDatos) 
 ALTER TABLE ejecuciones ADD(
 	CONSTRAINT fk_Ejecucion_ConjuntoDeDatos
-	FOREIGN KEY ( conjunto )
+	FOREIGN KEY ( student_set )
 	REFERENCES  conjuntosdedatos ( nombre )
 	ON DELETE CASCADE
     ON UPDATE CASCADE
@@ -90,7 +90,7 @@ ALTER TABLE ejecuciones ADD(
 -- For preparaciones(fk_Preparacion_ConjuntoDeDatos) 
 ALTER TABLE preparaciones ADD(
 	CONSTRAINT fk_Preparacion_ConjuntoDeDatos
-	FOREIGN KEY ( conjunto )
+	FOREIGN KEY ( student_set )
 	REFERENCES  conjuntosdedatos ( nombre )
 	ON DELETE CASCADE
     ON UPDATE CASCADE

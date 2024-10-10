@@ -18,7 +18,7 @@ msg_error = {'msg': 'No hay concidencias'}, 404
 ##########################################################  VWDATADESERCION ##########################################################
 
 
-@Estudiante.route('/conjunto/<int:programa>/<int:periodoInicio>/<int:periodoFin>')
+@Estudiante.route('/student-set/<int:programa>/<int:periodoInicio>/<int:periodoFin>')
 @jwt_required()
 def get_conjunto_estudiantes(programa, periodoInicio, periodoFin):
     sql = f'SELECT * FROM {tabla} WHERE idprograma={programa} AND REGISTRO >= {

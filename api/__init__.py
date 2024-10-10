@@ -107,7 +107,7 @@ def app_routes(app):
     from controllers.Facultades import Facultad
     from controllers.Programas import Programa
     from controllers.Usuarios import Usuario
-    from controllers.Conjuntos import Conjunto
+    from controllers.Conjuntos import StudentSet
     from controllers.Preparaciones import Preparacion
     from controllers.Ejecuciones import Ejecucion
     from controllers.desercion.Institucion import IES
@@ -119,7 +119,7 @@ def app_routes(app):
     app.register_blueprint(Facultad, url_prefix=base_path+'facultades')
     app.register_blueprint(Programa, url_prefix=base_path+'programas')
     app.register_blueprint(Usuario, url_prefix=base_path+'usuarios')
-    app.register_blueprint(Conjunto, url_prefix=base_path+'conjuntos')
+    app.register_blueprint(StudentSet, url_prefix=base_path+'conjuntos')
     app.register_blueprint(Preparacion, url_prefix=base_path+'preparaciones')
     app.register_blueprint(Ejecucion, url_prefix=base_path+'ejecuciones')
     app.register_blueprint(IES, url_prefix=base_path+'desercion/institucion')

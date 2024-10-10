@@ -68,7 +68,7 @@ class Usuario(db.Model, SerializerMixin):
         )
 
 
-class Conjunto(db.Model, SerializerMixin):
+class StudentSet(db.Model, SerializerMixin):
     __tablename__ = 'conjuntosdedatos'
 
     programa = db.Column(db.Integer, nullable=False)
@@ -81,56 +81,57 @@ class Conjunto(db.Model, SerializerMixin):
     estado = db.Column(db.String, nullable=False)
 
     def get_all():
-        return [row.to_dict() for row in Conjunto.query.all()]
+        return [row.to_dict() for row in StudentSet.query.all()]
 
     def get_state(estado):
-        query = Conjunto.query.filter(Conjunto.estado == estado)
+        query = StudentSet.query.filter(StudentSet.estado == estado)
         return [row.to_dict() for row in query.all()]
 
     def get_tipo(tipo):
-        query = Conjunto.query.filter(Conjunto.tipo == tipo)
+        query = StudentSet.query.filter(StudentSet.tipo == tipo)
         return [row.to_dict() for row in query.all()]
 
     def get_programa(programa):
-        query = Conjunto.query.filter(Conjunto.programa == programa)
+        query = StudentSet.query.filter(StudentSet.programa == programa)
         return [row.to_dict() for row in query.all()]
 
     def get_rango(inicio, fin):
-        query = Conjunto.query.filter(
-            Conjunto.periodoInicial == inicio,
-            Conjunto.periodoFinal == fin,
+        query = StudentSet.query.filter(
+            StudentSet.periodoInicial == inicio,
+            StudentSet.periodoFinal == fin,
         )
         return [row.to_dict() for row in query.all()]
 
     def get_numero(programa, inicio, fin):
-        query = Conjunto.query.filter(
-            Conjunto.programa == programa,
-            Conjunto.periodoInicial == inicio,
-            Conjunto.periodoFinal == fin
-        ).order_by(Conjunto.numero.desc())
+        query = StudentSet.query.filter(
+            StudentSet.programa == programa,
+            StudentSet.periodoInicial == inicio,
+            StudentSet.periodoFinal == fin
+        ).order_by(StudentSet.numero.desc())
         return [row.to_dict() for row in query.all()]
 
     def get_encargado(encargado, estado=None):
-        query = Conjunto.query.filter(Conjunto.encargado == encargado)
+        query = StudentSet.query.filter(StudentSet.encargado == encargado)
         if estado:
-            query = query.filter(Conjunto.estado == estado)
+            query = query.filter(StudentSet.estado == estado)
         return [row.to_dict() for row in query.all()]
 
     def _get_one(nombre):
-        return Conjunto.query.filter(Conjunto.nombre == nombre).first_or_404()
+        return StudentSet.query.filter(StudentSet.nombre == nombre).first_or_404()
 
     def get_one(nombre):
-        return Conjunto._get_one(nombre).to_dict()
+        return StudentSet._get_one(nombre).to_dict()
 
     def insert(fields):
-        return DTO.insert(Conjunto, fields)
+        return DTO.insert(StudentSet, fields)
 
     def delete(nombre):
-        return DTO.delete(Conjunto, nombre)
+        return DTO.delete(StudentSet, nombre)
 
     def update(nombre, fields):
         return DTO.update(
-            update(Conjunto).where(Conjunto.nombre == nombre).values(**fields)
+            update(StudentSet).where(
+                StudentSet.nombre == nombre).values(**fields)
         )
 
 
@@ -149,7 +150,7 @@ class Preparacion(db.Model, SerializerMixin):
     )
 
     preparador = db.Column(db.String, nullable=False)
-    conjunto = db.Column(db.String, nullable=False)
+    student_set = db.Column(db.String, nullable=False)
     nombre = db.Column(db.String, primary_key=True, nullable=False)
     numero = db.Column(db.Integer, nullable=False)
     fechaInicial = db.Column(db.DateTime, nullable=False)
@@ -220,7 +221,7 @@ class Ejecucion(db.Model, SerializerMixin):
     )
 
     ejecutor = db.Column(db.String, nullable=False)
-    conjunto = db.Column(db.String, nullable=False)
+    student_set = db.Column(db.String, nullable=False)
     nombre = db.Column(db.String, primary_key=True, nullable=False)
     numero = db.Column(db.Integer, nullable=False)
     fechaInicial = db.Column(db.DateTime, nullable=False)

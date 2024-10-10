@@ -38,7 +38,7 @@ def get_one(nombre):
     return jsonify(query[0])
 
 
-@Ejecucion.route('/conjunto/<conjunto>')
+@Ejecucion.route('/student-set/<conjunto>')
 @jwt_required()
 def get_by_conjunto(conjunto):
     if not exists_conjunto(conjunto):
@@ -56,11 +56,11 @@ def get_by_conjunto(conjunto):
 @Ejecucion.route('/ejecutor/<ejecutor>')
 @jwt_required()
 def get_by_usuario(ejecutor):
-    conjunto = request.args.get('conjunto')
+    student_set = request.args.get('conjunto')
     nombre = request.args.get('nombre')
     if not exists_usuario(ejecutor):
         return {'error': 'usuario no existe'}, 400
-    
+
     if nombre:
         query = ejecucion_model.get_ejecutor_one(ejecutor, nombre)
     elif conjunto:
@@ -82,7 +82,7 @@ def get_by_usuario(ejecutor):
 def nombre(conjunto):
     if not exists_conjunto(conjunto):
         return {'error': 'conjunto no existe'}, 400
-    # Obtener el numero consecutivo para el conjunto de datos
+    # Obtener el numero consecutivo para el student_set de datos
     query = ejecucion_model.get_consecutivo(conjunto)
     ex = exception(query)
     if ex:
@@ -165,11 +165,11 @@ def delete_one(nombre):
     return {'msg': 'Ejecucion eliminada'}, 200
 
 
-@Ejecucion.route('/conjunto/<conjunto>', methods=['DELETE'])
+@Ejecucion.route('/student-set/<conjunto>', methods=['DELETE'])
 @jwt_required()
 def delete_by_conjunto(conjunto):
     if not conjunto:
-        return {'error': 'indique el conjunto por el path'}, 400
+        return {'error': 'indique el student_set por el path'}, 400
     # sql validations
     if not exists_conjunto(conjunto):
         return {'error': 'conjunto no existe'}, 400
@@ -179,7 +179,7 @@ def delete_by_conjunto(conjunto):
     ex = exception(delete)
     if ex:
         return ex
-    return {'msg': 'ejecuciones del conjunto eliminadas'}, 200
+    return {'msg': 'ejecuciones del student_set eliminadas'}, 200
 
 
 def exists(nombre):

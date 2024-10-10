@@ -1424,7 +1424,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:3000/preparaciones/conjunto/Eco 20151 20201 1",
+							"raw": "http://127.0.0.1:3000/preparaciones/student-set/Eco 20151 20201 1",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -1758,7 +1758,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:3000/ejecuciones/conjunto/Tec 20151 20201 1",
+							"raw": "http://127.0.0.1:3000/ejecuciones/student-set/Tec 20151 20201 1",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -2499,7 +2499,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://127.0.0.1:3000/desercion/estudiantes/conjunto/23/20172/20181",
+									"raw": "http://127.0.0.1:3000/desercion/estudiantes/student-set/23/20172/20181",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -2712,7 +2712,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://127.0.0.1:3000/ejecuciones/conjunto/Tec 20151 20201 1",
+											"raw": "http://127.0.0.1:3000/ejecuciones/student-set/Tec 20151 20201 1",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -3456,7 +3456,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://127.0.0.1:3000/preparaciones/conjunto/Eco 20151 20201 1",
+											"raw": "http://127.0.0.1:3000/preparaciones/student-set/Eco 20151 20201 1",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -4656,7 +4656,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://127.0.0.1:3000/ejecuciones/conjunto/Tec 20151 20201 1",
+											"raw": "http://127.0.0.1:3000/ejecuciones/student-set/Tec 20151 20201 1",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -5402,7 +5402,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://127.0.0.1:3000/preparaciones/conjunto/Eco 20151 20201 1",
+											"raw": "http://127.0.0.1:3000/preparaciones/student-set/Eco 20151 20201 1",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -6740,7 +6740,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://apipleyades.pythonanywhere.com/desercion/estudiantes/conjunto/23/20151/20191",
+									"raw": "http://apipleyades.pythonanywhere.com/desercion/estudiantes/student-set/23/20151/20191",
 									"protocol": "http",
 									"host": [
 										"apipleyades",
