@@ -47,7 +47,7 @@ def get_list(resultados):
 
 
 def list_set(resultados, conjunto):
-    status, body = get(resultados+'/conjunto/'+conjunto)
+    status, body = get(resultados+'/student-set/'+conjunto)
     if status:
         return render_template('admin/'+endopoint+resultados+'.html', resultados=body)
     else:

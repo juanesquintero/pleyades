@@ -8,7 +8,7 @@
 
 <form
   id="conjuntoForm"
-  action="{{url_for('Conjunto.crear')}}"
+  action="{{url_for('StudentSet.crear')}}"
   method="POST"
   enctype="multipart/form-data"
   data-toggle="validator"
@@ -311,7 +311,7 @@
     if (validacion == true) {
       handleModal(
         "Su conjunto aparecera cuando acabe el proceso (recuerde refrescar la página)",
-        "{{url_for('Conjunto.crudos')}}"
+        "{{url_for('StudentSet.crudos')}}"
       );
     }
   });

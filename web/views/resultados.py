@@ -43,7 +43,7 @@ def get_list(resultados):
 
 
 def list_set(resultados, conjunto):
-    status, body = get(resultados+'/conjunto/'+conjunto)
+    status, body = get(resultados+'/student-set/'+conjunto)
     if status:
         return render_template(endopoint+resultados+'.html', resultados=set_date_format(body))
     else:

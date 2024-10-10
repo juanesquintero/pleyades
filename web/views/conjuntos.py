@@ -21,7 +21,7 @@ error_logger = logging.getLogger('error_logger')
 
 load_dotenv()
 
-Conjunto = Blueprint('Conjunto', __name__)
+StudentSet = Blueprint('StudentSet', __name__)
 
 endopoint = 'conjuntos/'
 
@@ -30,18 +30,18 @@ upload_folder = os.getcwd()+'/uploads'
 translator = Translator()
 
 
-@Conjunto.route('')
-@Conjunto.route('/')
-@Conjunto.route('/crudos')
-@Conjunto.route('/crudos/')
+@StudentSet.route('')
+@StudentSet.route('/')
+@StudentSet.route('/crudos')
+@StudentSet.route('/crudos/')
 @login_required
 def crudos():
     return get_list('crudos')
 
 
-@Conjunto.route('/procesados')
-@Conjunto.route('/procesados/')
-@Conjunto.route('/procesados/<conjunto>')
+@StudentSet.route('/procesados')
+@StudentSet.route('/procesados/')
+@StudentSet.route('/procesados/<conjunto>')
 @login_required
 def procesados(conjunto=None):
     if conjunto:
@@ -78,7 +78,7 @@ def get_list(estado, conjunto=None):
     )
 
 
-@Conjunto.route('/descargar/<estado>/<nombre>')
+@StudentSet.route('/descargar/<estado>/<nombre>')
 def download(estado, nombre):
 
     status_c, body_c = get('conjuntos/'+nombre)
@@ -102,8 +102,8 @@ def download(estado, nombre):
         return render_template('utils/mensaje.html', mensaje='No se encontro el archivo a descargar')
 
 
-@Conjunto.route('/crear')
-@Conjunto.route('/crear/')
+@StudentSet.route('/crear')
+@StudentSet.route('/crear/')
 @login_required
 def post_create():
     periods = DataIES.get_periods_origen()
@@ -121,7 +121,7 @@ def post_create():
     return render_template('utils/mensaje.html', mensaje='No se pudieron cargar las programas y las facultades', submensaje=error)
 
 
-@Conjunto.route('crear/periods/programa/<int:programa>')
+@StudentSet.route('crear/periods/programa/<int:programa>')
 @login_required
 def get_periods_programa(programa):
     status, body = get(
@@ -131,7 +131,7 @@ def get_periods_programa(programa):
     return jsonify([])
 
 
-@Conjunto.route('/detalle', methods=['POST'])
+@StudentSet.route('/detalle', methods=['POST'])
 @login_required
 def detalle():
     # Obtener Lo valores del formulario
@@ -157,8 +157,8 @@ def detalle():
     return render_template('utils/mensaje.html', mensaje='No se pudieron cargar los datos para detallar el conjunto', submensaje=error)
 
 
-@Conjunto.route('/crear', methods=['POST'])
-@Conjunto.route('/crear/', methods=['POST'])
+@StudentSet.route('/crear', methods=['POST'])
+@StudentSet.route('/crear/', methods=['POST'])
 @login_required
 def post_save(conjunto=None):
     if not conjunto:
@@ -221,7 +221,7 @@ def post_save(conjunto=None):
     # elif tipo == 'consulta':
     else:
         # Obtener datos de los estudiantes en ese programas y periods
-        endpoint_conjunto = 'desercion/estudiantes/conjunto/{}/{}/{}'
+        endpoint_conjunto = 'desercion/estudiantes/student-set/{}/{}/{}'
         endpoint_conjunto_values = endpoint_conjunto.format(
             conjunto['programa'], conjunto['periodoInicial'], conjunto['periodoFinal'])
         status, body = get(endpoint_conjunto_values)
@@ -264,7 +264,7 @@ def post_save(conjunto=None):
 
     # TODO DEPRECATED! version 1 v1.5.0
     # if status:
-    #     return redirect(url_for('Conjunto.crudos'))
+    #     return redirect(url_for('StudentSet.crudos'))
 
     # TODO NEW! version 2 v2.0.0
     if status:
@@ -274,7 +274,7 @@ def post_save(conjunto=None):
     return render_template('utils/mensaje.html', mensaje='No se pudo guardar el conjunto', submensaje=body)
 
 
-@Conjunto.route('/preparar', methods=['POST'])
+@StudentSet.route('/preparar', methods=['POST'])
 @login_required
 def preparar(conjunto=None):
     if not conjunto:
@@ -344,14 +344,14 @@ def preparar(conjunto=None):
         return act_state
 
     # TODO DEPRECATED! version 1 v1.5.0
-    # return redirect(url_for('Conjunto.procesados', conjunto=conjunto['nombre']))
+    # return redirect(url_for('StudentSet.procesados', conjunto=conjunto['nombre']))
 
     # TODO NEW! version 2 v2.0.0
     # ejecutar() luego de preparar()
     return ejecutar(conjunto)
 
 
-@Conjunto.route('/ejecutar', methods=['POST'])
+@StudentSet.route('/ejecutar', methods=['POST'])
 @login_required
 def ejecutar(conjunto=None):
     ejecucion_guardada = False
