@@ -1,7 +1,16 @@
 FROM python:3.12-slim
 
 WORKDIR /app
-RUN apt-get update && apt-get install -y gnupg curl openssl ca-certificates
+
+RUN apt-get update \
+  && apt-get upgrade \
+  && apt-get install -y \
+  gnupg  \
+  g++  \
+  curl \
+  openssl \
+  ca-certificates
+
 RUN update-ca-certificates
 
 #······················ MS SQL SERVER Driver ······················
@@ -26,14 +35,14 @@ RUN apt-get install -y libgssapi-krb5-2
 # Update and install needed packages
 RUN apt-get install -y python3-pymysql
 
-# Update pip
+# Upgrade pip
 RUN pip install --upgrade pip
 
 # Copy resources
 COPY . /app
 
 # Install requirements
-RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
+RUN pip install --no-cache-dir --upgrade  --default-timeout=300 -r /app/requirements.txt
 
 
 #······················ OS config ······················
