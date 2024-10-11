@@ -4,7 +4,7 @@ services:
 
   nginx:
     restart: always
-    image: nginx:1.23.1-alpine
+    image: nginx:1.27-alpine-slim
     container_name: pleyades-nginx
     volumes:
       - ./nginx/conf/default.conf:/etc/nginx/conf.d/default.conf
@@ -70,4 +70,3 @@ services:
 networks:
   deploy-net:
     driver: bridge
-  
