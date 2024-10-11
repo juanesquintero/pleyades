@@ -1,21 +1,23 @@
 # Core
 Flask==3.0.3
-Flask-Cors==4.0.1
+Flask-Cors==5.0.0
 Flask-JWT-Extended==4.6.0
-jsonschema==4.22.0
-gunicorn==22.0.0
+jsonschema==4.23.0
+gunicorn==23.0.0
 
 # Utils
 python-dotenv==1.0.1
-pandas==2.2.2
-cryptography==42.0.8
+pandas==2.2.3
+cryptography==43.0.1
 
 # DB
-mysql-connector-python==8.4.0
+mysql-connector-python==9.0.0
 PyMySQL==1.1.1
 PyMySQL[rsa]
+
 pyodbc==5.1.0
 mssql==1.0.1
-SQLAlchemy==2.0.31
+
+SQLAlchemy==2.0.35
 Flask-SQLAlchemy==3.1.1
 SQLAlchemy-serializer==1.4.12
