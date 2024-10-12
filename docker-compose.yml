@@ -1,6 +1,6 @@
 name: pleyades
 services:
-  web_dev:
+  web:
     container_name: pleyades-web_dev
     build:
       context: ./web
@@ -19,14 +19,14 @@ services:
     ports:
       - 5001:80
     links:
-      - api_dev:api
+      - api:api
     networks:
       - dev-net
     depends_on:
-      - api_dev
+      - api
     command: flask run --host 0.0.0.0 --port 80
 
-  api_dev:
+  api:
     container_name: pleyades-api_dev
     build:
       context: ./api
