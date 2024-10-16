@@ -1,10 +1,10 @@
+
 import os
 import sys
 import locale
 import logging
 import datetime
 from flask import Flask, session, render_template
-from flask_session import Session
 from dotenv import load_dotenv
 
 from views.analista import Analista
@@ -100,17 +100,3 @@ def before_each_request():
     session.modified = True
     session.permanent = True
     app.permanent_session_lifetime = datetime.timedelta(hours=3)
-
-
-if __name__ == '__main__':
-    # Sesion login usuario config
-    app.config['SESSION_PERMANENT'] = True
-    app.config['SESSION_TYPE'] = 'filesystem'
-    app.config['PERMANENT_SESSION_LIFETIME'] = datetime.timedelta(hours=3)
-    app.config['SESSION_FILE_THRESHOLD'] = 100
-    # Iniciar sesion de login usuario
-    sess = Session()
-    sess.init_app(app)
-
-    # Run server
-    app.run(host='0.0.0.0')
