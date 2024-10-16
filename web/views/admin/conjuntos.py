@@ -93,7 +93,7 @@ def update():
 
 @ConjuntoAdmin.route("/borrar", methods=["POST"])
 @only_admin
-def delete():
+def post_delete():
     body = dict(request.values)
     conjunto = literal_eval(body["conjunto"])
     status_p, body_p = get("programas")

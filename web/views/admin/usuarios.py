@@ -30,7 +30,7 @@ def post_save():
     usuario = dict(request.values)
     status, body = post(endopoint, usuario)
     if status:
-        return redirect(url_for('Usuario.listar'))
+        return redirect(url_for('Usuario.get_list'))
     else:
         return render_template('utils/mensaje.html', mensaje='No se pudo guardar el Usuario', submensaje=body)
 
@@ -54,10 +54,10 @@ def update():
         if len(usuario['clave']) < 8:
             del usuario['clave']
 
-    correo = usuario.pop('correo')
+    correo = usuario.pop('correo', '')
     status, body = put(endopoint+correo, usuario)
     if status:
-        return redirect(url_for('Usuario.listar'))
+        return redirect(url_for('Usuario.get_list'))
     else:
         return render_template('utils/mensaje.html', mensaje='No se pudo actualizar el Usuario', submensaje=body)
 
@@ -75,11 +75,11 @@ def remove():
 
 @Usuario.route('/eliminar', methods=['POST'])
 @only_admin
-def delete():
+def post_delete():
     usuario = dict(request.values)
-    correo = usuario.pop('correo')
+    correo = usuario.pop('correo', '')
     status, body = delete(endopoint+correo)
     if status:
-        return redirect(url_for('Usuario.listar'))
+        return redirect(url_for('Usuario.get_list'))
     else:
         return render_template('utils/mensaje.html', mensaje='No se pudo Eliminar el Usuario', submensaje=body)
