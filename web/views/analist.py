@@ -101,15 +101,15 @@ def predecir_modelo():
     ejecucion['fechaInicial'] = get_now_date()
 
     periodo = form.get('periodo')
-    resultados = ejecucion.pop('resultados')
+    results = ejecucion.pop('results')
     modelo = ejecucion.get('conjunto')
-    idprograma = resultados.get('idprograma')
+    idprograma = results.get('idprograma')
 
     basic_info = {
         'idprograma': idprograma,
-        'programa': resultados.get('programa'),
-        'idfacultad': resultados.get('idfacultad'),
-        'facultad': resultados.get('facultad'),
+        'programa': results.get('programa'),
+        'idfacultad': results.get('idfacultad'),
+        'facultad': results.get('facultad'),
         'modelo': modelo
     }
 
@@ -122,7 +122,7 @@ def predecir_modelo():
     df_data_a_predecir = pd.DataFrame(data_a_predecir)
     data_preparada = Modelo.prepare_data(df_data_a_predecir)
 
-    # Predecir resultados
+    # Predecir results
     resultados_modelo, resultados_desertores = Modelo.predict(
         data_preparada, periodo, basic_info
     )
@@ -133,7 +133,7 @@ def predecir_modelo():
         int
     )
 
-    # Insertar los resultados
+    # Insertar los results
     if resultados_desertores.empty:
         flash('No hay desertores para esta predicción', 'warning')
         return redirect(url_for('Analista.modelos'))
@@ -143,7 +143,7 @@ def predecir_modelo():
     )
 
     status_insert, body_insert = post(
-        'desercion/resultados',
+        'desercion/results',
         resultados_insert
     )
 
@@ -153,7 +153,7 @@ def predecir_modelo():
                 json.dumps(body_insert))
         )
         raise Exception(
-            'Ocurrió un error insertando y/o actualizando los resultados'
+            'Ocurrió un error insertando y/o actualizando los results'
         )
 
     ejecucion['nombre'], ejecucion['numero'] = obtener_nombre_ejecucion(modelo)
@@ -216,11 +216,11 @@ def get_modelos(nombre=None, conjunto=None):
 
 def formulario_entrenar():
     periods = DataIES.get_periods_origen()
-    status_f, body_f = get('facultades')
-    status_p, body_p = get('programas')
+    status_f, body_f = get('faculties')
+    status_p, body_p = get('programs')
 
     if status_f and status_p and periods:
-        return render_template(endopoint+'crear.html', facultades=body_f, programas=body_p)
+        return render_template(endopoint+'crear.html', faculties=body_f, programs=body_p)
 
     if not status_f and not status_p:
         error = {**body_f, **body_p}
@@ -230,6 +230,6 @@ def formulario_entrenar():
         error = body_p
     return render_template(
         'utils/mensaje.html',
-        mensaje='No se pudieron cargar las programas y las facultades',
+        mensaje='No se pudieron cargar las programs y las faculties',
         submensaje=error
     )

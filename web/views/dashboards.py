@@ -197,11 +197,11 @@ def ies_dashboard():
     indicadores2 = ies.indicadores2()
     indicadores2 = to_plotly_json(indicadores2) if indicadores2 else None
 
-    # Barras facultades
+    # Barras faculties
     barras = ies.barras()
     barras = to_plotly_json(barras) if barras else None
 
-    # Pastel facultades
+    # Pastel faculties
     pastel = ies.pastel()
     pastel = to_plotly_json(pastel) if pastel else None
 
@@ -260,7 +260,7 @@ def ies_dashboard():
 def programa_dashboard():
 
     periods = DataIES.get_periods_origen()
-    programas = DataIES.get_programas_origen()
+    programs = DataIES.get_programas_origen()
 
     periodo = request.args.get('periodo')
     programa = request.args.get('programa')
@@ -270,11 +270,11 @@ def programa_dashboard():
     except Exception as e:
         periodo = max(periods)
 
-    programas_id = [str(p['idprograma']) for p in programas]
+    programas_id = [str(p['idprograma']) for p in programs]
     if not (programa in programas_id):
-        programa = programas[0]
+        programa = programs[0]
     else:
-        for p in programas:
+        for p in programs:
             if str(p['idprograma']) == programa:
                 programa = p
 
@@ -286,7 +286,7 @@ def programa_dashboard():
             programa=programa['idprograma'],
             nombre_programa=programa['programa'],
             periodos_list=periods,
-            programas_list=programas,
+            programas_list=programs,
         )
 
     programa_graph = Programa(
@@ -323,7 +323,7 @@ def programa_dashboard():
         nombre_programa=programa['programa'],
         nombre_ies=os.getenv('CLI_IES_NAME'),
         periodos_list=periods,
-        programas_list=programas,
+        programas_list=programs,
 
         indicadores_plot=indicadores,
         radial_plot=radial,
@@ -339,7 +339,7 @@ def programa_dashboard():
 @login_required
 def student_dashboard():
     periods = DataIES.get_periods()
-    programas = DataIES.get_programas()
+    programs = DataIES.get_programas()
 
     periodo = request.args.get('periodo')
     programa = request.args.get('programa')
@@ -352,7 +352,7 @@ def student_dashboard():
             endopoint+'students_programa.html',
             students_list=students_programa,
             programa=programa,
-            programas_list=programas,
+            programas_list=programs,
         )
 
     # Buscar estudiante por programa o cedula
@@ -360,10 +360,10 @@ def student_dashboard():
         return render_template(
             endopoint+'buscar_estudiante.html',
             periodos_list=periods,
-            programas_list=programas,
+            programas_list=programs,
         )
 
-    for p in programas:
+    for p in programs:
         if str(p['idprograma']) == str(programa):
             programa = p
 
@@ -404,10 +404,10 @@ def student_dashboard():
             periodo=periodo,
         )
 
-    # Validar los periods y programas
+    # Validar los periods y programs
     if info:
         if not programa:
-            for p in programas:
+            for p in programs:
                 if str(p['idprograma']) == str(info['idprograma']):
                     programa = p
         if not periodo:

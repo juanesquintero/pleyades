@@ -43,11 +43,11 @@ def get_now_date():
     return fecha_formateada
 
 
-def set_date_format(resultados):
-    for r in resultados:
+def set_date_format(results):
+    for r in results:
         r['fechaInicial'] = str_to_date(r['fechaInicial'])
         r['fechaFinal'] = str_to_date(r['fechaFinal'])
-    return resultados
+    return results
 
 
 def str_to_date(fecha):
@@ -126,12 +126,12 @@ def guardar_preparacion(preparacion, observaciones, estado):
     return True, 'ERROR'
 
 
-def guardar_ejecucion(ejecucion, resultados, estado):
+def guardar_ejecucion(ejecucion, results, estado):
 
     # Guardar REGISTRO de ejecución
-    ejecucion['precision_modelo'] = resultados.get('precision', None)
+    ejecucion['precision_modelo'] = results.get('precision', None)
     ejecucion['fechaFinal'] = get_now_date()
-    ejecucion['resultados'] = dict(resultados)
+    ejecucion['results'] = dict(results)
     ejecucion['estado'] = estado
 
     status, body = post('ejecuciones', dict(ejecucion))

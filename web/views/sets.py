@@ -51,7 +51,7 @@ def procesados(conjunto=None):
 
 def get_list(estado, conjunto=None):
     user = session.get('user', {'correo': ''}).get('correo')
-    status_p, body_p = get('programas')
+    status_p, body_p = get('programs')
     status_c, body_c = get(
         f'sets/encargado/{user}?estado={estado}'
     )
@@ -62,7 +62,7 @@ def get_list(estado, conjunto=None):
         return render_template(
             endopoint+estado.replace(' ', '_')+'.html',
             sets=body_c,
-            programas=body_p
+            programs=body_p
         )
 
     if not status_c and not status_p:
@@ -107,18 +107,18 @@ def download(estado, nombre):
 @login_required
 def post_create():
     periods = DataIES.get_periods_origen()
-    status_f, body_f = get('facultades')
-    status_p, body_p = get('programas')
+    status_f, body_f = get('faculties')
+    status_p, body_p = get('programs')
 
     if status_f and status_p and periods:
-        return render_template(endopoint+'crear.html', facultades=body_f, programas=body_p)
+        return render_template(endopoint+'crear.html', faculties=body_f, programs=body_p)
     elif not status_f and not status_p:
         error = {**body_f, **body_p}
     elif not status_f:
         error = body_f
     else:
         error = body_p
-    return render_template('utils/mensaje.html', mensaje='No se pudieron cargar las programas y las facultades', submensaje=error)
+    return render_template('utils/mensaje.html', mensaje='No se pudieron cargar las programs y las faculties', submensaje=error)
 
 
 @StudentSet.route('crear/periods/programa/<int:programa>')
@@ -138,12 +138,12 @@ def detalle():
     body = dict(request.values)
     conjunto = literal_eval(body['conjunto'])
     # Consultas para mostrar info
-    status_f, body_f = get('facultades')
-    status_p, body_p = get('programas')
-    status_u, body_u = get('usuarios')
+    status_f, body_f = get('faculties')
+    status_p, body_p = get('programs')
+    status_u, body_u = get('users')
 
     if status_p and status_f and status_u and conjunto:
-        return render_template(endopoint+'detalle.html', facultades=body_f, programas=body_p, usuarios=body_u, c=conjunto)
+        return render_template(endopoint+'detalle.html', faculties=body_f, programs=body_p, users=body_u, c=conjunto)
     elif not status_f and not status_p and not status_u:
         error = {**body_f, **body_p, **body_u}
     elif not status_f:
@@ -220,7 +220,7 @@ def post_save(conjunto=None):
     ############# CONSULTA ##############
     # elif tipo == 'consulta':
     else:
-        # Obtener datos de los estudiantes en ese programas y periods
+        # Obtener datos de los estudiantes en ese programs y periods
         endpoint_conjunto = 'desercion/estudiantes/student-set/{}/{}/{}'
         endpoint_conjunto_values = endpoint_conjunto.format(
             conjunto['programa'], conjunto['periodoInicial'], conjunto['periodoFinal'])
@@ -410,9 +410,9 @@ def ejecutar(conjunto=None):
         model_logger.error(error_spa)
         model_logger.error(traceback.format_exc())
 
-        resultados = {'error': error_spa}
+        results = {'error': error_spa}
         exito, pagina_error = guardar_ejecucion(
-            ejecucion, resultados, 'Fallida')
+            ejecucion, results, 'Fallida')
         ejecucion_guardada = True
         if not exito:
             return pagina_error
@@ -430,20 +430,20 @@ def ejecutar(conjunto=None):
 
     # Guardar registro de los desertores en la BD del ies
 
-    # Actualizar los resultados a ultimo
-    endpoint_ultimo = 'desercion/resultados/ultimo/{}/{}'
+    # Actualizar los results a ultimo
+    endpoint_ultimo = 'desercion/results/ultimo/{}/{}'
     endpoint_ultimo_values = endpoint_ultimo.format(
         conjunto['programa'], conjunto['periodoFinal']
     )
     status_update, body_update = put(endpoint_ultimo_values, {})
 
-    # Insertar los resultados
+    # Insertar los results
     if resultados_desertores.any().any():
         resultados_insert = json.loads(
             resultados_desertores.to_json(orient='records')
         )
         status_insert, body_insert = post(
-            'desercion/resultados', resultados_insert
+            'desercion/results', resultados_insert
         )
         if not status_update or not status_insert:
             act_state = actualizar_state(nombre, 'Procesados')
@@ -458,10 +458,10 @@ def ejecutar(conjunto=None):
                 error_logger.error('Error actualizando los desertores del programa'.format(
                     json.dumps(body_update)))
 
-            return render_template('utils/mensaje.html', mensaje='Ocurrió un error insertando y/o actualizando los resultados'), 500
+            return render_template('utils/mensaje.html', mensaje='Ocurrió un error insertando y/o actualizando los results'), 500
 
         state_ejecucion = 'Exitosa'
-        # Guardar resultados de desertotres en Upload folder desertores
+        # Guardar results de desertotres en Upload folder desertores
         archivo_desertores = 'D '+ejecucion['nombre']+'.json'
         ruta = upload_folder+'/desertores/'+archivo_desertores
         exito, pagina_error = guardar_archivo(
@@ -481,7 +481,7 @@ def ejecutar(conjunto=None):
     # Guardar registro de ejecución en la BD
     if not ejecucion_guardada:
         exito, pagina_error = guardar_ejecucion(
-            ejecucion=ejecucion, resultados=resultados_modelo, estado=state_ejecucion)
+            ejecucion=ejecucion, results=resultados_modelo, estado=state_ejecucion)
         if not exito:
             act_state = actualizar_state(nombre, 'Procesados')
             if act_state:

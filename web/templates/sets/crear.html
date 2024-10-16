@@ -1,0 +1,227 @@
+{% include 'components/header.html' %}
+
+{% with menu='conjuntos' %}
+{% include 'components/sidebar.html' %}
+{% endwith %}
+
+<h5>Subir un StudentSet de Datos</h5>
+<form id="conjuntoForm" action="{{url_for('StudentSet.post_create')}}" method="POST" enctype="multipart/form-data"
+    data-toggle="validator" class="jumbotron py-4 pr-2 bg-light" style="width:90%;">
+    <div class="container">
+        <div class="form-group row">
+            <div class="col-sm-5">
+                <label id="facultad_label">Facultad</label>
+                <select class="form-control programa_change" name="facultad" id="facultad_select" required>
+                    {% for f in faculties %}
+                    <option key="{{f.codigo}}" value="{{f.codigo}}">{{f.nombre}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <input type="hidden" value="{{programs}}" id="programas_list">
+            <div class="col-sm-6">
+                <label id="programa_label">Programa</label>
+                <select class="form-control programa_change" name="programa" id="programa_select" required>
+                </select>
+            </div>
+            <script>
+                $(document).ready(function () {
+                    $("#facultad_select").val(null);
+
+                });
+                var programs = document.getElementById("programas_list").value;
+                programs = JSON.parse(programs.replace(/'/g, '"'))
+                var programa_select = document.getElementById("programa_select");
+
+
+                var ua = window.navigator.userAgent;
+                var isIE = ua.indexOf("MSIE ");
+
+
+                $('#facultad_select').change(function () {
+                    var facultad = $(this).val()
+                    var i = 0
+                    programa_select.options.length = 0
+
+                    programs.forEach(p => {
+                        if (p.facultad == facultad) {
+                            var programa_Obj = {
+                                codigo: p.codigo,
+                                nombre: p.nombre,
+                            }
+                            //JSON.stringify(programa_Obj)
+                            programa_select.options[i] = new Option(p.nombre, p.codigo);
+                            i = i + 1;
+                        }
+                    });
+                    if (i == 0) {
+                        programa_select.options[1] = new Option('No hay programs para esta Facultad', null, false, false);
+                        programa_select.options[1].disabled = true;
+                    }
+                });            
+            </script>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-2">
+                <label>Periodo Inicial</label>
+                <select name="periodoInicial" id="periodoInicial_id" class="periodosControls form-control input-sm"
+                    required>
+                    <option disabled selected hidden></option>
+                </select>
+            </div>
+            <div class="col-sm-2">
+                <label>Periodo Final</label>
+                <select name="periodoFinal" id="periodoFinal_id" class="periodosControls form-control input-sm"
+                    required>
+                    <option disabled selected hidden></option>
+                </select>
+            </div>
+            <script>
+                //LLenar con periodos del programa
+                $('.programa_change').on('click', function () {
+                    
+                        $.ajax({
+                            url: "periods/programa/" + $('#programa_select').val(),
+                            type: "GET",
+                            contentType: 'application/json;charset=UTF-8',
+                            data: {},
+                            dataType: "json",
+                            success: function (data) {
+                                var periodoInicial = document.getElementById("periodoInicial_id");
+                                var periodoFinal = document.getElementById("periodoFinal_id");
+                                var i = 1
+                                periodoFinal.options.length = 1
+                                periodoInicial.options.length = 1
+
+                                data.forEach(p => {
+                                    periodoInicial.options[i] = new Option(p, p);
+                                    periodoFinal.options[i] = new Option(p, p);
+                                    i = i + 1;
+                                });
+                            }
+                        });
+                    
+                })
+
+                // Validar Periodo  
+                $('.periodosControls').on('change', function () {
+
+                    console.log($('#periodoFinal_id').val(), $('#periodoInicial_id').val());
+
+                    if ($('#periodoInicial_id').val() >= $('#periodoFinal_id').val()) {
+                        $('#periodoInicial_id')[0].setCustomValidity("Periodo Invalido");
+                    } else {
+                        $('#periodoInicial_id')[0].setCustomValidity("");
+                    }
+                    
+                    if ($('#periodoFinal_id').val() <= $('#periodoInicial_id').val()) {
+                        $('#periodoFinal_id')[0].setCustomValidity("Periodo Invalido");
+                    } else {
+                        $('#periodoFinal_id')[0].setCustomValidity("");
+                    }
+                })
+
+            </script>
+
+            {% if session.get('excel') %}
+            <div class="col-sm-2 mr-0 pr-0">
+
+                <label>Tipo</label>
+                <br>
+                <div class="container">
+                    <div class="row">
+                        <span class="mr-2" style="white-space: nowrap;">
+                            <input id="tipo_consulta" type="radio" name="tipo" value="consulta">
+                            &nbsp;<small>Consulta</small>
+                        </span>
+
+                        <br>
+
+                        <span>
+                            <input id="tipo_excel" type="radio" name="tipo" value="excel">
+                            &nbsp;<small>Excel</small>
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="col-sm-5" id="archivo_control" style="display: none;">
+                <label>Archivo de Excel</label>
+                <i class="fas fa-file-excel ml-1"></i>
+                <div class="custom-file">
+                    <input type="file" accept=".xls,.xlsx" name="archivo" id="archivo_picker" class="custom-file-input"
+                        lang="es">
+                    <label class="custom-file-label" for="customFile">Seleccionar archivo</label>
+                    <script>
+                        // Mostrar nombre del archivo seleccionado en el campo de texto 
+                        $(".custom-file-input").on("change", function () {
+                            var fileName = $(this).val().split("\\").pop();
+                            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+                        });
+                        // Mostrar control de archivo dependiendo del tipo 
+                        $(document).ready(function () {
+                            $('#tipo_consulta').prop("checked", true);
+                        })
+
+                        $('input[type=radio][name=tipo]').change(function () {
+                            if (this.value == 'consulta') {
+                                // Esconder control de archivo
+                                $('#archivo_control').css('display', 'none')
+                                // Limpiar archivo
+                                $('#archivo_picker').replaceWith($('#archivo_picker').val('').clone(true));
+                                $('#archivo_picker').siblings(".custom-file-label").html('Seleccionar archivo');
+                                $('#archivo_picker').prop('required', false)
+
+                                alert('Se hara una consulta a la Base de datos de los estudiantes del programa indicado que tengan registros entre los respectivos semestres ')
+                            }
+                            else if (this.value == 'excel') {
+                                // Mostrar control de archivo
+                                $('#archivo_control').css('display', 'inline')
+                                $('#archivo_picker').prop('required', true)
+                                alert('Ingrese un archivo excel con los estudiantes del programa indicado entre los respectivos semestres')
+                            }
+                        });
+
+                    </script>
+                </div>
+            </div>
+            <script>
+                $('#archivo_picker').click(function () {
+                    alert('Asegurese que los datos que ingrese tengan el formato de columnas correcto para su lectura.\nAdemas que correspondan a la facultad y programa selecccionados.\n\nGRACIAS')
+                });            
+            </script>
+
+            {% else %}
+                <input id="tipo_consulta" type="radio" name="tipo" value="consulta" hidden>
+            {% endif %}
+        </div>
+
+
+        <!--Boton para validar campos-->
+        <br>
+        <div class="text-center">
+            <button id="btn-submit" type="submit" class="btn btn-dark text-white my-primary submit">
+                <i class="fas fa-save mr-1"></i>
+                Guardar
+            </button>
+            <button class="btn btn-dark text-white my-primary btn-loading" type="button" style="display: none;">
+                <i class="fas fa-spinner fa-spin fa-lg text-white" aria-hidden="true"></i>
+                Cargando...
+            </button>
+        </div>
+    </div>
+</form>
+
+
+<script>
+    // Boton cargando si se esta validando y guardando la data del conjunto 
+    $('#btn-submit').click(function () {
+        var validacion = $('#conjuntoForm')[0].checkValidity()
+        if (validacion == true) {
+            handleModal('Su conjunto aparecera cuando acabe el proceso (recuerde refrescar la página)', "{{url_for('StudentSet.crudos')}}")
+        }
+    })
+</script>
+
+{% include 'components/footer.html' %}

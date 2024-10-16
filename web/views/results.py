@@ -8,7 +8,7 @@ from utils.mixins import guardar_archivo, obtener_archivo_json, set_date_format
 
 load_dotenv()
 
-endopoint = 'resultados/'
+endopoint = 'results/'
 
 Resultado = Blueprint('Resultado', __name__)
 
@@ -33,21 +33,21 @@ def ejecuciones(conjunto=None):
     return get_list('ejecuciones')
 
 
-def get_list(resultados):
-    rol = 'preparador' if resultados == 'preparaciones' else 'ejecutor'
-    status, body = get(resultados+'/'+rol+'/'+session['user']['correo'])
+def get_list(results):
+    rol = 'preparador' if results == 'preparaciones' else 'ejecutor'
+    status, body = get(results+'/'+rol+'/'+session['user']['correo'])
     if status:
-        return render_template(endopoint+resultados+'.html', resultados=set_date_format(body))
+        return render_template(endopoint+results+'.html', results=set_date_format(body))
     else:
-        return render_template(endopoint+resultados+'.html', resultados=[], error=body)
+        return render_template(endopoint+results+'.html', results=[], error=body)
 
 
-def list_set(resultados, conjunto):
-    status, body = get(resultados+'/student-set/'+conjunto)
+def list_set(results, conjunto):
+    status, body = get(results+'/student-set/'+conjunto)
     if status:
-        return render_template(endopoint+resultados+'.html', resultados=set_date_format(body))
+        return render_template(endopoint+results+'.html', results=set_date_format(body))
     else:
-        return render_template(endopoint+resultados+'.html', resultados=[], error=body)
+        return render_template(endopoint+results+'.html', results=[], error=body)
 
 
 @Resultado.route('/ejecucion/detalle', methods=['POST'])
@@ -66,7 +66,7 @@ def ejecucion_detalle():
     if status and exito:
         del body['precision_modelo']
         del body['numero']
-        return render_template(endopoint+'ejecucion_detalle.html', desertores=desertores, resultados=body.pop('resultados'), ejecucion=body)
+        return render_template(endopoint+'ejecucion_detalle.html', desertores=desertores, results=body.pop('results'), ejecucion=body)
     elif status and not (exito):
         if body['estado'] == 'Fallida':
             del body['precision_modelo']
@@ -74,7 +74,7 @@ def ejecucion_detalle():
             return render_template(
                 endopoint+'ejecucion_detalle.html',
                 desertores=None,
-                resultados=body.pop('resultados'),
+                results=body.pop('results'),
                 ejecucion=body
             )
         else:

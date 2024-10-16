@@ -7,12 +7,12 @@ import datetime
 from flask import Flask, session, render_template
 from dotenv import load_dotenv
 
-from views.analista import Analista
+from web.views.analist import Analista
 from views.errors import Error
 from views.auth import Auth
 from views.admin import ResultadoAdmin, ConjuntoAdmin, Facultad, Programa, Estudiante, Usuario
-from views.conjuntos import StudentSet
-from views.resultados import Resultado
+from web.views.sets import StudentSet
+from web.views.results import Resultado
 from utils.mixins import obtener_ies_config
 
 
@@ -53,15 +53,15 @@ def contactanos():
 app.register_blueprint(Error, url_prefix=base_path)
 app.register_blueprint(Auth, url_prefix=base_path)
 app.register_blueprint(Analista, url_prefix=base_path)
-app.register_blueprint(Facultad, url_prefix=base_path+'admin/facultades')
-app.register_blueprint(Programa, url_prefix=base_path+'admin/programas')
+app.register_blueprint(Facultad, url_prefix=base_path+'admin/faculties')
+app.register_blueprint(Programa, url_prefix=base_path+'admin/programs')
 app.register_blueprint(Estudiante, url_prefix=base_path+'admin/estudiantes')
-app.register_blueprint(Usuario, url_prefix=base_path+'admin/usuarios')
-app.register_blueprint(StudentSet, url_prefix=base_path+'conjuntos')
-app.register_blueprint(Resultado, url_prefix=base_path+'resultados')
+app.register_blueprint(Usuario, url_prefix=base_path+'admin/users')
+app.register_blueprint(StudentSet, url_prefix=base_path+'sets')
+app.register_blueprint(Resultado, url_prefix=base_path+'results')
 # app.register_blueprint(Tablero, url_prefix=base_path+'_deprecado/#TABLEROS')
-app.register_blueprint(ConjuntoAdmin, url_prefix=base_path+'admin/conjuntos')
-app.register_blueprint(ResultadoAdmin, url_prefix=base_path+'admin/resultados')
+app.register_blueprint(ConjuntoAdmin, url_prefix=base_path+'admin/sets')
+app.register_blueprint(ResultadoAdmin, url_prefix=base_path+'admin/results')
 
 '''END ROUTES'''
 

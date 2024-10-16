@@ -95,7 +95,7 @@ def execute_model(data, conjunto, no_desertion=False):
 
     precision_modelo = AML_best['Precision Media de Prueba'].tolist()[0] * 100
 
-    resultados = {
+    results = {
         **basic_info,
         'clasificador': str(AML_best['Nombre'].tolist()[0]),
         'precision': float(round(precision_modelo, 2)),
@@ -108,4 +108,4 @@ def execute_model(data, conjunto, no_desertion=False):
         'potenciales_desertores': result.get('total'),
     }
 
-    return resultados, result.get('resultado')
+    return results, result.get('resultado')

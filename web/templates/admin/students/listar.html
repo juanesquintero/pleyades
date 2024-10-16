@@ -1,0 +1,71 @@
+{% include 'components/header.html' %}
+
+{% include 'components/sidebar.html' %}
+
+<h4>Estudiantes</h4><h6 class="text-muted" ><i class="fas fa-user-shield fa-sm"></i> Admin</h6>
+<br>
+
+<!-- Input de filtrado -->
+<div class="row ml-1">
+  &nbsp;<i class="fas fa-filter mr-2 mt-2""></i>&nbsp;
+  <input type="text" class="form-control form-control-sm w-25" id="filtroTabla" placeholder="Filtrar tabla...">  
+</div>
+<br>
+
+<!-- Tabla para listar -->
+<div class="table-responsive-sm">
+  <table class="table table-hover table-sm p-5" id="tabla">
+    <thead>
+      <tr>
+        <th scope="col">
+          <center> Codigo </center>
+        </th>
+        <th scope="col">
+          Nombre
+        </th>
+        <th scope="col">
+          <center>Estudiantes</center>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in programs %}
+      <tr>
+        <td>
+          <center>{{ p.codigo }}</center>
+        </td>  
+        <td>{{ p.nombre }}</td>
+        <td>
+          <!-- ACCCIONES -->
+          <center>
+            <div class="btn-group" role="group" aria-label="Basic example">
+              <!-- detalle -->
+              <form action="{{url_for('Estudiante.detalle')}}" method="POST">
+                <input type="hidden" name="idprograma" value="{{p.codigo}}">
+                <input type="hidden" name="programa" value="{{p.nombre}}">
+                <button type="submit" data-toggle="tooltip" data-placement="bottom" title="Ver datos de entrenamiento"
+                  class="btn btn-outline-dark btn-sm submit" role="status">
+                  <i class="fas fa-search-plus"></i>
+                </button>
+              </form>
+            </div>
+          </center>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% if error %}
+<br>
+{% with titulo='No se pudieron cargar los estudiantes',error=error %}
+{% include "components/alert.html" %}
+{% endwith %}
+<br>
+{% endif %}
+
+<br>
+
+
+{% include 'components/footer.html' %}

@@ -73,7 +73,7 @@
                     <span class="submenu-icon ml-auto"></span>
                 </div>
             </a>
-            <div {% if menu=='resultados' %} style="display:inline;" {% endif %} id='menuResultados'
+            <div {% if menu=='results' %} style="display:inline;" {% endif %} id='menuResultados'
                 class="sidebar-submenu collapse">
                 <a href="{{url_for('Resultado.preparaciones')}}"
                     class="list-group-item  text-white  border-right-0 my-secondary">
@@ -98,7 +98,7 @@
         <small>ADMINISTRACIÓN</small>
       </li>
       <a
-        href="{{url_for('Estudiante.listar')}}"
+        href="{{url_for('Estudiante.get_list')}}"
         class="list-group-item my-secondary"
       >
         <div class="d-flex w-100 justify-content-start align-items-center">
@@ -107,7 +107,7 @@
         </div>
       </a>
       <a
-        href="{{url_for('Facultad.listar')}}"
+        href="{{url_for('Facultad.get_list')}}"
         class="list-group-item border-right-0 my-secondary"
       >
         <div class="d-flex w-100 justify-content-start align-items-center">
@@ -116,7 +116,7 @@
         </div>
       </a>
       <a
-        href="{{url_for('Programa.listar')}}"
+        href="{{url_for('Programa.get_list')}}"
         class="list-group-item my-secondary"
       >
         <div class="d-flex w-100 justify-content-start align-items-center">
@@ -125,7 +125,7 @@
         </div>
       </a>
       <a
-        href="{{url_for('Usuario.listar')}}"
+        href="{{url_for('Usuario.get_list')}}"
         class="list-group-item border-right-0 my-secondary light"
       >
         <div class="d-flex w-100 justify-content-start align-items-center">

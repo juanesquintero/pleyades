@@ -30,7 +30,7 @@ def predict(data_a_predecir, period_a_predecir, basic_info):
         data_a_predecir, period_a_predecir, mejor_clasificador
     )
 
-    resultados = {
+    results = {
         **basic_info,
         'tipo': 'Prediccion',
         'desertores': result.get('desertores'),
@@ -41,7 +41,7 @@ def predict(data_a_predecir, period_a_predecir, basic_info):
         'clasificador': str(mejor_clasificador.__class__.__name__),
     }
 
-    return resultados, result.get('resultado')
+    return results, result.get('resultado')
 
 
 def calculate_desercion(total_estudiantes, potenciales_desertores):
@@ -95,7 +95,7 @@ def predict_classifier(data_a_predecir, period_a_predecir, mejor_clasificador):
         str, copy=False
     )
 
-    # Setear resultados para insertar en la BD
+    # Setear results para insertar en la BD
     potenciales_desertores['semestre_prediccion'] = period_a_predecir
 
     # Filtar desertores si desercio alta

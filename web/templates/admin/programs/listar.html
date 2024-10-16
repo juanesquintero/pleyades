@@ -1,0 +1,84 @@
+{% include 'components/header.html' %}
+
+{% include 'components/sidebar.html' %}
+
+<h4>Programas</h4><h6 class="text-muted" ><i class="fas fa-user-shield fa-sm"></i> Admin</h6>
+<br>
+
+<!-- Input de filtrado -->
+<div class="row ml-1">
+  &nbsp;<i class="fas fa-filter mr-2 mt-2""></i>&nbsp;
+  <input type="text" class="form-control form-control-sm w-25" id="filtroTabla" placeholder="Filtrar tabla...">  
+</div>
+<br>
+
+<!-- Tabla para listar -->
+<div class="table-responsive-sm">
+  <table class="table table-hover table-sm p-5" id="tabla">
+    <thead>
+      <tr>
+        <th scope="col">
+          <center> Codigo </center>
+        </th>
+        <th scope="col">
+          <center>Nombre corto</center>
+        </th>
+        <th scope="col" >
+          <span class="ml-4" >Facultad</span>
+        </th>
+
+        <th scope="col">
+          Nombre
+        </th>
+        <th scope="col">
+          <center> Acciones</center>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in programs %}
+      <tr>
+        <td>
+          <center>{{ p.codigo }}</center>
+        </td>
+        <td><center>{{ p.nombre_corto }}</center></td>
+        <td class="ml-5">
+
+            <span class="ml-4"> {{ p.facultad }} - {{p.nombre_facultad|replace('Facultad de ','')}} </span> 
+
+        </td>
+        
+        <td>{{ p.nombre }}</td>
+        <td>
+          <!-- ACCCIONES -->
+          <center>
+            <div class="btn-group" role="group" aria-label="Basic example">
+              <!-- detalle -->
+              <form action="{{url_for('Programa.detalle')}}" method="POST">
+                <input type="hidden" name="programa" value="{{p}}">
+                <button type="submit" data-toggle="tooltip" data-placement="bottom" title="Ver detalle"
+                  class="btn btn-outline-dark btn-sm submit" role="status">
+                  <i class="fas fa-search-plus"></i>
+                </button>
+              </form>
+            </div>
+          </center>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% if error %}
+<br>
+{% with titulo='No se pudieron cargar los programs',error=error %}
+{% include "components/alert.html" %}
+{% endwith %}
+<br>
+{% endif %}
+
+<br>
+
+
+{% include 'components/footer.html' %}
