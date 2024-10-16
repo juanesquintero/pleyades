@@ -11,7 +11,7 @@ load_dotenv()
 
 ConjuntoAdmin = Blueprint("ConjuntoAdmin", __name__)
 
-endopoint = "conjuntos/"
+endopoint = "sets/"
 
 upload_folder = os.getcwd() + "/uploads"
 
@@ -37,10 +37,10 @@ def procesados():
 
 def get_list(estado: str):
     status_p, body_p = get("programas")
-    status_c, body_c = get("conjuntos/estado/" + estado)
+    status_c, body_c = get("sets/estado/" + estado)
     if status_c and status_p:
         return render_template(
-            "admin/" + endopoint + estado.replace(" ", "_") + ".html", conjuntos=body_c, programas=body_p
+            "admin/" + endopoint + estado.replace(" ", "_") + ".html", sets=body_c, programas=body_p
         )
 
     if not (status_c) and not (status_p):
@@ -51,7 +51,7 @@ def get_list(estado: str):
         error = body_p
     return render_template(
         "admin/" + endopoint + estado.replace(" ", "_") + ".html",
-        conjuntos=[],
+        sets=[],
         error=error,
     )
 
@@ -80,7 +80,7 @@ def update():
     conjunto = dict(request.values)
     nombre = conjunto.pop("nombre")
 
-    status, body = put("conjuntos/" + nombre, conjunto)
+    status, body = put("sets/" + nombre, conjunto)
     if status:
         return redirect(url_for("ConjuntoAdmin.crudos"))
 
@@ -114,7 +114,7 @@ def post_delete():
 def eliminar():
     conjunto = dict(request.values)
     nombre = conjunto.pop("nombre")
-    status, body = delete("conjuntos/" + nombre)
+    status, body = delete("sets/" + nombre)
     if status:
         # Eliminar archivos relacionados en el servidor
         exito, pagina_error = eliminar_archivo(
@@ -142,7 +142,7 @@ def eliminar():
 @only_admin
 def eliminar_todos():
     estado = dict(request.values).pop("estado")
-    status, body = delete(f"conjuntos/todos/{estado}")
+    status, body = delete(f"sets/todos/{estado}")
 
     if status:
         # Eliminar archivos relacionados en el servidor
@@ -152,7 +152,7 @@ def eliminar_todos():
 
     return render_template(
         "utils/mensaje.html",
-        mensaje="No se pudo Eliminar los conjuntos",
+        mensaje="No se pudo Eliminar los sets",
         submensaje=body,
     )
 

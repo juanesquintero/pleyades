@@ -110,7 +110,7 @@ def obtener_archivo_json(ruta):
 
 
 def actualizar_state(nombre, estado):
-    status, body = put('conjuntos/'+nombre, {'estado': estado})
+    status, body = put('sets/'+nombre, {'estado': estado})
     if not status:
         return render_template('utils/mensaje.html', mensaje='No fue posible actualizar el estado del conjunto a '+estado, submensaje=body)
     else:
@@ -146,7 +146,7 @@ def guardar_ejecucion(ejecucion, resultados, estado):
 
 def obtener_nombre_conjunto(conjunto):
     # Obtener nombre del conjunto desde el api
-    status_n, body_n = post('conjuntos/nombre', conjunto)
+    status_n, body_n = post('sets/nombre', conjunto)
     if status_n:
         return body_n['nombre'], body_n['numero']
 

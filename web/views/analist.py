@@ -8,7 +8,7 @@ from flask import request, session, Blueprint, render_template, send_file, redir
 
 import utils.modelo as Modelo
 from services.API import get, post
-import views.conjuntos as conjuntos
+import web.views.sets as sets
 from views.auth import login_required
 import utils.tableros.data_ies as DataIES
 from utils.mixins import guardar_archivo, guardar_ejecucion, get_now_date, obtener_nombre_ejecucion
@@ -17,7 +17,7 @@ load_dotenv()
 
 error_logger = logging.getLogger('error_logger')
 
-endopoint = 'analista/modelos/'
+endopoint = 'analist/modelos/'
 
 Analista = Blueprint('Analista', __name__)
 
@@ -37,7 +37,7 @@ def modelos():
         body = []
 
     return render_template(
-        'analista/modelos/listar.html',
+        'analist/modelos/listar.html',
         modelos=body,
     )
 
@@ -48,7 +48,7 @@ def entrenar():
     if request.method == 'GET':
         return formulario_entrenar()
     conjunto = dict(request.values)
-    return conjuntos.post_save(conjunto)
+    return sets.post_save(conjunto)
 
 
 @Analista.route('/modelos/predecir', methods=['POST'])
@@ -72,7 +72,7 @@ def entrenamientos():
         body = []
 
     return render_template(
-        'analista/entrenamientos.html',
+        'analist/entrenamientos.html',
         entrenamientos=body,
     )
 
@@ -89,7 +89,7 @@ def predicciones():
         body = []
 
     return render_template(
-        'analista/predicciones.html',
+        'analist/predicciones.html',
         predicciones=body,
     )
 
@@ -190,7 +190,7 @@ def download():
         flash(f"{body.get('error')}", 'danger')
 
     return render_template(
-        'analista/modelos/listar.html',
+        'analist/modelos/listar.html',
         modelos=body,
     )
 

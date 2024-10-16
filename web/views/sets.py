@@ -23,7 +23,7 @@ load_dotenv()
 
 StudentSet = Blueprint('StudentSet', __name__)
 
-endopoint = 'conjuntos/'
+endopoint = 'sets/'
 
 upload_folder = os.getcwd()+'/uploads'
 
@@ -53,7 +53,7 @@ def get_list(estado, conjunto=None):
     user = session.get('user', {'correo': ''}).get('correo')
     status_p, body_p = get('programas')
     status_c, body_c = get(
-        f'conjuntos/encargado/{user}?estado={estado}'
+        f'sets/encargado/{user}?estado={estado}'
     )
 
     if status_c and status_p:
@@ -61,7 +61,7 @@ def get_list(estado, conjunto=None):
             body_c = [d for d in body_c if conjunto in d['nombre']]
         return render_template(
             endopoint+estado.replace(' ', '_')+'.html',
-            conjuntos=body_c,
+            sets=body_c,
             programas=body_p
         )
 
@@ -73,7 +73,7 @@ def get_list(estado, conjunto=None):
         error = body_p
     return render_template(
         endopoint+estado.replace(' ', '_')+'.html',
-        conjuntos=[],
+        sets=[],
         error=error
     )
 
@@ -81,7 +81,7 @@ def get_list(estado, conjunto=None):
 @StudentSet.route('/descargar/<estado>/<nombre>')
 def download(estado, nombre):
 
-    status_c, body_c = get('conjuntos/'+nombre)
+    status_c, body_c = get('sets/'+nombre)
     if not status_c:
         return render_template('utils/mensaje.html', mensaje='No existe ese conjunto')
 
@@ -260,7 +260,7 @@ def post_save(conjunto=None):
     # Guardar registro de conjunto en la BD
     conjunto['nombre'] = nombre
     conjunto['numero'] = numero
-    status, body = post('conjuntos', conjunto)
+    status, body = post('sets', conjunto)
 
     # TODO DEPRECATED! version 1 v1.5.0
     # if status:
