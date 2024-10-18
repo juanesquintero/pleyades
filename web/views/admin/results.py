@@ -14,14 +14,14 @@ load_dotenv()
 
 endopoint = 'results/'
 
-ResultadoAdmin = Blueprint('ResultadoAdmin', __name__)
+ResultAdmin = Blueprint('ResultAdmin', __name__)
 
 upload_folder = os.getcwd()+'/uploads'
 
 
-@ResultadoAdmin.route('/')
-@ResultadoAdmin.route('/preparations')
-@ResultadoAdmin.route('/preparations/<conjunto>')
+@ResultAdmin.route('/')
+@ResultAdmin.route('/preparations')
+@ResultAdmin.route('/preparations/<conjunto>')
 @only_admin
 def preparations(conjunto=None):
     if conjunto:
@@ -29,8 +29,8 @@ def preparations(conjunto=None):
     return get_list('preparations')
 
 
-@ResultadoAdmin.route('/executions')
-@ResultadoAdmin.route('/executions/<conjunto>')
+@ResultAdmin.route('/executions')
+@ResultAdmin.route('/executions/<conjunto>')
 @only_admin
 def executions(conjunto=None):
     if conjunto:
@@ -56,7 +56,7 @@ def list_set(results, conjunto):
 ########################################################### PREPARACIONES ###################################################################
 
 
-@ResultadoAdmin.route('/preparations/editar', methods=['POST'])
+@ResultAdmin.route('/preparations/editar', methods=['POST'])
 @only_admin
 def editar_preparacion():
     body = dict(request.values)
@@ -65,7 +65,7 @@ def editar_preparacion():
     return render_template('admin/'+endopoint+'preparacion_editar.html', p=preparacion)
 
 
-@ResultadoAdmin.route('/preparations/actualizar', methods=['POST'])
+@ResultAdmin.route('/preparations/actualizar', methods=['POST'])
 @only_admin
 def actualizar_preparacion():
     preparacion = dict(request.values)
@@ -82,12 +82,12 @@ def actualizar_preparacion():
 
     status, body = put('preparations/'+nombre, preparacion)
     if status:
-        return redirect(url_for('ResultadoAdmin.preparations'))
+        return redirect(url_for('ResultAdmin.preparations'))
     else:
         return render_template('utils/mensaje.html', mensaje='No se pudo actualizar la preparación', submensaje=body)
 
 
-@ResultadoAdmin.route('/preparations/borrar', methods=['POST'])
+@ResultAdmin.route('/preparations/borrar', methods=['POST'])
 @only_admin
 def borrar_preparacion():
     body = dict(request.values)
@@ -95,21 +95,21 @@ def borrar_preparacion():
     return render_template('admin/'+endopoint+'preparacion_borrar.html', p=preparacion)
 
 
-@ResultadoAdmin.route('/preparations/eliminar', methods=['POST'])
+@ResultAdmin.route('/preparations/eliminar', methods=['POST'])
 @only_admin
 def eliminar_preparacion():
     preparacion = dict(request.values)
     nombre = preparacion.pop('nombre')
     status, body = delete('preparations/'+nombre)
     if status:
-        return redirect(url_for('ResultadoAdmin.preparations'))
+        return redirect(url_for('ResultAdmin.preparations'))
     else:
         return render_template('utils/mensaje.html', mensaje='No se pudo Eliminar la preparación', submensaje=body)
 
 ########################################################### EJECUCIONES ###################################################################
 
 
-@ResultadoAdmin.route('/executions/editar', methods=['POST'])
+@ResultAdmin.route('/executions/editar', methods=['POST'])
 @only_admin
 def editar_ejecucion():
     body = dict(request.values)
@@ -118,7 +118,7 @@ def editar_ejecucion():
     return render_template('admin/'+endopoint+'ejecucion_editar.html', e=ejecucion)
 
 
-@ResultadoAdmin.route('/executions/actualizar', methods=['POST'])
+@ResultAdmin.route('/executions/actualizar', methods=['POST'])
 @only_admin
 def actualizar_ejecucion():
     ejecucion = dict(request.values)
@@ -132,12 +132,12 @@ def actualizar_ejecucion():
 
     status, body = put('executions/'+nombre, ejecucion)
     if status:
-        return redirect(url_for('ResultadoAdmin.executions'))
+        return redirect(url_for('ResultAdmin.executions'))
     else:
         return render_template('utils/mensaje.html', mensaje='No se pudo actualizar la ejecución', submensaje=body)
 
 
-@ResultadoAdmin.route('/executions/borrar', methods=['POST'])
+@ResultAdmin.route('/executions/borrar', methods=['POST'])
 @only_admin
 def borrar_ejecucion():
     body = dict(request.values)
@@ -145,7 +145,7 @@ def borrar_ejecucion():
     return render_template('admin/'+endopoint+'ejecucion_borrar.html', e=ejecucion)
 
 
-@ResultadoAdmin.route('/executions/eliminar', methods=['POST'])
+@ResultAdmin.route('/executions/eliminar', methods=['POST'])
 @only_admin
 def eliminar_ejecucion():
     ejecucion = dict(request.values)
@@ -160,6 +160,6 @@ def eliminar_ejecucion():
                 return pagina_error
             eliminar_archivo(upload_folder+'/desertores/'+'D '+nombre+'.xls')
 
-        return redirect(url_for('ResultadoAdmin.executions'))
+        return redirect(url_for('ResultAdmin.executions'))
     else:
         return render_template('utils/mensaje.html', mensaje='No se pudo Eliminar la ejecución', submensaje=body)

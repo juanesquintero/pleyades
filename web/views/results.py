@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from flask import request, session, Blueprint, render_template, send_file
 from views.auth import login_required
 from services.API import get
-from utils.mixins import guardar_archivo, obtener_archivo_json, set_date_format
+from utils.mixins import save_archivo, obtener_archivo_json, set_date_format
 
 load_dotenv()
 
@@ -64,12 +64,12 @@ def ejecucion_detalle():
     status, body = get('executions/'+ejecucion)
 
     if status and exito:
-        del body['precision_modelo']
+        del body['precision_model']
         del body['numero']
         return render_template(endopoint+'ejecucion_detalle.html', desertores=desertores, results=body.pop('results'), ejecucion=body)
     elif status and not (exito):
         if body['estado'] == 'Fallida':
-            del body['precision_modelo']
+            del body['precision_model']
             del body['numero']
             return render_template(
                 endopoint+'ejecucion_detalle.html',
@@ -127,7 +127,7 @@ def download(ejecucion):
             submensaje=str(e)
         )
 
-    exito, pagina_error = guardar_archivo(data, ruta+'.xls', 'excel')
+    exito, pagina_error = save_archivo(data, ruta+'.xls', 'excel')
     if not (exito):
         return pagina_error
 

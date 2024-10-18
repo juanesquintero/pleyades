@@ -4,7 +4,7 @@
     {% include 'components/sidebar.html' %}
 {% endwith %}
 
-<h4>Detalle de un StudentSet de Datos</h4>
+<h4>Detalle de un Set de Datos</h4>
 <br>
 
 {% if c.nombre %}
@@ -26,7 +26,7 @@
 
         <div class="form-group row">
             <div class="col-sm-11">
-                <label>Programa</label>
+                <label>Program</label>
                 {% for p in programs %}
                 {% if c.programa==p.codigo %}
                 <input type="text" class="form-control" maxlength="30" value="{{p.nombre}}" disabled>
@@ -99,7 +99,7 @@
                 &nbsp;
                 <strong class="mr-2 d-flex ">Descargar: </strong>
                 &nbsp;&nbsp;
-                <a class="btn bg-white btn-sm border text-dark" type="button" href="{{url_for('StudentSet.download',estado='crudos',nombre=c.nombre)}}">
+                <a class="btn bg-white btn-sm border text-dark" type="button" href="{{url_for('Set.download',estado='crudos',nombre=c.nombre)}}">
                     <i class="fas fa-file-excel mr-1"></i>
                     Crudo
                 </a>
@@ -148,14 +148,14 @@
                     <div class="dropdown-menu d-menu border">
 
                         <!-- ARCHIVO CRUDOS-->
-                        <a class="dropdown-item w-100" type="button" href="{{url_for('StudentSet.download',estado='crudos',nombre=c.nombre)}}">
+                        <a class="dropdown-item w-100" type="button" href="{{url_for('Set.download',estado='crudos',nombre=c.nombre)}}">
                             <small>
                                 <i class="fas fa-file-excel mr-1"></i>
                                 Crudo
                             </small>
                         </a>
                         <!-- ARCHIVO PROCESADOS-->
-                        <a class="dropdown-item" type="button"  href="{{url_for('StudentSet.download', estado='procesados' ,nombre=c.nombre) }}">
+                        <a class="dropdown-item" type="button"  href="{{url_for('Set.download', estado='procesados' ,nombre=c.nombre) }}">
                             <small><i class="fas fa-file-excel mr-1"></i>
                                 Procesado
                             </small>
@@ -192,7 +192,7 @@
 
 <div class="alert alert-danger" role="alert">
     <h5 class="alert-heading">Aviso!!</h5>
-    <p>No se pudo encontrar el StudentSet</p>
+    <p>No se pudo encontrar el Set</p>
     <hr>
 </div>
 

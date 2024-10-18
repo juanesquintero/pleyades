@@ -10,7 +10,7 @@
 
 <div class="container m-0 py-2 px-4 w-100 border my-secondary">
     <div class="row">
-        <h3 class="ml-2 mt-2 p-0 text-white">Nivel Estudiante</h3>
+        <h3 class="ml-2 mt-2 p-0 text-white">Nivel Student</h3>
     </div>
 </div>
 
@@ -20,7 +20,7 @@
 <div class="container m-0 p-3 mt-3 w-100 {% if session['user'] %} {% if session['user']['rol'] == 'Admin' %} h-75 {% else %} h-100 {% endif %} {% else %} h-dashboard {% endif %}">
     <!-- Fila 1 -->
     <div style="height: 20%;">
-        <!-- Formulario Busqueda por Programa -->
+        <!-- Formulario Busqueda por Program -->
         <div class="text-center">
             <h6 class="text-dark">Buscar por programa</h6>
         </div>
@@ -34,7 +34,7 @@
                 <div class="col-1">
                 </div>
                 <div class="col-10">
-                    <label>Programa</label>
+                    <label>Program</label>
                     <select id="programa_select" class="form-control-sm w-100" name="programa" required>
                         {% for p in programas_list %}
                         <option value="{{p.idprograma}}">{{p.programa}}</option>

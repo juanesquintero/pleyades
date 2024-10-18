@@ -15,13 +15,13 @@
 <!-- Tabs de navegacion -->
 <ul class="nav nav-tabs mb-4">
   <li class="nav-item">
-    <a class="nav-link text-dark bg-light border" href="{{url_for('ConjuntoAdmin.crudos')}}">Crudos</a>
+    <a class="nav-link text-dark bg-light border" href="{{url_for('SetAdmin.crudos')}}">Crudos</a>
   </li>
   <li class="nav-item">
     <a class="nav-link active" href="#">Procesados</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link text-dark bg-light border" href="{{url_for('ConjuntoAdmin.en_proceso')}}">En Proceso</a>
+    <a class="nav-link text-dark bg-light border" href="{{url_for('SetAdmin.en_proceso')}}">En Proceso</a>
   </li>
 </ul>
 
@@ -40,7 +40,7 @@
           <center> Encargado </center>
         </th>
         <th scope="col" class="border-top-0">
-          <center> Programa </center>
+          <center> Program </center>
         </th>
         <th scope="col" class="border-top-0">
           <center> Acciones</center>
@@ -73,13 +73,13 @@
             
             <div class="btn-group" role="group" aria-label="Basic example">
               <!-- Editar -->
-              <form action="{{url_for('ConjuntoAdmin.post_edit')}}" method="POST">
+              <form action="{{url_for('SetAdmin.post_edit')}}" method="POST">
                 <input type="hidden" name="conjunto" value="{{c}}">
                 <input type="submit" data-toggle="tooltip" data-placement="bottom" title="Editar"
                   class="btn btn-outline-dark btn-sm" value="&#9999;">
               </form>
               <!-- Eliminar -->
-              <form action="{{url_for('ConjuntoAdmin.post_delete')}}" method="POST">
+              <form action="{{url_for('SetAdmin.post_delete')}}" method="POST">
                 <input type="hidden" name="conjunto" value="{{c}}">
                 <input type="submit" data-toggle="tooltip" data-placement="bottom" title="Eliminar"
                   class="btn btn-outline-dark btn-sm" value="&#128465;">

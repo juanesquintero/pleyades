@@ -95,7 +95,7 @@ def barras_period(df, p, fig, i, azules):
 # CLASE DE GRAFICOS PARA PROGRAMA
 
 
-class Programa:
+class Program:
 
     def __init__(self, periodo: int, programa: int, periods: list):
         self.df_IES = Data.get_IES_programa(programa)

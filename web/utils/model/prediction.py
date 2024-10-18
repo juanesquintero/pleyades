@@ -22,8 +22,8 @@ def predict(data_a_predecir, period_a_predecir, basic_info):
     data_a_predecir = elimination_predict(data_a_predecir)
 
     # Obtener el clasificador como archivo local
-    nombre_modelo = basic_info.get('modelo')
-    mejor_clasificador = load_classifer(nombre_modelo)
+    nombre_model = basic_info.get('model')
+    mejor_clasificador = load_classifer(nombre_model)
 
     # Predecir
     result = predict_classifier(

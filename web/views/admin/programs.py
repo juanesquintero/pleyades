@@ -3,12 +3,12 @@ from ast import literal_eval
 from views.auth import only_admin
 from services.API import get
 
-Programa = Blueprint('Programa', __name__)
+Program = Blueprint('Program', __name__)
 
 endopoint = 'programs/'
 
 
-@Programa.route('/')
+@Program.route('/')
 @only_admin
 def get_list():
     status, body = get(endopoint)
@@ -18,7 +18,7 @@ def get_list():
         return render_template('admin/'+endopoint+'listar.html', programs=[], error=body)
 
 
-@Programa.route('/detalle', methods=['POST'])
+@Program.route('/detalle', methods=['POST'])
 @only_admin
 def detalle():
     status_f, body_f = get('faculties')

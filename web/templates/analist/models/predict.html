@@ -1,4 +1,4 @@
-{% include 'components/header.html' %} {% with menu='modelos' %} {% include
+{% include 'components/header.html' %} {% with menu='models' %} {% include
 'components/sidebar.html' %} {% endwith %}
 
 <span>
@@ -8,7 +8,7 @@
 
 <form
   id="conjuntoForm"
-  action="{{url_for('Analista.predecir_modelo')}}"
+  action="{{url_for('Analista.predecir_model')}}"
   method="POST"
   enctype="multipart/form-data"
   data-toggle="validator"
@@ -20,12 +20,12 @@
       <div class="col-12">
         <label id="facultad_label">
           <i class="fa fa-university"></i>
-          Facultad
+          Faculty
         </label>
         <input
           class="form-control"
           name="facultad"
-          value="{{modelo.results.facultad}}"
+          value="{{model.results.facultad}}"
           required
           readonly
         />
@@ -35,16 +35,16 @@
       <div class="col-12">
         <label for="programa">
           <i class="fa fa-graduation-cap"></i>
-          Programa
+          Program
         </label>
 
-        <input id="programa" value="{{modelo.results.idprograma}}" hidden />
-        <input name="ejecucion" value="{{modelo}}" hidden />
+        <input id="programa" value="{{model.results.idprograma}}" hidden />
+        <input name="ejecucion" value="{{model}}" hidden />
 
         <input
           class="form-control"
           name="programa"
-          value="{{modelo.results.programa}}"
+          value="{{model.results.programa}}"
           required
           readonly
         />
@@ -58,7 +58,7 @@
           Periodos de Entrenamiento
         </label>
 
-        {% set periods = modelo.conjunto.split(' ')[1:3] %}
+        {% set periods = model.conjunto.split(' ')[1:3] %}
 
         <div class="d-flex">
           <input
@@ -89,7 +89,7 @@
         <input
           class="form-control"
           name="clasificador"
-          value="{{modelo.results.clasificador}}"
+          value="{{model.results.clasificador}}"
           required
           readonly
         />
@@ -167,7 +167,7 @@
     if (validacion == true) {
       handleModal(
         "Su conjunto aparecera cuando acabe el proceso (recuerde refrescar la página)",
-        "{{url_for('StudentSet.crudos')}}"
+        "{{url_for('Set.crudos')}}"
       );
     }
   });

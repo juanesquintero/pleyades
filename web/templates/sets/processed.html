@@ -17,7 +17,7 @@
 <!-- Tabs de navegacion -->
 <ul class="nav nav-tabs mb-4">
   <li class="nav-item">
-    <a class="nav-link text-dark bg-light border" href="{{url_for('StudentSet.crudos')}}">Crudos</a>
+    <a class="nav-link text-dark bg-light border" href="{{url_for('Set.crudos')}}">Crudos</a>
   </li>
   <li class="nav-item">
     <a class="nav-link active" href="#">Procesados</a>
@@ -45,7 +45,7 @@
           <center> Periodo Final </center>
         </th>
         <th scope="col" class="border-top-0">
-          <center> Programa </center>
+          <center> Program </center>
         </th>
         <th scope="col" class="border-top-0">
           <center> Acciones</center>
@@ -82,7 +82,7 @@
           <div class="row d-flex justify-content-center">
 
             <!-- EJECUTAR -->
-            <form action="{{url_for('StudentSet.ejecutar')}}" method="POST">
+            <form action="{{url_for('Set.ejecutar')}}" method="POST">
               <center>
                 <input type="hidden" name="conjunto" value="{{c}}">
                 <input  type="submit" data-toggle="tooltip" data-placement="bottom" title="Ejecutar"
@@ -95,7 +95,7 @@
             &nbsp;
 
             <!-- VER DETALLE-->
-            <form action="{{url_for('StudentSet.detalle')}}" method="POST">
+            <form action="{{url_for('Set.detalle')}}" method="POST">
               <input type="hidden" name="conjunto" value="{{c}}">
               <button type="submit" data-toggle="tooltip" data-placement="bottom" title="Ver Detalle"
                 class="btn btn-outline-dark btn-sm submit" role="status">

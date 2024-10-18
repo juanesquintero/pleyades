@@ -27,7 +27,7 @@ def handle_500(e):
 def handle_exception(e):
     if len(e.args) > 1 and e.args[1]:
         flash(f'<b>{e.args[0]}</b>', 'warning')
-        return redirect(url_for('Analista.modelos'))
+        return redirect(url_for('Analista.models'))
 
     error_logger.error(f'EXCEPTION: {e}', exc_info=True)
     return render_template('utils/error.html', exception=True, mensaje=str(e), status=404), 500

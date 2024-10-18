@@ -13,7 +13,7 @@ import utils.tableros.pais as Pais
 import utils.tableros.region as Region
 import utils.tableros.data_ies as DataIES
 from utils.tableros.ies import IES
-from utils.tableros.programa import Programa
+from utils.tableros.programa import Program
 import utils.tableros.estudiante as Estudiante_file
 
 
@@ -26,8 +26,8 @@ niveles = [
     {'nombre': 'Nivel Pais', 'ruta': 'Tablero.pais_dashboard'},
     {'nombre': 'Nivel Region', 'ruta': 'Tablero.region_dashboard'},
     {'nombre': 'Nivel IES', 'ruta': 'Tablero.ies_dashboard'},
-    {'nombre': 'Nivel Programa', 'ruta': 'Tablero.programa_dashboard'},
-    {'nombre': 'Nivel Estudiante', 'ruta': 'Tablero.student_dashboard'},
+    {'nombre': 'Nivel Program', 'ruta': 'Tablero.programa_dashboard'},
+    {'nombre': 'Nivel Student', 'ruta': 'Tablero.student_dashboard'},
 ]
 periods = np.arange(2010, 2019, 1)
 
@@ -289,10 +289,10 @@ def programa_dashboard():
             programas_list=programs,
         )
 
-    programa_graph = Programa(
+    programa_graph = Program(
         periodo=periodo, programa=programa['idprograma'], periods=periods)
 
-    # Indicadores Programa
+    # Indicadores Program
     indicadores = programa_graph.indicadores()
     indicadores = to_plotly_json(indicadores) if indicadores else None
 
@@ -378,8 +378,8 @@ def student_dashboard():
 
     try:
         # Obtener los graficos del estudiantes por documento identificacion
-        estudiante = Estudiante(identificacion=documento,
-                                programa=programa, periodo=periodo)
+        estudiante = Student(identificacion=documento,
+                             programa=programa, periodo=periodo)
 
         info, periodos_estudiante, programas_estudiante = estudiante.get_estudiante()
 

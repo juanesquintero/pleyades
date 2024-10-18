@@ -4,13 +4,13 @@
 {% include 'components/sidebar.html' %}
 {% endwith %}
 
-<h5>Subir un StudentSet de Datos</h5>
-<form id="conjuntoForm" action="{{url_for('StudentSet.post_create')}}" method="POST" enctype="multipart/form-data"
+<h5>Subir un Set de Datos</h5>
+<form id="conjuntoForm" action="{{url_for('Set.post_create')}}" method="POST" enctype="multipart/form-data"
     data-toggle="validator" class="jumbotron py-4 pr-2 bg-light" style="width:90%;">
     <div class="container">
         <div class="form-group row">
             <div class="col-sm-5">
-                <label id="facultad_label">Facultad</label>
+                <label id="facultad_label">Faculty</label>
                 <select class="form-control programa_change" name="facultad" id="facultad_select" required>
                     {% for f in faculties %}
                     <option key="{{f.codigo}}" value="{{f.codigo}}">{{f.nombre}}</option>
@@ -19,7 +19,7 @@
             </div>
             <input type="hidden" value="{{programs}}" id="programas_list">
             <div class="col-sm-6">
-                <label id="programa_label">Programa</label>
+                <label id="programa_label">Program</label>
                 <select class="form-control programa_change" name="programa" id="programa_select" required>
                 </select>
             </div>
@@ -54,7 +54,7 @@
                         }
                     });
                     if (i == 0) {
-                        programa_select.options[1] = new Option('No hay programs para esta Facultad', null, false, false);
+                        programa_select.options[1] = new Option('No hay programs para esta Faculty', null, false, false);
                         programa_select.options[1].disabled = true;
                     }
                 });            
@@ -219,7 +219,7 @@
     $('#btn-submit').click(function () {
         var validacion = $('#conjuntoForm')[0].checkValidity()
         if (validacion == true) {
-            handleModal('Su conjunto aparecera cuando acabe el proceso (recuerde refrescar la página)', "{{url_for('StudentSet.crudos')}}")
+            handleModal('Su conjunto aparecera cuando acabe el proceso (recuerde refrescar la página)', "{{url_for('Set.crudos')}}")
         }
     })
 </script>

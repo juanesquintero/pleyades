@@ -28,7 +28,7 @@ def students_programa(programa: str):
         return None
 
 
-class Estudiante:
+class Student:
 
     def __init__(self, identificacion, programa=None,  periodo=None, ):
         self.df_ESTUDIANTE = Data.get_students_documento(identificacion)
@@ -52,7 +52,7 @@ class Estudiante:
             self.periodos_student_todos = list(data['REGISTRO'].unique())
             self.periodos_estudiante = list(data['REGISTRO'].unique())
 
-            # Filtrar Programa
+            # Filtrar Program
             if self.programa:
                 data = data.query("idprograma == '{}'".format(
                     self.programa['idprograma']))

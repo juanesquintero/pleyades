@@ -134,7 +134,7 @@ def miniserie_programa_row(data, fig, i, dict_periods):
 
 def indicadores_programa_row(data, fig, i):
     x = [0]
-    # Nombre Programa
+    # Nombre Program
     fig.append_trace(go.Scatter(
         x=x,
         y=x,

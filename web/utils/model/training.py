@@ -93,12 +93,12 @@ def execute_model(data, conjunto, no_desertion=False):
     # Guardar clasificador
     save_classifirer(mejor_clasificador, conjunto)
 
-    precision_modelo = AML_best['Precision Media de Prueba'].tolist()[0] * 100
+    precision_model = AML_best['Precision Media de Prueba'].tolist()[0] * 100
 
     results = {
         **basic_info,
         'clasificador': str(AML_best['Nombre'].tolist()[0]),
-        'precision': float(round(precision_modelo, 2)),
+        'precision': float(round(precision_model, 2)),
         'period_anterior': int(period_a_predecir),
         'desertores': result.get('desertores'),
         'period_a_predecir': int(period_a_predecir),

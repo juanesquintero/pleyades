@@ -9,27 +9,27 @@ from utils.mixins import *
 
 load_dotenv()
 
-ConjuntoAdmin = Blueprint("ConjuntoAdmin", __name__)
+SetAdmin = Blueprint("SetAdmin", __name__)
 
 endopoint = "sets/"
 
 upload_folder = os.getcwd() + "/uploads"
 
 
-@ConjuntoAdmin.route("/")
-@ConjuntoAdmin.route("/crudos")
+@SetAdmin.route("/")
+@SetAdmin.route("/crudos")
 @only_admin
 def crudos():
     return get_list("crudos")
 
 
-@ConjuntoAdmin.route("/enproceso")
+@SetAdmin.route("/enproceso")
 @only_admin
 def en_proceso():
     return get_list("en proceso")
 
 
-@ConjuntoAdmin.route("/procesados")
+@SetAdmin.route("/procesados")
 @only_admin
 def procesados():
     return get_list("procesados")
@@ -56,7 +56,7 @@ def get_list(estado: str):
     )
 
 
-@ConjuntoAdmin.route("/editar", methods=["POST"])
+@SetAdmin.route("/editar", methods=["POST"])
 @only_admin
 def post_edit():
     body = dict(request.values)
@@ -74,7 +74,7 @@ def post_edit():
         )
 
 
-@ConjuntoAdmin.route("/actualizar", methods=["POST"])
+@SetAdmin.route("/actualizar", methods=["POST"])
 @only_admin
 def update():
     conjunto = dict(request.values)
@@ -82,7 +82,7 @@ def update():
 
     status, body = put("sets/" + nombre, conjunto)
     if status:
-        return redirect(url_for("ConjuntoAdmin.crudos"))
+        return redirect(url_for("SetAdmin.crudos"))
 
     return render_template(
         "utils/mensaje.html",
@@ -91,7 +91,7 @@ def update():
     )
 
 
-@ConjuntoAdmin.route("/borrar", methods=["POST"])
+@SetAdmin.route("/borrar", methods=["POST"])
 @only_admin
 def post_delete():
     body = dict(request.values)
@@ -109,7 +109,7 @@ def post_delete():
         )
 
 
-@ConjuntoAdmin.route("/eliminar", methods=["POST"])
+@SetAdmin.route("/eliminar", methods=["POST"])
 @only_admin
 def eliminar():
     conjunto = dict(request.values)
@@ -129,7 +129,7 @@ def eliminar():
             if not (exito):
                 return pagina_error
 
-        return redirect(url_for("ConjuntoAdmin.crudos"))
+        return redirect(url_for("SetAdmin.crudos"))
     else:
         return render_template(
             "utils/mensaje.html",
@@ -138,7 +138,7 @@ def eliminar():
         )
 
 
-@ConjuntoAdmin.route("/eliminar/todos", methods=["POST"])
+@SetAdmin.route("/eliminar/todos", methods=["POST"])
 @only_admin
 def eliminar_todos():
     estado = dict(request.values).pop("estado")
@@ -148,7 +148,7 @@ def eliminar_todos():
         # Eliminar archivos relacionados en el servidor
         remove_all_files(f"{upload_folder}/{estado}")
         route = estado.replace(" ", "_")
-        return redirect(url_for(f"ConjuntoAdmin.{route}"))
+        return redirect(url_for(f"SetAdmin.{route}"))
 
     return render_template(
         "utils/mensaje.html",

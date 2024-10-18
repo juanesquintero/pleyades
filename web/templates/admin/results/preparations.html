@@ -17,7 +17,7 @@
     <a class="nav-link active" href="#">Preparaciones</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link text-dark bg-light border" href="{{url_for('ResultadoAdmin.executions')}}">Ejecuciones</a>
+    <a class="nav-link text-dark bg-light border" href="{{url_for('ResultAdmin.executions')}}">Ejecuciones</a>
   </li>
 </ul>
 <div class="table-responsive-sm">
@@ -63,13 +63,13 @@
           <center>
             <div class="btn-group" role="group" aria-label="Basic example">
               <!-- Editar -->
-              <form action="{{url_for('ResultadoAdmin.editar_preparacion')}}" method="POST">
+              <form action="{{url_for('ResultAdmin.editar_preparacion')}}" method="POST">
                 <input type="hidden" name="preparacion" value="{{p}}">
                 <input type="submit" data-toggle="tooltip" data-placement="bottom" title="Editar"
                   class="btn btn-outline-dark btn-sm" value="&#9999;">
               </form>
               <!-- Eliminar -->
-              <form action="{{url_for('ResultadoAdmin.borrar_preparacion')}}" method="POST">
+              <form action="{{url_for('ResultAdmin.borrar_preparacion')}}" method="POST">
                 <input type="hidden" name="preparacion" value="{{p}}">
                 <input type="submit" data-toggle="tooltip" data-placement="bottom" title="Eliminar"
                   class="btn btn-outline-dark btn-sm" value="&#128465;">

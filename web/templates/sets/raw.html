@@ -20,7 +20,7 @@
     <a class="nav-link active" href="#">Crudos</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link text-dark bg-light border" href="{{url_for('StudentSet.procesados')}}">Procesados</a>
+    <a class="nav-link text-dark bg-light border" href="{{url_for('Set.procesados')}}">Procesados</a>
   </li>
 </ul>
 
@@ -46,7 +46,7 @@
           <center>Periodo Final</center>
         </th>
         <th scope="col" class="border-top-0">
-          <center> Programa </center>
+          <center> Program </center>
         </th>
         <th scope="col" class="border-top-0">
           <center> Acciones</center>
@@ -84,7 +84,7 @@
           <div class="row d-flex justify-content-center">
 
             <!-- PREPARAR -->
-            <form action="{{url_for('StudentSet.preparar')}}" method="POST">
+            <form action="{{url_for('Set.preparar')}}" method="POST">
               <input type="hidden" name="conjunto" value="{{c}}">
               <!-- Boton para preparar y de carga -->
               <input type="submit" data-toggle="tooltip" data-placement="bottom" title="Preparar"
@@ -98,7 +98,7 @@
             &nbsp;
 
             <!-- VER DETALLE-->
-            <form action="{{url_for('StudentSet.detalle')}}" method="POST">
+            <form action="{{url_for('Set.detalle')}}" method="POST">
               <input type="hidden" name="conjunto" value="{{c}}">
               <button type="submit" data-toggle="tooltip" data-placement="bottom" title="Ver Detalle"
                 class="btn btn-outline-dark btn-sm submit" role="status">
@@ -126,14 +126,14 @@
 
 <br>
 
-<a href="{{url_for('StudentSet.post_create') }}" type="button" class="btn btn-dark text-white my-primary mt-4">
+<a href="{{url_for('Set.post_create') }}" type="button" class="btn btn-dark text-white my-primary mt-4">
   <i class="fas fa-file-upload mr-1"></i>
   Nuevo</a>
 
 <script>
   // Cargando si se esta validando y guardando la data del conjunto 
   $('.submit').click(function () {
-    handleModal('Su conjunto aparecera cuando acabe el proceso (recuerde refrescar la página)', "{{url_for('StudentSet.procesados')}}")
+    handleModal('Su conjunto aparecera cuando acabe el proceso (recuerde refrescar la página)', "{{url_for('Set.procesados')}}")
   })
 </script>
 

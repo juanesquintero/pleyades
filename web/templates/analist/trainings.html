@@ -27,7 +27,7 @@
 
         </th>
         <th class="col-5 border-top-0">
-          <center><i>Programa</i></center>
+          <center><i>Program</i></center>
         </th>
         <th class="col-2 border-top-0">
           <center><i>Info</i></center>
@@ -81,7 +81,7 @@
               data-html="true"
               data-placement="bottom"
               style="cursor: pointer"
-              title="La precisión del modelo no es muy alta, Ya que esta por debajo del 85%<br>Para estar mas seguro se recomienda crear otro con mas datos de entrenamiento."
+              title="La precisión del model no es muy alta, Ya que esta por debajo del 85%<br>Para estar mas seguro se recomienda crear otro con mas datos de entrenamiento."
             ></i>
 
               {% else %}
@@ -92,7 +92,7 @@
               data-toggle="tooltip"
               data-html="true"
               data-placement="bottom"
-              title="El entrenamiento del modelo al parecer es muy optimo por los valores acertados de la precision y deserción."
+              title="El entrenamiento del model al parecer es muy optimo por los valores acertados de la precision y deserción."
             ></i>
 
               {% endif %}
@@ -163,7 +163,7 @@
 
             <!-- PREDECIR -->
             <form action="{{url_for('Analista.predecir')}}" method="POST">
-              <input type="hidden" name="modelo" value="{{e}}" />
+              <input type="hidden" name="model" value="{{e}}" />
               <button
                 type="submit"
                 data-toggle="tooltip"
@@ -202,10 +202,10 @@ include "components/alert.html" %} {% endwith %}
 <br />
 
 <script>
-  // Cargando si se esta validando y guardando la data del modelo
+  // Cargando si se esta validando y guardando la data del model
   $(".submit").click(function () {
     handleModal(
-      "Su modelo aparecera cuando acabe el proceso (recuerde refrescar la página)",
+      "Su model aparecera cuando acabe el proceso (recuerde refrescar la página)",
       "{{url_for('Analista.predicciones')}}"
     );
   });

@@ -1,4 +1,4 @@
-{% include 'components/header.html' %} {% with menu='modelos' %} {% include
+{% include 'components/header.html' %} {% with menu='models' %} {% include
 'components/sidebar.html' %} {% endwith %}
 
 <span>
@@ -8,7 +8,7 @@
 
 <form
   id="conjuntoForm"
-  action="{{url_for('StudentSet.post_create')}}"
+  action="{{url_for('Set.post_create')}}"
   method="POST"
   enctype="multipart/form-data"
   data-toggle="validator"
@@ -20,7 +20,7 @@
       <div class="col-sm-5">
         <label id="facultad_label">
           <i class="fa fa-university"></i>
-          Facultad
+          Faculty
         </label>
         <select
           class="form-control programa-change"
@@ -37,7 +37,7 @@
       <div class="col-sm-6">
         <label id="programa_label">
           <i class="fa fa-graduation-cap"></i>
-          Programa
+          Program
         </label>
         <select
           class="form-control programa-change"
@@ -75,7 +75,7 @@
           });
           if (i == 0) {
             programa_select.options[1] = new Option(
-              "No hay programs para esta Facultad",
+              "No hay programs para esta Faculty",
               null,
               false,
               false
@@ -130,7 +130,7 @@
               data-html="true"
               data-placement="bottom"
               style="cursor: pointer"
-              title="Para el entrenamiento el modelo debe saber si este período es cerrado/finalizado."
+              title="Para el entrenamiento el model debe saber si este período es cerrado/finalizado."
             ></i>  
         </div>
         </label>
@@ -311,7 +311,7 @@
     if (validacion == true) {
       handleModal(
         "Su conjunto aparecera cuando acabe el proceso (recuerde refrescar la página)",
-        "{{url_for('StudentSet.crudos')}}"
+        "{{url_for('Set.crudos')}}"
       );
     }
   });

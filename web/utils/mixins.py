@@ -58,7 +58,7 @@ def str_to_date(fecha):
     return fecha_escr.title()
 
 
-def guardar_archivo(data, ruta, tipo):
+def save_archivo(data, ruta, tipo):
     try:
         if tipo == 'excel':
             data.to_excel(ruta, engine='openpyxl', index=False)
@@ -66,11 +66,11 @@ def guardar_archivo(data, ruta, tipo):
             data.to_json(ruta, orient='records')
         else:
             raise Exception(
-                'No se pudo guardar el archivo \n Tipo de archivo incorrecto'
+                'No se pudo save el archivo \n Tipo de archivo incorrecto'
             )
     except Exception as e:
         error_logger.error(e)
-        raise Exception('No se pudo guardar el archivo')
+        raise Exception('No se pudo save el archivo')
     return True, 'ERROR'
 
 
@@ -117,7 +117,7 @@ def actualizar_state(nombre, estado):
         return None
 
 
-def guardar_preparacion(preparacion, observaciones, estado):
+def save_preparacion(preparacion, observaciones, estado):
     # Guardar REGISTRO de preparacion
     preparacion['fechaFinal'] = get_now_date()
     preparacion['observaciones'] = observaciones
@@ -126,10 +126,10 @@ def guardar_preparacion(preparacion, observaciones, estado):
     return True, 'ERROR'
 
 
-def guardar_ejecucion(ejecucion, results, estado):
+def save_ejecucion(ejecucion, results, estado):
 
     # Guardar REGISTRO de ejecución
-    ejecucion['precision_modelo'] = results.get('precision', None)
+    ejecucion['precision_model'] = results.get('precision', None)
     ejecucion['fechaFinal'] = get_now_date()
     ejecucion['results'] = dict(results)
     ejecucion['estado'] = estado
@@ -138,7 +138,7 @@ def guardar_ejecucion(ejecucion, results, estado):
 
     if not status:
         raise Exception(
-            f"No se pudo guardar la Ejecucion: {body.get('error')}"
+            f"No se pudo save la Ejecucion: {body.get('error')}"
         )
 
     return True, 'ERROR'

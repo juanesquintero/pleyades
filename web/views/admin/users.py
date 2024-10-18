@@ -4,12 +4,12 @@ from ast import literal_eval
 from views.auth import only_admin
 from services.API import get, post, put, delete
 
-Usuario = Blueprint('Usuario', __name__, template_folder='/users')
+User = Blueprint('User', __name__, template_folder='/users')
 
 endopoint = 'users/'
 
 
-@Usuario.route('/')
+@User.route('/')
 @only_admin
 def get_list():
     status, body = get(endopoint)
@@ -18,24 +18,24 @@ def get_list():
     return render_template('admin/'+endopoint+'listar.html', users=[], error=body)
 
 
-@Usuario.route('/crear')
+@User.route('/crear')
 @only_admin
 def post_create():
     return render_template('admin/'+endopoint+'crear.html')
 
 
-@Usuario.route('/crear', methods=['POST'])
+@User.route('/crear', methods=['POST'])
 @only_admin
 def post_save():
     usuario = dict(request.values)
     status, body = post(endopoint, usuario)
     if status:
-        return redirect(url_for('Usuario.get_list'))
+        return redirect(url_for('User.get_list'))
     else:
-        return render_template('utils/mensaje.html', mensaje='No se pudo guardar el Usuario', submensaje=body)
+        return render_template('utils/mensaje.html', mensaje='No se pudo save el User', submensaje=body)
 
 
-@Usuario.route('/editar', methods=['POST'])
+@User.route('/editar', methods=['POST'])
 @only_admin
 def post_edit():
     body = dict(request.values)
@@ -46,7 +46,7 @@ def post_edit():
         return render_template('utils/mensaje.html', mensaje='No se pudo cargar el usuario')
 
 
-@Usuario.route('/actualizar', methods=['POST'])
+@User.route('/actualizar', methods=['POST'])
 @only_admin
 def update():
     usuario = dict(request.values)
@@ -57,12 +57,12 @@ def update():
     correo = usuario.pop('correo', '')
     status, body = put(endopoint+correo, usuario)
     if status:
-        return redirect(url_for('Usuario.get_list'))
+        return redirect(url_for('User.get_list'))
     else:
-        return render_template('utils/mensaje.html', mensaje='No se pudo actualizar el Usuario', submensaje=body)
+        return render_template('utils/mensaje.html', mensaje='No se pudo actualizar el User', submensaje=body)
 
 
-@Usuario.route('/borrar', methods=['POST'])
+@User.route('/borrar', methods=['POST'])
 @only_admin
 def remove():
     body = dict(request.values)
@@ -70,16 +70,16 @@ def remove():
     if usuario:
         return render_template('admin/'+endopoint+'borrar.html', u=usuario)
     else:
-        return render_template('utils/mensaje.html', mensaje='No se pudo actualizar el Usuario')
+        return render_template('utils/mensaje.html', mensaje='No se pudo actualizar el User')
 
 
-@Usuario.route('/eliminar', methods=['POST'])
+@User.route('/eliminar', methods=['POST'])
 @only_admin
 def post_delete():
     usuario = dict(request.values)
     correo = usuario.pop('correo', '')
     status, body = delete(endopoint+correo)
     if status:
-        return redirect(url_for('Usuario.get_list'))
+        return redirect(url_for('User.get_list'))
     else:
-        return render_template('utils/mensaje.html', mensaje='No se pudo Eliminar el Usuario', submensaje=body)
+        return render_template('utils/mensaje.html', mensaje='No se pudo Eliminar el User', submensaje=body)

@@ -2,12 +2,12 @@ from flask import request, Blueprint, render_template
 from views.auth import only_admin
 from services.API import get
 
-Estudiante = Blueprint('Estudiante', __name__)
+Student = Blueprint('Student', __name__)
 
 endopoint = 'estudiantes/'
 
 
-@Estudiante.route('/')
+@Student.route('/')
 @only_admin
 def get_list():
     status, body = get('programs')
@@ -16,7 +16,7 @@ def get_list():
     return render_template('admin/'+endopoint+'listar.html', programs=[], error=body)
 
 
-@Estudiante.route('/detalle', methods=['POST'])
+@Student.route('/detalle', methods=['POST'])
 @only_admin
 def detalle():
     form = dict(request.values)

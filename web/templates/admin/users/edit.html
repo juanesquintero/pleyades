@@ -2,10 +2,10 @@
 
 {% include 'components/sidebar.html' %}
 
-<h5>Actualizar un Usuario</h5>
+<h5>Actualizar un User</h5>
 
 {% if u.correo %}
-<form action="{{url_for('Usuario.update')}}" method="POST" data-toggle="validator" class="jumbotron py-4 pr-0 bg-light"
+<form action="{{url_for('User.update')}}" method="POST" data-toggle="validator" class="jumbotron py-4 pr-0 bg-light"
     style="max-width:70%;">
     <div class="container">
         <div class="form-group row">
@@ -68,7 +68,7 @@
 
 <div class="alert alert-danger" role="alert">
     <h5 class="alert-heading">Aviso!!</h5>
-    <p>No se pudo encontrar el Usuario a editar</p>
+    <p>No se pudo encontrar el User a editar</p>
     <hr>
 </div>
 

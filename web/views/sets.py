@@ -10,18 +10,18 @@ from dotenv import load_dotenv
 from ast import literal_eval
 from googletrans import Translator
 
-from utils.modelo import prepare_data, verify_data, execute_model
+from utils.model import prepare_data, verify_data, execute_model
 from views.auth import login_required
 from services.API import get, post, put
 
-from utils.mixins import actualizar_state, guardar_archivo, guardar_ejecucion, guardar_preparacion, get_now_date, obtener_archivo_excel, obtener_nombre_conjunto
+from utils.mixins import actualizar_state, save_archivo, save_ejecucion, save_preparacion, get_now_date, obtener_archivo_excel, obtener_nombre_conjunto
 
 model_logger = logging.getLogger('model_logger')
 error_logger = logging.getLogger('error_logger')
 
 load_dotenv()
 
-StudentSet = Blueprint('StudentSet', __name__)
+Set = Blueprint('Set', __name__)
 
 endopoint = 'sets/'
 
@@ -30,18 +30,18 @@ upload_folder = os.getcwd()+'/uploads'
 translator = Translator()
 
 
-@StudentSet.route('')
-@StudentSet.route('/')
-@StudentSet.route('/crudos')
-@StudentSet.route('/crudos/')
+@Set.route('')
+@Set.route('/')
+@Set.route('/crudos')
+@Set.route('/crudos/')
 @login_required
 def crudos():
     return get_list('crudos')
 
 
-@StudentSet.route('/procesados')
-@StudentSet.route('/procesados/')
-@StudentSet.route('/procesados/<conjunto>')
+@Set.route('/procesados')
+@Set.route('/procesados/')
+@Set.route('/procesados/<conjunto>')
 @login_required
 def procesados(conjunto=None):
     if conjunto:
@@ -78,7 +78,7 @@ def get_list(estado, conjunto=None):
     )
 
 
-@StudentSet.route('/descargar/<estado>/<nombre>')
+@Set.route('/descargar/<estado>/<nombre>')
 def download(estado, nombre):
 
     status_c, body_c = get('sets/'+nombre)
@@ -102,8 +102,8 @@ def download(estado, nombre):
         return render_template('utils/mensaje.html', mensaje='No se encontro el archivo a descargar')
 
 
-@StudentSet.route('/crear')
-@StudentSet.route('/crear/')
+@Set.route('/crear')
+@Set.route('/crear/')
 @login_required
 def post_create():
     periods = DataIES.get_periods_origen()
@@ -121,7 +121,7 @@ def post_create():
     return render_template('utils/mensaje.html', mensaje='No se pudieron cargar las programs y las faculties', submensaje=error)
 
 
-@StudentSet.route('crear/periods/programa/<int:programa>')
+@Set.route('crear/periods/programa/<int:programa>')
 @login_required
 def get_periods_programa(programa):
     status, body = get(
@@ -131,7 +131,7 @@ def get_periods_programa(programa):
     return jsonify([])
 
 
-@StudentSet.route('/detalle', methods=['POST'])
+@Set.route('/detalle', methods=['POST'])
 @login_required
 def detalle():
     # Obtener Lo valores del formulario
@@ -157,8 +157,8 @@ def detalle():
     return render_template('utils/mensaje.html', mensaje='No se pudieron cargar los datos para detallar el conjunto', submensaje=error)
 
 
-@StudentSet.route('/crear', methods=['POST'])
-@StudentSet.route('/crear/', methods=['POST'])
+@Set.route('/crear', methods=['POST'])
+@Set.route('/crear/', methods=['POST'])
 @login_required
 def post_save(conjunto=None):
     if not conjunto:
@@ -202,12 +202,12 @@ def post_save(conjunto=None):
         nombre, numero = obtener_nombre_conjunto(conjunto)
         if not nombre:
             return numero
-        archivo_guardar = 'C ' + nombre + '.xlsx'
+        archivo_save = 'C ' + nombre + '.xlsx'
 
         if validacion:
             try:
                 data_verificada.to_excel(
-                    ruta+'/'+archivo_guardar,
+                    ruta+'/'+archivo_save,
                     engine='openpyxl',
                     index=False
                 )
@@ -239,13 +239,13 @@ def post_save(conjunto=None):
         nombre, numero = obtener_nombre_conjunto(conjunto)
         if not nombre:
             return numero
-        archivo_guardar = 'C ' + nombre + '.xlsx'
+        archivo_save = 'C ' + nombre + '.xlsx'
 
         if validacion:
             # Guardar tabla sql como excel
             try:
                 data_verificada.to_excel(
-                    ruta+'/'+archivo_guardar,
+                    ruta+'/'+archivo_save,
                     engine='openpyxl',
                     index=False
                 )
@@ -264,17 +264,17 @@ def post_save(conjunto=None):
 
     # TODO DEPRECATED! version 1 v1.5.0
     # if status:
-    #     return redirect(url_for('StudentSet.crudos'))
+    #     return redirect(url_for('Set.crudos'))
 
     # TODO NEW! version 2 v2.0.0
     if status:
         # preparar() luego de post_save()
         return preparar(conjunto)
 
-    return render_template('utils/mensaje.html', mensaje='No se pudo guardar el conjunto', submensaje=body)
+    return render_template('utils/mensaje.html', mensaje='No se pudo save el conjunto', submensaje=body)
 
 
-@StudentSet.route('/preparar', methods=['POST'])
+@Set.route('/preparar', methods=['POST'])
 @login_required
 def preparar(conjunto=None):
     if not conjunto:
@@ -318,7 +318,7 @@ def preparar(conjunto=None):
         model_logger.error(e)
         model_logger.error(traceback.format_exc())
         observaciones = {'error': str(e)}
-        exito, pagina_error = guardar_preparacion(
+        exito, pagina_error = save_preparacion(
             preparacion, observaciones, 'Fallida')
         if not exito:
             return pagina_error
@@ -327,12 +327,12 @@ def preparar(conjunto=None):
     # Guardar archivo en Upload folder procesados
     archivo_procesado = 'P '+nombre+'.xls'
     ruta = upload_folder+'/procesados/'+archivo_procesado
-    exito, pagina_error = guardar_archivo(data_preparada, ruta, 'excel')
+    exito, pagina_error = save_archivo(data_preparada, ruta, 'excel')
     if not exito:
         return pagina_error
 
     # Guardar registro de preparacion en la BD
-    exito, pagina_error = guardar_preparacion(preparacion, None, 'Exitosa')
+    exito, pagina_error = save_preparacion(preparacion, None, 'Exitosa')
     if not exito:
         return pagina_error
 
@@ -344,14 +344,14 @@ def preparar(conjunto=None):
         return act_state
 
     # TODO DEPRECATED! version 1 v1.5.0
-    # return redirect(url_for('StudentSet.procesados', conjunto=conjunto['nombre']))
+    # return redirect(url_for('Set.procesados', conjunto=conjunto['nombre']))
 
     # TODO NEW! version 2 v2.0.0
     # ejecutar() luego de preparar()
     return ejecutar(conjunto)
 
 
-@StudentSet.route('/ejecutar', methods=['POST'])
+@Set.route('/ejecutar', methods=['POST'])
 @login_required
 def ejecutar(conjunto=None):
     ejecucion_guardada = False
@@ -393,11 +393,11 @@ def ejecutar(conjunto=None):
 
     # Algoritmo de ejecución
     # try:
-    #     resultados_modelo,resultados_desertores = clasificador(data_preparada)
+    #     resultados_model,resultados_desertores = clasificador(data_preparada)
     # except Exception as e:
     #   pass
     try:
-        resultados_modelo, resultados_desertores = execute_model(
+        resultados_model, resultados_desertores = execute_model(
             data_preparada,
             nombre
         )
@@ -411,7 +411,7 @@ def ejecutar(conjunto=None):
         model_logger.error(traceback.format_exc())
 
         results = {'error': error_spa}
-        exito, pagina_error = guardar_ejecucion(
+        exito, pagina_error = save_ejecucion(
             ejecucion, results, 'Fallida')
         ejecucion_guardada = True
         if not exito:
@@ -421,7 +421,7 @@ def ejecutar(conjunto=None):
             return act_state
         return render_template('utils/mensaje.html', mensaje='La ejecución falló', submensaje=error_spa)
 
-    if not resultados_modelo:
+    if not resultados_model:
         # Actualizar conjunto de datos de crudo a procesado
         act_state = actualizar_state(nombre, 'Procesados')
         if act_state:
@@ -464,24 +464,24 @@ def ejecutar(conjunto=None):
         # Guardar results de desertotres en Upload folder desertores
         archivo_desertores = 'D '+ejecucion['nombre']+'.json'
         ruta = upload_folder+'/desertores/'+archivo_desertores
-        exito, pagina_error = guardar_archivo(
-            resultados_modelo.pop('desertores'), ruta, 'json'
+        exito, pagina_error = save_archivo(
+            resultados_model.pop('desertores'), ruta, 'json'
         )
         if not exito:
             return pagina_error
 
     else:
         # TODO data
-        flash('<b>El modelo detectó 0 desertores, Deserción 0%</b>', 'danger')
+        flash('<b>El model detectó 0 desertores, Deserción 0%</b>', 'danger')
         flash(
             'Revise si hay estudiantes ó desertores suficientes en el programa', 'warning'
         )
-        resultados_modelo.pop('desertores')
+        resultados_model.pop('desertores')
         state_ejecucion = 'Fallida'
     # Guardar registro de ejecución en la BD
     if not ejecucion_guardada:
-        exito, pagina_error = guardar_ejecucion(
-            ejecucion=ejecucion, results=resultados_modelo, estado=state_ejecucion)
+        exito, pagina_error = save_ejecucion(
+            ejecucion=ejecucion, results=resultados_model, estado=state_ejecucion)
         if not exito:
             act_state = actualizar_state(nombre, 'Procesados')
             if act_state:
@@ -498,4 +498,4 @@ def ejecutar(conjunto=None):
     # return redirect(url_for('Result.executions', conjunto=nombre))
 
     # TODO NEW! version 2 v2.0.0
-    return redirect(url_for('Analista.modelos', modelo=nombre))
+    return redirect(url_for('Analista.models', model=nombre))

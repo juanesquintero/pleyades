@@ -2,7 +2,7 @@
 
 {% include 'components/sidebar.html' %}
 
-<h5>Detalle un Programa</h5>
+<h5>Detalle un Program</h5>
 
 {% if p.codigo %}
 <form data-toggle="validator" class="jumbotron py-4 pr-0 bg-light"
@@ -30,9 +30,9 @@
 
         <div class="form-group row">
             <div class="col-sm-10">
-                <label>Facultad</label>
+                <label>Faculty</label>
                 <input type="text" class="form-control" required maxlength="30"
-                value="{{ p.facultad }} - {{p.nombre_facultad|replace('Facultad de ','')}}" disabled>
+                value="{{ p.facultad }} - {{p.nombre_facultad|replace('Faculty de ','')}}" disabled>
             </div>
         </div>
 
@@ -47,7 +47,7 @@
 
 <div class="alert alert-danger" role="alert">
     <h5 class="alert-heading">Aviso!!</h5>
-    <p>No se pudo encontrar la Programa</p>
+    <p>No se pudo encontrar la Program</p>
     <hr>
 </div>
 

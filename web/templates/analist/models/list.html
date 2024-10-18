@@ -27,7 +27,7 @@
         
         </th>
         <th scope="col" class="col-5 border-top-0 sortable" data-sort="programa"  class="" data-sort="name">
-          <center><i>Programa</i></center>
+          <center><i>Program</i></center>
         </th>
         <th scope="col" class="col-1 border-top-0 sortable" data-sort="info">
           <center><i>Info</i></center>
@@ -49,7 +49,7 @@
       </tr>
     </thead>
     <tbody>
-      {% for m in modelos %} {% if m.estado=='Exitosa' and m.results.tipo ==
+      {% for m in models %} {% if m.estado=='Exitosa' and m.results.tipo ==
       'Entrenamiento' %}
       {% set info_array = m.conjunto.split(' ')[1:] %}
       <tr>
@@ -82,7 +82,7 @@
               data-html="true"
               data-placement="bottom"
               style="cursor: pointer"
-              title="La precisión del modelo no es muy alta, Ya que esta por debajo del 85%<br>Para estar mas seguro se recomienda crear otro con mas datos de entrenamiento."
+              title="La precisión del model no es muy alta, Ya que esta por debajo del 85%<br>Para estar mas seguro se recomienda crear otro con mas datos de entrenamiento."
             ></i>
             {% endif %}
           </center>
@@ -116,7 +116,7 @@
                 action="{{url_for('Analista.entrenamientos')}}"
                 method="GET"
               >
-                <input type="hidden" name="modelo" value="{{m.conjunto}}" />
+                <input type="hidden" name="model" value="{{m.conjunto}}" />
                 <button
                   type="submit"
                   data-toggle="tooltip"
@@ -135,8 +135,8 @@
 
             <!-- PREDECIR -->
             <form action="{{url_for('Analista.predecir')}}" method="POST">
-              <input type="hidden" name="modelo" value="{{m}}" />
-              <!-- Boton para predecir con un modelo -->
+              <input type="hidden" name="model" value="{{m}}" />
+              <!-- Boton para predecir con un model -->
               <button
                 type="submit"
                 data-toggle="tooltip"
@@ -162,7 +162,7 @@
 
             <!-- DESCARGAR-->
             <!-- <form action="{{url_for('Analista.download')}}" method="POST">
-              <input type="hidden" name="modelo" value="{{m.conjunto}}" />
+              <input type="hidden" name="model" value="{{m.conjunto}}" />
               <button
                 type="submit"
                 data-toggle="tooltip"
@@ -185,7 +185,7 @@
 
 {% if error %}
 <br />
-{% with titulo='No se pudieron cargar los modelos',error=error %} {% include
+{% with titulo='No se pudieron cargar los models',error=error %} {% include
 "components/alert.html" %} {% endwith %}
 <br />
 {% endif %}
@@ -202,10 +202,10 @@
 </a>
 
 <script>
-  // Cargando si se esta validando y guardando la data del modelo
+  // Cargando si se esta validando y guardando la data del model
   $(".submit").click(function () {
     handleModal(
-      "Su modelo aparecera cuando acabe el proceso (recuerde refrescar la página)",
+      "Su model aparecera cuando acabe el proceso (recuerde refrescar la página)",
       "{{url_for('Analista.predicciones')}}"
     );
   });

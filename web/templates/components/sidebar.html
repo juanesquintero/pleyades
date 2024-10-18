@@ -16,7 +16,7 @@
       </li>
 
       <a
-        href="{{url_for('Analista.modelos')}}"
+        href="{{url_for('Analista.models')}}"
         class="list-group-item text-white border-right-0 my-secondary"
       >
         <i class="fa fa-solid fa-robot"></i>
@@ -54,11 +54,11 @@
             </a>
             <div {% if menu=='conjuntos' %} style="display:inline;" {% endif %} id='menuConjuntos'
                 class="sidebar-submenu collapse">
-                <a href="{{url_for('StudentSet.crudos')}}"
+                <a href="{{url_for('Set.crudos')}}"
                     class="list-group-item  text-white  border-right-0 my-secondary">
                     &#8226;&nbsp;&nbsp;<span class="menu-collapsed text-white">Crudos</span>
                 </a>
-                <a href="{{url_for('StudentSet.procesados')}}"
+                <a href="{{url_for('Set.procesados')}}"
                     class="list-group-item  text-white border-right-0 my-secondary">
                     &#8226;&nbsp;&nbsp;<span class="menu-collapsed text-white">Procesados</span>
                 </a>
@@ -98,7 +98,7 @@
         <small>ADMINISTRACIÓN</small>
       </li>
       <a
-        href="{{url_for('Estudiante.get_list')}}"
+        href="{{url_for('Student.get_list')}}"
         class="list-group-item my-secondary"
       >
         <div class="d-flex w-100 justify-content-start align-items-center">
@@ -107,7 +107,7 @@
         </div>
       </a>
       <a
-        href="{{url_for('Facultad.get_list')}}"
+        href="{{url_for('Faculty.get_list')}}"
         class="list-group-item border-right-0 my-secondary"
       >
         <div class="d-flex w-100 justify-content-start align-items-center">
@@ -116,7 +116,7 @@
         </div>
       </a>
       <a
-        href="{{url_for('Programa.get_list')}}"
+        href="{{url_for('Program.get_list')}}"
         class="list-group-item my-secondary"
       >
         <div class="d-flex w-100 justify-content-start align-items-center">
@@ -125,7 +125,7 @@
         </div>
       </a>
       <a
-        href="{{url_for('Usuario.get_list')}}"
+        href="{{url_for('User.get_list')}}"
         class="list-group-item border-right-0 my-secondary light"
       >
         <div class="d-flex w-100 justify-content-start align-items-center">
@@ -134,7 +134,7 @@
         </div>
       </a>
       <a
-        href="{{url_for('ConjuntoAdmin.crudos')}}"
+        href="{{url_for('SetAdmin.crudos')}}"
         class="list-group-item border-right-0 my-secondary light"
       >
         <div class="d-flex w-100 justify-content-start align-items-center">
@@ -143,7 +143,7 @@
         </div>
       </a>
       <a
-        href="{{url_for('ResultadoAdmin.preparations')}}"
+        href="{{url_for('ResultAdmin.preparations')}}"
         class="list-group-item border-right-0 my-secondary light"
       >
         <div class="d-flex w-100 justify-content-start align-items-center">

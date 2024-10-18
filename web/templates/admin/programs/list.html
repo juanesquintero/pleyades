@@ -24,7 +24,7 @@
           <center>Nombre corto</center>
         </th>
         <th scope="col" >
-          <span class="ml-4" >Facultad</span>
+          <span class="ml-4" >Faculty</span>
         </th>
 
         <th scope="col">
@@ -44,7 +44,7 @@
         <td><center>{{ p.nombre_corto }}</center></td>
         <td class="ml-5">
 
-            <span class="ml-4"> {{ p.facultad }} - {{p.nombre_facultad|replace('Facultad de ','')}} </span> 
+            <span class="ml-4"> {{ p.facultad }} - {{p.nombre_facultad|replace('Faculty de ','')}} </span> 
 
         </td>
         
@@ -54,7 +54,7 @@
           <center>
             <div class="btn-group" role="group" aria-label="Basic example">
               <!-- detalle -->
-              <form action="{{url_for('Programa.detalle')}}" method="POST">
+              <form action="{{url_for('Program.detalle')}}" method="POST">
                 <input type="hidden" name="programa" value="{{p}}">
                 <button type="submit" data-toggle="tooltip" data-placement="bottom" title="Ver detalle"
                   class="btn btn-outline-dark btn-sm submit" role="status">

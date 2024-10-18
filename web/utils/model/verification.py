@@ -48,7 +48,7 @@ def verify_data(data, period_inicial, period_final, programa):
 
     # Verificar si en conjunto posee mas de un  valor en la columna programa
     if not len(set(data_verificada['programa'].tolist())) == 1:
-        msg = 'El conjunto tiene resgistros de mas de un programa, los modelos se ejecutan por programa'
+        msg = 'El conjunto tiene resgistros de mas de un programa, los models se ejecutan por programa'
         return False, msg, None, period_inicial
 
     # Verificar si en conjunto posee los valores de periodo Inicial y Final Correctamente
