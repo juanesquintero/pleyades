@@ -24,7 +24,7 @@ class DTO():
         return row
 
 
-class Usuario(db.Model, SerializerMixin):
+class User(db.Model, SerializerMixin):
     __tablename__ = 'users'
     correo = db.Column(db.String, primary_key=True, nullable=False)
     nombre = db.Column(db.String, nullable=False)
@@ -32,22 +32,22 @@ class Usuario(db.Model, SerializerMixin):
     rol = db.Column(db.String, nullable=False)
 
     def get_all():
-        return [row.to_dict() for row in Usuario.query.all()]
+        return [row.to_dict() for row in User.query.all()]
 
     def _get_one(correo):
-        return Usuario.query.filter(Usuario.correo == correo).first_or_404()
+        return User.query.filter(User.correo == correo).first_or_404()
 
     def get_one(correo):
-        return Usuario._get_one(correo).to_dict()
+        return User._get_one(correo).to_dict()
 
     def get_rol(rol):
-        query = Usuario.query.filter(Usuario.rol == rol).all()
+        query = User.query.filter(User.rol == rol).all()
         return [row.to_dict() for row in query]
 
     def get_login(correo, clave):
-        row = Usuario.query.filter(
-            Usuario.correo == correo,
-            Usuario.clave == clave
+        row = User.query.filter(
+            User.correo == correo,
+            User.clave == clave
         )
         if not row:
             return None
@@ -57,18 +57,18 @@ class Usuario(db.Model, SerializerMixin):
             return None
 
     def insert(fields):
-        return DTO.insert(Usuario, fields)
+        return DTO.insert(User, fields)
 
     def post_delete(correo):
-        return DTO.delete(Usuario, correo)
+        return DTO.delete(User, correo)
 
     def update(correo, fields):
         return DTO.update(
-            update(Usuario).where(Usuario.correo == correo).values(**fields)
+            update(User).where(User.correo == correo).values(**fields)
         )
 
 
-class StudentSet(db.Model, SerializerMixin):
+class Set(db.Model, SerializerMixin):
     __tablename__ = 'conjuntosdedatos'
 
     programa = db.Column(db.Integer, nullable=False)
@@ -81,57 +81,57 @@ class StudentSet(db.Model, SerializerMixin):
     estado = db.Column(db.String, nullable=False)
 
     def get_all():
-        return [row.to_dict() for row in StudentSet.query.all()]
+        return [row.to_dict() for row in Set.query.all()]
 
     def get_state(estado):
-        query = StudentSet.query.filter(StudentSet.estado == estado)
+        query = Set.query.filter(Set.estado == estado)
         return [row.to_dict() for row in query.all()]
 
     def get_tipo(tipo):
-        query = StudentSet.query.filter(StudentSet.tipo == tipo)
+        query = Set.query.filter(Set.tipo == tipo)
         return [row.to_dict() for row in query.all()]
 
     def get_programa(programa):
-        query = StudentSet.query.filter(StudentSet.programa == programa)
+        query = Set.query.filter(Set.programa == programa)
         return [row.to_dict() for row in query.all()]
 
     def get_rango(inicio, fin):
-        query = StudentSet.query.filter(
-            StudentSet.periodoInicial == inicio,
-            StudentSet.periodoFinal == fin,
+        query = Set.query.filter(
+            Set.periodoInicial == inicio,
+            Set.periodoFinal == fin,
         )
         return [row.to_dict() for row in query.all()]
 
     def get_numero(programa, inicio, fin):
-        query = StudentSet.query.filter(
-            StudentSet.programa == programa,
-            StudentSet.periodoInicial == inicio,
-            StudentSet.periodoFinal == fin
-        ).order_by(StudentSet.numero.desc())
+        query = Set.query.filter(
+            Set.programa == programa,
+            Set.periodoInicial == inicio,
+            Set.periodoFinal == fin
+        ).order_by(Set.numero.desc())
         return [row.to_dict() for row in query.all()]
 
     def get_encargado(encargado, estado=None):
-        query = StudentSet.query.filter(StudentSet.encargado == encargado)
+        query = Set.query.filter(Set.encargado == encargado)
         if estado:
-            query = query.filter(StudentSet.estado == estado)
+            query = query.filter(Set.estado == estado)
         return [row.to_dict() for row in query.all()]
 
     def _get_one(nombre):
-        return StudentSet.query.filter(StudentSet.nombre == nombre).first_or_404()
+        return Set.query.filter(Set.nombre == nombre).first_or_404()
 
     def get_one(nombre):
-        return StudentSet._get_one(nombre).to_dict()
+        return Set._get_one(nombre).to_dict()
 
     def insert(fields):
-        return DTO.insert(StudentSet, fields)
+        return DTO.insert(Set, fields)
 
     def post_delete(nombre):
-        return DTO.delete(StudentSet, nombre)
+        return DTO.delete(Set, nombre)
 
     def update(nombre, fields):
         return DTO.update(
-            update(StudentSet).where(
-                StudentSet.nombre == nombre).values(**fields)
+            update(Set).where(
+                Set.nombre == nombre).values(**fields)
         )
 
 
@@ -215,7 +215,7 @@ class Ejecucion(db.Model, SerializerMixin):
         'fechaInicial',
         'fechaFinal',
         'estado',
-        'precision_modelo',
+        'precision_model',
         'resultados',
         'duracion'
     )
@@ -227,7 +227,7 @@ class Ejecucion(db.Model, SerializerMixin):
     fechaInicial = db.Column(db.DateTime, nullable=False)
     fechaFinal = db.Column(db.DateTime, nullable=False)
     estado = db.Column(db.String, nullable=False)
-    precision_modelo = db.Column(db.Float, nullable=False)
+    precision_model = db.Column(db.Float, nullable=False)
     resultados = db.Column(db.String, nullable=False)
 
     @hybrid_property

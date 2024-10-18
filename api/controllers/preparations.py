@@ -6,7 +6,7 @@ from db.pleyades.db import Preparacion as preparacion_model
 from utils.utils import exception, _format
 # Relaciones
 from controllers.Conjuntos import exists as exists_conjunto
-from controllers.Usuarios import exists as exists_usuario
+from controllers.users import exists as exists_usuario
 
 Preparacion = Blueprint('Preparacion', __name__)
 
@@ -48,7 +48,7 @@ def get_by_conjunto(conjunto):
     if ex:
         return ex
     if not (query):
-        return {'msg': 'StudentSet no tiene preparations'}, 404
+        return {'msg': 'Set no tiene preparations'}, 404
     query = strdate_to_datetime(query)
     return jsonify(query)
 
@@ -63,7 +63,7 @@ def get_by_usuario(preparador):
     if ex:
         return ex
     if not (query):
-        return {'error': 'Usuario no tiene preparations'}, 400
+        return {'error': 'User no tiene preparations'}, 400
     query = strdate_to_datetime(query)
     return jsonify(query)
 

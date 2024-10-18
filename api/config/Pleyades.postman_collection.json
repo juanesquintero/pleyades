@@ -530,7 +530,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"nombre\": \"Facultad de la gente\"\n}\n",
+							"raw": "{\n    \"nombre\": \"Faculty de la gente\"\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -742,7 +742,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "  {\r\n    \"codigo\": \"420-2970-01\",\r\n    \"nombre\": \" civilcita\",\r\n    \"nombre_corto\": \"civi\",\r\n    \"facultad\": \"420\",\r\n    \"nombre_facultad\": \"Facultad de Ingenierias\"\r\n  }",
+							"raw": "  {\r\n    \"codigo\": \"420-2970-01\",\r\n    \"nombre\": \" civilcita\",\r\n    \"nombre_corto\": \"civi\",\r\n    \"facultad\": \"420\",\r\n    \"nombre_facultad\": \"Faculty de Ingenierias\"\r\n  }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1838,7 +1838,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"nombre\": \"P Com 20192 20201 1.1\",\r\n\t\"conjunto\": \"P Com 20192 20201 1\",\r\n\t\"numero\": 1,\r\n    \"ejecutor\": \"walter.alvarez@educatic.com.co\",\r\n    \"fechaInicial\":  \"2020-03-24T14:18:28+00:00\",\r\n    \"fechaFinal\":  \"2018-11-13T20:20:39+00:00\",\r\n    \"estado\": \"Exitosa\",\r\n\t\"precision_modelo\": 93.89,\r\n\t\"resultados\": {\"exitosa\": false, \"excepciones\": \"\"}\r\n}",
+							"raw": "{\r\n\t\"nombre\": \"P Com 20192 20201 1.1\",\r\n\t\"conjunto\": \"P Com 20192 20201 1\",\r\n\t\"numero\": 1,\r\n    \"ejecutor\": \"walter.alvarez@educatic.com.co\",\r\n    \"fechaInicial\":  \"2020-03-24T14:18:28+00:00\",\r\n    \"fechaFinal\":  \"2018-11-13T20:20:39+00:00\",\r\n    \"estado\": \"Exitosa\",\r\n\t\"precision_model\": 93.89,\r\n\t\"resultados\": {\"exitosa\": false, \"excepciones\": \"\"}\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2792,7 +2792,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n\t\"nombre\": \"P Com 20192 20201 1.1\",\r\n\t\"conjunto\": \"P Com 20192 20201 1\",\r\n\t\"numero\": 1,\r\n    \"ejecutor\": \"walter.alvarez@educatic.com.co\",\r\n    \"fechaInicial\":  \"2020-03-24T14:18:28+00:00\",\r\n    \"fechaFinal\":  \"2018-11-13T20:20:39+00:00\",\r\n    \"estado\": \"Exitosa\",\r\n\t\"precision_modelo\": 93.89,\r\n\t\"resultados\": {\"exitosa\": false, \"excepciones\": \"\"}\r\n}",
+											"raw": "{\r\n\t\"nombre\": \"P Com 20192 20201 1.1\",\r\n\t\"conjunto\": \"P Com 20192 20201 1\",\r\n\t\"numero\": 1,\r\n    \"ejecutor\": \"walter.alvarez@educatic.com.co\",\r\n    \"fechaInicial\":  \"2020-03-24T14:18:28+00:00\",\r\n    \"fechaFinal\":  \"2018-11-13T20:20:39+00:00\",\r\n    \"estado\": \"Exitosa\",\r\n\t\"precision_model\": 93.89,\r\n\t\"resultados\": {\"exitosa\": false, \"excepciones\": \"\"}\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -3834,7 +3834,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "  {\r\n    \"codigo\": 29,\r\n    \"nombre\": \" civilcita\",\r\n    \"nombre_corto\": \"civi\",\r\n    \"facultad\": 2,\r\n    \"nombre_facultad\": \"Facultad de Ingenierias\"\r\n  }",
+											"raw": "  {\r\n    \"codigo\": 29,\r\n    \"nombre\": \" civilcita\",\r\n    \"nombre_corto\": \"civi\",\r\n    \"facultad\": 2,\r\n    \"nombre_facultad\": \"Faculty de Ingenierias\"\r\n  }",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -4111,7 +4111,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"nombre\": \"Facultad de la gente\"\n}\n",
+											"raw": "{\n    \"nombre\": \"Faculty de la gente\"\n}\n",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -4736,7 +4736,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n\t\"nombre\": \"P Com 20192 20201 1.1\",\r\n\t\"conjunto\": \"P Com 20192 20201 1\",\r\n\t\"numero\": 1,\r\n    \"ejecutor\": \"walter.alvarez@educatic.com.co\",\r\n    \"fechaInicial\":  \"2020-03-24T14:18:28+00:00\",\r\n    \"fechaFinal\":  \"2018-11-13T20:20:39+00:00\",\r\n    \"estado\": \"Exitosa\",\r\n\t\"precision_modelo\": 93.89,\r\n\t\"resultados\": {\"exitosa\": false, \"excepciones\": \"\"}\r\n}",
+											"raw": "{\r\n\t\"nombre\": \"P Com 20192 20201 1.1\",\r\n\t\"conjunto\": \"P Com 20192 20201 1\",\r\n\t\"numero\": 1,\r\n    \"ejecutor\": \"walter.alvarez@educatic.com.co\",\r\n    \"fechaInicial\":  \"2020-03-24T14:18:28+00:00\",\r\n    \"fechaFinal\":  \"2018-11-13T20:20:39+00:00\",\r\n    \"estado\": \"Exitosa\",\r\n\t\"precision_model\": 93.89,\r\n\t\"resultados\": {\"exitosa\": false, \"excepciones\": \"\"}\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -5780,7 +5780,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "  {\r\n    \"codigo\": 29,\r\n    \"nombre\": \" civilcita\",\r\n    \"nombre_corto\": \"civi\",\r\n    \"facultad\": 2,\r\n    \"nombre_facultad\": \"Facultad de Ingenierias\"\r\n  }",
+											"raw": "  {\r\n    \"codigo\": 29,\r\n    \"nombre\": \" civilcita\",\r\n    \"nombre_corto\": \"civi\",\r\n    \"facultad\": 2,\r\n    \"nombre_facultad\": \"Faculty de Ingenierias\"\r\n  }",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -6057,7 +6057,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"nombre\": \"Facultad de la gente\"\n}\n",
+											"raw": "{\n    \"nombre\": \"Faculty de la gente\"\n}\n",
 											"options": {
 												"raw": {
 													"language": "json"

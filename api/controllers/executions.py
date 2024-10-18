@@ -6,7 +6,7 @@ from utils.utils import exception, _format
 from db.pleyades.db import Ejecucion as ejecucion_model
 # Relaciones
 from controllers.Conjuntos import exists as exists_conjunto
-from controllers.Usuarios import exists as exists_usuario
+from controllers.users import exists as exists_usuario
 
 Ejecucion = Blueprint('Ejecucion', __name__)
 

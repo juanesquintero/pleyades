@@ -4,7 +4,7 @@ import datetime as dt
 from hashlib import md5
 
 from schemas.auth_schema import validate_login_schema
-from controllers.Usuarios import auth, create_user
+from controllers.users import auth, create_user
 
 Auth = Blueprint('auth', __name__)
 

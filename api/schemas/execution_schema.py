@@ -10,10 +10,10 @@ post_schema = {
         'fechaInicial':  {'type': 'string', 'format': 'date-time'},
         'fechaFinal':  {'type': ['string', 'null'], 'format': 'date-time'},
         'estado':  {'type': 'string', 'maxLength': 50, 'enum': ['Fallida', 'Exitosa']},
-        'precision_modelo': {'type': ['number', 'null'], 'maxLength': 5},
+        'precision_model': {'type': ['number', 'null'], 'maxLength': 5},
         'resultados':  {'type': 'object'},
     },
-    'required': ['nombre','conjunto','numero','ejecutor','fechaInicial', 'fechaFinal','estado','resultados'],
+    'required': ['nombre', 'conjunto', 'numero', 'ejecutor', 'fechaInicial', 'fechaFinal', 'estado', 'resultados'],
     'additionalProperties': False
 }
 

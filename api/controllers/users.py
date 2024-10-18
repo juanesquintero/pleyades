@@ -1,6 +1,6 @@
 from flask import request, jsonify, Blueprint
 from schemas.usuario_schema import validate_post_schema, validate_put_schema
-from db.pleyades.db import Usuario as usuario_model
+from db.pleyades.db import User as usuario_model
 from flask_jwt_extended import jwt_required
 from hashlib import md5
 from utils.utils import exception, _format
@@ -9,11 +9,11 @@ from utils.utils import exception, _format
 from controllers.Facultades import exists as exists_facultad
 from controllers.Programas import exists as exists_programa
 
-Usuario = Blueprint('Usuario', __name__)
+User = Blueprint('User', __name__)
 
 
-@Usuario.route('')
-@Usuario.route('/')
+@User.route('')
+@User.route('/')
 @jwt_required()
 def get():
     query = usuario_model.get_all()
@@ -25,7 +25,7 @@ def get():
     return jsonify(query)
 
 
-@Usuario.route('/<correo>')
+@User.route('/<correo>')
 @jwt_required()
 def get_one(correo):
     query = usuario_model.get_one(correo)
@@ -37,7 +37,7 @@ def get_one(correo):
     return jsonify(query)
 
 
-@Usuario.route('rol/<rol>')
+@User.route('rol/<rol>')
 @jwt_required()
 def getByRol(rol):
     query = usuario_model.get_rol(rol)
@@ -49,7 +49,7 @@ def getByRol(rol):
     return jsonify(query)
 
 
-@Usuario.route('', methods=['POST'])
+@User.route('', methods=['POST'])
 @jwt_required()
 def post():
     body = request.get_json()
@@ -76,16 +76,16 @@ def create_user(body):
     ex = exception(insert)
     if ex:
         return ex
-    return {'msg': 'Usuario creado'}, 200
+    return {'msg': 'User creado'}, 200
 
 
-@Usuario.route('/', methods=['POST'])
+@User.route('/', methods=['POST'])
 @jwt_required()
 def post2():
     return post()
 
 
-@Usuario.route('/<correo>', methods=['PUT'])
+@User.route('/<correo>', methods=['PUT'])
 @jwt_required()
 def put(correo):
     body = request.get_json()
@@ -96,7 +96,7 @@ def put(correo):
         return {'error': 'body invalido'}, 400
     # sql validations
     if not exists(correo):
-        return {'error': 'Usuario no existe'}, 404
+        return {'error': 'User no existe'}, 404
     if ('facultad' in body.keys() and body['facultad'] != None):
         if not exists_facultad(body['facultad']):
             return {'error': 'facultad no existe'}, 404
@@ -111,23 +111,23 @@ def put(correo):
     ex = exception(update)
     if ex:
         return ex
-    return {'msg': 'Usuario actualizado'}, 200
+    return {'msg': 'User actualizado'}, 200
 
 
-@Usuario.route('/<correo>', methods=['DELETE'])
+@User.route('/<correo>', methods=['DELETE'])
 @jwt_required()
 def delete_one(correo):
     if not correo:
         return {'error': 'indique el correo por el path'}, 404
     # sql validations
     if not exists(correo):
-        return {'error': 'Usuario no existe'}, 404
+        return {'error': 'User no existe'}, 404
     # delete
     delete = usuario_model.delete(correo)
     ex = exception(delete)
     if ex:
         return ex
-    return {'msg': 'Usuario eliminado'}, 200
+    return {'msg': 'User eliminado'}, 200
 
 
 def exists(correo):

@@ -48,7 +48,7 @@ CREATE TABLE  executions (
 	fechaInicial DATETIME NOT NULL 	,
 	fechaFinal DATETIME NOT NULL 	,
 	estado VARCHAR (50) NOT NULL 	,
-	precision_modelo FLOAT		,
+	precision_model FLOAT		,
 	resultados JSON NOT NULL,
 	CONSTRAINT  pk_Ejecucion 
 	PRIMARY KEY( nombre )

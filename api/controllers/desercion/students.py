@@ -7,7 +7,7 @@ from db.ies.db import DB
 from utils.utils import exception, _format
 from controllers.Programas import exists as exists_programa
 
-Estudiante = Blueprint('Estudiante', __name__)
+Student = Blueprint('Student', __name__)
 
 db = DB.getInstance()
 
@@ -18,7 +18,7 @@ msg_error = {'msg': 'No hay concidencias'}, 404
 ##########################################################  VWDATADESERCION ##########################################################
 
 
-@Estudiante.route('/set/<int:programa>/<int:periodoInicio>/<int:periodoFin>')
+@Student.route('/set/<int:programa>/<int:periodoInicio>/<int:periodoFin>')
 @jwt_required()
 def get_conjunto_estudiantes(programa, periodoInicio, periodoFin):
     sql = f'SELECT * FROM {tabla} WHERE idprograma={programa} AND REGISTRO >= {
@@ -32,7 +32,7 @@ def get_conjunto_estudiantes(programa, periodoInicio, periodoFin):
     return jsonify(_format(query))
 
 
-@Estudiante.route('/periodo/<int:periodo>')
+@Student.route('/periodo/<int:periodo>')
 @jwt_required()
 def get_period(periodo):
     sql = f'SELECT * FROM {tabla} WHERE REGISTRO={periodo};'
@@ -45,7 +45,7 @@ def get_period(periodo):
     return jsonify(_format(query))
 
 
-@Estudiante.route('/programa/<int:programa>')
+@Student.route('/programa/<int:programa>')
 @jwt_required()
 def get_programa(programa):
     sql = f"SELECT * FROM {tabla} WHERE idprograma={programa};"
@@ -58,7 +58,7 @@ def get_programa(programa):
     return jsonify(_format(query))
 
 
-@Estudiante.route('/programa/<int:programa>/<int:periodo>')
+@Student.route('/programa/<int:programa>/<int:periodo>')
 @jwt_required()
 def get_period_programa(programa, periodo):
     sql = f'SELECT * FROM {tabla} WHERE REGISTRO={
@@ -72,7 +72,7 @@ def get_period_programa(programa, periodo):
     return jsonify(_format(query))
 
 
-@Estudiante.route('/documento/<documento>')
+@Student.route('/documento/<documento>')
 @jwt_required()
 def get_documento(documento):
     sql = f"SELECT * FROM {tabla} WHERE documento='{documento}';"
@@ -85,7 +85,7 @@ def get_documento(documento):
     return jsonify(_format(query))
 
 
-@Estudiante.route('/periods')
+@Student.route('/periods')
 @jwt_required()
 def get_periods():
     # Obtener datos desde la bd SQL server
@@ -104,7 +104,7 @@ def get_periods():
     return jsonify(_format(periods))
 
 
-@Estudiante.route('/periods/programa/<int:programa>')
+@Student.route('/periods/programa/<int:programa>')
 @jwt_required()
 def get_periods_programa(programa):
     # Obtener datos desde la bd SQL server
@@ -126,7 +126,7 @@ def get_periods_programa(programa):
     return jsonify(_format(periods))
 
 
-@Estudiante.route('/programs')
+@Student.route('/programs')
 @jwt_required()
 def get_programas():
     # Obtener datos desde la bd SQL server
