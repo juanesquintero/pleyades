@@ -8,7 +8,7 @@ from schemas.resultado_schema import validate_post_schema
 from controllers.Programas import exists as exists_programa
 
 
-Resultado = Blueprint('Resultado', __name__)
+Result = Blueprint('Result', __name__)
 
 db = DB.getInstance()
 tabla = 'TBLDES_RESULTADO_PREDICCION'
@@ -18,20 +18,21 @@ msg_exito = {'msg': 'Operación completada con exito!'}, 200
 ##########################################################  TBLDES_RESULTADO_PREDICCION ##########################################################
 
 
-@Resultado.route('/ultimo/<programa>/<int:semestre>', methods=['PUT'])
+@Result.route('/ultimo/<programa>/<int:semestre>', methods=['PUT'])
 @jwt_required()
 def put_ultimo(semestre, programa):
-    sql = f'UPDATE {tabla} SET blnultimo=0 WHERE semestre_prediccion={semestre} AND idprograma={programa};'
+    sql = f'UPDATE {tabla} SET blnultimo=0 WHERE semestre_prediccion={
+        semestre} AND idprograma={programa};'
     result = db.execute(sql)
     ex = exception(result)
     if ex:
         return ex
-    if not(result):
+    if not (result):
         return msg_error
     return msg_exito
 
 
-@Resultado.route('', methods=['POST'])
+@Result.route('', methods=['POST'])
 @jwt_required()
 def post_insertar_resultados():
     body = request.get_json()
