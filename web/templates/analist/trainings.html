@@ -122,7 +122,7 @@
             <!-- Preparacion-->
             <div class="btn-group" role="group" aria-label="Basic example">
               <form
-                action="{{url_for('Resultado.preparacion_detalle')}}"
+                action="{{url_for('Result.preparacion_detalle')}}"
                 method="POST"
               >
                 <input type="hidden" name="preparacion" value="{{e.nombre}}" />
@@ -142,7 +142,7 @@
             <!-- Ejecución-->
             <div class="btn-group mx-1" role="group" aria-label="Basic example">
               <form
-                action="{{url_for('Resultado.ejecucion_detalle')}}"
+                action="{{url_for('Result.ejecucion_detalle')}}"
                 method="POST"
               >
                 <input type="hidden" name="ejecucion" value="{{e.nombre}}" />

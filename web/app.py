@@ -12,7 +12,7 @@ from views.errors import Error
 from views.auth import Auth
 from views.admin import ResultadoAdmin, ConjuntoAdmin, Facultad, Programa, Estudiante, Usuario
 from web.views.sets import StudentSet
-from web.views.results import Resultado
+from web.views.results import Result
 from utils.mixins import obtener_ies_config
 
 
@@ -58,7 +58,7 @@ app.register_blueprint(Programa, url_prefix=base_path+'admin/programs')
 app.register_blueprint(Estudiante, url_prefix=base_path+'admin/estudiantes')
 app.register_blueprint(Usuario, url_prefix=base_path+'admin/users')
 app.register_blueprint(StudentSet, url_prefix=base_path+'sets')
-app.register_blueprint(Resultado, url_prefix=base_path+'results')
+app.register_blueprint(Result, url_prefix=base_path+'results')
 # app.register_blueprint(Tablero, url_prefix=base_path+'_deprecado/#TABLEROS')
 app.register_blueprint(ConjuntoAdmin, url_prefix=base_path+'admin/sets')
 app.register_blueprint(ResultadoAdmin, url_prefix=base_path+'admin/results')
