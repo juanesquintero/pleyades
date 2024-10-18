@@ -128,7 +128,7 @@ class Programa:
             data_actual = self.data_actual
 
             variables_nombre = ['insc_total',
-                                'admi_total', 'mat_total', 'desercion']
+                                'admi_total', 'mat_total', 'desertion']
             variables_indicadores = []
             for v in variables_nombre:
                 variables_indicadores.append(

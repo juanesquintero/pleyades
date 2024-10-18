@@ -18,7 +18,7 @@ msg_error = {'msg': 'No hay concidencias'}, 404
 ##########################################################  VWDATADESERCION ##########################################################
 
 
-@Estudiante.route('/student-set/<int:programa>/<int:periodoInicio>/<int:periodoFin>')
+@Estudiante.route('/set/<int:programa>/<int:periodoInicio>/<int:periodoFin>')
 @jwt_required()
 def get_conjunto_estudiantes(programa, periodoInicio, periodoFin):
     sql = f'SELECT * FROM {tabla} WHERE idprograma={programa} AND REGISTRO >= {
@@ -126,7 +126,7 @@ def get_periods_programa(programa):
     return jsonify(_format(periods))
 
 
-@Estudiante.route('/programas')
+@Estudiante.route('/programs')
 @jwt_required()
 def get_programas():
     # Obtener datos desde la bd SQL server
@@ -142,8 +142,8 @@ def get_programas():
         by='programa', ascending=True
     )
     programas_df['idprograma'] = programas_df['idprograma'].astype(int)
-    programas = json.loads(programas_df.to_json(orient='records'))
+    programs = json.loads(programas_df.to_json(orient='records'))
 
-    if not programas:
+    if not programs:
         return msg_error
-    return jsonify(_format(programas))
+    return jsonify(_format(programs))

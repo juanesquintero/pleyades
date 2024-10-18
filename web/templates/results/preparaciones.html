@@ -19,7 +19,7 @@
     <a class="nav-link active" href="#">Preparaciones</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link text-dark bg-light border" href="{{url_for('Resultado.ejecuciones')}}">Ejecuciones</a>
+    <a class="nav-link text-dark bg-light border" href="{{url_for('Result.executions')}}">Ejecuciones</a>
   </li>
 </ul>
 <div class="table-responsive-sm">
@@ -62,7 +62,7 @@
           <!-- ACCCIONES -->
           <center>
             <div class="btn-group" role="group" aria-label="Basic example">
-              <form action="{{url_for('Resultado.preparacion_detalle')}}" method="POST">
+              <form action="{{url_for('Result.preparacion_detalle')}}" method="POST">
                 <input type="hidden" name="preparacion" value="{{p.nombre}}">
                 <button type="submit" data-toggle="tooltip" data-placement="bottom" title="Ver Detalle"
                   class="btn btn-outline-dark btn-sm submit" role="status">

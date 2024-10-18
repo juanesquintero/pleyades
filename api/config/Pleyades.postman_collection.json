@@ -10,7 +10,7 @@
 			"name": "Usuarios",
 			"item": [
 				{
-					"name": "usuarios",
+					"name": "users",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -25,7 +25,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:3000/usuarios",
+							"raw": "http://127.0.0.1:3000/users",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -37,7 +37,7 @@
 							"path": [
 								"api",
 								"v1",
-								"usuarios"
+								"users"
 							]
 						}
 					},
@@ -59,7 +59,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:3000/usuarios/admin@pleyades.com",
+							"raw": "http://127.0.0.1:3000/users/admin@pleyades.com",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -71,7 +71,7 @@
 							"path": [
 								"api",
 								"v1",
-								"usuarios",
+								"users",
 								"admin@pleyades.com"
 							]
 						}
@@ -84,7 +84,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:3000/usuarios/programa/42",
+							"raw": "http://127.0.0.1:3000/users/programa/42",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -94,7 +94,7 @@
 							],
 							"port": "3000",
 							"path": [
-								"usuarios",
+								"users",
 								"programa",
 								"42"
 							]
@@ -118,7 +118,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:3000/usuarios/facultad/420",
+							"raw": "http://127.0.0.1:3000/users/facultad/420",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -130,7 +130,7 @@
 							"path": [
 								"api",
 								"v1",
-								"usuarios",
+								"users",
 								"facultad",
 								"420"
 							]
@@ -170,7 +170,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3000/usuarios/",
+							"raw": "http://127.0.0.1:3000/users/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -182,7 +182,7 @@
 							"path": [
 								"api",
 								"v1",
-								"usuarios",
+								"users",
 								""
 							]
 						}
@@ -221,7 +221,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3000/usuarios/juanes@gmail.com",
+							"raw": "http://127.0.0.1:3000/users/juanes@gmail.com",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -233,7 +233,7 @@
 							"path": [
 								"api",
 								"v1",
-								"usuarios",
+								"users",
 								"juanes@gmail.com"
 							]
 						}
@@ -272,7 +272,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3000/usuarios/juanes@gmail.com",
+							"raw": "http://127.0.0.1:3000/users/juanes@gmail.com",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -284,7 +284,7 @@
 							"path": [
 								"api",
 								"v1",
-								"usuarios",
+								"users",
 								"juanes@gmail.com"
 							]
 						}
@@ -386,7 +386,7 @@
 			"name": "Facultades",
 			"item": [
 				{
-					"name": "facultades",
+					"name": "faculties",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -401,7 +401,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:3000/facultades/",
+							"raw": "http://127.0.0.1:3000/faculties/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -413,7 +413,7 @@
 							"path": [
 								"api",
 								"v1",
-								"facultades",
+								"faculties",
 								""
 							]
 						}
@@ -436,7 +436,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:3000/facultades/1",
+							"raw": "http://127.0.0.1:3000/faculties/1",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -448,7 +448,7 @@
 							"path": [
 								"api",
 								"v1",
-								"facultades",
+								"faculties",
 								"1"
 							]
 						}
@@ -487,7 +487,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3000/facultades/",
+							"raw": "http://127.0.0.1:3000/faculties/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -499,7 +499,7 @@
 							"path": [
 								"api",
 								"v1",
-								"facultades",
+								"faculties",
 								""
 							]
 						}
@@ -538,7 +538,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3000/facultades/8",
+							"raw": "http://127.0.0.1:3000/faculties/8",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -550,7 +550,7 @@
 							"path": [
 								"api",
 								"v1",
-								"facultades",
+								"faculties",
 								"8"
 							]
 						}
@@ -589,7 +589,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3000/facultades/8",
+							"raw": "http://127.0.0.1:3000/faculties/8",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -601,7 +601,7 @@
 							"path": [
 								"api",
 								"v1",
-								"facultades",
+								"faculties",
 								"8"
 							]
 						}
@@ -614,7 +614,7 @@
 			"name": "Programas",
 			"item": [
 				{
-					"name": "programas",
+					"name": "programs",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -629,7 +629,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:3000/programas",
+							"raw": "http://127.0.0.1:3000/programs",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -641,7 +641,7 @@
 							"path": [
 								"api",
 								"v1",
-								"programas"
+								"programs"
 							]
 						}
 					},
@@ -663,7 +663,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:3000/programas/4",
+							"raw": "http://127.0.0.1:3000/programs/4",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -675,7 +675,7 @@
 							"path": [
 								"api",
 								"v1",
-								"programas",
+								"programs",
 								"4"
 							]
 						}
@@ -698,7 +698,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:3000/programas/facultad/4",
+							"raw": "http://127.0.0.1:3000/programs/facultad/4",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -710,7 +710,7 @@
 							"path": [
 								"api",
 								"v1",
-								"programas",
+								"programs",
 								"facultad",
 								"4"
 							]
@@ -750,7 +750,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3000/programas",
+							"raw": "http://127.0.0.1:3000/programs",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -762,7 +762,7 @@
 							"path": [
 								"api",
 								"v1",
-								"programas"
+								"programs"
 							]
 						}
 					},
@@ -800,7 +800,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3000/programas/4",
+							"raw": "http://127.0.0.1:3000/programs/4",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -812,7 +812,7 @@
 							"path": [
 								"api",
 								"v1",
-								"programas",
+								"programs",
 								"4"
 							]
 						}
@@ -820,7 +820,7 @@
 					"response": []
 				},
 				{
-					"name": "programas",
+					"name": "programs",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -851,7 +851,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3000/programas/4005",
+							"raw": "http://127.0.0.1:3000/programs/4005",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -863,7 +863,7 @@
 							"path": [
 								"api",
 								"v1",
-								"programas",
+								"programs",
 								"4005"
 							]
 						}
@@ -1340,7 +1340,7 @@
 			"name": "Preparaciones",
 			"item": [
 				{
-					"name": "preparaciones",
+					"name": "preparations",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -1355,7 +1355,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:3000/preparaciones",
+							"raw": "http://127.0.0.1:3000/preparations",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -1367,7 +1367,7 @@
 							"path": [
 								"api",
 								"v1",
-								"preparaciones"
+								"preparations"
 							]
 						}
 					},
@@ -1389,7 +1389,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:3000/preparaciones/1",
+							"raw": "http://127.0.0.1:3000/preparations/1",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -1401,7 +1401,7 @@
 							"path": [
 								"api",
 								"v1",
-								"preparaciones",
+								"preparations",
 								"1"
 							]
 						}
@@ -1424,7 +1424,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:3000/preparaciones/student-set/Eco 20151 20201 1",
+							"raw": "http://127.0.0.1:3000/preparations/set/Eco 20151 20201 1",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -1436,7 +1436,7 @@
 							"path": [
 								"api",
 								"v1",
-								"preparaciones",
+								"preparations",
 								"conjunto",
 								"Eco 20151 20201 1"
 							]
@@ -1460,7 +1460,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:3000/preparaciones/preparador/walter.alvarez@educatic.com.co",
+							"raw": "http://127.0.0.1:3000/preparations/preparador/walter.alvarez@educatic.com.co",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -1472,7 +1472,7 @@
 							"path": [
 								"api",
 								"v1",
-								"preparaciones",
+								"preparations",
 								"preparador",
 								"walter.alvarez@educatic.com.co"
 							]
@@ -1496,7 +1496,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:3000/preparaciones/nombre/Civ 20171 20182 1",
+							"raw": "http://127.0.0.1:3000/preparations/nombre/Civ 20171 20182 1",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -1508,7 +1508,7 @@
 							"path": [
 								"api",
 								"v1",
-								"preparaciones",
+								"preparations",
 								"nombre",
 								"Civ 20171 20182 1"
 							]
@@ -1548,7 +1548,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3000/preparaciones",
+							"raw": "http://127.0.0.1:3000/preparations",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -1560,7 +1560,7 @@
 							"path": [
 								"api",
 								"v1",
-								"preparaciones"
+								"preparations"
 							]
 						}
 					},
@@ -1598,7 +1598,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3000/preparaciones/Sis%2020152%2020182%201.1",
+							"raw": "http://127.0.0.1:3000/preparations/Sis%2020152%2020182%201.1",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -1610,7 +1610,7 @@
 							"path": [
 								"api",
 								"v1",
-								"preparaciones",
+								"preparations",
 								"Sis%2020152%2020182%201.1"
 							]
 						}
@@ -1649,7 +1649,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3000/preparaciones/1",
+							"raw": "http://127.0.0.1:3000/preparations/1",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -1661,7 +1661,7 @@
 							"path": [
 								"api",
 								"v1",
-								"preparaciones",
+								"preparations",
 								"1"
 							]
 						}
@@ -1674,7 +1674,7 @@
 			"name": "Ejecuciones",
 			"item": [
 				{
-					"name": "ejecuciones",
+					"name": "executions",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -1689,7 +1689,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:3000/ejecuciones",
+							"raw": "http://127.0.0.1:3000/executions",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -1701,7 +1701,7 @@
 							"path": [
 								"api",
 								"v1",
-								"ejecuciones"
+								"executions"
 							]
 						}
 					},
@@ -1723,7 +1723,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:3000/ejecuciones/Eco 20151 20201 1.3",
+							"raw": "http://127.0.0.1:3000/executions/Eco 20151 20201 1.3",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -1735,7 +1735,7 @@
 							"path": [
 								"api",
 								"v1",
-								"ejecuciones",
+								"executions",
 								"Eco 20151 20201 1.3"
 							]
 						}
@@ -1758,7 +1758,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:3000/ejecuciones/student-set/Tec 20151 20201 1",
+							"raw": "http://127.0.0.1:3000/executions/set/Tec 20151 20201 1",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -1770,7 +1770,7 @@
 							"path": [
 								"api",
 								"v1",
-								"ejecuciones",
+								"executions",
 								"conjunto",
 								"Tec 20151 20201 1"
 							]
@@ -1794,7 +1794,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:3000/ejecuciones/ejecutor/walter.alvarez@educatic.com.co",
+							"raw": "http://127.0.0.1:3000/executions/ejecutor/walter.alvarez@educatic.com.co",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -1806,7 +1806,7 @@
 							"path": [
 								"api",
 								"v1",
-								"ejecuciones",
+								"executions",
 								"ejecutor",
 								"walter.alvarez@educatic.com.co"
 							]
@@ -1846,7 +1846,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3000/ejecuciones",
+							"raw": "http://127.0.0.1:3000/executions",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -1858,7 +1858,7 @@
 							"path": [
 								"api",
 								"v1",
-								"ejecuciones"
+								"executions"
 							]
 						}
 					},
@@ -1896,7 +1896,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3000/ejecuciones/Sis%2020152%2020182%201.1",
+							"raw": "http://127.0.0.1:3000/executions/Sis%2020152%2020182%201.1",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -1908,7 +1908,7 @@
 							"path": [
 								"api",
 								"v1",
-								"ejecuciones",
+								"executions",
 								"Sis%2020152%2020182%201.1"
 							]
 						}
@@ -1937,7 +1937,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3000/ejecuciones/3",
+							"raw": "http://127.0.0.1:3000/executions/3",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -1947,7 +1947,7 @@
 							],
 							"port": "3000",
 							"path": [
-								"ejecuciones",
+								"executions",
 								"3"
 							]
 						}
@@ -1978,7 +1978,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://127.0.0.1:3000/desercion/institucion/totales/20192",
+									"raw": "http://127.0.0.1:3000/desertion/institute/totales/20192",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -1990,8 +1990,8 @@
 									"path": [
 										"api",
 										"v1",
-										"desercion",
-										"institucion",
+										"desertion",
+										"institute",
 										"totales",
 										"20192"
 									]
@@ -2015,7 +2015,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://127.0.0.1:300/desercion/institucion/20203",
+									"raw": "http://127.0.0.1:300/desertion/institute/20203",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -2027,8 +2027,8 @@
 									"path": [
 										"api",
 										"v1",
-										"desercion",
-										"institucion",
+										"desertion",
+										"institute",
 										"20203"
 									]
 								}
@@ -2051,7 +2051,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://127.0.0.1:3000/desercion/institucion/programa/11202",
+									"raw": "http://127.0.0.1:3000/desertion/institute/programa/11202",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -2063,8 +2063,8 @@
 									"path": [
 										"api",
 										"v1",
-										"desercion",
-										"institucion",
+										"desertion",
+										"institute",
 										"programa",
 										"11202"
 									]
@@ -2088,7 +2088,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://127.0.0.1:3000/desercion/institucion/programa/2/20182",
+									"raw": "http://127.0.0.1:3000/desertion/institute/programa/2/20182",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -2100,8 +2100,8 @@
 									"path": [
 										"api",
 										"v1",
-										"desercion",
-										"institucion",
+										"desertion",
+										"institute",
 										"programa",
 										"2",
 										"20182"
@@ -2111,7 +2111,7 @@
 							"response": []
 						},
 						{
-							"name": "programas",
+							"name": "programs",
 							"request": {
 								"auth": {
 									"type": "bearer",
@@ -2126,7 +2126,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://127.0.0.1:3000/desercion/institucion/programas",
+									"raw": "http://127.0.0.1:3000/desertion/institute/programs",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -2138,16 +2138,16 @@
 									"path": [
 										"api",
 										"v1",
-										"desercion",
-										"institucion",
-										"programas"
+										"desertion",
+										"institute",
+										"programs"
 									]
 								}
 							},
 							"response": []
 						},
 						{
-							"name": "programas Copy",
+							"name": "programs Copy",
 							"request": {
 								"auth": {
 									"type": "bearer",
@@ -2162,7 +2162,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://127.0.0.1:3000/desercion/institucion/programas/20201",
+									"raw": "http://127.0.0.1:3000/desertion/institute/programs/20201",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -2174,9 +2174,9 @@
 									"path": [
 										"api",
 										"v1",
-										"desercion",
-										"institucion",
-										"programas",
+										"desertion",
+										"institute",
+										"programs",
 										"20201"
 									]
 								}
@@ -2199,7 +2199,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://127.0.0.1:3000/desercion/institucion/periodos",
+									"raw": "http://127.0.0.1:3000/desertion/institute/periodos",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -2211,8 +2211,8 @@
 									"path": [
 										"api",
 										"v1",
-										"desercion",
-										"institucion",
+										"desertion",
+										"institute",
 										"periodos"
 									]
 								}
@@ -2240,7 +2240,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://127.0.0.1:3000/desercion/estudiantes/periodo/20201",
+									"raw": "http://127.0.0.1:3000/desertion/estudiantes/periodo/20201",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -2252,7 +2252,7 @@
 									"path": [
 										"api",
 										"v1",
-										"desercion",
+										"desertion",
 										"estudiantes",
 										"periodo",
 										"20201"
@@ -2277,7 +2277,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://127.0.0.1:3000/desercion/estudiantes/programa/11202",
+									"raw": "http://127.0.0.1:3000/desertion/estudiantes/programa/11202",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -2289,7 +2289,7 @@
 									"path": [
 										"api",
 										"v1",
-										"desercion",
+										"desertion",
 										"estudiantes",
 										"programa",
 										"11202"
@@ -2314,7 +2314,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://127.0.0.1:3000/desercion/estudiantes/programa/10055/20191",
+									"raw": "http://127.0.0.1:3000/desertion/estudiantes/programa/10055/20191",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -2326,7 +2326,7 @@
 									"path": [
 										"api",
 										"v1",
-										"desercion",
+										"desertion",
 										"estudiantes",
 										"programa",
 										"10055",
@@ -2352,7 +2352,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://127.0.0.1:3000/desercion/estudiantes/documento/1152212091",
+									"raw": "http://127.0.0.1:3000/desertion/estudiantes/documento/1152212091",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -2364,7 +2364,7 @@
 									"path": [
 										"api",
 										"v1",
-										"desercion",
+										"desertion",
 										"estudiantes",
 										"documento",
 										"1152212091"
@@ -2374,7 +2374,7 @@
 							"response": []
 						},
 						{
-							"name": "programas",
+							"name": "programs",
 							"request": {
 								"auth": {
 									"type": "bearer",
@@ -2389,7 +2389,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://127.0.0.1:3000/desercion/estudiantes/programas",
+									"raw": "http://127.0.0.1:3000/desertion/estudiantes/programs",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -2401,9 +2401,9 @@
 									"path": [
 										"api",
 										"v1",
-										"desercion",
+										"desertion",
 										"estudiantes",
-										"programas"
+										"programs"
 									]
 								}
 							},
@@ -2425,7 +2425,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://127.0.0.1:3000/desercion/estudiantes/periodos",
+									"raw": "http://127.0.0.1:3000/desertion/estudiantes/periodos",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -2437,7 +2437,7 @@
 									"path": [
 										"api",
 										"v1",
-										"desercion",
+										"desertion",
 										"estudiantes",
 										"periodos"
 									]
@@ -2461,7 +2461,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://127.0.0.1:3000/desercion/estudiantes/periodos/programa/23",
+									"raw": "http://127.0.0.1:3000/desertion/estudiantes/periodos/programa/23",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -2473,7 +2473,7 @@
 									"path": [
 										"api",
 										"v1",
-										"desercion",
+										"desertion",
 										"estudiantes",
 										"periodos",
 										"programa",
@@ -2499,7 +2499,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://127.0.0.1:3000/desercion/estudiantes/student-set/23/20172/20181",
+									"raw": "http://127.0.0.1:3000/desertion/estudiantes/set/23/20172/20181",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -2511,7 +2511,7 @@
 									"path": [
 										"api",
 										"v1",
-										"desercion",
+										"desertion",
 										"estudiantes",
 										"conjunto",
 										"23",
@@ -2552,7 +2552,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://127.0.0.1:3000/desercion/resultados/ultimo/87/20181",
+									"raw": "http://127.0.0.1:3000/desertion/resultados/ultimo/87/20181",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -2564,7 +2564,7 @@
 									"path": [
 										"api",
 										"v1",
-										"desercion",
+										"desertion",
 										"resultados",
 										"ultimo",
 										"87",
@@ -2599,7 +2599,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://127.0.0.1:3000/desercion/resultados",
+									"raw": "http://127.0.0.1:3000/desertion/resultados",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -2611,7 +2611,7 @@
 									"path": [
 										"api",
 										"v1",
-										"desercion",
+										"desertion",
 										"resultados"
 									]
 								}
@@ -2632,7 +2632,7 @@
 							"name": "Ejecuciones",
 							"item": [
 								{
-									"name": "ejecuciones",
+									"name": "executions",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -2647,7 +2647,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://juanesquintero.pythonanywhere.com/ejecuciones",
+											"raw": "http://juanesquintero.pythonanywhere.com/executions",
 											"protocol": "http",
 											"host": [
 												"juanesquintero",
@@ -2657,7 +2657,7 @@
 											"path": [
 												"api",
 												"v1",
-												"ejecuciones"
+												"executions"
 											]
 										}
 									},
@@ -2679,7 +2679,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://stormy-retreat-94001.herokuapp.com/ejecuciones/Eco 20151 20201 1.3",
+											"raw": "http://stormy-retreat-94001.herokuapp.com/executions/Eco 20151 20201 1.3",
 											"protocol": "http",
 											"host": [
 												"stormy-retreat-94001",
@@ -2689,7 +2689,7 @@
 											"path": [
 												"api",
 												"v1",
-												"ejecuciones",
+												"executions",
 												"Eco 20151 20201 1.3"
 											]
 										}
@@ -2712,7 +2712,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://127.0.0.1:3000/ejecuciones/student-set/Tec 20151 20201 1",
+											"raw": "http://127.0.0.1:3000/executions/set/Tec 20151 20201 1",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -2724,7 +2724,7 @@
 											"path": [
 												"api",
 												"v1",
-												"ejecuciones",
+												"executions",
 												"conjunto",
 												"Tec 20151 20201 1"
 											]
@@ -2748,7 +2748,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://127.0.0.1:3000/ejecuciones/ejecutor/walter.alvarez@educatic.com.co",
+											"raw": "http://127.0.0.1:3000/executions/ejecutor/walter.alvarez@educatic.com.co",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -2760,7 +2760,7 @@
 											"path": [
 												"api",
 												"v1",
-												"ejecuciones",
+												"executions",
 												"ejecutor",
 												"walter.alvarez@educatic.com.co"
 											]
@@ -2800,7 +2800,7 @@
 											}
 										},
 										"url": {
-											"raw": "http://127.0.0.1:3000/ejecuciones",
+											"raw": "http://127.0.0.1:3000/executions",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -2812,7 +2812,7 @@
 											"path": [
 												"api",
 												"v1",
-												"ejecuciones"
+												"executions"
 											]
 										}
 									},
@@ -2850,7 +2850,7 @@
 											}
 										},
 										"url": {
-											"raw": "http://127.0.0.1:3000/ejecuciones/Sis%2020152%2020182%201.1",
+											"raw": "http://127.0.0.1:3000/executions/Sis%2020152%2020182%201.1",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -2862,7 +2862,7 @@
 											"path": [
 												"api",
 												"v1",
-												"ejecuciones",
+												"executions",
 												"Sis%2020152%2020182%201.1"
 											]
 										}
@@ -2891,7 +2891,7 @@
 											}
 										},
 										"url": {
-											"raw": "http://127.0.0.1:3000/ejecuciones/3",
+											"raw": "http://127.0.0.1:3000/executions/3",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -2901,7 +2901,7 @@
 											],
 											"port": "3000",
 											"path": [
-												"ejecuciones",
+												"executions",
 												"3"
 											]
 										}
@@ -3376,7 +3376,7 @@
 							"name": "Preparaciones",
 							"item": [
 								{
-									"name": "preparaciones",
+									"name": "preparations",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -3391,7 +3391,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://juanesquintero.pythonanywhere.com/preparaciones",
+											"raw": "http://juanesquintero.pythonanywhere.com/preparations",
 											"protocol": "http",
 											"host": [
 												"juanesquintero",
@@ -3401,7 +3401,7 @@
 											"path": [
 												"api",
 												"v1",
-												"preparaciones"
+												"preparations"
 											]
 										}
 									},
@@ -3423,7 +3423,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://stormy-retreat-94001.herokuapp.com/preparaciones/1",
+											"raw": "http://stormy-retreat-94001.herokuapp.com/preparations/1",
 											"protocol": "http",
 											"host": [
 												"stormy-retreat-94001",
@@ -3433,7 +3433,7 @@
 											"path": [
 												"api",
 												"v1",
-												"preparaciones",
+												"preparations",
 												"1"
 											]
 										}
@@ -3456,7 +3456,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://127.0.0.1:3000/preparaciones/student-set/Eco 20151 20201 1",
+											"raw": "http://127.0.0.1:3000/preparations/set/Eco 20151 20201 1",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -3468,7 +3468,7 @@
 											"path": [
 												"api",
 												"v1",
-												"preparaciones",
+												"preparations",
 												"conjunto",
 												"Eco 20151 20201 1"
 											]
@@ -3492,7 +3492,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://127.0.0.1:3000/preparaciones/preparador/walter.alvarez@educatic.com.co",
+											"raw": "http://127.0.0.1:3000/preparations/preparador/walter.alvarez@educatic.com.co",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -3504,7 +3504,7 @@
 											"path": [
 												"api",
 												"v1",
-												"preparaciones",
+												"preparations",
 												"preparador",
 												"walter.alvarez@educatic.com.co"
 											]
@@ -3528,7 +3528,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://127.0.0.1:3000/preparaciones/nombre/Civ 20171 20182 1",
+											"raw": "http://127.0.0.1:3000/preparations/nombre/Civ 20171 20182 1",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -3540,7 +3540,7 @@
 											"path": [
 												"api",
 												"v1",
-												"preparaciones",
+												"preparations",
 												"nombre",
 												"Civ 20171 20182 1"
 											]
@@ -3580,7 +3580,7 @@
 											}
 										},
 										"url": {
-											"raw": "http://127.0.0.1:3000/preparaciones",
+											"raw": "http://127.0.0.1:3000/preparations",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -3592,7 +3592,7 @@
 											"path": [
 												"api",
 												"v1",
-												"preparaciones"
+												"preparations"
 											]
 										}
 									},
@@ -3630,7 +3630,7 @@
 											}
 										},
 										"url": {
-											"raw": "http://127.0.0.1:3000/preparaciones/Sis%2020152%2020182%201.1",
+											"raw": "http://127.0.0.1:3000/preparations/Sis%2020152%2020182%201.1",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -3642,7 +3642,7 @@
 											"path": [
 												"api",
 												"v1",
-												"preparaciones",
+												"preparations",
 												"Sis%2020152%2020182%201.1"
 											]
 										}
@@ -3681,7 +3681,7 @@
 											}
 										},
 										"url": {
-											"raw": "http://127.0.0.1:3000/preparaciones/1",
+											"raw": "http://127.0.0.1:3000/preparations/1",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -3693,7 +3693,7 @@
 											"path": [
 												"api",
 												"v1",
-												"preparaciones",
+												"preparations",
 												"1"
 											]
 										}
@@ -3706,7 +3706,7 @@
 							"name": "Programas",
 							"item": [
 								{
-									"name": "programas",
+									"name": "programs",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -3721,7 +3721,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://eiadigital.eia.edu.co/PleyadesApi/programas",
+											"raw": "http://eiadigital.eia.edu.co/PleyadesApi/programs",
 											"protocol": "http",
 											"host": [
 												"eiadigital",
@@ -3733,7 +3733,7 @@
 												"PleyadesApi",
 												"api",
 												"v1",
-												"programas"
+												"programs"
 											]
 										}
 									},
@@ -3755,7 +3755,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://eiadigital.eia.edu.co/PleyadesApi/programas/1",
+											"raw": "http://eiadigital.eia.edu.co/PleyadesApi/programs/1",
 											"protocol": "http",
 											"host": [
 												"eiadigital",
@@ -3767,7 +3767,7 @@
 												"PleyadesApi",
 												"api",
 												"v1",
-												"programas",
+												"programs",
 												"1"
 											]
 										}
@@ -3790,7 +3790,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://192.168.1.16:3000/programas/facultad/4",
+											"raw": "http://192.168.1.16:3000/programs/facultad/4",
 											"protocol": "http",
 											"host": [
 												"192",
@@ -3802,7 +3802,7 @@
 											"path": [
 												"api",
 												"v1",
-												"programas",
+												"programs",
 												"facultad",
 												"4"
 											]
@@ -3842,7 +3842,7 @@
 											}
 										},
 										"url": {
-											"raw": "http://192.168.1.16:3000/programas",
+											"raw": "http://192.168.1.16:3000/programs",
 											"protocol": "http",
 											"host": [
 												"192",
@@ -3854,7 +3854,7 @@
 											"path": [
 												"api",
 												"v1",
-												"programas"
+												"programs"
 											]
 										}
 									},
@@ -3892,7 +3892,7 @@
 											}
 										},
 										"url": {
-											"raw": "http://192.168.1.16:3000/programas/29",
+											"raw": "http://192.168.1.16:3000/programs/29",
 											"protocol": "http",
 											"host": [
 												"192",
@@ -3904,7 +3904,7 @@
 											"path": [
 												"api",
 												"v1",
-												"programas",
+												"programs",
 												"29"
 											]
 										}
@@ -3912,7 +3912,7 @@
 									"response": []
 								},
 								{
-									"name": "programas",
+									"name": "programs",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -3943,7 +3943,7 @@
 											}
 										},
 										"url": {
-											"raw": "http://192.168.1.16:3000/programas/29",
+											"raw": "http://192.168.1.16:3000/programs/29",
 											"protocol": "http",
 											"host": [
 												"192",
@@ -3955,7 +3955,7 @@
 											"path": [
 												"api",
 												"v1",
-												"programas",
+												"programs",
 												"29"
 											]
 										}
@@ -3968,7 +3968,7 @@
 							"name": "Facultades",
 							"item": [
 								{
-									"name": "facultades",
+									"name": "faculties",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -3983,7 +3983,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "https://campus.tdea.edu.co/pleyapi/facultades",
+											"raw": "https://campus.tdea.edu.co/pleyapi/faculties",
 											"protocol": "https",
 											"host": [
 												"campus",
@@ -3995,7 +3995,7 @@
 												"pleyapi",
 												"api",
 												"v1",
-												"facultades"
+												"faculties"
 											]
 										}
 									},
@@ -4017,7 +4017,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://192.168.1.16:3000/facultades/1",
+											"raw": "http://192.168.1.16:3000/faculties/1",
 											"protocol": "http",
 											"host": [
 												"192",
@@ -4029,7 +4029,7 @@
 											"path": [
 												"api",
 												"v1",
-												"facultades",
+												"faculties",
 												"1"
 											]
 										}
@@ -4068,7 +4068,7 @@
 											}
 										},
 										"url": {
-											"raw": "http://192.168.1.16:3000/facultades/",
+											"raw": "http://192.168.1.16:3000/faculties/",
 											"protocol": "http",
 											"host": [
 												"192",
@@ -4080,7 +4080,7 @@
 											"path": [
 												"api",
 												"v1",
-												"facultades",
+												"faculties",
 												""
 											]
 										}
@@ -4119,7 +4119,7 @@
 											}
 										},
 										"url": {
-											"raw": "http://192.168.1.16:3000/facultades/7",
+											"raw": "http://192.168.1.16:3000/faculties/7",
 											"protocol": "http",
 											"host": [
 												"192",
@@ -4131,7 +4131,7 @@
 											"path": [
 												"api",
 												"v1",
-												"facultades",
+												"faculties",
 												"7"
 											]
 										}
@@ -4170,7 +4170,7 @@
 											}
 										},
 										"url": {
-											"raw": "http://192.168.1.16:3000/facultades/7",
+											"raw": "http://192.168.1.16:3000/faculties/7",
 											"protocol": "http",
 											"host": [
 												"192",
@@ -4182,7 +4182,7 @@
 											"path": [
 												"api",
 												"v1",
-												"facultades",
+												"faculties",
 												"7"
 											]
 										}
@@ -4195,7 +4195,7 @@
 							"name": "Usuarios",
 							"item": [
 								{
-									"name": "usuarios",
+									"name": "users",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -4210,7 +4210,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "https://campus.tdea.edu.co/pleyapi/usuarios",
+											"raw": "https://campus.tdea.edu.co/pleyapi/users",
 											"protocol": "https",
 											"host": [
 												"campus",
@@ -4222,7 +4222,7 @@
 												"pleyapi",
 												"api",
 												"v1",
-												"usuarios"
+												"users"
 											]
 										}
 									},
@@ -4244,7 +4244,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://juanesquintero.pythonanywhere.com/usuarios/admin@pleyades.com",
+											"raw": "http://juanesquintero.pythonanywhere.com/users/admin@pleyades.com",
 											"protocol": "http",
 											"host": [
 												"juanesquintero",
@@ -4254,7 +4254,7 @@
 											"path": [
 												"api",
 												"v1",
-												"usuarios",
+												"users",
 												"admin@pleyades.com"
 											]
 										}
@@ -4267,7 +4267,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://192.168.1.22:3000/usuarios/programa/420-0015-01",
+											"raw": "http://192.168.1.22:3000/users/programa/420-0015-01",
 											"protocol": "http",
 											"host": [
 												"192",
@@ -4277,7 +4277,7 @@
 											],
 											"port": "3000",
 											"path": [
-												"usuarios",
+												"users",
 												"programa",
 												"420-0015-01"
 											]
@@ -4301,7 +4301,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://192.168.1.22:3000/usuarios/facultad/420",
+											"raw": "http://192.168.1.22:3000/users/facultad/420",
 											"protocol": "http",
 											"host": [
 												"192",
@@ -4313,7 +4313,7 @@
 											"path": [
 												"api",
 												"v1",
-												"usuarios",
+												"users",
 												"facultad",
 												"420"
 											]
@@ -4353,7 +4353,7 @@
 											}
 										},
 										"url": {
-											"raw": "http://192.168.1.22:3000/usuarios/",
+											"raw": "http://192.168.1.22:3000/users/",
 											"protocol": "http",
 											"host": [
 												"192",
@@ -4365,7 +4365,7 @@
 											"path": [
 												"api",
 												"v1",
-												"usuarios",
+												"users",
 												""
 											]
 										}
@@ -4404,7 +4404,7 @@
 											}
 										},
 										"url": {
-											"raw": "http://192.168.1.22:3000/usuarios/albert.jhon@gmail.com",
+											"raw": "http://192.168.1.22:3000/users/albert.jhon@gmail.com",
 											"protocol": "http",
 											"host": [
 												"192",
@@ -4416,7 +4416,7 @@
 											"path": [
 												"api",
 												"v1",
-												"usuarios",
+												"users",
 												"albert.jhon@gmail.com"
 											]
 										}
@@ -4455,7 +4455,7 @@
 											}
 										},
 										"url": {
-											"raw": "http://192.168.1.22:3000/usuarios/juanes@gmail.com",
+											"raw": "http://192.168.1.22:3000/users/juanes@gmail.com",
 											"protocol": "http",
 											"host": [
 												"192",
@@ -4467,7 +4467,7 @@
 											"path": [
 												"api",
 												"v1",
-												"usuarios",
+												"users",
 												"juanes@gmail.com"
 											]
 										}
@@ -4574,7 +4574,7 @@
 							"name": "Ejecuciones",
 							"item": [
 								{
-									"name": "ejecuciones",
+									"name": "executions",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -4589,7 +4589,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "https://eiadigital.eia.edu.co/PleyadesApi/ejecuciones",
+											"raw": "https://eiadigital.eia.edu.co/PleyadesApi/executions",
 											"protocol": "https",
 											"host": [
 												"eiadigital",
@@ -4601,7 +4601,7 @@
 												"PleyadesApi",
 												"api",
 												"v1",
-												"ejecuciones"
+												"executions"
 											]
 										}
 									},
@@ -4623,7 +4623,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://stormy-retreat-94001.herokuapp.com/ejecuciones/Eco 20151 20201 1.3",
+											"raw": "http://stormy-retreat-94001.herokuapp.com/executions/Eco 20151 20201 1.3",
 											"protocol": "http",
 											"host": [
 												"stormy-retreat-94001",
@@ -4633,7 +4633,7 @@
 											"path": [
 												"api",
 												"v1",
-												"ejecuciones",
+												"executions",
 												"Eco 20151 20201 1.3"
 											]
 										}
@@ -4656,7 +4656,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://127.0.0.1:3000/ejecuciones/student-set/Tec 20151 20201 1",
+											"raw": "http://127.0.0.1:3000/executions/set/Tec 20151 20201 1",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -4668,7 +4668,7 @@
 											"path": [
 												"api",
 												"v1",
-												"ejecuciones",
+												"executions",
 												"conjunto",
 												"Tec 20151 20201 1"
 											]
@@ -4692,7 +4692,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://127.0.0.1:3000/ejecuciones/ejecutor/walter.alvarez@educatic.com.co",
+											"raw": "http://127.0.0.1:3000/executions/ejecutor/walter.alvarez@educatic.com.co",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -4704,7 +4704,7 @@
 											"path": [
 												"api",
 												"v1",
-												"ejecuciones",
+												"executions",
 												"ejecutor",
 												"walter.alvarez@educatic.com.co"
 											]
@@ -4744,7 +4744,7 @@
 											}
 										},
 										"url": {
-											"raw": "http://127.0.0.1:3000/ejecuciones",
+											"raw": "http://127.0.0.1:3000/executions",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -4756,7 +4756,7 @@
 											"path": [
 												"api",
 												"v1",
-												"ejecuciones"
+												"executions"
 											]
 										}
 									},
@@ -4794,7 +4794,7 @@
 											}
 										},
 										"url": {
-											"raw": "http://127.0.0.1:3000/ejecuciones/Sis%2020152%2020182%201.1",
+											"raw": "http://127.0.0.1:3000/executions/Sis%2020152%2020182%201.1",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -4806,7 +4806,7 @@
 											"path": [
 												"api",
 												"v1",
-												"ejecuciones",
+												"executions",
 												"Sis%2020152%2020182%201.1"
 											]
 										}
@@ -4835,7 +4835,7 @@
 											}
 										},
 										"url": {
-											"raw": "http://127.0.0.1:3000/ejecuciones/3",
+											"raw": "http://127.0.0.1:3000/executions/3",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -4845,7 +4845,7 @@
 											],
 											"port": "3000",
 											"path": [
-												"ejecuciones",
+												"executions",
 												"3"
 											]
 										}
@@ -5320,7 +5320,7 @@
 							"name": "Preparaciones",
 							"item": [
 								{
-									"name": "preparaciones",
+									"name": "preparations",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -5335,7 +5335,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "https://eiadigital.eia.edu.co/PleyadesApi/preparaciones",
+											"raw": "https://eiadigital.eia.edu.co/PleyadesApi/preparations",
 											"protocol": "https",
 											"host": [
 												"eiadigital",
@@ -5347,7 +5347,7 @@
 												"PleyadesApi",
 												"api",
 												"v1",
-												"preparaciones"
+												"preparations"
 											]
 										}
 									},
@@ -5369,7 +5369,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://stormy-retreat-94001.herokuapp.com/preparaciones/1",
+											"raw": "http://stormy-retreat-94001.herokuapp.com/preparations/1",
 											"protocol": "http",
 											"host": [
 												"stormy-retreat-94001",
@@ -5379,7 +5379,7 @@
 											"path": [
 												"api",
 												"v1",
-												"preparaciones",
+												"preparations",
 												"1"
 											]
 										}
@@ -5402,7 +5402,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://127.0.0.1:3000/preparaciones/student-set/Eco 20151 20201 1",
+											"raw": "http://127.0.0.1:3000/preparations/set/Eco 20151 20201 1",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -5414,7 +5414,7 @@
 											"path": [
 												"api",
 												"v1",
-												"preparaciones",
+												"preparations",
 												"conjunto",
 												"Eco 20151 20201 1"
 											]
@@ -5438,7 +5438,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://127.0.0.1:3000/preparaciones/preparador/walter.alvarez@educatic.com.co",
+											"raw": "http://127.0.0.1:3000/preparations/preparador/walter.alvarez@educatic.com.co",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -5450,7 +5450,7 @@
 											"path": [
 												"api",
 												"v1",
-												"preparaciones",
+												"preparations",
 												"preparador",
 												"walter.alvarez@educatic.com.co"
 											]
@@ -5474,7 +5474,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://127.0.0.1:3000/preparaciones/nombre/Civ 20171 20182 1",
+											"raw": "http://127.0.0.1:3000/preparations/nombre/Civ 20171 20182 1",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -5486,7 +5486,7 @@
 											"path": [
 												"api",
 												"v1",
-												"preparaciones",
+												"preparations",
 												"nombre",
 												"Civ 20171 20182 1"
 											]
@@ -5526,7 +5526,7 @@
 											}
 										},
 										"url": {
-											"raw": "http://127.0.0.1:3000/preparaciones",
+											"raw": "http://127.0.0.1:3000/preparations",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -5538,7 +5538,7 @@
 											"path": [
 												"api",
 												"v1",
-												"preparaciones"
+												"preparations"
 											]
 										}
 									},
@@ -5576,7 +5576,7 @@
 											}
 										},
 										"url": {
-											"raw": "http://127.0.0.1:3000/preparaciones/Sis%2020152%2020182%201.1",
+											"raw": "http://127.0.0.1:3000/preparations/Sis%2020152%2020182%201.1",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -5588,7 +5588,7 @@
 											"path": [
 												"api",
 												"v1",
-												"preparaciones",
+												"preparations",
 												"Sis%2020152%2020182%201.1"
 											]
 										}
@@ -5627,7 +5627,7 @@
 											}
 										},
 										"url": {
-											"raw": "http://127.0.0.1:3000/preparaciones/1",
+											"raw": "http://127.0.0.1:3000/preparations/1",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -5639,7 +5639,7 @@
 											"path": [
 												"api",
 												"v1",
-												"preparaciones",
+												"preparations",
 												"1"
 											]
 										}
@@ -5652,7 +5652,7 @@
 							"name": "Programas",
 							"item": [
 								{
-									"name": "programas",
+									"name": "programs",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -5667,7 +5667,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://eiadigital.eia.edu.co/PleyadesApi/programas",
+											"raw": "http://eiadigital.eia.edu.co/PleyadesApi/programs",
 											"protocol": "http",
 											"host": [
 												"eiadigital",
@@ -5679,7 +5679,7 @@
 												"PleyadesApi",
 												"api",
 												"v1",
-												"programas"
+												"programs"
 											]
 										}
 									},
@@ -5701,7 +5701,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://eiadigital.eia.edu.co/PleyadesApi/programas/1",
+											"raw": "http://eiadigital.eia.edu.co/PleyadesApi/programs/1",
 											"protocol": "http",
 											"host": [
 												"eiadigital",
@@ -5713,7 +5713,7 @@
 												"PleyadesApi",
 												"api",
 												"v1",
-												"programas",
+												"programs",
 												"1"
 											]
 										}
@@ -5736,7 +5736,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://192.168.1.16:3000/programas/facultad/4",
+											"raw": "http://192.168.1.16:3000/programs/facultad/4",
 											"protocol": "http",
 											"host": [
 												"192",
@@ -5748,7 +5748,7 @@
 											"path": [
 												"api",
 												"v1",
-												"programas",
+												"programs",
 												"facultad",
 												"4"
 											]
@@ -5788,7 +5788,7 @@
 											}
 										},
 										"url": {
-											"raw": "http://192.168.1.16:3000/programas",
+											"raw": "http://192.168.1.16:3000/programs",
 											"protocol": "http",
 											"host": [
 												"192",
@@ -5800,7 +5800,7 @@
 											"path": [
 												"api",
 												"v1",
-												"programas"
+												"programs"
 											]
 										}
 									},
@@ -5838,7 +5838,7 @@
 											}
 										},
 										"url": {
-											"raw": "http://192.168.1.16:3000/programas/29",
+											"raw": "http://192.168.1.16:3000/programs/29",
 											"protocol": "http",
 											"host": [
 												"192",
@@ -5850,7 +5850,7 @@
 											"path": [
 												"api",
 												"v1",
-												"programas",
+												"programs",
 												"29"
 											]
 										}
@@ -5858,7 +5858,7 @@
 									"response": []
 								},
 								{
-									"name": "programas",
+									"name": "programs",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -5889,7 +5889,7 @@
 											}
 										},
 										"url": {
-											"raw": "http://192.168.1.16:3000/programas/29",
+											"raw": "http://192.168.1.16:3000/programs/29",
 											"protocol": "http",
 											"host": [
 												"192",
@@ -5901,7 +5901,7 @@
 											"path": [
 												"api",
 												"v1",
-												"programas",
+												"programs",
 												"29"
 											]
 										}
@@ -5914,7 +5914,7 @@
 							"name": "Facultades",
 							"item": [
 								{
-									"name": "facultades",
+									"name": "faculties",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -5929,7 +5929,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "https://eiadigital.eia.edu.co/PleyadesApi/facultades",
+											"raw": "https://eiadigital.eia.edu.co/PleyadesApi/faculties",
 											"protocol": "https",
 											"host": [
 												"eiadigital",
@@ -5941,7 +5941,7 @@
 												"PleyadesApi",
 												"api",
 												"v1",
-												"facultades"
+												"faculties"
 											]
 										}
 									},
@@ -5963,7 +5963,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://192.168.1.16:3000/facultades/1",
+											"raw": "http://192.168.1.16:3000/faculties/1",
 											"protocol": "http",
 											"host": [
 												"192",
@@ -5975,7 +5975,7 @@
 											"path": [
 												"api",
 												"v1",
-												"facultades",
+												"faculties",
 												"1"
 											]
 										}
@@ -6014,7 +6014,7 @@
 											}
 										},
 										"url": {
-											"raw": "http://192.168.1.16:3000/facultades/",
+											"raw": "http://192.168.1.16:3000/faculties/",
 											"protocol": "http",
 											"host": [
 												"192",
@@ -6026,7 +6026,7 @@
 											"path": [
 												"api",
 												"v1",
-												"facultades",
+												"faculties",
 												""
 											]
 										}
@@ -6065,7 +6065,7 @@
 											}
 										},
 										"url": {
-											"raw": "http://192.168.1.16:3000/facultades/7",
+											"raw": "http://192.168.1.16:3000/faculties/7",
 											"protocol": "http",
 											"host": [
 												"192",
@@ -6077,7 +6077,7 @@
 											"path": [
 												"api",
 												"v1",
-												"facultades",
+												"faculties",
 												"7"
 											]
 										}
@@ -6116,7 +6116,7 @@
 											}
 										},
 										"url": {
-											"raw": "http://192.168.1.16:3000/facultades/7",
+											"raw": "http://192.168.1.16:3000/faculties/7",
 											"protocol": "http",
 											"host": [
 												"192",
@@ -6128,7 +6128,7 @@
 											"path": [
 												"api",
 												"v1",
-												"facultades",
+												"faculties",
 												"7"
 											]
 										}
@@ -6141,7 +6141,7 @@
 							"name": "Usuarios",
 							"item": [
 								{
-									"name": "usuarios",
+									"name": "users",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -6156,7 +6156,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "https://eiadigital.eia.edu.co/PleyadesApi/usuarios",
+											"raw": "https://eiadigital.eia.edu.co/PleyadesApi/users",
 											"protocol": "https",
 											"host": [
 												"eiadigital",
@@ -6168,7 +6168,7 @@
 												"PleyadesApi",
 												"api",
 												"v1",
-												"usuarios"
+												"users"
 											]
 										}
 									},
@@ -6190,7 +6190,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://juanesquintero.pythonanywhere.com/usuarios/admin@pleyades.com",
+											"raw": "http://juanesquintero.pythonanywhere.com/users/admin@pleyades.com",
 											"protocol": "http",
 											"host": [
 												"juanesquintero",
@@ -6200,7 +6200,7 @@
 											"path": [
 												"api",
 												"v1",
-												"usuarios",
+												"users",
 												"admin@pleyades.com"
 											]
 										}
@@ -6213,7 +6213,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://192.168.1.22:3000/usuarios/programa/420-0015-01",
+											"raw": "http://192.168.1.22:3000/users/programa/420-0015-01",
 											"protocol": "http",
 											"host": [
 												"192",
@@ -6223,7 +6223,7 @@
 											],
 											"port": "3000",
 											"path": [
-												"usuarios",
+												"users",
 												"programa",
 												"420-0015-01"
 											]
@@ -6247,7 +6247,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://192.168.1.22:3000/usuarios/facultad/420",
+											"raw": "http://192.168.1.22:3000/users/facultad/420",
 											"protocol": "http",
 											"host": [
 												"192",
@@ -6259,7 +6259,7 @@
 											"path": [
 												"api",
 												"v1",
-												"usuarios",
+												"users",
 												"facultad",
 												"420"
 											]
@@ -6299,7 +6299,7 @@
 											}
 										},
 										"url": {
-											"raw": "https://eiadigital.eia.edu.co/PleyadesApi/usuarios/",
+											"raw": "https://eiadigital.eia.edu.co/PleyadesApi/users/",
 											"protocol": "https",
 											"host": [
 												"eiadigital",
@@ -6311,7 +6311,7 @@
 												"PleyadesApi",
 												"api",
 												"v1",
-												"usuarios",
+												"users",
 												""
 											]
 										}
@@ -6350,7 +6350,7 @@
 											}
 										},
 										"url": {
-											"raw": "http://192.168.1.22:3000/usuarios/albert.jhon@gmail.com",
+											"raw": "http://192.168.1.22:3000/users/albert.jhon@gmail.com",
 											"protocol": "http",
 											"host": [
 												"192",
@@ -6362,7 +6362,7 @@
 											"path": [
 												"api",
 												"v1",
-												"usuarios",
+												"users",
 												"albert.jhon@gmail.com"
 											]
 										}
@@ -6401,7 +6401,7 @@
 											}
 										},
 										"url": {
-											"raw": "https://eiadigital.eia.edu.co/PleyadesApi/usuarios/juaneschrome@gmail.com",
+											"raw": "https://eiadigital.eia.edu.co/PleyadesApi/users/juaneschrome@gmail.com",
 											"protocol": "https",
 											"host": [
 												"eiadigital",
@@ -6413,7 +6413,7 @@
 												"PleyadesApi",
 												"api",
 												"v1",
-												"usuarios",
+												"users",
 												"juaneschrome@gmail.com"
 											]
 										}
@@ -6533,7 +6533,7 @@
 												"method": "GET",
 												"header": [],
 												"url": {
-													"raw": "https://eiadigital.eia.edu.co/PleyadesApi/desercion/estudiantes/periodos",
+													"raw": "https://eiadigital.eia.edu.co/PleyadesApi/desertion/estudiantes/periodos",
 													"protocol": "https",
 													"host": [
 														"eiadigital",
@@ -6545,7 +6545,7 @@
 														"PleyadesApi",
 														"api",
 														"v1",
-														"desercion",
+														"desertion",
 														"estudiantes",
 														"periodos"
 													]
@@ -6595,7 +6595,7 @@
 							"response": []
 						},
 						{
-							"name": "usuarios",
+							"name": "users",
 							"request": {
 								"auth": {
 									"type": "bearer",
@@ -6610,7 +6610,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://apipleyades.pythonanywhere.com/usuarios",
+									"raw": "http://apipleyades.pythonanywhere.com/users",
 									"protocol": "http",
 									"host": [
 										"apipleyades",
@@ -6620,14 +6620,14 @@
 									"path": [
 										"api",
 										"v1",
-										"usuarios"
+										"users"
 									]
 								}
 							},
 							"response": []
 						},
 						{
-							"name": "ejecuciones",
+							"name": "executions",
 							"request": {
 								"auth": {
 									"type": "bearer",
@@ -6642,7 +6642,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://apipleyades.pythonanywhere.com/ejecuciones",
+									"raw": "http://apipleyades.pythonanywhere.com/executions",
 									"protocol": "http",
 									"host": [
 										"apipleyades",
@@ -6652,14 +6652,14 @@
 									"path": [
 										"api",
 										"v1",
-										"ejecuciones"
+										"executions"
 									]
 								}
 							},
 							"response": []
 						},
 						{
-							"name": "preparaciones",
+							"name": "preparations",
 							"request": {
 								"auth": {
 									"type": "bearer",
@@ -6674,7 +6674,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://apipleyades.pythonanywhere.com/preparaciones",
+									"raw": "http://apipleyades.pythonanywhere.com/preparations",
 									"protocol": "http",
 									"host": [
 										"apipleyades",
@@ -6684,14 +6684,14 @@
 									"path": [
 										"api",
 										"v1",
-										"preparaciones"
+										"preparations"
 									]
 								}
 							},
 							"response": []
 						},
 						{
-							"name": "desercion programas",
+							"name": "desertion programs",
 							"request": {
 								"auth": {
 									"type": "bearer",
@@ -6706,7 +6706,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://apipleyades.pythonanywhere.com/desercion/estudiantes/programas",
+									"raw": "http://apipleyades.pythonanywhere.com/desertion/estudiantes/programs",
 									"protocol": "http",
 									"host": [
 										"apipleyades",
@@ -6716,16 +6716,16 @@
 									"path": [
 										"api",
 										"v1",
-										"desercion",
+										"desertion",
 										"estudiantes",
-										"programas"
+										"programs"
 									]
 								}
 							},
 							"response": []
 						},
 						{
-							"name": "desercion conjunto",
+							"name": "desertion conjunto",
 							"request": {
 								"auth": {
 									"type": "bearer",
@@ -6740,7 +6740,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://apipleyades.pythonanywhere.com/desercion/estudiantes/student-set/23/20151/20191",
+									"raw": "http://apipleyades.pythonanywhere.com/desertion/estudiantes/set/23/20151/20191",
 									"protocol": "http",
 									"host": [
 										"apipleyades",
@@ -6750,7 +6750,7 @@
 									"path": [
 										"api",
 										"v1",
-										"desercion",
+										"desertion",
 										"estudiantes",
 										"conjunto",
 										"23",

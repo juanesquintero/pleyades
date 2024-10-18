@@ -110,23 +110,23 @@ def app_routes(app):
     from controllers.Conjuntos import StudentSet
     from controllers.Preparaciones import Preparacion
     from controllers.Ejecuciones import Ejecucion
-    from controllers.desercion.Institucion import IES
-    from controllers.desercion.Estudiantes import Estudiante
-    from controllers.desercion.Resultados import Resultado
+    from controllers.desertion.Institucion import IES
+    from controllers.desertion.Estudiantes import Estudiante
+    from controllers.desertion.Resultados import Result
 
     # Register routes
     app.register_blueprint(Auth, url_prefix=base_path+'auth')
-    app.register_blueprint(Facultad, url_prefix=base_path+'facultades')
-    app.register_blueprint(Programa, url_prefix=base_path+'programas')
-    app.register_blueprint(Usuario, url_prefix=base_path+'usuarios')
-    app.register_blueprint(StudentSet, url_prefix=base_path+'conjuntos')
-    app.register_blueprint(Preparacion, url_prefix=base_path+'preparaciones')
-    app.register_blueprint(Ejecucion, url_prefix=base_path+'ejecuciones')
-    app.register_blueprint(IES, url_prefix=base_path+'desercion/institucion')
+    app.register_blueprint(Facultad, url_prefix=base_path+'faculties')
+    app.register_blueprint(Programa, url_prefix=base_path+'programs')
+    app.register_blueprint(Usuario, url_prefix=base_path+'users')
+    app.register_blueprint(StudentSet, url_prefix=base_path+'sets')
+    app.register_blueprint(Preparacion, url_prefix=base_path+'preparations')
+    app.register_blueprint(Ejecucion, url_prefix=base_path+'executions')
+    app.register_blueprint(IES, url_prefix=base_path+'desertion/institute')
     app.register_blueprint(
-        Estudiante, url_prefix=base_path+'desercion/estudiantes')
+        Estudiante, url_prefix=base_path+'desertion/estudiantes')
     app.register_blueprint(
-        Resultado, url_prefix=base_path+'desercion/resultados')
+        Result, url_prefix=base_path+'desertion/resultados')
 
 
 def app_errors(app, error_logger):

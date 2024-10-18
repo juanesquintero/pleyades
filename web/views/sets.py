@@ -125,7 +125,7 @@ def post_create():
 @login_required
 def get_periods_programa(programa):
     status, body = get(
-        'desercion/estudiantes/periods/programa/{}'.format(programa))
+        'desertion/estudiantes/periods/programa/{}'.format(programa))
     if status:
         return jsonify(body)
     return jsonify([])
@@ -221,7 +221,7 @@ def post_save(conjunto=None):
     # elif tipo == 'consulta':
     else:
         # Obtener datos de los estudiantes en ese programs y periods
-        endpoint_conjunto = 'desercion/estudiantes/student-set/{}/{}/{}'
+        endpoint_conjunto = 'desertion/estudiantes/set/{}/{}/{}'
         endpoint_conjunto_values = endpoint_conjunto.format(
             conjunto['programa'], conjunto['periodoInicial'], conjunto['periodoFinal'])
         status, body = get(endpoint_conjunto_values)
@@ -295,7 +295,7 @@ def preparar(conjunto=None):
     preparacion['preparador'] = session['user']['correo']
     preparacion['fechaInicial'] = get_now_date()
     # Obtener numero de preparacion para el conjunto
-    status_p, body_p = get('preparaciones/nombre/'+nombre)
+    status_p, body_p = get('preparations/nombre/'+nombre)
     if status_p:
         preparacion['numero'] = body_p['numero']
         preparacion['nombre'] = body_p['nombre']
@@ -375,7 +375,7 @@ def ejecutar(conjunto=None):
     ejecucion['fechaInicial'] = get_now_date()
 
     # Obtener numero de ejecución para el conjunto
-    status_p, body_p = get('ejecuciones/nombre/'+nombre)
+    status_p, body_p = get('executions/nombre/'+nombre)
     if status_p:
         ejecucion['nombre'] = body_p['nombre']
         ejecucion['numero'] = body_p['numero']
@@ -431,7 +431,7 @@ def ejecutar(conjunto=None):
     # Guardar registro de los desertores en la BD del ies
 
     # Actualizar los results a ultimo
-    endpoint_ultimo = 'desercion/results/ultimo/{}/{}'
+    endpoint_ultimo = 'desertion/results/ultimo/{}/{}'
     endpoint_ultimo_values = endpoint_ultimo.format(
         conjunto['programa'], conjunto['periodoFinal']
     )
@@ -443,7 +443,7 @@ def ejecutar(conjunto=None):
             resultados_desertores.to_json(orient='records')
         )
         status_insert, body_insert = post(
-            'desercion/results', resultados_insert
+            'desertion/results', resultados_insert
         )
         if not status_update or not status_insert:
             act_state = actualizar_state(nombre, 'Procesados')
@@ -495,7 +495,7 @@ def ejecutar(conjunto=None):
         return act_state
 
     # TODO DEPRECATED! version 1 v1.5.0
-    # return redirect(url_for('Resultado.ejecuciones', conjunto=nombre))
+    # return redirect(url_for('Result.executions', conjunto=nombre))
 
     # TODO NEW! version 2 v2.0.0
     return redirect(url_for('Analista.modelos', modelo=nombre))

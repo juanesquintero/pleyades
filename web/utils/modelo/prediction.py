@@ -36,7 +36,7 @@ def predict(data_a_predecir, period_a_predecir, basic_info):
         'desertores': result.get('desertores'),
         'period_a_predecir': int(period_a_predecir),
         'students_analizados': result.get('total_analizados'),
-        'desercion_prevista': result.get('desercion'),
+        'desercion_prevista': result.get('desertion'),
         'potenciales_desertores': result.get('total'),
         'clasificador': str(mejor_clasificador.__class__.__name__),
     }
@@ -132,7 +132,7 @@ def predict_classifier(data_a_predecir, period_a_predecir, mejor_clasificador):
         'desertores': potenciales_desertores,
         'total': int(total_desertores),
         'total_analizados': int(total_students_analizados),
-        'desercion': float(round(desercion_prevista, 3))
+        'desertion': float(round(desercion_prevista, 3))
     }
 
 

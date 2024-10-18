@@ -12,7 +12,7 @@ class DTO():
         db.session.commit()
         return row
 
-    def delete(_class, field):
+    def post_delete(_class, field):
         row = _class._get_one(field)
         db.session.delete(row)
         db.session.commit()
@@ -25,7 +25,7 @@ class DTO():
 
 
 class Usuario(db.Model, SerializerMixin):
-    __tablename__ = 'usuarios'
+    __tablename__ = 'users'
     correo = db.Column(db.String, primary_key=True, nullable=False)
     nombre = db.Column(db.String, nullable=False)
     clave = db.Column(db.String, nullable=False)
@@ -59,7 +59,7 @@ class Usuario(db.Model, SerializerMixin):
     def insert(fields):
         return DTO.insert(Usuario, fields)
 
-    def delete(correo):
+    def post_delete(correo):
         return DTO.delete(Usuario, correo)
 
     def update(correo, fields):
@@ -125,7 +125,7 @@ class StudentSet(db.Model, SerializerMixin):
     def insert(fields):
         return DTO.insert(StudentSet, fields)
 
-    def delete(nombre):
+    def post_delete(nombre):
         return DTO.delete(StudentSet, nombre)
 
     def update(nombre, fields):
@@ -136,7 +136,7 @@ class StudentSet(db.Model, SerializerMixin):
 
 
 class Preparacion(db.Model, SerializerMixin):
-    __tablename__ = 'preparaciones'
+    __tablename__ = 'preparations'
     serialize_only = (
         'preparador',
         'conjunto',
@@ -192,7 +192,7 @@ class Preparacion(db.Model, SerializerMixin):
     def insert(fields):
         return DTO.insert(Preparacion, fields)
 
-    def delete(nombre):
+    def post_delete(nombre):
         return DTO.delete(Preparacion, nombre)
 
     def delete_conjunto(conjunto):
@@ -206,7 +206,7 @@ class Preparacion(db.Model, SerializerMixin):
 
 
 class Ejecucion(db.Model, SerializerMixin):
-    __tablename__ = 'ejecuciones'
+    __tablename__ = 'executions'
     serialize_only = (
         'ejecutor',
         'conjunto',
@@ -267,7 +267,7 @@ class Ejecucion(db.Model, SerializerMixin):
     def insert(fields):
         return DTO.insert(Ejecucion, fields)
 
-    def delete(nombre):
+    def post_delete(nombre):
         return DTO.delete(Ejecucion, nombre)
 
     def delete_conjunto(conjunto):

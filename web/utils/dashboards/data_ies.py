@@ -2,12 +2,12 @@ import logging
 import pandas as pd
 from services.API import get
 
-ies_route = 'desercion/institucion/'
-students_route = 'desercion/estudiantes/'
+ies_route = 'desertion/institute/'
+students_route = 'desertion/estudiantes/'
 error_logger = logging.getLogger('error_logger')
 
 
-########################################################## Vista VWDATADESERCIONINSTITUCION de institucion ##########################################################
+########################################################## Vista VWDATADESERCIONINSTITUCION de institute ##########################################################
 
 def get_IES_total_data(periodo: int):
     status, body = get(ies_route+'totales/{}'.format(periodo))

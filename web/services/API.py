@@ -55,7 +55,7 @@ def result(endpoint, status, body):
         if 'sesión' in msg or 'expirado' in msg:
             raise Exception(body.get('msg'))
 
-        if '/desercion/' in endpoint:
+        if '/desertion/' in endpoint:
             if msg == 'No hay concidencias' or status == 404:
                 raise Exception(
                     'No se encontraron concidencias, por favor revise la base de datos', status=404)

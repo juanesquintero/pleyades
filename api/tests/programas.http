@@ -1,4 +1,4 @@
-GET http://localhost:3001/usuarios/programa/42
+GET http://localhost:3001/users/programa/42
 Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODYyMjA0MDcsIm5iZiI6MTU4NjIyMDQwNywianRpIjoiNWQ3MTM1YWEtNmYzMy00NzQwLTgyZGItZDliZDZkMzU3NGJmIiwiZXhwIjoxNjQwNjUyNDA3LCJpZGVudGl0eSI6eyJjb3JyZW8i
 
 

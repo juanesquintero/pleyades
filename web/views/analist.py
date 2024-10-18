@@ -143,7 +143,7 @@ def predecir_modelo():
     )
 
     status_insert, body_insert = post(
-        'desercion/results',
+        'desertion/results',
         resultados_insert
     )
 
@@ -198,7 +198,7 @@ def download():
 @Analista.route('/modelos/periods/<int:programa>')
 @login_required
 def get_periods_programa(programa):
-    status, body = get(f'desercion/estudiantes/periods/programa/{programa}')
+    status, body = get(f'desertion/estudiantes/periods/programa/{programa}')
     if status:
         return jsonify(body)
     return jsonify([])
@@ -206,7 +206,7 @@ def get_periods_programa(programa):
 
 def get_modelos(nombre=None, conjunto=None):
     user = session.get('user', {'correo': ''}).get('correo')
-    endopoint = f'ejecuciones/ejecutor/{user}'
+    endopoint = f'executions/ejecutor/{user}'
     if nombre:
         endopoint += f'?nombre={nombre}'
     elif conjunto:

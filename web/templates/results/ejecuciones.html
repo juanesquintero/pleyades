@@ -16,7 +16,7 @@
 
 <ul class="nav nav-tabs mb-4">
   <li class="nav-item">
-    <a class="nav-link text-dark  bg-light border" href="{{url_for('Resultado.preparaciones')}}">Preparaciones</a>
+    <a class="nav-link text-dark  bg-light border" href="{{url_for('Result.preparations')}}">Preparaciones</a>
   </li>
   <li class="nav-item">
     <a class="nav-link active text-dark" href="#">Ejecuciones</a>
@@ -61,7 +61,7 @@
         <td>
           <center>
             <!--Ver Ejecuciones -->
-            <form action="{{url_for('Resultado.ejecucion_detalle')}}" method="POST">
+            <form action="{{url_for('Result.ejecucion_detalle')}}" method="POST">
               <input type="hidden" name="ejecucion" value="{{e.nombre}}">
               <button type="submit" data-toggle="tooltip" data-placement="bottom" title="Ver Detalle"
                 class="btn btn-outline-dark btn-sm submit" role="status">

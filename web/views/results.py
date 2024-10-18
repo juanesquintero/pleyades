@@ -10,31 +10,31 @@ load_dotenv()
 
 endopoint = 'results/'
 
-Resultado = Blueprint('Resultado', __name__)
+Result = Blueprint('Result', __name__)
 
 upload_folder = os.getcwd()+'/uploads'
 
 
-@Resultado.route('/preparaciones')
-@Resultado.route('/preparaciones/<conjunto>')
+@Result.route('/preparations')
+@Result.route('/preparations/<conjunto>')
 @login_required
-def preparaciones(conjunto=None):
+def preparations(conjunto=None):
     if conjunto:
-        return list_set('preparaciones', conjunto)
-    return get_list('preparaciones')
+        return list_set('preparations', conjunto)
+    return get_list('preparations')
 
 
-@Resultado.route('/ejecuciones')
-@Resultado.route('/ejecuciones/<conjunto>')
+@Result.route('/executions')
+@Result.route('/executions/<conjunto>')
 @login_required
-def ejecuciones(conjunto=None):
+def executions(conjunto=None):
     if conjunto:
-        return list_set('ejecuciones', conjunto)
-    return get_list('ejecuciones')
+        return list_set('executions', conjunto)
+    return get_list('executions')
 
 
 def get_list(results):
-    rol = 'preparador' if results == 'preparaciones' else 'ejecutor'
+    rol = 'preparador' if results == 'preparations' else 'ejecutor'
     status, body = get(results+'/'+rol+'/'+session['user']['correo'])
     if status:
         return render_template(endopoint+results+'.html', results=set_date_format(body))
@@ -43,14 +43,14 @@ def get_list(results):
 
 
 def list_set(results, conjunto):
-    status, body = get(results+'/student-set/'+conjunto)
+    status, body = get(results+'/set/'+conjunto)
     if status:
         return render_template(endopoint+results+'.html', results=set_date_format(body))
     else:
         return render_template(endopoint+results+'.html', results=[], error=body)
 
 
-@Resultado.route('/ejecucion/detalle', methods=['POST'])
+@Result.route('/ejecucion/detalle', methods=['POST'])
 @login_required
 def ejecucion_detalle():
     body = dict(request.values)
@@ -61,7 +61,7 @@ def ejecucion_detalle():
     ruta = upload_folder+'/desertores/'+archivo
     exito, desertores = obtener_archivo_json(ruta)
 
-    status, body = get('ejecuciones/'+ejecucion)
+    status, body = get('executions/'+ejecucion)
 
     if status and exito:
         del body['precision_modelo']
@@ -87,12 +87,12 @@ def ejecucion_detalle():
         )
 
 
-@Resultado.route('/preparacion/detalle', methods=['POST'])
+@Result.route('/preparacion/detalle', methods=['POST'])
 @login_required
 def preparacion_detalle():
     body = dict(request.values)
     preparacion = body['preparacion']
-    status, body = get('preparaciones/'+preparacion)
+    status, body = get('preparations/'+preparacion)
 
     if status:
         del body['numero']
@@ -109,10 +109,10 @@ def preparacion_detalle():
         )
 
 
-@Resultado.route('/descargar/desertores/<ejecucion>', methods=['GET'])
+@Result.route('/descargar/desertores/<ejecucion>', methods=['GET'])
 @login_required
 def download(ejecucion):
-    status_c, body_c = get('ejecuciones/'+ejecucion)
+    status_c, body_c = get('executions/'+ejecucion)
     if not status_c:
         return render_template('utils/mensaje.html', mensaje='No existe esa ejecución')
 

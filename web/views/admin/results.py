@@ -20,22 +20,22 @@ upload_folder = os.getcwd()+'/uploads'
 
 
 @ResultadoAdmin.route('/')
-@ResultadoAdmin.route('/preparaciones')
-@ResultadoAdmin.route('/preparaciones/<conjunto>')
+@ResultadoAdmin.route('/preparations')
+@ResultadoAdmin.route('/preparations/<conjunto>')
 @only_admin
-def preparaciones(conjunto=None):
+def preparations(conjunto=None):
     if conjunto:
-        return list_set('preparaciones', conjunto)
-    return get_list('preparaciones')
+        return list_set('preparations', conjunto)
+    return get_list('preparations')
 
 
-@ResultadoAdmin.route('/ejecuciones')
-@ResultadoAdmin.route('/ejecuciones/<conjunto>')
+@ResultadoAdmin.route('/executions')
+@ResultadoAdmin.route('/executions/<conjunto>')
 @only_admin
-def ejecuciones(conjunto=None):
+def executions(conjunto=None):
     if conjunto:
-        return list_set('ejecuciones', conjunto)
-    return get_list('ejecuciones')
+        return list_set('executions', conjunto)
+    return get_list('executions')
 
 
 def get_list(results):
@@ -47,7 +47,7 @@ def get_list(results):
 
 
 def list_set(results, conjunto):
-    status, body = get(results+'/student-set/'+conjunto)
+    status, body = get(results+'/set/'+conjunto)
     if status:
         return render_template('admin/'+endopoint+results+'.html', results=body)
     else:
@@ -56,7 +56,7 @@ def list_set(results, conjunto):
 ########################################################### PREPARACIONES ###################################################################
 
 
-@ResultadoAdmin.route('/preparaciones/editar', methods=['POST'])
+@ResultadoAdmin.route('/preparations/editar', methods=['POST'])
 @only_admin
 def editar_preparacion():
     body = dict(request.values)
@@ -65,7 +65,7 @@ def editar_preparacion():
     return render_template('admin/'+endopoint+'preparacion_editar.html', p=preparacion)
 
 
-@ResultadoAdmin.route('/preparaciones/actualizar', methods=['POST'])
+@ResultadoAdmin.route('/preparations/actualizar', methods=['POST'])
 @only_admin
 def actualizar_preparacion():
     preparacion = dict(request.values)
@@ -80,14 +80,14 @@ def actualizar_preparacion():
         except:
             return render_template('utils/mensaje.html', mensaje='No se pudo actualizar la preparación', submensaje='Error con el campo observaciones no es un json o nulo')
 
-    status, body = put('preparaciones/'+nombre, preparacion)
+    status, body = put('preparations/'+nombre, preparacion)
     if status:
-        return redirect(url_for('ResultadoAdmin.preparaciones'))
+        return redirect(url_for('ResultadoAdmin.preparations'))
     else:
         return render_template('utils/mensaje.html', mensaje='No se pudo actualizar la preparación', submensaje=body)
 
 
-@ResultadoAdmin.route('/preparaciones/borrar', methods=['POST'])
+@ResultadoAdmin.route('/preparations/borrar', methods=['POST'])
 @only_admin
 def borrar_preparacion():
     body = dict(request.values)
@@ -95,21 +95,21 @@ def borrar_preparacion():
     return render_template('admin/'+endopoint+'preparacion_borrar.html', p=preparacion)
 
 
-@ResultadoAdmin.route('/preparaciones/eliminar', methods=['POST'])
+@ResultadoAdmin.route('/preparations/eliminar', methods=['POST'])
 @only_admin
 def eliminar_preparacion():
     preparacion = dict(request.values)
     nombre = preparacion.pop('nombre')
-    status, body = delete('preparaciones/'+nombre)
+    status, body = delete('preparations/'+nombre)
     if status:
-        return redirect(url_for('ResultadoAdmin.preparaciones'))
+        return redirect(url_for('ResultadoAdmin.preparations'))
     else:
         return render_template('utils/mensaje.html', mensaje='No se pudo Eliminar la preparación', submensaje=body)
 
 ########################################################### EJECUCIONES ###################################################################
 
 
-@ResultadoAdmin.route('/ejecuciones/editar', methods=['POST'])
+@ResultadoAdmin.route('/executions/editar', methods=['POST'])
 @only_admin
 def editar_ejecucion():
     body = dict(request.values)
@@ -118,7 +118,7 @@ def editar_ejecucion():
     return render_template('admin/'+endopoint+'ejecucion_editar.html', e=ejecucion)
 
 
-@ResultadoAdmin.route('/ejecuciones/actualizar', methods=['POST'])
+@ResultadoAdmin.route('/executions/actualizar', methods=['POST'])
 @only_admin
 def actualizar_ejecucion():
     ejecucion = dict(request.values)
@@ -130,14 +130,14 @@ def actualizar_ejecucion():
     except:
         return render_template('utils/mensaje.html', mensaje='No se pudo actualizar la ejecución', submensaje='Error con el campo results no es un json')
 
-    status, body = put('ejecuciones/'+nombre, ejecucion)
+    status, body = put('executions/'+nombre, ejecucion)
     if status:
-        return redirect(url_for('ResultadoAdmin.ejecuciones'))
+        return redirect(url_for('ResultadoAdmin.executions'))
     else:
         return render_template('utils/mensaje.html', mensaje='No se pudo actualizar la ejecución', submensaje=body)
 
 
-@ResultadoAdmin.route('/ejecuciones/borrar', methods=['POST'])
+@ResultadoAdmin.route('/executions/borrar', methods=['POST'])
 @only_admin
 def borrar_ejecucion():
     body = dict(request.values)
@@ -145,12 +145,12 @@ def borrar_ejecucion():
     return render_template('admin/'+endopoint+'ejecucion_borrar.html', e=ejecucion)
 
 
-@ResultadoAdmin.route('/ejecuciones/eliminar', methods=['POST'])
+@ResultadoAdmin.route('/executions/eliminar', methods=['POST'])
 @only_admin
 def eliminar_ejecucion():
     ejecucion = dict(request.values)
     nombre = ejecucion.pop('nombre')
-    status, body = delete('ejecuciones/'+nombre)
+    status, body = delete('executions/'+nombre)
     if status:
         # Borrar archivo
         if ejecucion['estado'] == 'Exitosa':
@@ -160,6 +160,6 @@ def eliminar_ejecucion():
                 return pagina_error
             eliminar_archivo(upload_folder+'/desertores/'+'D '+nombre+'.xls')
 
-        return redirect(url_for('ResultadoAdmin.ejecuciones'))
+        return redirect(url_for('ResultadoAdmin.executions'))
     else:
         return render_template('utils/mensaje.html', mensaje='No se pudo Eliminar la ejecución', submensaje=body)

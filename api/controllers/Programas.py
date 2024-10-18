@@ -20,8 +20,8 @@ def get():
     ex = exception(query)
     if ex:
         return ex
-    if not(query):
-        return {'msg': 'No hay programas'}, 404
+    if not (query):
+        return {'msg': 'No hay programs'}, 404
     return jsonify(_format(query))
 
 
@@ -33,7 +33,7 @@ def get_one(codigo):
     ex = exception(query)
     if ex:
         return ex
-    if not(query):
+    if not (query):
         return {'msg': 'No hay concidencias'}, 404
     return jsonify(_format(query)[0])
 
@@ -46,7 +46,7 @@ def getByFacultad(facultad):
     ex = exception(query)
     if ex:
         return ex
-    if not(query):
+    if not (query):
         return {'msg': 'No hay concidencias'}, 404
     return jsonify(_format(query))
 
@@ -56,7 +56,7 @@ def getByFacultad(facultad):
 def post():
     body = request.get_json()
     # validate schema
-    if not(validate_post_schema(body)):
+    if not (validate_post_schema(body)):
         return {'error': 'body invalido'}, 400
     # sql validations
     if not exists_facultad(body['facultad']):
@@ -85,10 +85,10 @@ def post2():
 @jwt_required()
 def put(codigo):
     body = request.get_json()
-    if not(codigo):
+    if not (codigo):
         return {'error': 'indique el codigo por el path'}, 404
     # validate schema
-    if not(validate_put_schema(body)):
+    if not (validate_put_schema(body)):
         return {'error': 'body invalido'}, 400
     # sql validations
     if not exists(codigo):
@@ -105,7 +105,7 @@ def put(codigo):
 @Programa.route('/<int:codigo>', methods=['DELETE'])
 @jwt_required()
 def delete_one(codigo):
-    if not(codigo):
+    if not (codigo):
         return {'error': 'indique el codigo por el path'}, 404
     # sql validations
     if not exists(codigo):

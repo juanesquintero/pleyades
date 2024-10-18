@@ -98,7 +98,7 @@
             <td><strong>{{ key.title()|replace('_',' ') }}</strong></td>
             <td class="bg-light">
               
-              {% if 'desercion' in key %}
+              {% if 'desertion' in key %}
               
                 {% set deser = (value * 100)|float %}
                 {{ '%0.1f' % deser }} %
@@ -177,7 +177,7 @@
           <div class="ml-0 pl-0 mr-2 d-flex ">Descargar: </div>
           &nbsp;&nbsp;
           <a class="btn bg-light btn-sm border text-dark px-2" type=" button"
-            href="{{url_for('Resultado.download',ejecucion=ejecucion.nombre)}}">
+            href="{{url_for('Result.download',ejecucion=ejecucion.nombre)}}">
             <i class="fas fa-file-excel mr-1" aria-hidden="true"></i>
             Desertores
           </a>

@@ -70,7 +70,7 @@ def miniserie_programa_row(data, fig, i, dict_periods):
         # Mini Serie de tiempo
         fig.append_trace(go.Scatter(
             x=x_periods,
-            y=data['desercion'],
+            y=data['desertion'],
             mode='lines+markers',
             marker=dict(
                 color=CONSTANTS.colores[1],
@@ -80,7 +80,7 @@ def miniserie_programa_row(data, fig, i, dict_periods):
         ), row=i, col=1)
         fig.update_yaxes(
             showline=False,
-            tickvals=[statistics.mean(data['desercion'])],
+            tickvals=[statistics.mean(data['desertion'])],
             ticktext=[
                 '<b>{}</b>       '.format(data['programa_nombre_corto'][0])],
             tickfont=dict(
@@ -101,8 +101,8 @@ def miniserie_programa_row(data, fig, i, dict_periods):
 
         try:
             # Indicador
-            period_anterior = data.loc[len(data)-2, 'desercion']
-            period_actual = data.loc[len(data)-1, 'desercion']
+            period_anterior = data.loc[len(data)-2, 'desertion']
+            period_actual = data.loc[len(data)-1, 'desertion']
         except Exception as e:
             period_actual = None
             period_anterior = None
@@ -162,7 +162,7 @@ def indicadores_programa_row(data, fig, i):
     fig = crear_indicador(data, 'mat_hombre', i, 2, fig, 'number+delta')
     fig = crear_indicador(data, 'mat_mujer', i, 3, fig, 'number+delta')
     fig = crear_indicador(data, 'mat_total', i, 4, fig, 'number+delta')
-    fig = crear_indicador(data, 'desercion', i, 5, fig, 'number+delta')
+    fig = crear_indicador(data, 'desertion', i, 5, fig, 'number+delta')
 
     return fig
 
@@ -536,7 +536,7 @@ class IES:
             for i, p in enumerate(list_programas):
                 data = Data.get_programa(p['idprograma'])
                 data = data[['periodo', 'programa',
-                             'programa_nombre_corto', 'idprograma', 'desercion']]
+                             'programa_nombre_corto', 'idprograma', 'desertion']]
                 data = data.dropna().reset_index()
                 # data['periodo'] = data['periodo'].astype(str)
                 fig = miniserie_programa_row(data, fig, i+1, dict_periods)

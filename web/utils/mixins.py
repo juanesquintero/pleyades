@@ -122,7 +122,7 @@ def guardar_preparacion(preparacion, observaciones, estado):
     preparacion['fechaFinal'] = get_now_date()
     preparacion['observaciones'] = observaciones
     preparacion['estado'] = estado
-    post('preparaciones', preparacion)
+    post('preparations', preparacion)
     return True, 'ERROR'
 
 
@@ -134,7 +134,7 @@ def guardar_ejecucion(ejecucion, results, estado):
     ejecucion['results'] = dict(results)
     ejecucion['estado'] = estado
 
-    status, body = post('ejecuciones', dict(ejecucion))
+    status, body = post('executions', dict(ejecucion))
 
     if not status:
         raise Exception(
@@ -156,7 +156,7 @@ def obtener_nombre_conjunto(conjunto):
 
 def obtener_nombre_ejecucion(conjunto):
     # Obtener nombre de la ejecucion desde el api
-    status_n, body_n = get(f'ejecuciones/nombre/{conjunto}')
+    status_n, body_n = get(f'executions/nombre/{conjunto}')
     if status_n:
         return body_n['nombre'], body_n['numero']
 

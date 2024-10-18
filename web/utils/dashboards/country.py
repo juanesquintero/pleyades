@@ -41,7 +41,7 @@ def mapa(periodo):
         'departamento': df_dpto_mat['departamento'],
         'matricula': df_dpto_mat.loc[:, periodo],
         'cobertura': [round(cob*100, 2) for cob in df_dpto_cob.loc[:, periodo]],
-        'desercion': [round(des*100, 2) for des in df_dpto_des.loc[:, periodo]],
+        'desertion': [round(des*100, 2) for des in df_dpto_des.loc[:, periodo]],
     })
     df = df.fillna('')
     # Figure
@@ -53,7 +53,7 @@ def mapa(periodo):
             zoom=4.0,
             center={"lat": 4.200000, "lon": -73.1000000},
             custom_data=['departamento', 'matricula',
-                         'cobertura', 'desercion'],
+                         'cobertura', 'desertion'],
             color='matricula',
             color_continuous_scale='Blues',
             range_color=[min(df['matricula']), max(df['matricula'])],
@@ -312,7 +312,7 @@ def agregar_indicador(anterior, actual, fig, i):
 def indicadores(periodo):
 
     periodo = int(periodo)
-    df = df_nacional[['periodo', 'desercion', 'graduandos_total']]
+    df = df_nacional[['periodo', 'desertion', 'graduandos_total']]
 
     # Crear conetenedor de sub graficos
     fig = make_subplots(
@@ -324,8 +324,8 @@ def indicadores(periodo):
     )
 
     # Desercion
-    period_actual = df[df['periodo'] == periodo]['desercion'].values[0]*100
-    period_anterior = df[df['periodo'] == periodo-1]['desercion'].values[0] * \
+    period_actual = df[df['periodo'] == periodo]['desertion'].values[0]*100
+    period_anterior = df[df['periodo'] == periodo-1]['desertion'].values[0] * \
         100 if not (periodo == min(df['periodo'])) else None
 
     fig = agregar_indicador(period_anterior, period_actual, fig, 1)

@@ -142,7 +142,7 @@ def region_dashboard():
     indicadores_ies = to_plotly_json(
         indicadores_ies) if indicadores_ies else None
 
-    # Barras horizontales desercion (Solo Antioquia)
+    # Barras horizontales desertion (Solo Antioquia)
     barras_ies = Region.barras_ies(dpto, periodo)
     barras_ies = to_plotly_json(barras_ies) if barras_ies else None
 
@@ -176,7 +176,7 @@ def region_dashboard():
 ############################################################## NIVEL IES ################################################################
 
 
-@Tablero.route('/institucion')
+@Tablero.route('/institute')
 @login_required
 def ies_dashboard():
 

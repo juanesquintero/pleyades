@@ -103,7 +103,7 @@ def execute_model(data, conjunto, no_desertion=False):
         'desertores': result.get('desertores'),
         'period_a_predecir': int(period_a_predecir),
         'students_analizados': result.get('total_analizados'),
-        'desercion_prevista': result.get('desercion'),
+        'desercion_prevista': result.get('desertion'),
         'desertores_reportados':  int(len(data_a_predecir.query(f'desertor == 1 & registro == {period_a_predecir}'))),
         'potenciales_desertores': result.get('total'),
     }

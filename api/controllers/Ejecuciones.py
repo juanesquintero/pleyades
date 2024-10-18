@@ -20,7 +20,7 @@ def get():
     if ex:
         return ex
     if not query:
-        return {'msg': 'No hay ejecuciones'}, 404
+        return {'msg': 'No hay executions'}, 404
     query = strdate_to_datetime(query)
     return jsonify(query)
 
@@ -38,7 +38,7 @@ def get_one(nombre):
     return jsonify(query[0])
 
 
-@Ejecucion.route('/student-set/<conjunto>')
+@Ejecucion.route('/set/<conjunto>')
 @jwt_required()
 def get_by_conjunto(conjunto):
     if not exists_conjunto(conjunto):
@@ -48,7 +48,7 @@ def get_by_conjunto(conjunto):
     if ex:
         return ex
     if not query:
-        return {'msg': 'conjunto no tiene ejecuciones'}, 404
+        return {'msg': 'conjunto no tiene executions'}, 404
     query = strdate_to_datetime(query)
     return jsonify(query)
 
@@ -72,7 +72,7 @@ def get_by_usuario(ejecutor):
     if ex:
         return ex
     if not query:
-        return {'error': 'usuario no tiene ejecuciones'}, 400
+        return {'error': 'usuario no tiene executions'}, 400
     query = strdate_to_datetime(query)
     return jsonify(query)
 
@@ -165,7 +165,7 @@ def delete_one(nombre):
     return {'msg': 'Ejecucion eliminada'}, 200
 
 
-@Ejecucion.route('/student-set/<conjunto>', methods=['DELETE'])
+@Ejecucion.route('/set/<conjunto>', methods=['DELETE'])
 @jwt_required()
 def delete_by_conjunto(conjunto):
     if not conjunto:
@@ -173,13 +173,13 @@ def delete_by_conjunto(conjunto):
     # sql validations
     if not exists_conjunto(conjunto):
         return {'error': 'conjunto no existe'}, 400
-    # if not conjunto_preparaciones(conjun):  return {'error': "conjunto no tiene preparaciones"}, 400
+    # if not conjunto_preparaciones(conjun):  return {'error': "conjunto no tiene preparations"}, 400
     # delete
     delete = ejecucion_model.delete_conjunto(conjunto)
     ex = exception(delete)
     if ex:
         return ex
-    return {'msg': 'ejecuciones del student_set eliminadas'}, 200
+    return {'msg': 'executions del student_set eliminadas'}, 200
 
 
 def exists(nombre):

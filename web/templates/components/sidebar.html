@@ -75,11 +75,11 @@
             </a>
             <div {% if menu=='results' %} style="display:inline;" {% endif %} id='menuResultados'
                 class="sidebar-submenu collapse">
-                <a href="{{url_for('Resultado.preparaciones')}}"
+                <a href="{{url_for('Result.preparations')}}"
                     class="list-group-item  text-white  border-right-0 my-secondary">
                     &#8226;&nbsp;&nbsp;<span class="menu-collapsed text-white">Preparaciones</span>
                 </a>
-                <a href="{{url_for('Resultado.ejecuciones')}}"
+                <a href="{{url_for('Result.executions')}}"
                     class="list-group-item  text-white border-right-0 my-secondary">
                     &#8226;&nbsp;&nbsp;<span class="menu-collapsed text-white">Ejecuciones</span>
                 </a>
@@ -143,7 +143,7 @@
         </div>
       </a>
       <a
-        href="{{url_for('ResultadoAdmin.preparaciones')}}"
+        href="{{url_for('ResultadoAdmin.preparations')}}"
         class="list-group-item border-right-0 my-secondary light"
       >
         <div class="d-flex w-100 justify-content-start align-items-center">

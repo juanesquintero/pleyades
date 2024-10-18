@@ -178,8 +178,8 @@ def barras(dpto):
                          == dpto].drop(['departamento'], axis=1)
 
         periods = list(df.columns)
-        desercion = df[0:].values[0]
-        retencion = [(1-d)*100 for d in desercion]
+        desertion = df[0:].values[0]
+        retencion = [(1-d)*100 for d in desertion]
 
         minimo = min(retencion)*0.9 if min(retencion)*0.9 > 0 else 0
         maximo = max(retencion)*1.05 if max(retencion)*1.05 < 110 else 100
@@ -547,10 +547,10 @@ def barras_ies(dpto, periodo):
         df[str(periodo)] = df[str(periodo)].values*100
         retencion = [(100-d) for d in df[str(periodo)]]
 
-        desercion = df[str(periodo)]
+        desertion = df[str(periodo)]
 
-        minimo = min(desercion)*0.1 if min(desercion)*0.1 > 0 else 0
-        maximo = max(desercion)*1.2 if max(desercion)*1.2 < 100 else 100
+        minimo = min(desertion)*0.1 if min(desertion)*0.1 > 0 else 0
+        maximo = max(desertion)*1.2 if max(desertion)*1.2 < 100 else 100
 
         df = df.sort_values(by=str(periodo))
 

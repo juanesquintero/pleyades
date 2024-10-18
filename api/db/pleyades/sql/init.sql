@@ -1,8 +1,8 @@
 -- **********************************
 -- ************ Tables **************
 -- **********************************
--- table usuarios
-CREATE TABLE  usuarios (
+-- table users
+CREATE TABLE  users (
 	correo VARCHAR (200) NOT NULL 	,
 	nombre VARCHAR (200) NOT NULL 	,
 	clave VARCHAR (50) NOT NULL 	,
@@ -25,8 +25,8 @@ CREATE TABLE  conjuntosdedatos (
 	PRIMARY KEY( nombre )
 );
 
--- table preparaciones
-CREATE TABLE  preparaciones (
+-- table preparations
+CREATE TABLE  preparations (
 	preparador VARCHAR (200) NOT NULL 	,
 	conjunto VARCHAR (200) NOT NULL 	,
 	nombre VARCHAR (250) NOT NULL 	,
@@ -39,8 +39,8 @@ CREATE TABLE  preparaciones (
 	PRIMARY KEY( nombre )
 );
 
--- table ejecuciones
-CREATE TABLE  ejecuciones (
+-- table executions
+CREATE TABLE  executions (
 	ejecutor VARCHAR (200) NOT NULL 	,	
 	conjunto VARCHAR (200) NOT NULL 	,
 	nombre VARCHAR (250) NOT NULL 	,
@@ -64,13 +64,13 @@ CREATE TABLE  ejecuciones (
 ALTER TABLE conjuntosdedatos ADD(
 	CONSTRAINT fk_ConjuntoDeDatos_Usuario
 	FOREIGN KEY ( encargado )
-	REFERENCES  usuarios ( correo )
+	REFERENCES  users ( correo )
 	ON DELETE CASCADE
     ON UPDATE CASCADE
 );
 
--- For ejecuciones(fk_Preparacion_ConjuntoDeDatos) 
-ALTER TABLE ejecuciones ADD(
+-- For executions(fk_Preparacion_ConjuntoDeDatos) 
+ALTER TABLE executions ADD(
 	CONSTRAINT fk_Ejecucion_ConjuntoDeDatos
 	FOREIGN KEY ( student_set )
 	REFERENCES  conjuntosdedatos ( nombre )
@@ -78,17 +78,17 @@ ALTER TABLE ejecuciones ADD(
     ON UPDATE CASCADE
 );
 
--- For ejecuciones(fk_Ejecucion_Usuario) 
-ALTER TABLE ejecuciones ADD(
+-- For executions(fk_Ejecucion_Usuario) 
+ALTER TABLE executions ADD(
 	CONSTRAINT fk_Ejecucion_Usuario
 	FOREIGN KEY ( ejecutor )
-	REFERENCES  usuarios ( correo )
+	REFERENCES  users ( correo )
 	ON DELETE CASCADE
     ON UPDATE CASCADE
 );
 
--- For preparaciones(fk_Preparacion_ConjuntoDeDatos) 
-ALTER TABLE preparaciones ADD(
+-- For preparations(fk_Preparacion_ConjuntoDeDatos) 
+ALTER TABLE preparations ADD(
 	CONSTRAINT fk_Preparacion_ConjuntoDeDatos
 	FOREIGN KEY ( student_set )
 	REFERENCES  conjuntosdedatos ( nombre )
@@ -96,11 +96,11 @@ ALTER TABLE preparaciones ADD(
     ON UPDATE CASCADE
 );
 
--- For preparaciones(fk_Preparacion_Usuario) 
-ALTER TABLE preparaciones ADD(
+-- For preparations(fk_Preparacion_Usuario) 
+ALTER TABLE preparations ADD(
 	CONSTRAINT fk_Preparacion_Usuario
 	FOREIGN KEY ( preparador )
-	REFERENCES  usuarios ( correo )
+	REFERENCES  users ( correo )
 	ON DELETE CASCADE
     ON UPDATE CASCADE
 );
@@ -110,5 +110,5 @@ ALTER TABLE preparaciones ADD(
 -- ************ Initial Inserts **************
 -- **********************************
     
-INSERT INTO `usuarios`(`nombre`,`correo`,`clave`,`rol`) VALUES
+INSERT INTO `users`(`nombre`,`correo`,`clave`,`rol`) VALUES
 ('SUPER ADMIN','admin@pleyades.com','25d55ad283aa400af464c76d713c07ad','Admin');
