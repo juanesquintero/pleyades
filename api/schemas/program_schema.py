@@ -7,9 +7,9 @@ post_schema = {
         "codigo":  {"type": "integer", "maxLength": 30},
         "nombre_corto":  {"type": "string", "maxLength": 10},
         "nombre":  {"type": "string", "maxLength": 200},
-        "nombre_facultad":  {"type": "string", "maxLength": 200, "minLength": 1},
+        "nombre_faculty":  {"type": "string", "maxLength": 200, "minLength": 1},
     },
-    "required": ["faculty", "codigo", "nombre_corto", "nombre", "nombre_facultad"],
+    "required": ["faculty", "codigo", "nombre_corto", "nombre", "nombre_faculty"],
     "additionalProperties": False
 }
 

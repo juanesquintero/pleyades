@@ -742,7 +742,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "  {\r\n    \"codigo\": \"420-2970-01\",\r\n    \"nombre\": \" civilcita\",\r\n    \"nombre_corto\": \"civi\",\r\n    \"faculty\": \"420\",\r\n    \"nombre_facultad\": \"Faculty de Ingenierias\"\r\n  }",
+							"raw": "  {\r\n    \"codigo\": \"420-2970-01\",\r\n    \"nombre\": \" civilcita\",\r\n    \"nombre_corto\": \"civi\",\r\n    \"faculty\": \"420\",\r\n    \"nombre_faculty\": \"Faculty de Ingenierias\"\r\n  }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -873,10 +873,10 @@
 			]
 		},
 		{
-			"name": "Conjuntos de datos",
+			"name": "Sets de datos",
 			"item": [
 				{
-					"name": "conjuntos",
+					"name": "sets",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -891,7 +891,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:3000/conjuntos",
+							"raw": "http://127.0.0.1:3000/sets",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -903,14 +903,14 @@
 							"path": [
 								"api",
 								"v1",
-								"conjuntos"
+								"sets"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "conjunto",
+					"name": "set",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -925,7 +925,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:3000/conjuntos/Esp 20151 20201 1",
+							"raw": "http://127.0.0.1:3000/sets/Esp 20151 20201 1",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -937,7 +937,7 @@
 							"path": [
 								"api",
 								"v1",
-								"conjuntos",
+								"sets",
 								"Esp 20151 20201 1"
 							]
 						}
@@ -960,7 +960,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:3000/conjuntos/encargado/walter.alvarez@educatic.com.co",
+							"raw": "http://127.0.0.1:3000/sets/encargado/walter.alvarez@educatic.com.co",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -972,7 +972,7 @@
 							"path": [
 								"api",
 								"v1",
-								"conjuntos",
+								"sets",
 								"encargado",
 								"walter.alvarez@educatic.com.co"
 							]
@@ -996,7 +996,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:3000/conjuntos/encargado/walter.alvarez@educatic.com.co?estado=Crudos",
+							"raw": "http://127.0.0.1:3000/sets/encargado/walter.alvarez@educatic.com.co?estado=Crudos",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -1008,7 +1008,7 @@
 							"path": [
 								"api",
 								"v1",
-								"conjuntos",
+								"sets",
 								"encargado",
 								"walter.alvarez@educatic.com.co"
 							],
@@ -1038,7 +1038,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:3000/conjuntos/estado/Procesados",
+							"raw": "http://127.0.0.1:3000/sets/estado/Procesados",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -1050,7 +1050,7 @@
 							"path": [
 								"api",
 								"v1",
-								"conjuntos",
+								"sets",
 								"estado",
 								"Procesados"
 							]
@@ -1074,7 +1074,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:3000/conjuntos/programa/1001",
+							"raw": "http://127.0.0.1:3000/sets/programa/1001",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -1086,7 +1086,7 @@
 							"path": [
 								"api",
 								"v1",
-								"conjuntos",
+								"sets",
 								"programa",
 								"1001"
 							]
@@ -1110,7 +1110,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:3000/conjuntos/periodos/20192/20201",
+							"raw": "http://127.0.0.1:3000/sets/periodos/20192/20201",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -1122,7 +1122,7 @@
 							"path": [
 								"api",
 								"v1",
-								"conjuntos",
+								"sets",
 								"periodos",
 								"20192",
 								"20201"
@@ -1163,7 +1163,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3000/conjuntos/nombre",
+							"raw": "http://127.0.0.1:3000/sets/nombre",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -1175,7 +1175,7 @@
 							"path": [
 								"api",
 								"v1",
-								"conjuntos",
+								"sets",
 								"nombre"
 							]
 						}
@@ -1183,7 +1183,7 @@
 					"response": []
 				},
 				{
-					"name": "conjunto",
+					"name": "set",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -1214,7 +1214,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3000/conjuntos",
+							"raw": "http://127.0.0.1:3000/sets",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -1226,14 +1226,14 @@
 							"path": [
 								"api",
 								"v1",
-								"conjuntos"
+								"sets"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "conjunto",
+					"name": "set",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -1264,7 +1264,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3000/conjuntos/Com 20184 20186 1",
+							"raw": "http://127.0.0.1:3000/sets/Com 20184 20186 1",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -1276,7 +1276,7 @@
 							"path": [
 								"api",
 								"v1",
-								"conjuntos",
+								"sets",
 								"Com 20184 20186 1"
 							]
 						}
@@ -1284,7 +1284,7 @@
 					"response": []
 				},
 				{
-					"name": "conjunto",
+					"name": "set",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -1315,7 +1315,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3000/conjuntos/C Eco 1 20152 20152",
+							"raw": "http://127.0.0.1:3000/sets/C Eco 1 20152 20152",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -1327,7 +1327,7 @@
 							"path": [
 								"api",
 								"v1",
-								"conjuntos",
+								"sets",
 								"C Eco 1 20152 20152"
 							]
 						}
@@ -1374,7 +1374,7 @@
 					"response": []
 				},
 				{
-					"name": "preparacion",
+					"name": "preparation",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -1409,7 +1409,7 @@
 					"response": []
 				},
 				{
-					"name": "conjunto",
+					"name": "set",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -1437,7 +1437,7 @@
 								"api",
 								"v1",
 								"preparations",
-								"conjunto",
+								"set",
 								"Eco 20151 20201 1"
 							]
 						}
@@ -1517,7 +1517,7 @@
 					"response": []
 				},
 				{
-					"name": "preparacion",
+					"name": "preparation",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -1540,7 +1540,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"nombre\": \"Psi 20151 20201 1.1\",\n\t\"conjunto\": \"Psi 20151 20201 1\",\n\t\"numero\": 1,\n    \"preparador\": \"admin@pleyades.com\",\n    \"fechaInicial\":  \"2020-03-24T20:12:28+00:00\",\n    \"fechaFinal\":  \"2020-03-24T20:14:39+00:00\",\n    \"estado\": \"Exitosa\",\n    \"observaciones\":  null\n}\n ",
+							"raw": "{\n\t\"nombre\": \"Psi 20151 20201 1.1\",\n\t\"set\": \"Psi 20151 20201 1\",\n\t\"numero\": 1,\n    \"preparador\": \"admin@pleyades.com\",\n    \"fechaInicial\":  \"2020-03-24T20:12:28+00:00\",\n    \"fechaFinal\":  \"2020-03-24T20:14:39+00:00\",\n    \"estado\": \"Exitosa\",\n    \"observaciones\":  null\n}\n ",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1567,7 +1567,7 @@
 					"response": []
 				},
 				{
-					"name": "preparacion",
+					"name": "preparation",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -1618,7 +1618,7 @@
 					"response": []
 				},
 				{
-					"name": "preparacion",
+					"name": "preparation",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -1708,7 +1708,7 @@
 					"response": []
 				},
 				{
-					"name": "ejecucion",
+					"name": "execution",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -1743,7 +1743,7 @@
 					"response": []
 				},
 				{
-					"name": "conjunto",
+					"name": "set",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -1771,7 +1771,7 @@
 								"api",
 								"v1",
 								"executions",
-								"conjunto",
+								"set",
 								"Tec 20151 20201 1"
 							]
 						}
@@ -1815,7 +1815,7 @@
 					"response": []
 				},
 				{
-					"name": "ejecucion",
+					"name": "execution",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -1838,7 +1838,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"nombre\": \"P Com 20192 20201 1.1\",\r\n\t\"conjunto\": \"P Com 20192 20201 1\",\r\n\t\"numero\": 1,\r\n    \"ejecutor\": \"walter.alvarez@educatic.com.co\",\r\n    \"fechaInicial\":  \"2020-03-24T14:18:28+00:00\",\r\n    \"fechaFinal\":  \"2018-11-13T20:20:39+00:00\",\r\n    \"estado\": \"Exitosa\",\r\n\t\"precision_model\": 93.89,\r\n\t\"resultados\": {\"exitosa\": false, \"excepciones\": \"\"}\r\n}",
+							"raw": "{\r\n\t\"nombre\": \"P Com 20192 20201 1.1\",\r\n\t\"set\": \"P Com 20192 20201 1\",\r\n\t\"numero\": 1,\r\n    \"ejecutor\": \"walter.alvarez@educatic.com.co\",\r\n    \"fechaInicial\":  \"2020-03-24T14:18:28+00:00\",\r\n    \"fechaFinal\":  \"2018-11-13T20:20:39+00:00\",\r\n    \"estado\": \"Exitosa\",\r\n\t\"precision_model\": 93.89,\r\n\t\"results\": {\"exitosa\": false, \"excepciones\": \"\"}\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1865,7 +1865,7 @@
 					"response": []
 				},
 				{
-					"name": "ejecucion",
+					"name": "execution",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -1888,7 +1888,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"estado\": \"Exitosa\",\r\n\t\"resultados\":  {\"total_desertores\": 61, \"clasificador\": \"LinearDiscriminantAnalysis\", \"precision\": 98.04, \"semestre_a_predecir\": 20192} \r\n\t\r\n}",
+							"raw": "{\r\n\t\"estado\": \"Exitosa\",\r\n\t\"results\":  {\"total_desertores\": 61, \"clasificador\": \"LinearDiscriminantAnalysis\", \"precision\": 98.04, \"semestre_a_predecir\": 20192} \r\n\t\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1916,7 +1916,7 @@
 					"response": []
 				},
 				{
-					"name": "ejecucion",
+					"name": "execution",
 					"request": {
 						"method": "DELETE",
 						"header": [
@@ -2240,7 +2240,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://127.0.0.1:3000/desertion/estudiantes/periodo/20201",
+									"raw": "http://127.0.0.1:3000/desertion/students/periodo/20201",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -2253,7 +2253,7 @@
 										"api",
 										"v1",
 										"desertion",
-										"estudiantes",
+										"students",
 										"periodo",
 										"20201"
 									]
@@ -2277,7 +2277,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://127.0.0.1:3000/desertion/estudiantes/programa/11202",
+									"raw": "http://127.0.0.1:3000/desertion/students/programa/11202",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -2290,7 +2290,7 @@
 										"api",
 										"v1",
 										"desertion",
-										"estudiantes",
+										"students",
 										"programa",
 										"11202"
 									]
@@ -2314,7 +2314,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://127.0.0.1:3000/desertion/estudiantes/programa/10055/20191",
+									"raw": "http://127.0.0.1:3000/desertion/students/programa/10055/20191",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -2327,7 +2327,7 @@
 										"api",
 										"v1",
 										"desertion",
-										"estudiantes",
+										"students",
 										"programa",
 										"10055",
 										"20191"
@@ -2352,7 +2352,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://127.0.0.1:3000/desertion/estudiantes/documento/1152212091",
+									"raw": "http://127.0.0.1:3000/desertion/students/documento/1152212091",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -2365,7 +2365,7 @@
 										"api",
 										"v1",
 										"desertion",
-										"estudiantes",
+										"students",
 										"documento",
 										"1152212091"
 									]
@@ -2389,7 +2389,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://127.0.0.1:3000/desertion/estudiantes/programs",
+									"raw": "http://127.0.0.1:3000/desertion/students/programs",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -2402,7 +2402,7 @@
 										"api",
 										"v1",
 										"desertion",
-										"estudiantes",
+										"students",
 										"programs"
 									]
 								}
@@ -2425,7 +2425,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://127.0.0.1:3000/desertion/estudiantes/periodos",
+									"raw": "http://127.0.0.1:3000/desertion/students/periodos",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -2438,7 +2438,7 @@
 										"api",
 										"v1",
 										"desertion",
-										"estudiantes",
+										"students",
 										"periodos"
 									]
 								}
@@ -2461,7 +2461,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://127.0.0.1:3000/desertion/estudiantes/periodos/programa/23",
+									"raw": "http://127.0.0.1:3000/desertion/students/periodos/programa/23",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -2474,7 +2474,7 @@
 										"api",
 										"v1",
 										"desertion",
-										"estudiantes",
+										"students",
 										"periodos",
 										"programa",
 										"23"
@@ -2484,7 +2484,7 @@
 							"response": []
 						},
 						{
-							"name": "conjunto",
+							"name": "set",
 							"request": {
 								"auth": {
 									"type": "bearer",
@@ -2499,7 +2499,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://127.0.0.1:3000/desertion/estudiantes/set/23/20172/20181",
+									"raw": "http://127.0.0.1:3000/desertion/students/set/23/20172/20181",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -2512,8 +2512,8 @@
 										"api",
 										"v1",
 										"desertion",
-										"estudiantes",
-										"conjunto",
+										"students",
+										"set",
 										"23",
 										"20172",
 										"20181"
@@ -2552,7 +2552,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://127.0.0.1:3000/desertion/resultados/ultimo/87/20181",
+									"raw": "http://127.0.0.1:3000/desertion/results/ultimo/87/20181",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -2565,7 +2565,7 @@
 										"api",
 										"v1",
 										"desertion",
-										"resultados",
+										"results",
 										"ultimo",
 										"87",
 										"20181"
@@ -2599,7 +2599,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://127.0.0.1:3000/desertion/resultados",
+									"raw": "http://127.0.0.1:3000/desertion/results",
 									"protocol": "http",
 									"host": [
 										"127",
@@ -2612,7 +2612,7 @@
 										"api",
 										"v1",
 										"desertion",
-										"resultados"
+										"results"
 									]
 								}
 							},
@@ -2664,7 +2664,7 @@
 									"response": []
 								},
 								{
-									"name": "ejecucion",
+									"name": "execution",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -2697,7 +2697,7 @@
 									"response": []
 								},
 								{
-									"name": "conjunto",
+									"name": "set",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -2725,7 +2725,7 @@
 												"api",
 												"v1",
 												"executions",
-												"conjunto",
+												"set",
 												"Tec 20151 20201 1"
 											]
 										}
@@ -2769,7 +2769,7 @@
 									"response": []
 								},
 								{
-									"name": "ejecucion",
+									"name": "execution",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -2792,7 +2792,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n\t\"nombre\": \"P Com 20192 20201 1.1\",\r\n\t\"conjunto\": \"P Com 20192 20201 1\",\r\n\t\"numero\": 1,\r\n    \"ejecutor\": \"walter.alvarez@educatic.com.co\",\r\n    \"fechaInicial\":  \"2020-03-24T14:18:28+00:00\",\r\n    \"fechaFinal\":  \"2018-11-13T20:20:39+00:00\",\r\n    \"estado\": \"Exitosa\",\r\n\t\"precision_model\": 93.89,\r\n\t\"resultados\": {\"exitosa\": false, \"excepciones\": \"\"}\r\n}",
+											"raw": "{\r\n\t\"nombre\": \"P Com 20192 20201 1.1\",\r\n\t\"set\": \"P Com 20192 20201 1\",\r\n\t\"numero\": 1,\r\n    \"ejecutor\": \"walter.alvarez@educatic.com.co\",\r\n    \"fechaInicial\":  \"2020-03-24T14:18:28+00:00\",\r\n    \"fechaFinal\":  \"2018-11-13T20:20:39+00:00\",\r\n    \"estado\": \"Exitosa\",\r\n\t\"precision_model\": 93.89,\r\n\t\"results\": {\"exitosa\": false, \"excepciones\": \"\"}\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -2819,7 +2819,7 @@
 									"response": []
 								},
 								{
-									"name": "ejecucion",
+									"name": "execution",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -2842,7 +2842,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n\t\"estado\": \"Exitosa\",\r\n\t\"resultados\":  {\"total_desertores\": 61, \"clasificador\": \"LinearDiscriminantAnalysis\", \"precision\": 98.04, \"semestre_a_predecir\": 20192} \r\n\t\r\n}",
+											"raw": "{\r\n\t\"estado\": \"Exitosa\",\r\n\t\"results\":  {\"total_desertores\": 61, \"clasificador\": \"LinearDiscriminantAnalysis\", \"precision\": 98.04, \"semestre_a_predecir\": 20192} \r\n\t\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -2870,7 +2870,7 @@
 									"response": []
 								},
 								{
-									"name": "ejecucion",
+									"name": "execution",
 									"request": {
 										"method": "DELETE",
 										"header": [
@@ -2911,10 +2911,10 @@
 							]
 						},
 						{
-							"name": "Conjuntos de datos",
+							"name": "Sets de datos",
 							"item": [
 								{
-									"name": "conjuntos",
+									"name": "sets",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -2929,7 +2929,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "https://campus.tdea.edu.co/pleyapi/conjuntos",
+											"raw": "https://campus.tdea.edu.co/pleyapi/sets",
 											"protocol": "https",
 											"host": [
 												"campus",
@@ -2941,14 +2941,14 @@
 												"pleyapi",
 												"api",
 												"v1",
-												"conjuntos"
+												"sets"
 											]
 										}
 									},
 									"response": []
 								},
 								{
-									"name": "conjunto",
+									"name": "set",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -2963,7 +2963,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://stormy-retreat-94001.herokuapp.com/conjuntos/Esp 20151 20201 1",
+											"raw": "http://stormy-retreat-94001.herokuapp.com/sets/Esp 20151 20201 1",
 											"protocol": "http",
 											"host": [
 												"stormy-retreat-94001",
@@ -2973,7 +2973,7 @@
 											"path": [
 												"api",
 												"v1",
-												"conjuntos",
+												"sets",
 												"Esp 20151 20201 1"
 											]
 										}
@@ -2996,7 +2996,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://127.0.0.1:3000/conjuntos/encargado/walter.alvarez@educatic.com.co",
+											"raw": "http://127.0.0.1:3000/sets/encargado/walter.alvarez@educatic.com.co",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -3008,7 +3008,7 @@
 											"path": [
 												"api",
 												"v1",
-												"conjuntos",
+												"sets",
 												"encargado",
 												"walter.alvarez@educatic.com.co"
 											]
@@ -3032,7 +3032,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://127.0.0.1:3000/conjuntos/encargado/walter.alvarez@educatic.com.co?estado=Crudos",
+											"raw": "http://127.0.0.1:3000/sets/encargado/walter.alvarez@educatic.com.co?estado=Crudos",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -3044,7 +3044,7 @@
 											"path": [
 												"api",
 												"v1",
-												"conjuntos",
+												"sets",
 												"encargado",
 												"walter.alvarez@educatic.com.co"
 											],
@@ -3074,7 +3074,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://127.0.0.1:3000/conjuntos/estado/Crudos",
+											"raw": "http://127.0.0.1:3000/sets/estado/Crudos",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -3086,7 +3086,7 @@
 											"path": [
 												"api",
 												"v1",
-												"conjuntos",
+												"sets",
 												"estado",
 												"Crudos"
 											]
@@ -3110,7 +3110,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://127.0.0.1:3000/conjuntos/programa/415-0780-01",
+											"raw": "http://127.0.0.1:3000/sets/programa/415-0780-01",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -3122,7 +3122,7 @@
 											"path": [
 												"api",
 												"v1",
-												"conjuntos",
+												"sets",
 												"programa",
 												"415-0780-01"
 											]
@@ -3146,7 +3146,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://127.0.0.1:3000/conjuntos/periodos/20151/20201",
+											"raw": "http://127.0.0.1:3000/sets/periodos/20151/20201",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -3158,7 +3158,7 @@
 											"path": [
 												"api",
 												"v1",
-												"conjuntos",
+												"sets",
 												"periodos",
 												"20151",
 												"20201"
@@ -3199,7 +3199,7 @@
 											}
 										},
 										"url": {
-											"raw": "http://127.0.0.1:3000/conjuntos/nombre",
+											"raw": "http://127.0.0.1:3000/sets/nombre",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -3211,7 +3211,7 @@
 											"path": [
 												"api",
 												"v1",
-												"conjuntos",
+												"sets",
 												"nombre"
 											]
 										}
@@ -3219,7 +3219,7 @@
 									"response": []
 								},
 								{
-									"name": "conjunto",
+									"name": "set",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -3250,7 +3250,7 @@
 											}
 										},
 										"url": {
-											"raw": "http://127.0.0.1:3000/conjuntos",
+											"raw": "http://127.0.0.1:3000/sets",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -3262,14 +3262,14 @@
 											"path": [
 												"api",
 												"v1",
-												"conjuntos"
+												"sets"
 											]
 										}
 									},
 									"response": []
 								},
 								{
-									"name": "conjunto",
+									"name": "set",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -3300,7 +3300,7 @@
 											}
 										},
 										"url": {
-											"raw": "http://127.0.0.1:3000/conjuntos/Com 20184 20186 1",
+											"raw": "http://127.0.0.1:3000/sets/Com 20184 20186 1",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -3312,7 +3312,7 @@
 											"path": [
 												"api",
 												"v1",
-												"conjuntos",
+												"sets",
 												"Com 20184 20186 1"
 											]
 										}
@@ -3320,7 +3320,7 @@
 									"response": []
 								},
 								{
-									"name": "conjunto",
+									"name": "set",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -3351,7 +3351,7 @@
 											}
 										},
 										"url": {
-											"raw": "http://127.0.0.1:3000/conjuntos/C Eco 1 20152 20152",
+											"raw": "http://127.0.0.1:3000/sets/C Eco 1 20152 20152",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -3363,7 +3363,7 @@
 											"path": [
 												"api",
 												"v1",
-												"conjuntos",
+												"sets",
 												"C Eco 1 20152 20152"
 											]
 										}
@@ -3408,7 +3408,7 @@
 									"response": []
 								},
 								{
-									"name": "preparacion",
+									"name": "preparation",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -3441,7 +3441,7 @@
 									"response": []
 								},
 								{
-									"name": "conjunto",
+									"name": "set",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -3469,7 +3469,7 @@
 												"api",
 												"v1",
 												"preparations",
-												"conjunto",
+												"set",
 												"Eco 20151 20201 1"
 											]
 										}
@@ -3549,7 +3549,7 @@
 									"response": []
 								},
 								{
-									"name": "preparacion",
+									"name": "preparation",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -3572,7 +3572,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n\t\"nombre\": \"Psi 20151 20201 1.1\",\n\t\"conjunto\": \"Psi 20151 20201 1\",\n\t\"numero\": 1,\n    \"preparador\": \"admin@pleyades.com\",\n    \"fechaInicial\":  \"2020-03-24T20:12:28+00:00\",\n    \"fechaFinal\":  \"2020-03-24T20:14:39+00:00\",\n    \"estado\": \"Exitosa\",\n    \"observaciones\":  null\n}\n ",
+											"raw": "{\n\t\"nombre\": \"Psi 20151 20201 1.1\",\n\t\"set\": \"Psi 20151 20201 1\",\n\t\"numero\": 1,\n    \"preparador\": \"admin@pleyades.com\",\n    \"fechaInicial\":  \"2020-03-24T20:12:28+00:00\",\n    \"fechaFinal\":  \"2020-03-24T20:14:39+00:00\",\n    \"estado\": \"Exitosa\",\n    \"observaciones\":  null\n}\n ",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -3599,7 +3599,7 @@
 									"response": []
 								},
 								{
-									"name": "preparacion",
+									"name": "preparation",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -3650,7 +3650,7 @@
 									"response": []
 								},
 								{
-									"name": "preparacion",
+									"name": "preparation",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -3834,7 +3834,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "  {\r\n    \"codigo\": 29,\r\n    \"nombre\": \" civilcita\",\r\n    \"nombre_corto\": \"civi\",\r\n    \"faculty\": 2,\r\n    \"nombre_facultad\": \"Faculty de Ingenierias\"\r\n  }",
+											"raw": "  {\r\n    \"codigo\": 29,\r\n    \"nombre\": \" civilcita\",\r\n    \"nombre_corto\": \"civi\",\r\n    \"faculty\": 2,\r\n    \"nombre_faculty\": \"Faculty de Ingenierias\"\r\n  }",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -4608,7 +4608,7 @@
 									"response": []
 								},
 								{
-									"name": "ejecucion",
+									"name": "execution",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -4641,7 +4641,7 @@
 									"response": []
 								},
 								{
-									"name": "conjunto",
+									"name": "set",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -4669,7 +4669,7 @@
 												"api",
 												"v1",
 												"executions",
-												"conjunto",
+												"set",
 												"Tec 20151 20201 1"
 											]
 										}
@@ -4713,7 +4713,7 @@
 									"response": []
 								},
 								{
-									"name": "ejecucion",
+									"name": "execution",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -4736,7 +4736,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n\t\"nombre\": \"P Com 20192 20201 1.1\",\r\n\t\"conjunto\": \"P Com 20192 20201 1\",\r\n\t\"numero\": 1,\r\n    \"ejecutor\": \"walter.alvarez@educatic.com.co\",\r\n    \"fechaInicial\":  \"2020-03-24T14:18:28+00:00\",\r\n    \"fechaFinal\":  \"2018-11-13T20:20:39+00:00\",\r\n    \"estado\": \"Exitosa\",\r\n\t\"precision_model\": 93.89,\r\n\t\"resultados\": {\"exitosa\": false, \"excepciones\": \"\"}\r\n}",
+											"raw": "{\r\n\t\"nombre\": \"P Com 20192 20201 1.1\",\r\n\t\"set\": \"P Com 20192 20201 1\",\r\n\t\"numero\": 1,\r\n    \"ejecutor\": \"walter.alvarez@educatic.com.co\",\r\n    \"fechaInicial\":  \"2020-03-24T14:18:28+00:00\",\r\n    \"fechaFinal\":  \"2018-11-13T20:20:39+00:00\",\r\n    \"estado\": \"Exitosa\",\r\n\t\"precision_model\": 93.89,\r\n\t\"results\": {\"exitosa\": false, \"excepciones\": \"\"}\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -4763,7 +4763,7 @@
 									"response": []
 								},
 								{
-									"name": "ejecucion",
+									"name": "execution",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -4786,7 +4786,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n\t\"estado\": \"Exitosa\",\r\n\t\"resultados\":  {\"total_desertores\": 61, \"clasificador\": \"LinearDiscriminantAnalysis\", \"precision\": 98.04, \"semestre_a_predecir\": 20192} \r\n\t\r\n}",
+											"raw": "{\r\n\t\"estado\": \"Exitosa\",\r\n\t\"results\":  {\"total_desertores\": 61, \"clasificador\": \"LinearDiscriminantAnalysis\", \"precision\": 98.04, \"semestre_a_predecir\": 20192} \r\n\t\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -4814,7 +4814,7 @@
 									"response": []
 								},
 								{
-									"name": "ejecucion",
+									"name": "execution",
 									"request": {
 										"method": "DELETE",
 										"header": [
@@ -4855,10 +4855,10 @@
 							]
 						},
 						{
-							"name": "Conjuntos de datos",
+							"name": "Sets de datos",
 							"item": [
 								{
-									"name": "conjuntos",
+									"name": "sets",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -4873,7 +4873,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://eiadigital.eia.edu.co/PleyadesApi/conjuntos",
+											"raw": "http://eiadigital.eia.edu.co/PleyadesApi/sets",
 											"protocol": "http",
 											"host": [
 												"eiadigital",
@@ -4885,14 +4885,14 @@
 												"PleyadesApi",
 												"api",
 												"v1",
-												"conjuntos"
+												"sets"
 											]
 										}
 									},
 									"response": []
 								},
 								{
-									"name": "conjunto",
+									"name": "set",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -4907,7 +4907,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://stormy-retreat-94001.herokuapp.com/conjuntos/Esp 20151 20201 1",
+											"raw": "http://stormy-retreat-94001.herokuapp.com/sets/Esp 20151 20201 1",
 											"protocol": "http",
 											"host": [
 												"stormy-retreat-94001",
@@ -4917,7 +4917,7 @@
 											"path": [
 												"api",
 												"v1",
-												"conjuntos",
+												"sets",
 												"Esp 20151 20201 1"
 											]
 										}
@@ -4940,7 +4940,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://127.0.0.1:3000/conjuntos/encargado/walter.alvarez@educatic.com.co",
+											"raw": "http://127.0.0.1:3000/sets/encargado/walter.alvarez@educatic.com.co",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -4952,7 +4952,7 @@
 											"path": [
 												"api",
 												"v1",
-												"conjuntos",
+												"sets",
 												"encargado",
 												"walter.alvarez@educatic.com.co"
 											]
@@ -4976,7 +4976,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://127.0.0.1:3000/conjuntos/encargado/walter.alvarez@educatic.com.co?estado=Crudos",
+											"raw": "http://127.0.0.1:3000/sets/encargado/walter.alvarez@educatic.com.co?estado=Crudos",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -4988,7 +4988,7 @@
 											"path": [
 												"api",
 												"v1",
-												"conjuntos",
+												"sets",
 												"encargado",
 												"walter.alvarez@educatic.com.co"
 											],
@@ -5018,7 +5018,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://127.0.0.1:3000/conjuntos/estado/Crudos",
+											"raw": "http://127.0.0.1:3000/sets/estado/Crudos",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -5030,7 +5030,7 @@
 											"path": [
 												"api",
 												"v1",
-												"conjuntos",
+												"sets",
 												"estado",
 												"Crudos"
 											]
@@ -5054,7 +5054,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://127.0.0.1:3000/conjuntos/programa/415-0780-01",
+											"raw": "http://127.0.0.1:3000/sets/programa/415-0780-01",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -5066,7 +5066,7 @@
 											"path": [
 												"api",
 												"v1",
-												"conjuntos",
+												"sets",
 												"programa",
 												"415-0780-01"
 											]
@@ -5090,7 +5090,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://127.0.0.1:3000/conjuntos/periodos/20151/20201",
+											"raw": "http://127.0.0.1:3000/sets/periodos/20151/20201",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -5102,7 +5102,7 @@
 											"path": [
 												"api",
 												"v1",
-												"conjuntos",
+												"sets",
 												"periodos",
 												"20151",
 												"20201"
@@ -5143,7 +5143,7 @@
 											}
 										},
 										"url": {
-											"raw": "http://127.0.0.1:3000/conjuntos/nombre",
+											"raw": "http://127.0.0.1:3000/sets/nombre",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -5155,7 +5155,7 @@
 											"path": [
 												"api",
 												"v1",
-												"conjuntos",
+												"sets",
 												"nombre"
 											]
 										}
@@ -5163,7 +5163,7 @@
 									"response": []
 								},
 								{
-									"name": "conjunto",
+									"name": "set",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -5194,7 +5194,7 @@
 											}
 										},
 										"url": {
-											"raw": "https://eiadigital.eia.edu.co/PleyadesApi/conjuntos",
+											"raw": "https://eiadigital.eia.edu.co/PleyadesApi/sets",
 											"protocol": "https",
 											"host": [
 												"eiadigital",
@@ -5206,14 +5206,14 @@
 												"PleyadesApi",
 												"api",
 												"v1",
-												"conjuntos"
+												"sets"
 											]
 										}
 									},
 									"response": []
 								},
 								{
-									"name": "conjunto",
+									"name": "set",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -5244,7 +5244,7 @@
 											}
 										},
 										"url": {
-											"raw": "https://eiadigital.eia.edu.co/PleyadesApi/conjuntos/ingciv 20151 20201 1",
+											"raw": "https://eiadigital.eia.edu.co/PleyadesApi/sets/ingciv 20151 20201 1",
 											"protocol": "https",
 											"host": [
 												"eiadigital",
@@ -5256,7 +5256,7 @@
 												"PleyadesApi",
 												"api",
 												"v1",
-												"conjuntos",
+												"sets",
 												"ingciv 20151 20201 1"
 											]
 										}
@@ -5264,7 +5264,7 @@
 									"response": []
 								},
 								{
-									"name": "conjunto",
+									"name": "set",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -5295,7 +5295,7 @@
 											}
 										},
 										"url": {
-											"raw": "https://eiadigital.eia.edu.co/PleyadesApi/conjuntos/C Eco 1 20152 20152",
+											"raw": "https://eiadigital.eia.edu.co/PleyadesApi/sets/C Eco 1 20152 20152",
 											"protocol": "https",
 											"host": [
 												"eiadigital",
@@ -5307,7 +5307,7 @@
 												"PleyadesApi",
 												"api",
 												"v1",
-												"conjuntos",
+												"sets",
 												"C Eco 1 20152 20152"
 											]
 										}
@@ -5354,7 +5354,7 @@
 									"response": []
 								},
 								{
-									"name": "preparacion",
+									"name": "preparation",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -5387,7 +5387,7 @@
 									"response": []
 								},
 								{
-									"name": "conjunto",
+									"name": "set",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -5415,7 +5415,7 @@
 												"api",
 												"v1",
 												"preparations",
-												"conjunto",
+												"set",
 												"Eco 20151 20201 1"
 											]
 										}
@@ -5495,7 +5495,7 @@
 									"response": []
 								},
 								{
-									"name": "preparacion",
+									"name": "preparation",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -5518,7 +5518,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n\t\"nombre\": \"Psi 20151 20201 1.1\",\n\t\"conjunto\": \"Psi 20151 20201 1\",\n\t\"numero\": 1,\n    \"preparador\": \"admin@pleyades.com\",\n    \"fechaInicial\":  \"2020-03-24T20:12:28+00:00\",\n    \"fechaFinal\":  \"2020-03-24T20:14:39+00:00\",\n    \"estado\": \"Exitosa\",\n    \"observaciones\":  null\n}\n ",
+											"raw": "{\n\t\"nombre\": \"Psi 20151 20201 1.1\",\n\t\"set\": \"Psi 20151 20201 1\",\n\t\"numero\": 1,\n    \"preparador\": \"admin@pleyades.com\",\n    \"fechaInicial\":  \"2020-03-24T20:12:28+00:00\",\n    \"fechaFinal\":  \"2020-03-24T20:14:39+00:00\",\n    \"estado\": \"Exitosa\",\n    \"observaciones\":  null\n}\n ",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -5545,7 +5545,7 @@
 									"response": []
 								},
 								{
-									"name": "preparacion",
+									"name": "preparation",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -5596,7 +5596,7 @@
 									"response": []
 								},
 								{
-									"name": "preparacion",
+									"name": "preparation",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -5780,7 +5780,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "  {\r\n    \"codigo\": 29,\r\n    \"nombre\": \" civilcita\",\r\n    \"nombre_corto\": \"civi\",\r\n    \"faculty\": 2,\r\n    \"nombre_facultad\": \"Faculty de Ingenierias\"\r\n  }",
+											"raw": "  {\r\n    \"codigo\": 29,\r\n    \"nombre\": \" civilcita\",\r\n    \"nombre_corto\": \"civi\",\r\n    \"faculty\": 2,\r\n    \"nombre_faculty\": \"Faculty de Ingenierias\"\r\n  }",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -6533,7 +6533,7 @@
 												"method": "GET",
 												"header": [],
 												"url": {
-													"raw": "https://eiadigital.eia.edu.co/PleyadesApi/desertion/estudiantes/periodos",
+													"raw": "https://eiadigital.eia.edu.co/PleyadesApi/desertion/students/periodos",
 													"protocol": "https",
 													"host": [
 														"eiadigital",
@@ -6546,7 +6546,7 @@
 														"api",
 														"v1",
 														"desertion",
-														"estudiantes",
+														"students",
 														"periodos"
 													]
 												}
@@ -6706,7 +6706,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://apipleyades.pythonanywhere.com/desertion/estudiantes/programs",
+									"raw": "http://apipleyades.pythonanywhere.com/desertion/students/programs",
 									"protocol": "http",
 									"host": [
 										"apipleyades",
@@ -6717,7 +6717,7 @@
 										"api",
 										"v1",
 										"desertion",
-										"estudiantes",
+										"students",
 										"programs"
 									]
 								}
@@ -6725,7 +6725,7 @@
 							"response": []
 						},
 						{
-							"name": "desertion conjunto",
+							"name": "desertion set",
 							"request": {
 								"auth": {
 									"type": "bearer",
@@ -6740,7 +6740,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://apipleyades.pythonanywhere.com/desertion/estudiantes/set/23/20151/20191",
+									"raw": "http://apipleyades.pythonanywhere.com/desertion/students/set/23/20151/20191",
 									"protocol": "http",
 									"host": [
 										"apipleyades",
@@ -6751,8 +6751,8 @@
 										"api",
 										"v1",
 										"desertion",
-										"estudiantes",
-										"conjunto",
+										"students",
+										"set",
 										"23",
 										"20151",
 										"20191"

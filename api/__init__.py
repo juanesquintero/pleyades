@@ -103,16 +103,16 @@ def app_routes(app):
         return jsonify({'api': 'Pleyades'}), 200
 
     # Import Controllers
-    from controllers.Auth import Auth
-    from controllers.Faculties import Faculty
-    from controllers.Programas import Program
+    from controllers.auth import Auth
+    from controllers.faculties import Faculty
+    from controllers.programs import Program
     from controllers.users import User
-    from controllers.Conjuntos import Set
-    from controllers.Preparaciones import Preparacion
-    from controllers.Ejecuciones import Ejecucion
-    from controllers.desertion.Institucion import IES
-    from controllers.desertion.Estudiantes import Student
-    from controllers.desertion.Resultados import Result
+    from controllers.sets import Set
+    from controllers.preparations import Preparacion
+    from controllers.executions import Ejecucion
+    from controllers.desertion.institute import IES
+    from controllers.desertion.students import Student
+    from controllers.desertion.results import Result
 
     # Register routes
     app.register_blueprint(Auth, url_prefix=base_path+'auth')
@@ -124,9 +124,11 @@ def app_routes(app):
     app.register_blueprint(Ejecucion, url_prefix=base_path+'executions')
     app.register_blueprint(IES, url_prefix=base_path+'desertion/institute')
     app.register_blueprint(
-        Student, url_prefix=base_path+'desertion/estudiantes')
+        Student, url_prefix=base_path+'desertion/students'
+    )
     app.register_blueprint(
-        Result, url_prefix=base_path+'desertion/resultados')
+        Result, url_prefix=base_path+'desertion/results'
+    )
 
 
 def app_errors(app, error_logger):

@@ -5,7 +5,7 @@ from flask import request, jsonify, Blueprint
 
 from db.ies.db import DB
 from utils.utils import exception, _format
-from controllers.Programas import exists as exists_programa
+from controllers.programs import exists as exists_program
 
 Student = Blueprint('Student', __name__)
 
@@ -20,7 +20,7 @@ msg_error = {'msg': 'No hay concidencias'}, 404
 
 @Student.route('/set/<int:programa>/<int:periodoInicio>/<int:periodoFin>')
 @jwt_required()
-def get_conjunto_estudiantes(programa, periodoInicio, periodoFin):
+def get_set_estudiantes(programa, periodoInicio, periodoFin):
     sql = f'SELECT * FROM {tabla} WHERE idprograma={programa} AND REGISTRO >= {
         periodoInicio} AND REGISTRO <= {periodoFin} ORDER BY REGISTRO;'
     query = db.select(sql)
@@ -47,7 +47,7 @@ def get_period(periodo):
 
 @Student.route('/programa/<int:programa>')
 @jwt_required()
-def get_programa(programa):
+def get_program(programa):
     sql = f"SELECT * FROM {tabla} WHERE idprograma={programa};"
     query = db.select(sql)
     ex = exception(query)
@@ -60,7 +60,7 @@ def get_programa(programa):
 
 @Student.route('/programa/<int:programa>/<int:periodo>')
 @jwt_required()
-def get_period_programa(programa, periodo):
+def get_period_program(programa, periodo):
     sql = f'SELECT * FROM {tabla} WHERE REGISTRO={
         periodo} and idprograma={programa}'
     query = db.select(sql)
@@ -106,7 +106,7 @@ def get_periods():
 
 @Student.route('/periods/programa/<int:programa>')
 @jwt_required()
-def get_periods_programa(programa):
+def get_periods_program(programa):
     # Obtener datos desde la bd SQL server
     sql = f'SELECT DISTINCT REGISTRO FROM {tabla} WHERE idprograma={programa};'
     query = db.select(sql)
@@ -128,7 +128,7 @@ def get_periods_programa(programa):
 
 @Student.route('/programs')
 @jwt_required()
-def get_programas():
+def get_programs():
     # Obtener datos desde la bd SQL server
     sql = f'SELECT DISTINCT idprograma, programa FROM {tabla};'
     query = db.select(sql)
@@ -138,11 +138,11 @@ def get_programas():
     if not query:
         return msg_error
 
-    programas_df = pd.DataFrame(query).sort_values(
+    programs_df = pd.DataFrame(query).sort_values(
         by='programa', ascending=True
     )
-    programas_df['idprograma'] = programas_df['idprograma'].astype(int)
-    programs = json.loads(programas_df.to_json(orient='records'))
+    programs_df['idprograma'] = programs_df['idprograma'].astype(int)
+    programs = json.loads(programs_df.to_json(orient='records'))
 
     if not programs:
         return msg_error

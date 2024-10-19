@@ -3,7 +3,7 @@ from db.ies.db import DB
 from flask_jwt_extended import jwt_required
 from utils.utils import exception, _format
 # Relaciones
-from controllers.Programas import exists as exists_programa
+from controllers.programs import exists as exists_program
 import pandas as pd
 import json
 
@@ -44,7 +44,7 @@ def get_totales_period(periodo: int):
 
 @IES.route('/programa/<int:programa>')
 @jwt_required()
-def get_programa(programa: int):
+def get_program(programa: int):
     sql = "SELECT * FROM {} WHERE idprograma={};".format(tabla, programa)
     query = db.select(sql)
     ex = exception(query)
@@ -57,7 +57,7 @@ def get_programa(programa: int):
 
 @IES.route('/programa/<int:programa>/<int:periodo>')
 @jwt_required()
-def get_period_programa(programa: int, periodo: int):
+def get_period_program(programa: int, periodo: int):
     sql = "SELECT * FROM {} WHERE periodo={} and idprograma={}".format(
         tabla, periodo, programa)
     query = db.select(sql)
@@ -89,7 +89,7 @@ def get_periods():
 
 @IES.route('/programs')
 @jwt_required()
-def get_programas():
+def get_programs():
     # Obtener datos desde la bd SQL server
     sql = 'SELECT DISTINCT idprograma, programa FROM {};'.format(tabla)
     query = db.select(sql)
@@ -98,10 +98,10 @@ def get_programas():
         return ex
     if not query:
         return msg_error
-    programas_df = pd.DataFrame(query).sort_values(
+    programs_df = pd.DataFrame(query).sort_values(
         by='programa', ascending=True)
-    programas_df['idprograma'] = programas_df['idprograma'].astype(int)
-    programs = json.loads(programas_df.to_json(orient='records'))
+    programs_df['idprograma'] = programs_df['idprograma'].astype(int)
+    programs = json.loads(programs_df.to_json(orient='records'))
     if not (programs):
         return msg_error
     return jsonify(_format(programs))
@@ -109,7 +109,7 @@ def get_programas():
 
 @IES.route('/programs/<int:periodo>')
 @jwt_required()
-def get_programas_by_period(periodo: int):
+def get_programs_by_period(periodo: int):
     # Obtener datos desde la bd SQL server
     sql = 'SELECT DISTINCT idprograma, programa FROM {} WHERE periodo={};'.format(
         tabla, periodo)
@@ -119,10 +119,10 @@ def get_programas_by_period(periodo: int):
         return ex
     if not query:
         return msg_error
-    programas_df = pd.DataFrame(query).sort_values(
+    programs_df = pd.DataFrame(query).sort_values(
         by='programa', ascending=True)
-    programas_df['idprograma'] = programas_df['idprograma'].astype(int)
-    programs = json.loads(programas_df.to_json(orient='records'))
+    programs_df['idprograma'] = programs_df['idprograma'].astype(int)
+    programs = json.loads(programs_df.to_json(orient='records'))
     if not (programs):
         return msg_error
     return jsonify(_format(programs))

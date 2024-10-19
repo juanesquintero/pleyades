@@ -1,12 +1,12 @@
 from flask import request, jsonify, Blueprint
 from db.ies.db import DB as db_ies
-from db.pleyades.db import Set as conjunto_model, Ejecucion as ejecucion_model, Preparacion as preparacion_model
-from schemas.conjunto_schema import validate_post_schema, validate_put_schema, validate_nombre_schema
+from db.pleyades.db import Set as set_model, Ejecucion as execution_model, Preparacion as preparation_model
+from schemas.set_schema import validate_post_schema, validate_put_schema, validate_nombre_schema
 from flask_jwt_extended import jwt_required
 from utils.utils import exception, _format
 
 # Relaciones
-from controllers.Programas import exists as exists_programa
+from controllers.programs import exists as exists_program
 from controllers.users import exists as exists_usuario
 
 Set = Blueprint('Set', __name__)
@@ -18,19 +18,19 @@ db_ies = db_ies.getInstance()
 @Set.route('/')
 @jwt_required()
 def get():
-    query = conjunto_model.get_all()
+    query = set_model.get_all()
     ex = exception(query)
     if ex:
         return ex
     if not query:
-        return {'msg': 'No hay Conjuntos'}, 404
+        return {'msg': 'No hay Sets'}, 404
     return jsonify(query)
 
 
 @Set.route('/<nombre>')
 @jwt_required()
 def get_one(nombre):
-    query = conjunto_model.get_one(nombre)
+    query = set_model.get_one(nombre)
     ex = exception(query)
     if ex:
         return ex
@@ -42,7 +42,7 @@ def get_one(nombre):
 @Set.route('/estado/<estado>')
 @jwt_required()
 def get_by_state(estado):
-    query = conjunto_model.get_state(estado)
+    query = set_model.get_state(estado)
     ex = exception(query)
     if ex:
         return ex
@@ -54,7 +54,7 @@ def get_by_state(estado):
 @Set.route('/tipo/<tipo>')
 @jwt_required()
 def get_by_tipo(tipo):
-    query = conjunto_model.get_tipo(tipo)
+    query = set_model.get_tipo(tipo)
     ex = exception(query)
     if ex:
         return ex
@@ -65,8 +65,8 @@ def get_by_tipo(tipo):
 
 @Set.route('/programa/<int:programa>')
 @jwt_required()
-def get_by_programa(programa):
-    query = conjunto_model.get_programa(programa)
+def get_by_program(programa):
+    query = set_model.get_program(programa)
     ex = exception(query)
     if ex:
         return ex
@@ -81,11 +81,11 @@ def get_by_encargado(encargado):
     estado = request.args.get('estado')
     if estado:
         if estado.lower().strip() in ['crudos', 'procesados', 'en proceso']:
-            query = conjunto_model.get_encargado(encargado, estado)
+            query = set_model.get_encargado(encargado, estado)
         else:
             return {'msg': 'Estado invalido'}, 404
     else:
-        query = conjunto_model.get_encargado(encargado)
+        query = set_model.get_encargado(encargado)
     ex = exception(query)
     if ex:
         return ex
@@ -97,7 +97,7 @@ def get_by_encargado(encargado):
 @Set.route('/periods/<int:inicio>/<int:fin>')
 @jwt_required()
 def get_by_periods(inicio, fin):
-    query = conjunto_model.get_rango(inicio, fin)
+    query = set_model.get_rango(inicio, fin)
     ex = exception(query)
     if ex:
         return ex
@@ -118,19 +118,19 @@ def post():
         return {'error': 'Periodo Inicial no puede ser mayor al Final'}, 400
     # sql validations
     if exists(body['nombre']):
-        return {'error': 'Conjunto Ya existe'}, 400
+        return {'error': 'Set Ya existe'}, 400
     if not exists_usuario(body['encargado']):
         return {'error': 'usuario no existe'}, 400
-    if not exists_programa(body['programa']):
+    if not exists_program(body['programa']):
         return {'error': 'programa no existe'}, 400
     if not body['estado'] in ['Crudos', 'Procesados', 'En Proceso']:
         return {'error': 'estado invalido'}, 400
     # Insert
-    insert = conjunto_model.insert(body)
+    insert = set_model.insert(body)
     ex = exception(insert)
     if ex:
         return ex
-    return {'msg': 'Conjunto creado'}, 200
+    return {'msg': 'Set creado'}, 200
 
 
 @Set.route('/', methods=['POST'])
@@ -149,14 +149,14 @@ def nombre():
     # sql validations
     if not exists_usuario(body['encargado']):
         return {'error': 'usuario no existe'}, 400
-    if not exists_programa(body['programa']):
+    if not exists_program(body['programa']):
         return {'error': 'programa no existe'}, 400
     if not body['estado'] in ['Crudos', 'Procesados', 'En Proceso']:
         return {'error': 'estado invalido'}, 400
     if not body['tipo'] in ['consulta', 'excel']:
         return {'error': 'tipo invalido'}, 400
     # Obtener el numero consecutivo para el student_set de datos
-    query = conjunto_model.get_numero(
+    query = set_model.get_numero(
         body['programa'],
         body['periodoInicial'],
         body['periodoFinal']
@@ -189,25 +189,25 @@ def delete_many(estado):
     if not (estado):
         return {'error': 'indique el estado por el path'}, 400
     estado = estado.title()
-    query = conjunto_model.get_state(estado)
+    query = set_model.get_state(estado)
     ex = exception(query)
     if ex:
         return ex
     if not query:
         return {'msg': 'No hay concidencias'}, 404
 
-    conjuntos_nombres = [c['nombre'] for c in query]
-    for student_set in conjuntos_nombres:
-        # delete conjunto
-        delete = conjunto_model.delete(conjunto)
-        # delete resultados
-        delete = ejecucion_model.delete_conjunto(conjunto)
-        delete = preparacion_model.delete_conjunto(conjunto)
+    sets_nombres = [c['nombre'] for c in query]
+    for student_set in sets_nombres:
+        # delete set
+        delete = set_model.delete(set)
+        # delete results
+        delete = execution_model.delete_set(set)
+        delete = preparation_model.delete_set(set)
         ex = exception(delete)
         if ex:
             return ex
 
-    return {'msg': 'Conjuntos eliminados', 'data': conjuntos_nombres}, 200
+    return {'msg': 'Sets eliminados', 'data': sets_nombres}, 200
 
 
 @Set.route('/<nombre>', methods=['DELETE'])
@@ -217,16 +217,16 @@ def delete_one(nombre):
         return {'error': 'indique el nombre por el path'}, 400
     # sql validations
     if not exists(nombre):
-        return {'error': 'Conjunto no existe'}, 404
+        return {'error': 'Set no existe'}, 404
     # delete
-    delete = conjunto_model.delete(nombre)
-    # delete resultados
-    delete = ejecucion_model.delete_conjunto(nombre)
-    delete = preparacion_model.delete_conjunto(nombre)
+    delete = set_model.delete(nombre)
+    # delete results
+    delete = execution_model.delete_set(nombre)
+    delete = preparation_model.delete_set(nombre)
     ex = exception(delete)
     if ex:
         return ex
-    return {'msg': 'Conjunto eliminado'}, 200
+    return {'msg': 'Set eliminado'}, 200
 
 
 @Set.route('/<nombre>', methods=['PUT'])
@@ -240,7 +240,7 @@ def put(nombre):
         return {'error': 'body invalido'}, 400
     # sql validations
     if not exists(nombre):
-        return {'error': 'Conjunto no existe'}, 404
+        return {'error': 'Set no existe'}, 404
     if 'estado' in body.keys():
         if not body['estado'] in ['Crudos', 'Procesados', 'En Proceso']:
             return {'error': 'estado invalido'}, 400
@@ -248,15 +248,15 @@ def put(nombre):
         if not exists_usuario(body['encargado']):
             return {'error': 'encargado invalido'}, 400
     # Uptade
-    update = conjunto_model.update(nombre, body)
+    update = set_model.update(nombre, body)
     ex = exception(update)
     if ex:
         return ex
-    return {'msg': 'Conjunto actualizado'}, 200
+    return {'msg': 'Set actualizado'}, 200
 
 
 def exists(nombre):
-    query = conjunto_model.get_all()
+    query = set_model.get_all()
     if exception(query):
         return False
     lista = map(lambda c: c['nombre'], query)

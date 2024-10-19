@@ -3,9 +3,9 @@ from db.ies.db import DB
 from flask_jwt_extended import jwt_required
 from utils.utils import exception, _format
 import pandas as pd
-from schemas.resultado_schema import validate_post_schema
+from schemas.result_schema import validate_post_schema
 # Relaciones
-from controllers.Programas import exists as exists_programa
+from controllers.programs import exists as exists_program
 
 
 Result = Blueprint('Result', __name__)
@@ -34,7 +34,7 @@ def put_ultimo(semestre, programa):
 
 @Result.route('', methods=['POST'])
 @jwt_required()
-def post_insertar_resultados():
+def post_insertar_results():
     body = request.get_json()
     if not body or not validate_post_schema(body):
         return {'error': 'body invalido'}, 400

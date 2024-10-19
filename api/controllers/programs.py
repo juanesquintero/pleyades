@@ -1,10 +1,10 @@
 from flask import request, jsonify, Blueprint
 from db.ies.db import DB
-from schemas.programa_schema import validate_post_schema, validate_put_schema
+from schemas.program_schema import validate_post_schema, validate_put_schema
 from flask_jwt_extended import jwt_required
 from utils.utils import exception, _format, _format
 # Relaciones
-from controllers.Faculties import exists as exists_facultad
+from controllers.faculties import exists as exists_faculty
 
 Program = Blueprint('Program', __name__)
 db = DB.getInstance()
@@ -59,7 +59,7 @@ def post():
     if not (validate_post_schema(body)):
         return {'error': 'body invalido'}, 400
     # sql validations
-    if not exists_facultad(body['faculty']):
+    if not exists_faculty(body['faculty']):
         return {'error': 'faculty no existe'}, 404
     lista = db.select('SELECT * FROM {};'.format(tabla))
     for p in lista:
