@@ -14,7 +14,7 @@ def execute_model(data, conjunto, no_desertion=False):
         'idprograma': int(data['idprograma'][0]),
         'programa': str(data['programa'][0]),
         'idfacultad': int(data['idfacultad'][0]),
-        'facultad': str(data['facultad'][0]),
+        'faculty': str(data['faculty'][0]),
         'tipo': 'Entrenamiento',
     }
 

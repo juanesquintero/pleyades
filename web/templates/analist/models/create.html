@@ -24,7 +24,7 @@
         </label>
         <select
           class="form-control programa-change"
-          name="facultad"
+          name="faculty"
           id="facultad_select"
           required
         >
@@ -58,12 +58,12 @@
         var isIE = ua.indexOf("MSIE ");
 
         $("#facultad_select").change(function () {
-          var facultad = $(this).val();
+          var faculty = $(this).val();
           var i = 0;
           programa_select.options.length = 0;
 
           programs.forEach((p) => {
-            if (p.facultad == facultad) {
+            if (p.faculty == faculty) {
               var programa_Obj = {
                 codigo: p.codigo,
                 nombre: p.nombre,
@@ -268,7 +268,7 @@
       <script>
         $("#archivo_picker").click(function () {
           alert(
-            "Asegurese que los datos que ingrese tengan el formato de columnas correcto para su lectura.\nAdemas que correspondan a la facultad y programa selecccionados.\n\nGRACIAS"
+            "Asegurese que los datos que ingrese tengan el formato de columnas correcto para su lectura.\nAdemas que correspondan a la faculty y programa selecccionados.\n\nGRACIAS"
           );
         });
       </script>

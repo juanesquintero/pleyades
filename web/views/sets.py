@@ -165,7 +165,7 @@ def post_save(conjunto=None):
         # Obtener Lo valores del formulario
         conjunto = dict(request.values)
     # Preparar conjunto para la insercion
-    del conjunto['facultad']
+    del conjunto['faculty']
 
     # TODO NEW! version 2 v2.0.0
     session['period_closed'] = (conjunto.get('period_closed') == 'on')

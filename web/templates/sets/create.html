@@ -11,7 +11,7 @@
         <div class="form-group row">
             <div class="col-sm-5">
                 <label id="facultad_label">Faculty</label>
-                <select class="form-control programa_change" name="facultad" id="facultad_select" required>
+                <select class="form-control programa_change" name="faculty" id="facultad_select" required>
                     {% for f in faculties %}
                     <option key="{{f.codigo}}" value="{{f.codigo}}">{{f.nombre}}</option>
                     {% endfor %}
@@ -38,12 +38,12 @@
 
 
                 $('#facultad_select').change(function () {
-                    var facultad = $(this).val()
+                    var faculty = $(this).val()
                     var i = 0
                     programa_select.options.length = 0
 
                     programs.forEach(p => {
-                        if (p.facultad == facultad) {
+                        if (p.faculty == faculty) {
                             var programa_Obj = {
                                 codigo: p.codigo,
                                 nombre: p.nombre,
@@ -188,7 +188,7 @@
             </div>
             <script>
                 $('#archivo_picker').click(function () {
-                    alert('Asegurese que los datos que ingrese tengan el formato de columnas correcto para su lectura.\nAdemas que correspondan a la facultad y programa selecccionados.\n\nGRACIAS')
+                    alert('Asegurese que los datos que ingrese tengan el formato de columnas correcto para su lectura.\nAdemas que correspondan a la faculty y programa selecccionados.\n\nGRACIAS')
                 });            
             </script>
 

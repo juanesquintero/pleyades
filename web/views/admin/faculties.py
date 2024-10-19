@@ -23,5 +23,5 @@ def get_list():
 @only_admin
 def detalle():
     body = dict(request.values)
-    facultad = literal_eval(body['facultad'])
-    return render_template('admin/'+endopoint+'detalle.html', f=facultad)
+    faculty = literal_eval(body['faculty'])
+    return render_template('admin/'+endopoint+'detalle.html', f=faculty)

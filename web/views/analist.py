@@ -109,7 +109,7 @@ def predecir_model():
         'idprograma': idprograma,
         'programa': results.get('programa'),
         'idfacultad': results.get('idfacultad'),
-        'facultad': results.get('facultad'),
+        'faculty': results.get('faculty'),
         'model': model
     }
 

@@ -268,13 +268,13 @@ class IES:
     ############################################################### BARRAS ####################################################################
     def barras(self):
         try:
-            # Agrupar por Facultades
-            data_facultades = self.df_IES.dropna(subset=['facultad'], axis=0)
+            # Agrupar por Faculties
+            data_facultades = self.df_IES.dropna(subset=['faculty'], axis=0)
 
             data_facultades = data_facultades[[
-                'facultad', 'programa', 'programa_nombre_corto', 'mat_total', 'admi_total', 'insc_total', 'mat_nuevos_total']]
+                'faculty', 'programa', 'programa_nombre_corto', 'mat_total', 'admi_total', 'insc_total', 'mat_nuevos_total']]
             data_facultades = data_facultades.groupby(
-                ['facultad'], as_index=False).sum()
+                ['faculty'], as_index=False).sum()
             data_facultades = data_facultades.sort_values(
                 by=['admi_total', 'insc_total', 'mat_nuevos_total'], ascending=[True, True, True])
 
@@ -284,7 +284,7 @@ class IES:
             # BARRAS
             # Inscritos
             fig.add_trace(go.Bar(
-                x=data_facultades['facultad'],
+                x=data_facultades['faculty'],
                 y=data_facultades['insc_total'],
                 name='Inscritos',
                 marker=dict(
@@ -296,7 +296,7 @@ class IES:
                 secondary_y=False)
             # Admitidos
             fig.add_trace(go.Bar(
-                x=data_facultades['facultad'],
+                x=data_facultades['faculty'],
                 y=data_facultades['admi_total'],
                 name='Admitidos',
                 marker=dict(
@@ -308,7 +308,7 @@ class IES:
                 secondary_y=False)
             # Matriculados
             fig.add_trace(go.Bar(
-                x=data_facultades['facultad'],
+                x=data_facultades['faculty'],
                 y=data_facultades['mat_nuevos_total'],
                 name='Matriculados',
                 marker=dict(
@@ -328,7 +328,7 @@ class IES:
                     tasa.append(0)
 
             fig.add_trace(go.Scatter(
-                x=data_facultades['facultad'],
+                x=data_facultades['faculty'],
                 y=tasa,
                 name='Tasa de absorción',
                 mode='markers+lines+text',
@@ -347,7 +347,7 @@ class IES:
                 plot_bgcolor='#fff',
                 paper_bgcolor='#fff',
                 xaxis=dict(
-                    title='Facultades',
+                    title='Faculties',
                     # tickfont_size=14,
                     showticklabels=False,
                     showgrid=True,
@@ -401,21 +401,21 @@ class IES:
     ############################################################### PASTEL ####################################################################
     def pastel(self,):
         try:
-            # Agrupar por Facultades
+            # Agrupar por Faculties
             data_facultades = self.df_IES
             data_facultades = data_facultades.dropna(
-                subset=['facultad'], axis=0)
+                subset=['faculty'], axis=0)
 
             data_facultades = data_facultades[[
-                'facultad', 'programa', 'programa_nombre_corto', 'mat_total', 'admi_total', 'insc_total', 'mat_nuevos_total']]
+                'faculty', 'programa', 'programa_nombre_corto', 'mat_total', 'admi_total', 'insc_total', 'mat_nuevos_total']]
             data_facultades = data_facultades.groupby(
-                ['facultad'], as_index=False).sum()
+                ['faculty'], as_index=False).sum()
             data_facultades = data_facultades.sort_values(
                 by=['admi_total', 'insc_total', 'mat_nuevos_total'], ascending=[True, True, True])
 
             fig = px.pie(
                 values=data_facultades['mat_total'],
-                names=data_facultades['facultad'],
+                names=data_facultades['faculty'],
                 color_discrete_sequence=px.colors.sequential.ice[3:],
                 hole=.3
             )
@@ -446,7 +446,7 @@ class IES:
             period_actual = self.periodo
 
             # Programas
-            data = self.df_IES.dropna(subset=['facultad'], axis=0)
+            data = self.df_IES.dropna(subset=['faculty'], axis=0)
             data = data.sort_values(
                 by=['periodo', 'mat_total'], ascending=[False, False])
             list_programas = self.programas_period_actual
@@ -509,7 +509,7 @@ class IES:
     def miniseries_programas(self):
         try:
             # Programas
-            data = self.df_IES.dropna(subset=['facultad'], axis=0)
+            data = self.df_IES.dropna(subset=['faculty'], axis=0)
             list_programas = self.programas_period_actual
             cant_programas = len(list_programas)
 
