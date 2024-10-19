@@ -29,7 +29,7 @@ def logout_required(f):
             return f(*args, **kwargs)
         if session['user'] is None:
             return f(*args, **kwargs)
-        return render_template('utils/inicio.html'), 200
+        return render_template('utils/home.html'), 200
     return decorated_function
 
 
@@ -73,7 +73,7 @@ def login():
         session['headers'] = {'Authorization': 'Bearer ' + token}
         session.permanent = True
 
-        return render_template('utils/inicio.html'), 200
+        return render_template('utils/home.html'), 200
     if 'msg' in body.keys():
         return render_template('utils/login.html', mensaje=body.get('msg')), 401
     return render_template('utils/error.html', mensaje='Ocurrió un error loguandose', submensaje=body.get('error')), 400

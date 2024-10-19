@@ -1,7 +1,7 @@
 {% include 'components/header.html' %}
 
 
-{% with menu='tableros' %}
+{% with menu='dashboards' %}
 {% include 'components/sidebar.html' %}
 {% endwith %}
 
@@ -19,8 +19,8 @@
             <div class="col-7 m-0 px-1">
                 <label for="period_select" class="text-white">Selecciona un programa:</label>
                 <br>
-                <select id="programa_select" class="form-control-sm w-100">
-                    {% for prgm in programas_list %}
+                <select id="program_select" class="form-control-sm w-100">
+                    {% for prgm in programs_list %}
                     <option value="{{prgm.idprograma}}" {% if prgm.idprograma|string==programa.idprograma|string %}
                         selected {% endif %}>{{prgm.programa}}</option>
                     {% endfor %}
@@ -50,7 +50,7 @@
             openModal();
             window.location.href = "{{url_for('Tablero.student_dashboard')}}" + "?documento=" + documento + '&programa=' + programa + '&periodo=' + this.value;
         })
-        $('#programa_select').on('change', function () {
+        $('#program_select').on('change', function () {
             openModal();
             window.location.href =  "{{url_for('Tablero.student_dashboard')}}" + "?documento=" + documento + '&programa=' + this.value;
         })
@@ -314,9 +314,9 @@
                             <tr class="d-flex align-items-center mb-1">
                                 <th scope="row" class="">Créditos Plan</th>
                                 <td class="ml-auto"><span class="text-right">
-                                        {% if estudiante.creditos_programa %}
-                                        {% if estudiante.creditos_programa >= 0 %}
-                                        {{estudiante.creditos_programa|int}}
+                                        {% if estudiante.creditos_program %}
+                                        {% if estudiante.creditos_program >= 0 %}
+                                        {{estudiante.creditos_program|int}}
                                         {% else %} -
                                         {% endif %}
                                         {% else %} -
@@ -368,9 +368,9 @@
                             <tr class="d-flex align-items-center mb-1">
                                 <th scope="row" class="">Asignaturas Plan</th>
                                 <td class="ml-auto"><span class="text-right">
-                                        {% if estudiante.asignaturas_programa %}
-                                        {% if estudiante.asignaturas_programa >= 0 %}
-                                        {{estudiante.asignaturas_programa|int}}
+                                        {% if estudiante.asignaturas_program %}
+                                        {% if estudiante.asignaturas_program >= 0 %}
+                                        {{estudiante.asignaturas_program|int}}
                                         {% else %} - {% endif %}
                                         {% else %} - {% endif %}
 

@@ -1,4 +1,4 @@
-import utils.tableros.data_ies as Data
+import utils.dashboards.data_ies as Data
 import numpy as np
 import pandas as pd
 import json
@@ -59,7 +59,7 @@ def crear_indicador(data, variable, i, j, fig, tipo):
 # Funcion para agregar un REGISTRO de programs a la lista de graficos
 
 
-def miniserie_programa_row(data, fig, i, dict_periods):
+def miniserie_program_row(data, fig, i, dict_periods):
     try:
         x_periods = []
         for p in data['periodo']:
@@ -82,7 +82,7 @@ def miniserie_programa_row(data, fig, i, dict_periods):
             showline=False,
             tickvals=[statistics.mean(data['desertion'])],
             ticktext=[
-                '<b>{}</b>       '.format(data['programa_nombre_corto'][0])],
+                '<b>{}</b>       '.format(data['program_nombre_corto'][0])],
             tickfont=dict(
                 color='black',
                 # size=15
@@ -132,7 +132,7 @@ def miniserie_programa_row(data, fig, i, dict_periods):
 # Funcion para agregar un REGISTRO de programs a la lista de graficos
 
 
-def indicadores_programa_row(data, fig, i):
+def indicadores_program_row(data, fig, i):
     x = [0]
     # Nombre Program
     fig.append_trace(go.Scatter(
@@ -146,7 +146,7 @@ def indicadores_programa_row(data, fig, i):
     fig.update_yaxes(
         showline=False,
         tickvals=x,
-        ticktext=['<b>{}</b>       '.format(data['programa_nombre_corto'][0])],
+        ticktext=['<b>{}</b>       '.format(data['program_nombre_corto'][0])],
         tickfont=dict(color='black'),
         fixedrange=True,
         row=i, col=1
@@ -185,8 +185,8 @@ class IES:
 
         self.data_anterior = Data.get_IES_total_data(int(period_anterior))
 
-        self.programas_period_actual = Data.get_programas_by_period(periodo)
-        self.programas_period_anterior = Data.get_programas_by_period(
+        self.programs_period_actual = Data.get_programs_by_period(periodo)
+        self.programs_period_anterior = Data.get_programs_by_period(
             period_anterior)
 
     ############################################################### INDICADORES IES ####################################################################
@@ -243,13 +243,13 @@ class IES:
                 specs=[[{"type": "indicator"}, {"type": "indicator"}]],
             )
 
-            programas_period_actual, egresados_period_actual = len(
-                self.programas_period_actual), self.data_actual['egresados'][0]
-            programas_period_anterior, egresados_period_anterior = len(
-                self.programas_period_anterior), self.data_anterior['egresados'][0]
+            programs_period_actual, egresados_period_actual = len(
+                self.programs_period_actual), self.data_actual['egresados'][0]
+            programs_period_anterior, egresados_period_anterior = len(
+                self.programs_period_anterior), self.data_anterior['egresados'][0]
 
             fig = agregar_indicador(
-                programas_period_anterior, programas_period_actual, fig, 1, 1, 'number')
+                programs_period_anterior, programs_period_actual, fig, 1, 1, 'number')
             fig = agregar_indicador(
                 egresados_period_anterior, egresados_period_actual, fig, 1, 2, 'number')
 
@@ -269,13 +269,13 @@ class IES:
     def barras(self):
         try:
             # Agrupar por Faculties
-            data_facultades = self.df_IES.dropna(subset=['faculty'], axis=0)
+            data_facultyes = self.df_IES.dropna(subset=['faculty'], axis=0)
 
-            data_facultades = data_facultades[[
-                'faculty', 'programa', 'programa_nombre_corto', 'mat_total', 'admi_total', 'insc_total', 'mat_nuevos_total']]
-            data_facultades = data_facultades.groupby(
+            data_facultyes = data_facultyes[[
+                'faculty', 'programa', 'program_nombre_corto', 'mat_total', 'admi_total', 'insc_total', 'mat_nuevos_total']]
+            data_facultyes = data_facultyes.groupby(
                 ['faculty'], as_index=False).sum()
-            data_facultades = data_facultades.sort_values(
+            data_facultyes = data_facultyes.sort_values(
                 by=['admi_total', 'insc_total', 'mat_nuevos_total'], ascending=[True, True, True])
 
             # Create figure with secondary y-axis
@@ -284,8 +284,8 @@ class IES:
             # BARRAS
             # Inscritos
             fig.add_trace(go.Bar(
-                x=data_facultades['faculty'],
-                y=data_facultades['insc_total'],
+                x=data_facultyes['faculty'],
+                y=data_facultyes['insc_total'],
                 name='Inscritos',
                 marker=dict(
                     line=dict(color='#000000', width=2),
@@ -296,8 +296,8 @@ class IES:
                 secondary_y=False)
             # Admitidos
             fig.add_trace(go.Bar(
-                x=data_facultades['faculty'],
-                y=data_facultades['admi_total'],
+                x=data_facultyes['faculty'],
+                y=data_facultyes['admi_total'],
                 name='Admitidos',
                 marker=dict(
                     line=dict(color='#000000', width=2),
@@ -308,8 +308,8 @@ class IES:
                 secondary_y=False)
             # Matriculados
             fig.add_trace(go.Bar(
-                x=data_facultades['faculty'],
-                y=data_facultades['mat_nuevos_total'],
+                x=data_facultyes['faculty'],
+                y=data_facultyes['mat_nuevos_total'],
                 name='Matriculados',
                 marker=dict(
                     line=dict(color='#000000', width=2),
@@ -321,14 +321,14 @@ class IES:
             # SERIES
             # Tasa Admitidos/Matriculados
             tasa = []
-            for a, m in zip(data_facultades['admi_total'], data_facultades['mat_nuevos_total']):
+            for a, m in zip(data_facultyes['admi_total'], data_facultyes['mat_nuevos_total']):
                 try:
                     tasa.append(round(a/m*100, 1))
                 except Exception as e:
                     tasa.append(0)
 
             fig.add_trace(go.Scatter(
-                x=data_facultades['faculty'],
+                x=data_facultyes['faculty'],
                 y=tasa,
                 name='Tasa de absorción',
                 mode='markers+lines+text',
@@ -361,8 +361,8 @@ class IES:
                     # tickfont_size=14,
                     showgrid=True, gridwidth=1, gridcolor='#fff',
                     showline=True, linewidth=2, linecolor='black',
-                    range=[0, max(chain(data_facultades['mat_nuevos_total'],
-                                  data_facultades['insc_total'], data_facultades['admi_total']))*1.4],
+                    range=[0, max(chain(data_facultyes['mat_nuevos_total'],
+                                  data_facultyes['insc_total'], data_facultyes['admi_total']))*1.4],
                 ),
                 legend=dict(
                     # x=0,
@@ -402,20 +402,20 @@ class IES:
     def pastel(self,):
         try:
             # Agrupar por Faculties
-            data_facultades = self.df_IES
-            data_facultades = data_facultades.dropna(
+            data_facultyes = self.df_IES
+            data_facultyes = data_facultyes.dropna(
                 subset=['faculty'], axis=0)
 
-            data_facultades = data_facultades[[
-                'faculty', 'programa', 'programa_nombre_corto', 'mat_total', 'admi_total', 'insc_total', 'mat_nuevos_total']]
-            data_facultades = data_facultades.groupby(
+            data_facultyes = data_facultyes[[
+                'faculty', 'programa', 'program_nombre_corto', 'mat_total', 'admi_total', 'insc_total', 'mat_nuevos_total']]
+            data_facultyes = data_facultyes.groupby(
                 ['faculty'], as_index=False).sum()
-            data_facultades = data_facultades.sort_values(
+            data_facultyes = data_facultyes.sort_values(
                 by=['admi_total', 'insc_total', 'mat_nuevos_total'], ascending=[True, True, True])
 
             fig = px.pie(
-                values=data_facultades['mat_total'],
-                names=data_facultades['faculty'],
+                values=data_facultyes['mat_total'],
+                names=data_facultyes['faculty'],
                 color_discrete_sequence=px.colors.sequential.ice[3:],
                 hole=.3
             )
@@ -440,7 +440,7 @@ class IES:
             return None
 
     ############################################################### LISTA INDICADORES PROGRAMAS ####################################################################
-    def indicadores_programas(self):
+    def indicadores_programs(self):
         try:
 
             period_actual = self.periodo
@@ -449,24 +449,24 @@ class IES:
             data = self.df_IES.dropna(subset=['faculty'], axis=0)
             data = data.sort_values(
                 by=['periodo', 'mat_total'], ascending=[False, False])
-            list_programas = self.programas_period_actual
-            cant_programas = len(list_programas)
+            list_programs = self.programs_period_actual
+            cant_programs = len(list_programs)
 
             # Crear conetenedor de sub graficos
             fig = make_subplots(
                 start_cell='top-left',
                 column_titles=['', 'Hombres', 'Mujeres', 'Total', 'Desercion'],
-                rows=cant_programas, cols=5,
+                rows=cant_programs, cols=5,
                 column_widths=[0, 0.25, 0.25, 0.25, 0.25],
                 specs=[[{"type": "scatter"}, {"type": "indicator"}, {"type": "indicator"}, {
-                    "type": "indicator"}, {"type": "indicator"}]]*cant_programas,
+                    "type": "indicator"}, {"type": "indicator"}]]*cant_programs,
             )
 
             # Recorrer arreglo de programs y agregar cada fila con graficos
             cont = 0
-            for i, p in enumerate(list_programas):
+            for i, p in enumerate(list_programs):
                 # Filtrar por programa
-                data = Data.get_programa(p['idprograma']).reset_index()
+                data = Data.get_program(p['idprograma']).reset_index()
 
                 # Filtrar por periodo actual
                 data = data.sort_values(by=['periodo']).reset_index()
@@ -483,7 +483,7 @@ class IES:
                         # Obtener registros de los dos ultimos periods a partir del indicado
                         data_period_index = data.query(
                             "periodo == '{}' | periodo == '{}'".format(period_actual, period_anterior))
-                        fig = indicadores_programa_row(data, fig, cont+1)
+                        fig = indicadores_program_row(data, fig, cont+1)
                         cont += 1
 
             # Personalizar la grafica
@@ -496,22 +496,22 @@ class IES:
             for annotation in fig['layout']['annotations']:
                 annotation['font'] = dict(color='black')
 
-            if cant_programas <= 0:
+            if cant_programs <= 0:
                 return None, None
 
-            return fig, cant_programas
+            return fig, cant_programs
 
         except Exception as e:
             error_logger.error('EXCEPTION: '+str(e), exc_info=True)
             return None
 
     ############################################################### LISTA MINI SERIES PROGRAMAS ####################################################################
-    def miniseries_programas(self):
+    def miniseries_programs(self):
         try:
             # Programas
             data = self.df_IES.dropna(subset=['faculty'], axis=0)
-            list_programas = self.programas_period_actual
-            cant_programas = len(list_programas)
+            list_programs = self.programs_period_actual
+            cant_programs = len(list_programs)
 
             # Periodos
             list_periods = self.periodos_list
@@ -526,20 +526,20 @@ class IES:
             fig = make_subplots(
                 start_cell='top-left',
                 column_titles=['', ''],
-                rows=cant_programas, cols=2,
+                rows=cant_programs, cols=2,
                 column_widths=[0.5, 0.1],
                 specs=[[{"type": "scatter"}, {"type": "indicator"}]] *
-                cant_programas,
+                cant_programs,
             )
 
             # Recorrer arreglo de programs y agregar cada fila con graficos
-            for i, p in enumerate(list_programas):
-                data = Data.get_programa(p['idprograma'])
+            for i, p in enumerate(list_programs):
+                data = Data.get_program(p['idprograma'])
                 data = data[['periodo', 'programa',
-                             'programa_nombre_corto', 'idprograma', 'desertion']]
+                             'program_nombre_corto', 'idprograma', 'desertion']]
                 data = data.dropna().reset_index()
                 # data['periodo'] = data['periodo'].astype(str)
-                fig = miniserie_programa_row(data, fig, i+1, dict_periods)
+                fig = miniserie_program_row(data, fig, i+1, dict_periods)
 
             # Personalizar la grafica
             fig.update_layout(
@@ -551,10 +551,10 @@ class IES:
             for annotation in fig['layout']['annotations']:
                 annotation['font'] = dict(color='black')
 
-            if cant_programas <= 0:
+            if cant_programs <= 0:
                 return None, None
 
-            return fig, cant_programas
+            return fig, cant_programs
 
         except Exception as e:
             error_logger.error('EXCEPTION: '+str(e), exc_info=True)

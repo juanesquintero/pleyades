@@ -7,17 +7,17 @@ from flask import request, Blueprint, render_template, jsonify
 from views.auth import login_required
 from utils.mixins import obtener_ies_config
 
-# Importar tableros de plotly para cada nivel
-import utils.tableros.mundo as Mundo
-import utils.tableros.pais as Pais
-import utils.tableros.region as Region
-import utils.tableros.data_ies as DataIES
-from utils.tableros.ies import IES
-from utils.tableros.programa import Program
-import utils.tableros.estudiante as Estudiante_file
+# Importar dashboards de plotly para cada nivel
+import utils.dashboards.mundo as Mundo
+import utils.dashboards.pais as Pais
+import utils.dashboards.region as Region
+import utils.dashboards.data_ies as DataIES
+from utils.dashboards.ies import IES
+from utils.dashboards.programa import Program
+import utils.dashboards.estudiante as Estudiante_file
 
 
-endopoint = 'tableros/'
+endopoint = 'dashboards/'
 
 Tablero = Blueprint('Tablero', __name__)
 
@@ -26,7 +26,7 @@ niveles = [
     {'nombre': 'Nivel Pais', 'ruta': 'Tablero.pais_dashboard'},
     {'nombre': 'Nivel Region', 'ruta': 'Tablero.region_dashboard'},
     {'nombre': 'Nivel IES', 'ruta': 'Tablero.ies_dashboard'},
-    {'nombre': 'Nivel Program', 'ruta': 'Tablero.programa_dashboard'},
+    {'nombre': 'Nivel Program', 'ruta': 'Tablero.program_dashboard'},
     {'nombre': 'Nivel Student', 'ruta': 'Tablero.student_dashboard'},
 ]
 periods = np.arange(2010, 2019, 1)
@@ -206,9 +206,9 @@ def ies_dashboard():
     pastel = to_plotly_json(pastel) if pastel else None
 
     # Lista Indicadores Programas
-    indicadores_programas, cant_prgms_1 = ies.indicadores_programas()
-    indicadores_programas = to_plotly_json(
-        indicadores_programas) if indicadores_programas else None
+    indicadores_programs, cant_prgms_1 = ies.indicadores_programs()
+    indicadores_programs = to_plotly_json(
+        indicadores_programs) if indicadores_programs else None
     if cant_prgms_1:
         if cant_prgms_1 < 10:
             prgms_size_1 = cant_prgms_1*8*10
@@ -218,9 +218,9 @@ def ies_dashboard():
         prgms_size_1 = 0
 
     # Lista Mini serie Programas
-    miniseries_programas, cant_prgms_2 = ies.miniseries_programas()
-    miniseries_programas = to_plotly_json(
-        miniseries_programas) if miniseries_programas else None
+    miniseries_programs, cant_prgms_2 = ies.miniseries_programs()
+    miniseries_programs = to_plotly_json(
+        miniseries_programs) if miniseries_programs else None
     if cant_prgms_2:
         if cant_prgms_2 < 10:
             prgms_size_2 = cant_prgms_2*7*10
@@ -244,10 +244,10 @@ def ies_dashboard():
 
         pastel_plot=pastel,
 
-        indicadores_programas_plot=indicadores_programas,
+        indicadores_programs_plot=indicadores_programs,
         prgms_size_1=prgms_size_1,
 
-        miniseries_programas_plot=miniseries_programas,
+        miniseries_programs_plot=miniseries_programs,
         prgms_size_2=prgms_size_2,
 
     )
@@ -257,10 +257,10 @@ def ies_dashboard():
 
 @Tablero.route('/programa')
 @login_required
-def programa_dashboard():
+def program_dashboard():
 
     periods = DataIES.get_periods_origen()
-    programs = DataIES.get_programas_origen()
+    programs = DataIES.get_programs_origen()
 
     periodo = request.args.get('periodo')
     programa = request.args.get('programa')
@@ -270,42 +270,42 @@ def programa_dashboard():
     except Exception as e:
         periodo = max(periods)
 
-    programas_id = [str(p['idprograma']) for p in programs]
-    if not (programa in programas_id):
+    programs_id = [str(p['idprograma']) for p in programs]
+    if not (programa in programs_id):
         programa = programs[0]
     else:
         for p in programs:
             if str(p['idprograma']) == programa:
                 programa = p
 
-    if not DataIES.check_IES_period_programa(periodo, programa['idprograma']):
+    if not DataIES.check_IES_period_program(periodo, programa['idprograma']):
         return render_template(
             endopoint+'programa.html',
             notfound=True,
             periodo=int(periodo),
             programa=programa['idprograma'],
-            nombre_programa=programa['programa'],
+            nombre_program=programa['programa'],
             periodos_list=periods,
-            programas_list=programs,
+            programs_list=programs,
         )
 
-    programa_graph = Program(
+    program_graph = Program(
         periodo=periodo, programa=programa['idprograma'], periods=periods)
 
     # Indicadores Program
-    indicadores = programa_graph.indicadores()
+    indicadores = program_graph.indicadores()
     indicadores = to_plotly_json(indicadores) if indicadores else None
 
     # Radial Matricula
-    radial = programa_graph.radial()
+    radial = program_graph.radial()
     radial = to_plotly_json(radial) if radial else None
 
     # Pastel Estratos
-    pastel = programa_graph.pastel()
+    pastel = program_graph.pastel()
     pastel = to_plotly_json(pastel) if pastel else None
 
     # Barras Desertores
-    barras, cant_niveles, cant_periods = programa_graph.barras()
+    barras, cant_niveles, cant_periods = program_graph.barras()
     barras = to_plotly_json(barras) if barras else None
     if cant_periods:
         if cant_periods < 10:
@@ -320,10 +320,10 @@ def programa_dashboard():
         periodo=int(periodo),
         programa=programa['idprograma'],
 
-        nombre_programa=programa['programa'],
+        nombre_program=programa['programa'],
         nombre_ies=os.getenv('CLI_IES_NAME'),
         periodos_list=periods,
-        programas_list=programs,
+        programs_list=programs,
 
         indicadores_plot=indicadores,
         radial_plot=radial,
@@ -339,20 +339,20 @@ def programa_dashboard():
 @login_required
 def student_dashboard():
     periods = DataIES.get_periods()
-    programs = DataIES.get_programas()
+    programs = DataIES.get_programs()
 
     periodo = request.args.get('periodo')
     programa = request.args.get('programa')
     documento = request.args.get('documento')
 
-    # Obtener la lista de estudiantes de un programa
+    # Obtener la lista de students de un programa
     if programa and not documento:
-        students_programa = Estudiante_file.students_programa(programa)
+        students_program = Estudiante_file.students_program(programa)
         return render_template(
-            endopoint+'students_programa.html',
-            students_list=students_programa,
+            endopoint+'students_program.html',
+            students_list=students_program,
             programa=programa,
-            programas_list=programs,
+            programs_list=programs,
         )
 
     # Buscar estudiante por programa o cedula
@@ -360,7 +360,7 @@ def student_dashboard():
         return render_template(
             endopoint+'buscar_estudiante.html',
             periodos_list=periods,
-            programas_list=programs,
+            programs_list=programs,
         )
 
     for p in programs:
@@ -377,11 +377,11 @@ def student_dashboard():
         )
 
     try:
-        # Obtener los graficos del estudiantes por documento identificacion
+        # Obtener los graficos del students por documento identificacion
         estudiante = Student(identificacion=documento,
                              programa=programa, periodo=periodo)
 
-        info, periodos_estudiante, programas_estudiante = estudiante.get_estudiante()
+        info, periodos_estudiante, programs_estudiante = estudiante.get_estudiante()
 
         # Serie promedio acumulado
         serie_promedio = estudiante.serie_promedio()
@@ -417,7 +417,7 @@ def student_dashboard():
         endopoint+'estudiante.html',
 
         periodos_list=sorted(periodos_estudiante),
-        programas_list=programas_estudiante,
+        programs_list=programs_estudiante,
 
         estudiante=info,
 

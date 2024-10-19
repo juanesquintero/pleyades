@@ -62,7 +62,7 @@ def predict_classifier(data_a_predecir, period_a_predecir, mejor_clasificador):
 
     if data_a_predecir.empty:
         raise Exception(
-            'No estudiantes para predecir en ese conjunto!', True
+            'No students para predecir en ese conjunto!', True
         )
 
     try:

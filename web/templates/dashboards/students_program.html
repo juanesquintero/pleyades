@@ -1,7 +1,7 @@
 {% include 'components/header.html' %}
 
 
-{% with menu='tableros' %}
+{% with menu='dashboards' %}
 {% include 'components/sidebar.html' %}
 {% endwith %}
 
@@ -18,8 +18,8 @@
             <div class="col-10 ml-3">
                 <label for="period_select" class="text-white">Selecciona un programa:</label>
                 <br>
-                <select id="programa_select" class="form-control-sm w-100">
-                    {% for p in programas_list %}
+                <select id="program_select" class="form-control-sm w-100">
+                    {% for p in programs_list %}
                     <option value="{{p.idprograma}}" {% if p.idprograma|string==programa|string %} selected {% endif %}>{{p.programa}}</option>
                     {% endfor %}
                 </select>
@@ -29,7 +29,7 @@
     </div>
     <script>
         var programa = '{{ programa }}';
-        $('#programa_select').on('change', function () {
+        $('#program_select').on('change', function () {
             openModal();
             window.location.href ="{{url_for('Tablero.student_dashboard')}}" + '?programa=' + this.value;
         })
@@ -100,14 +100,14 @@
 
                 {% else %}
                 <tr>
-                    <center><b>No hay estudiantes en este programa!!</b> </center>
+                    <center><b>No hay students en este programa!!</b> </center>
                 </tr>
                 {% endif %}
             </tbody>
         </table>
     </div>
     {% else %}
-    <center><b>No hay estudiantes en este programa!!</b> </center>
+    <center><b>No hay students en este programa!!</b> </center>
     {% endif %}
 </div>
 

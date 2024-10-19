@@ -1,7 +1,7 @@
 {% include 'components/header.html' %}
 
 
-{% with menu='tableros' %}
+{% with menu='dashboards' %}
 {% include 'components/sidebar.html' %}
 {% endwith %}
 
@@ -69,7 +69,7 @@
                         <center>
                             <b>Matrícula Total por faculty</b>
                             <br>
-                            <small>(Cantidad estudiantes matriculados por faculty <b>{{periodo}}</b>)</small>
+                            <small>(Cantidad students matriculados por faculty <b>{{periodo}}</b>)</small>
                         </center>
                     </p>
                     {% endif %}
@@ -83,7 +83,7 @@
                     <p class="m-0 p-0 ml-3 mb-2 text-black">&nbsp; &nbsp;
                         <b>Inscripción, Adminsión y Matrícula por faculty</b>
                         <br>
-                        <small>(Cantidad de estudiantes admitidos, inscritos y matriculados por faculty <b>{{periodo}}</b>)</small>
+                        <small>(Cantidad de students admitidos, inscritos y matriculados por faculty <b>{{periodo}}</b>)</small>
                     </p>
                     {% endif %}
                 </div>
@@ -101,7 +101,7 @@
 
             <!-- Serie Desercion -->
             <div class="col-5">
-                {% if miniseries_programas_plot %}
+                {% if miniseries_programs_plot %}
                 <p class="m-0 p-0 ml-3 text-black">
                     <b>Deserción de programs por período</b>
                     <br>
@@ -109,7 +109,7 @@
                 </p>
                 {% endif %}
                 <div class="h-100" style="overflow:auto; position: relative; direction:rtl;">
-                    <div id="miniseries_programas" style="width:95%; height:{{prgms_size_2}}%;  position: absolute;">
+                    <div id="miniseries_programs" style="width:95%; height:{{prgms_size_2}}%;  position: absolute;">
                     </div>
                 </div>
             </div>
@@ -118,7 +118,7 @@
             <!--Indicadores -->
             <div class="col-7">
 
-                {% if indicadores_programas_plot %}
+                {% if indicadores_programs_plot %}
                 <p class="m-0 p-0 ml-3 text-black">
                     <b>Matricula de programs</b>
                     <br>
@@ -127,7 +127,7 @@
                 {% endif %}
 
                 <div class="h-100" style="overflow:auto; position: relative; direction:rtl;">
-                    <div id="indicadores_programas" class="mt-2"
+                    <div id="indicadores_programs" class="mt-2"
                         style="width:95%; height:{{prgms_size_1}}%;  position: absolute;"></div>
                 </div>
             </div>
@@ -165,9 +165,9 @@
     }
 </script>
 <script>
-    var graphs = {{ miniseries_programas_plot | safe}};
+    var graphs = {{ miniseries_programs_plot | safe}};
     if (graphs) {
-        Plotly.newPlot('miniseries_programas', graphs.data, graphs.layout,
+        Plotly.newPlot('miniseries_programs', graphs.data, graphs.layout,
             {
                 displayModeBar: false,
                 responsive: true
@@ -185,9 +185,9 @@
     }
 </script>
 <script>
-    var graphs = {{ indicadores_programas_plot | safe}};
+    var graphs = {{ indicadores_programs_plot | safe}};
     if (graphs) {
-        Plotly.newPlot('indicadores_programas', graphs.data, graphs.layout,
+        Plotly.newPlot('indicadores_programs', graphs.data, graphs.layout,
             {
                 displayModeBar: false,
                 responsive: true

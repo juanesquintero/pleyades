@@ -1,7 +1,7 @@
 {% include 'components/header.html' %}
 
 
-{% with menu='tableros' %}
+{% with menu='dashboards' %}
 {% include 'components/sidebar.html' %}
 {% endwith %}
 
@@ -25,8 +25,8 @@
             <div class="col-6">
                 <label for="period_select" class="text-white">Selecciona un programa:</label>
                 <br>
-                <select id="programa_select" class="form-control-sm w-100">
-                    {% for p in programas_list %}
+                <select id="program_select" class="form-control-sm w-100">
+                    {% for p in programs_list %}
                     <option value="{{p.idprograma}}" {% if p.idprograma|string==programa|string %} selected {% endif %}>
                         {{p.programa}}
                     </option>
@@ -40,11 +40,11 @@
         var periodo = '{{ periodo }}';
         $('#period_select').on('change', function () {
             openModal();
-            window.location.href = "{{url_for('Tablero.programa_dashboard')}}"  + '?programa=' + programa + '&periodo=' + this.value;
+            window.location.href = "{{url_for('Tablero.program_dashboard')}}"  + '?programa=' + programa + '&periodo=' + this.value;
         })
-        $('#programa_select').on('change', function () {
+        $('#program_select').on('change', function () {
             openModal();
-            window.location.href = "{{url_for('Tablero.programa_dashboard')}}" +'?programa=' + this.value + '&periodo=' + periodo;
+            window.location.href = "{{url_for('Tablero.program_dashboard')}}" +'?programa=' + this.value + '&periodo=' + periodo;
         })
     </script>
 </div>
@@ -70,12 +70,12 @@
     <div class="d-flex justify-content-between row m-0 w-100 " style="height: 15%;">
         <!-- NOMBRE PROGRAMA -->
         <div class="col-6 w-100 h-100 m-0 px-2 py-3 mt-2 d-flex align-items-center justify-content-center text-center">
-            {% if nombre_programa|length > 35 %}
+            {% if nombre_program|length > 35 %}
             <div class="m-3 p-1">
-                <h5 class="m-0 p-0">{{nombre_programa}}</h5>
+                <h5 class="m-0 p-0">{{nombre_program}}</h5>
             </div>
             {% else %}
-            <h4 class="m-0 p-0">{{nombre_programa}}</h4>
+            <h4 class="m-0 p-0">{{nombre_program}}</h4>
             {% endif %}
         </div>
         <!-- INDICADORES -->
@@ -93,7 +93,7 @@
                 <p class="m-0 p-0 mt-2 text-black">
                     <b>Matrícula por período</b>
                     <br>
-                    <small>(Cantidad estudiantes matriculados por ultimos 12 períodos académico)</small>
+                    <small>(Cantidad students matriculados por ultimos 12 períodos académico)</small>
                 </p>
                 {% endif %}                
             </center>
@@ -106,7 +106,7 @@
                 <p class="m-0 p-0 text-black">
                     <b>Estudiantes por estrato</b>
                     <br>
-                    <small>(Cantidad estudiantes matriculados por la estrato socioeconómico {{periodo}})</small>
+                    <small>(Cantidad students matriculados por la estrato socioeconómico {{periodo}})</small>
                 </p>
                 {% endif %}                                
             </center>
@@ -121,7 +121,7 @@
     <p class="m-0 p-0 ml-3 text-black">
         <b>Desertores por períodos y niveles</b>
         <br>
-        <small>(Cantidad de estudiantes desertores para cada nivel y período académico)</small>
+        <small>(Cantidad de students desertores para cada nivel y período académico)</small>
     </p>
     {% endif %}
     <div class="row m-0 px-3 w-100" style="height: 40%; overflow-x:scroll; position: relative; direction:ltr;">

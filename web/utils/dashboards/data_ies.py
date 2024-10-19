@@ -3,7 +3,7 @@ import pandas as pd
 from services.API import get
 
 ies_route = 'desertion/institute/'
-students_route = 'desertion/estudiantes/'
+students_route = 'desertion/students/'
 error_logger = logging.getLogger('error_logger')
 
 
@@ -19,17 +19,17 @@ def get_IES_period(periodo: int):
     return validate(status, body, True)
 
 
-def get_IES_programa(programa: int):
+def get_IES_program(programa: int):
     status, body = get(ies_route+'programa/{}'.format(programa))
     return validate(status, body, True)
 
 
-def get_IES_period_programa(periodo: int, programa: int):
+def get_IES_period_program(periodo: int, programa: int):
     status, body = get(ies_route+'programa/{}/{}'.format(programa, periodo))
     return validate(status, body, True)
 
 
-def check_IES_period_programa(periodo: int, programa: int):
+def check_IES_period_program(periodo: int, programa: int):
     status, body = get(ies_route+'programa/{}/{}'.format(programa, periodo))
     return status
 
@@ -39,29 +39,29 @@ def get_periods():
     return validate(status, body)
 
 
-def get_programas():
+def get_programs():
     status, body = get(ies_route+'programs')
     return validate(status, body)
 
 
-def get_programas_by_period(periodo: int):
+def get_programs_by_period(periodo: int):
     status, body = get(ies_route+'programs/{}'.format(periodo))
     return validate(status, body)
 
 
-def get_programa(programa: int):
+def get_program(programa: int):
     status, body = get(ies_route+'programa/{}'.format(programa))
     return validate(status, body, True)
 
-########################################################### Vista VWDATADESERCION de estudiantes ##########################################################
+########################################################### Vista VWDATADESERCION de students ##########################################################
 
 
-def get_students_period_programa(periodo: int, programa: int):
+def get_students_period_program(periodo: int, programa: int):
     status, body = get(f'{students_route}programa/{programa}/{periodo}')
     return validate(status, body, True)
 
 
-def get_students_programa(programa: str):
+def get_students_program(programa: str):
     status, body = get(f'{students_route}programa/{programa}')
     return validate(status, body, True)
 
@@ -76,7 +76,7 @@ def get_periods_origen():
     return validate(status, body)
 
 
-def get_programas_origen():
+def get_programs_origen():
     status, body = get(students_route+'programs')
     return validate(status, body)
 

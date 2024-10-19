@@ -4,7 +4,7 @@ from services.API import get
 
 Student = Blueprint('Student', __name__)
 
-endopoint = 'estudiantes/'
+endopoint = 'students/'
 
 
 @Student.route('/')
@@ -22,16 +22,16 @@ def detalle():
     form = dict(request.values)
     idprograma = form.get('idprograma')
     programa = form.get('programa')
-    status, body = get(f'desertion/estudiantes/programa/{idprograma}')
+    status, body = get(f'desertion/students/programa/{idprograma}')
     if status:
         return render_template(
             'admin/'+endopoint+'detalle.html',
-            estudiantes=body,
+            students=body,
             programa=programa
         )
     return render_template(
         'admin/'+endopoint+'detalle.html',
-        estudiantes=[],
+        students=[],
         error=body,
         programa=programa
     )

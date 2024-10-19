@@ -9,7 +9,7 @@ import plotly.express as px
 import os
 from dotenv import load_dotenv
 load_dotenv()
-data_folder = os.getcwd()+'/utils/tableros/data'
+data_folder = os.getcwd()+'/utils/dashboards/data'
 
 
 #################################### VARIABLES GLOBALES #############################################

@@ -10,7 +10,7 @@ import utils.model as Modelo
 from services.API import get, post
 import views.sets as sets
 from views.auth import login_required
-import utils.tableros.data_ies as DataIES
+import utils.dashboards.data_ies as DataIES
 from utils.mixins import save_archivo, save_ejecucion, get_now_date, obtener_nombre_ejecucion
 
 load_dotenv()
@@ -113,8 +113,8 @@ def predecir_model():
         'model': model
     }
 
-    # Obtener estudiantes a predecir
-    data_a_predecir = DataIES.get_students_period_programa(
+    # Obtener students a predecir
+    data_a_predecir = DataIES.get_students_period_program(
         periodo, idprograma
     )
 
@@ -197,8 +197,8 @@ def download():
 
 @Analista.route('/models/periods/<int:programa>')
 @login_required
-def get_periods_programa(programa):
-    status, body = get(f'desertion/estudiantes/periods/programa/{programa}')
+def get_periods_program(programa):
+    status, body = get(f'desertion/students/periods/programa/{programa}')
     if status:
         return jsonify(body)
     return jsonify([])

@@ -8,7 +8,7 @@
     </div>
 </a>
 
-<div {% if menu=='tableros' %} style="display:inline;" {% endif %} id='menuTableros'
+<div {% if menu=='dashboards' %} style="display:inline;" {% endif %} id='menuTableros'
     class="sidebar-submenu collapse">
     
     <a {% if  url_for('Tablero.mundo_dashboard') not in request.path %} onclick="openModal()"
@@ -35,8 +35,8 @@
         &nbsp;&nbsp;<i class="fa fa-school fa-xs" aria-hidden="true"></i>
         <span class="menu-collapsed text-white">IES</span>
     </a>
-    <a {% if  url_for('Tablero.programa_dashboard') not in request.path %} onclick="openModal()"
-        href="{{url_for('Tablero.programa_dashboard')}}" {% else %} href="#" {% endif %}
+    <a {% if  url_for('Tablero.program_dashboard') not in request.path %} onclick="openModal()"
+        href="{{url_for('Tablero.program_dashboard')}}" {% else %} href="#" {% endif %}
         class="list-group-item  text-white border-right-0 my-secondary">
         &nbsp;&nbsp;<i class="fa fa-graduation-cap fa-xs" aria-hidden="true"></i>
         <span class="menu-collapsed text-white">Program</span>

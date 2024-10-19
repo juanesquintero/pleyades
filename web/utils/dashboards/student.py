@@ -7,7 +7,7 @@ from plotly.subplots import make_subplots
 import utils.constants as CONSTANTS
 
 # Data source
-import utils.tableros.data_ies as Data
+import utils.dashboards.data_ies as Data
 
 error_logger = logging.getLogger('error_logger')
 
@@ -17,12 +17,12 @@ colores = CONSTANTS.colores
 #################################### FUNCIONES GLOBALES #############################################
 
 
-def students_programa(programa: str):
+def students_program(programa: str):
     try:
-        data = Data.get_students_programa(programa)
+        data = Data.get_students_program(programa)
         data = data[['documento', 'nombre_completo']]
-        estudiantes = data.drop_duplicates()
-        return estudiantes.to_dict(orient='records')
+        students = data.drop_duplicates()
+        return students.to_dict(orient='records')
     except Exception as e:
         error_logger.error('EXCEPTION: '+str(e), exc_info=True)
         return None
@@ -37,7 +37,7 @@ class Student:
         self.programa = programa
         self.info = None
         self.periodos_estudiante = None
-        self.programas_estudiante = None
+        self.programs_estudiante = None
         self.promedios_estudiante = None
 
     # Funcion para agregar un indicador a la figura
@@ -45,10 +45,10 @@ class Student:
         try:
             # Dataframe del programa
             data = self.df_ESTUDIANTE
-            programas_student_filter = json.loads(data.drop_duplicates(
+            programs_student_filter = json.loads(data.drop_duplicates(
                 subset=['idprograma']).to_json(orient='records'))
-            self.programas_estudiante = [
-                {'idprograma': p['idprograma'], 'programa': p['programa']} for p in programas_student_filter]
+            self.programs_estudiante = [
+                {'idprograma': p['idprograma'], 'programa': p['programa']} for p in programs_student_filter]
             self.periodos_student_todos = list(data['REGISTRO'].unique())
             self.periodos_estudiante = list(data['REGISTRO'].unique())
 
@@ -80,7 +80,7 @@ class Student:
             self.info['fecha_nacimiento'] = str(
                 self.info['fecha_nacimiento'][:-8])
 
-            return self.info, self.periodos_estudiante, self.programas_estudiante
+            return self.info, self.periodos_estudiante, self.programs_estudiante
 
         except Exception as e:
             error_logger.error('EXCEPTION: '+str(e), exc_info=True)
@@ -88,7 +88,7 @@ class Student:
 
     def progreso_creditos_reprobados(self,):
         try:
-            creditos_totales = self.info['creditos_programa']
+            creditos_totales = self.info['creditos_program']
             creditos_reprobados = self.info['creditos_reprobados_acum']
             creditos_reprobados_porcentaje = float(
                 creditos_reprobados/creditos_totales)
@@ -138,7 +138,7 @@ class Student:
 
     def progreso_creditos_aprobados(self,):
         try:
-            creditos_totales = self.info['creditos_programa']
+            creditos_totales = self.info['creditos_program']
             creditos_aprobados = self.info['creditos_aprobados_acum']
             creditos_aprobados_porcentaje = creditos_aprobados/creditos_totales
             fig = go.Figure(go.Bar(
@@ -192,7 +192,7 @@ class Student:
             data = self.df_ESTUDIANTE
             promedios = {}
             # Para obtener los promeios de los diferentes programs
-            # for p in self.programas_estudiante:
+            # for p in self.programs_estudiante:
             #     estu = data.query("programa == '{}'".format(p))
             #     estu = estu.sort_values(by=['REGISTRO'], ascending=[True])
             #     promedios[p] = {
@@ -222,14 +222,14 @@ class Student:
 
             # Serie por promedios de un programa
             for i, programa in enumerate(self.promedios_estudiante.keys()):
-                nombre_programa = self.promedios_estudiante[programa]['programa']
+                nombre_program = self.promedios_estudiante[programa]['programa']
                 del self.promedios_estudiante[programa]['programa']
                 df = pd.DataFrame(self.promedios_estudiante[programa])
 
                 fig.add_trace(go.Scatter(
                     x=df['REGISTRO'],
                     y=df['promedio'],
-                    name=nombre_programa,
+                    name=nombre_program,
                     mode='markers+lines+text',
                     text=list(df['promedio']),
                     textposition='top center',

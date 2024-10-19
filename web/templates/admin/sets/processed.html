@@ -98,7 +98,7 @@
 
 {% if error %}
 <br>
-{% with titulo='No se pudieron cargar los conjuntos',error=error %}
+{% with titulo='No se pudieron cargar los sets',error=error %}
 {% include "components/alert.html" %}
 {% endwith %}
 {% endif %}
@@ -109,7 +109,7 @@
 
 
 {% with estado = 'procesados' %}
-{% include 'utils/borrar_conjuntos.html' %}
+{% include 'utils/borrar_sets.html' %}
 {% endwith %}
 
 

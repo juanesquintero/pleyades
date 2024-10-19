@@ -3,7 +3,7 @@ import pandas as pd
 import os
 import json
 import logging
-import utils.tableros.data_ies as DataIES
+import utils.dashboards.data_ies as DataIES
 
 from flask import request, session, Blueprint, render_template, redirect, send_file, url_for, jsonify, flash
 from dotenv import load_dotenv
@@ -123,9 +123,9 @@ def post_create():
 
 @Set.route('crear/periods/programa/<int:programa>')
 @login_required
-def get_periods_programa(programa):
+def get_periods_program(programa):
     status, body = get(
-        'desertion/estudiantes/periods/programa/{}'.format(programa))
+        'desertion/students/periods/programa/{}'.format(programa))
     if status:
         return jsonify(body)
     return jsonify([])
@@ -220,8 +220,8 @@ def post_save(conjunto=None):
     ############# CONSULTA ##############
     # elif tipo == 'consulta':
     else:
-        # Obtener datos de los estudiantes en ese programs y periods
-        endpoint_conjunto = 'desertion/estudiantes/set/{}/{}/{}'
+        # Obtener datos de los students en ese programs y periods
+        endpoint_conjunto = 'desertion/students/set/{}/{}/{}'
         endpoint_conjunto_values = endpoint_conjunto.format(
             conjunto['programa'], conjunto['periodoInicial'], conjunto['periodoFinal'])
         status, body = get(endpoint_conjunto_values)
@@ -474,7 +474,7 @@ def ejecutar(conjunto=None):
         # TODO data
         flash('<b>El model detectó 0 desertores, Deserción 0%</b>', 'danger')
         flash(
-            'Revise si hay estudiantes ó desertores suficientes en el programa', 'warning'
+            'Revise si hay students ó desertores suficientes en el programa', 'warning'
         )
         resultados_model.pop('desertores')
         state_ejecucion = 'Fallida'

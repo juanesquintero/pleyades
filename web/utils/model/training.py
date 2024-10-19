@@ -60,7 +60,7 @@ def execute_model(data, conjunto, no_desertion=False):
                 row_index,
                 'Precision Media de Prueba'
             ] = cv_results['test_score'].mean()
-            # Si es una muestra aleatoria sin sesgo, entonces la media +/- 3*(desviación estándar), deberían capturar el 99.7% de los subconjuntos
+            # Si es una muestra aleatoria sin sesgo, entonces la media +/- 3*(desviación estándar), deberían capturar el 99.7% de los subsets
             AML_compare.loc[
                 row_index,
                 'STD de la Precision * 3'

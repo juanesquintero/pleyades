@@ -6,7 +6,7 @@ import plotly.graph_objs as go
 import plotly.express as px
 from plotly.subplots import make_subplots
 
-import utils.tableros.data_ies as Data
+import utils.dashboards.data_ies as Data
 
 error_logger = logging.getLogger('error_logger')
 
@@ -98,8 +98,8 @@ def barras_period(df, p, fig, i, azules):
 class Program:
 
     def __init__(self, periodo: int, programa: int, periods: list):
-        self.df_IES = Data.get_IES_programa(programa)
-        self.df_ESTUDIANTES_total = Data.get_students_programa(programa)
+        self.df_IES = Data.get_IES_program(programa)
+        self.df_ESTUDIANTES_total = Data.get_students_program(programa)
         self.df_ESTUDIANTES = self.df_ESTUDIANTES_total.query(
             "REGISTRO == '{}'".format(periodo))
         self.periodos_list = periods
@@ -108,12 +108,12 @@ class Program:
 
         # Obtener data anterior
         index_period_actual = self.periodos_list.index(self.periodo)
-        self.data_actual = Data.get_IES_period_programa(periodo, programa)
+        self.data_actual = Data.get_IES_period_program(periodo, programa)
 
         if 0 <= index_period_actual <= len(self.periodos_list):
             period_anterior = self.periodos_list[index_period_actual-1]
-            if Data.check_IES_period_programa(period_anterior, programa):
-                self.data_anterior = Data.get_IES_period_programa(
+            if Data.check_IES_period_program(period_anterior, programa):
+                self.data_anterior = Data.get_IES_period_program(
                     period_anterior, programa)
             else:
                 self.data_anterior = self.data_actual
@@ -233,7 +233,7 @@ class Program:
     def pastel(self):
         try:
             if len(self.df_ESTUDIANTES) <= 0:
-                raise Exception('No hay estudiantes')
+                raise Exception('No hay students')
             data = self.df_ESTUDIANTES.dropna(
                 subset=['estrato_residencia'], axis=0)
             data = data['estrato_residencia']
@@ -247,7 +247,7 @@ class Program:
                 if any(char.isdigit() for char in e):
                     estratos.append(int(e.replace('ESTRATO ', '')))
 
-            estudiantes = [len(data.query(
+            students = [len(data.query(
                 "estrato_residencia == 'ESTRATO {}'".format(e))) for e in estratos]
             # TODO organizar el orden de los estratos
             estratos_str = ['Estrato {}'.format(e) for e in estratos]
@@ -255,7 +255,7 @@ class Program:
                 raise Exception('No hay estratos')
 
             fig = px.pie(
-                values=estudiantes,
+                values=students,
                 names=estratos_str,
                 opacity=1,
                 hole=.25,

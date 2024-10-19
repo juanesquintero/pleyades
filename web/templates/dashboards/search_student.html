@@ -1,7 +1,7 @@
 {% include 'components/header.html' %}
 
 
-{% with menu='tableros' %}
+{% with menu='dashboards' %}
 {% include 'components/sidebar.html' %}
 {% endwith %}
 
@@ -24,7 +24,7 @@
         <div class="text-center">
             <h6 class="text-dark">Buscar por programa</h6>
         </div>
-        {% with titulo='Cargando...', mensaje='Por favor espere que se carguen los estudiantes'%}
+        {% with titulo='Cargando...', mensaje='Por favor espere que se carguen los students'%}
         {% include 'components/modal.html' %}
         {% endwith %}
 
@@ -35,8 +35,8 @@
                 </div>
                 <div class="col-10">
                     <label>Program</label>
-                    <select id="programa_select" class="form-control-sm w-100" name="programa" required>
-                        {% for p in programas_list %}
+                    <select id="program_select" class="form-control-sm w-100" name="programa" required>
+                        {% for p in programs_list %}
                         <option value="{{p.idprograma}}">{{p.programa}}</option>
                         {% endfor %}
                     </select>

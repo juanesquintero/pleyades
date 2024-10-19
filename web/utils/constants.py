@@ -88,7 +88,7 @@ columnas_eliminar_1_anteriores = [
     'sociales_y_ciudadanas',
     'promedio_semestre',
     'programa',
-    'tipo_programa',
+    'tipo_program',
     'idfacultad',
     'faculty',
     'idmatricula',
@@ -125,7 +125,7 @@ columnas_eliminar_1 = [
     'sociales_y_ciudadanas',
     'promedio_semestre',
     'programa',
-    'tipo_programa',
+    'tipo_program',
     'idfacultad',
     'faculty',
     'estrato_residencia',
@@ -143,7 +143,7 @@ columnas_eliminar_1 = [
 
 columnas_eliminar_nulos = [
     'semestre', 'genero', 'estado_civil', 'etnia', 'victima',
-    'pertenece_grupo_vulnerable', 'promedio_acumulado', 'creditos_programa',
+    'pertenece_grupo_vulnerable', 'promedio_acumulado', 'creditos_program',
     'creditos_aprobados_sem', 'creditos_aprobados_acum', 'creditos_reprobados_sem',
     'creditos_reprobados_acum', 'creditos_cancelados_sem', 'creditos_cancelados_acum',
     'creditos_matriculados_sem', 'intersemestral', 'creditos_matriculados_acum'
@@ -155,12 +155,12 @@ columnas_eliminar_2_anteriores = [
 
 columnas_eliminar_2 = [
     'asignaturas_aprobadas_acum', 'asignaturas_reprobadas_acum',
-    'asignaturas_programa', 'asignaturas_canceladas_sem', 'asignaturas_canceladas_acum',
+    'asignaturas_program', 'asignaturas_canceladas_sem', 'asignaturas_canceladas_acum',
 ]
 
 col_preparadas = [
     'semestre', 'edad', 'genero', 'estado_civil', 'etnia', 'victima',
-    'pertenece_grupo_vulnerable', 'creditos_programa',  'creditos_aprobados_sem',
+    'pertenece_grupo_vulnerable', 'creditos_program',  'creditos_aprobados_sem',
     'creditos_aprobados_acum', 'asignaturas_aprobadas_sem', 'creditos_reprobados_sem',
     'creditos_reprobados_acum', 'asignaturas_reprobadas_sem', 'creditos_cancelados_sem',
     'creditos_cancelados_acum', 'creditos_matriculados_sem', 'creditos_matriculados_acum',
@@ -182,7 +182,7 @@ condiciones = {
     'etnia':                                    str,
     'victima':                                  str,
     'pertenece_grupo_vulnerable':               str,
-    'creditos_programa':                        int,
+    'creditos_program':                        int,
     'creditos_aprobados_sem':                   int,
     'creditos_aprobados_acum':                  int,
     'asignaturas_aprobadas_sem':                int,
@@ -222,7 +222,7 @@ condiciones = {
     'idaspiracion':                             int,
     'idprograma':                               int,
     'programa':                                 str,
-    'tipo_programa':                            str,
+    'tipo_program':                            str,
     'idfacultad':                               int,
     'faculty':                                 str,
     'estrato_residencia':                       str,
@@ -231,7 +231,7 @@ condiciones = {
     'sanciones_multas':                         str,
     'participacion_semillero_investigacion':    str,
     'correo_electronico':                       str,
-    'asignaturas_programa':                     int,
+    'asignaturas_program':                     int,
     'asignaturas_canceladas_sem':               int,
     'asignaturas_canceladas_acum':              int,
     'dtfecharegistro':                          str,

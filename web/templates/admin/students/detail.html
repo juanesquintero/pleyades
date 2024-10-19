@@ -51,7 +51,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for est in estudiantes %}
+                    {% for est in students %}
                     <tr>
                         <td>{{ est.REGISTRO }}</td>
                         <td>{{ est.semestre }}</td>
@@ -68,7 +68,7 @@
 
 {% if error %}
 <br>
-{% with titulo='No se pudieron cargar los estudiantes',error=error %}
+{% with titulo='No se pudieron cargar los students',error=error %}
 {% include "components/alert.html" %}
 {% endwith %}
 <br>

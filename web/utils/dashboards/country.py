@@ -11,7 +11,7 @@ from plotly.subplots import make_subplots
 import os
 from dotenv import load_dotenv
 load_dotenv()
-data_folder = os.getcwd()+'/utils/tableros/data'
+data_folder = os.getcwd()+'/utils/dashboards/data'
 
 
 #################################### VARIABLES GLOBALES #############################################

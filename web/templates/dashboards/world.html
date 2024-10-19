@@ -1,6 +1,6 @@
 {% include 'components/header.html' %}
 
-{% with menu='tableros' %}
+{% with menu='dashboards' %}
 {% include 'components/sidebar.html' %}
 {% endwith %}
 
@@ -23,7 +23,7 @@
             <p class="m-0 p-0 text-black">
                 <b>Mapa del Mundo</b> (Selecciona tu país de interés)
                 <br>
-                <small>(Cantidad de estudiantes inscritos en eduación terciaria y gasto público respecto al PIB en educación del
+                <small>(Cantidad de students inscritos en eduación terciaria y gasto público respecto al PIB en educación del
                     país)</small>
             </p>
             <div class="h-100 w-100" id="mapa" style="width:90%;"></div>
@@ -54,7 +54,7 @@
             <p class="m-0 p-0 ml-5 text-black">
                 <b>Inscripciones en educación terciaria del país</b>
                 <br>
-                <small>(Cantidad de estudiantes inscritos en eduación terciaria en <b id="pais1">{{pais}}</b>)</small>
+                <small>(Cantidad de students inscritos en eduación terciaria en <b id="pais1">{{pais}}</b>)</small>
             </p>
             {% endif %}
             <div class="m-0 p-0 h-100" id="inscripciones"></div>

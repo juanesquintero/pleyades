@@ -1,6 +1,6 @@
 {% include 'components/header.html' %}
 
-{% with menu='conjuntos' %}
+{% with menu='sets' %}
 {% include 'components/sidebar.html' %}
 {% endwith %}
 
@@ -10,52 +10,52 @@
     <div class="container">
         <div class="form-group row">
             <div class="col-sm-5">
-                <label id="facultad_label">Faculty</label>
-                <select class="form-control programa_change" name="faculty" id="facultad_select" required>
+                <label id="faculty_label">Faculty</label>
+                <select class="form-control program_change" name="faculty" id="faculty_select" required>
                     {% for f in faculties %}
                     <option key="{{f.codigo}}" value="{{f.codigo}}">{{f.nombre}}</option>
                     {% endfor %}
                 </select>
             </div>
-            <input type="hidden" value="{{programs}}" id="programas_list">
+            <input type="hidden" value="{{programs}}" id="programs_list">
             <div class="col-sm-6">
-                <label id="programa_label">Program</label>
-                <select class="form-control programa_change" name="programa" id="programa_select" required>
+                <label id="program_label">Program</label>
+                <select class="form-control program_change" name="programa" id="program_select" required>
                 </select>
             </div>
             <script>
                 $(document).ready(function () {
-                    $("#facultad_select").val(null);
+                    $("#faculty_select").val(null);
 
                 });
-                var programs = document.getElementById("programas_list").value;
+                var programs = document.getElementById("programs_list").value;
                 programs = JSON.parse(programs.replace(/'/g, '"'))
-                var programa_select = document.getElementById("programa_select");
+                var program_select = document.getElementById("program_select");
 
 
                 var ua = window.navigator.userAgent;
                 var isIE = ua.indexOf("MSIE ");
 
 
-                $('#facultad_select').change(function () {
+                $('#faculty_select').change(function () {
                     var faculty = $(this).val()
                     var i = 0
-                    programa_select.options.length = 0
+                    program_select.options.length = 0
 
                     programs.forEach(p => {
                         if (p.faculty == faculty) {
-                            var programa_Obj = {
+                            var program_Obj = {
                                 codigo: p.codigo,
                                 nombre: p.nombre,
                             }
-                            //JSON.stringify(programa_Obj)
-                            programa_select.options[i] = new Option(p.nombre, p.codigo);
+                            //JSON.stringify(program_Obj)
+                            program_select.options[i] = new Option(p.nombre, p.codigo);
                             i = i + 1;
                         }
                     });
                     if (i == 0) {
-                        programa_select.options[1] = new Option('No hay programs para esta Faculty', null, false, false);
-                        programa_select.options[1].disabled = true;
+                        program_select.options[1] = new Option('No hay programs para esta Faculty', null, false, false);
+                        program_select.options[1].disabled = true;
                     }
                 });            
             </script>
@@ -77,10 +77,10 @@
             </div>
             <script>
                 //LLenar con periodos del programa
-                $('.programa_change').on('click', function () {
+                $('.program_change').on('click', function () {
                     
                         $.ajax({
-                            url: "periods/programa/" + $('#programa_select').val(),
+                            url: "periods/programa/" + $('#program_select').val(),
                             type: "GET",
                             contentType: 'application/json;charset=UTF-8',
                             data: {},
@@ -173,13 +173,13 @@
                                 $('#archivo_picker').siblings(".custom-file-label").html('Seleccionar archivo');
                                 $('#archivo_picker').prop('required', false)
 
-                                alert('Se hara una consulta a la Base de datos de los estudiantes del programa indicado que tengan registros entre los respectivos semestres ')
+                                alert('Se hara una consulta a la Base de datos de los students del programa indicado que tengan registros entre los respectivos semestres ')
                             }
                             else if (this.value == 'excel') {
                                 // Mostrar control de archivo
                                 $('#archivo_control').css('display', 'inline')
                                 $('#archivo_picker').prop('required', true)
-                                alert('Ingrese un archivo excel con los estudiantes del programa indicado entre los respectivos semestres')
+                                alert('Ingrese un archivo excel con los students del programa indicado entre los respectivos semestres')
                             }
                         });
 

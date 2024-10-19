@@ -11,8 +11,8 @@ from views.analist import Analista
 from views.errors import Error
 from views.auth import Auth
 from views.admin import ResultAdmin, SetAdmin, Faculty, Program, Student, User
-from viewssets import Set
-from viewsresults import Result
+from views.sets import Set
+from views.results import Result
 from utils.mixins import obtener_ies_config
 
 
@@ -39,7 +39,7 @@ app.config['SECRET_KEY'] = os.getenv('SESSION_KEY')
 @app.route(base_path)
 @app.route(base_path+'inicio')
 def inicio():
-    return render_template('utils/inicio.html'), 200
+    return render_template('utils/home.html'), 200
 
 
 @app.route(base_path+'contactanos')
@@ -48,14 +48,14 @@ def contactanos():
 
 
 '''ROUTES'''
-# from views.tableros import Tablero
+# from views.dashboards import Tablero
 
 app.register_blueprint(Error, url_prefix=base_path)
 app.register_blueprint(Auth, url_prefix=base_path)
 app.register_blueprint(Analista, url_prefix=base_path)
 app.register_blueprint(Faculty, url_prefix=base_path+'admin/faculties')
 app.register_blueprint(Program, url_prefix=base_path+'admin/programs')
-app.register_blueprint(Student, url_prefix=base_path+'admin/estudiantes')
+app.register_blueprint(Student, url_prefix=base_path+'admin/students')
 app.register_blueprint(User, url_prefix=base_path+'admin/users')
 app.register_blueprint(Set, url_prefix=base_path+'sets')
 app.register_blueprint(Result, url_prefix=base_path+'results')
