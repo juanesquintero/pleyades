@@ -104,7 +104,7 @@ def app_routes(app):
 
     # Import Controllers
     from controllers.Auth import Auth
-    from controllers.Facultades import Faculty
+    from controllers.Faculties import Faculty
     from controllers.Programas import Program
     from controllers.users import User
     from controllers.Conjuntos import Set

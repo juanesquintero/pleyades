@@ -4,7 +4,7 @@ from schemas.programa_schema import validate_post_schema, validate_put_schema
 from flask_jwt_extended import jwt_required
 from utils.utils import exception, _format, _format
 # Relaciones
-from controllers.Facultades import exists as exists_facultad
+from controllers.Faculties import exists as exists_facultad
 
 Program = Blueprint('Program', __name__)
 db = DB.getInstance()
@@ -38,11 +38,11 @@ def get_one(codigo):
     return jsonify(_format(query)[0])
 
 
-@Program.route('facultad/<int:facultad>')
+@Program.route('faculty/<int:faculty>')
 @jwt_required()
-def getByFacultad(facultad):
+def getByFacultad(faculty):
     query = db.select(
-        'SELECT * FROM {} WHERE facultad={};'.format(tabla, facultad))
+        'SELECT * FROM {} WHERE faculty={};'.format(tabla, faculty))
     ex = exception(query)
     if ex:
         return ex
@@ -59,8 +59,8 @@ def post():
     if not (validate_post_schema(body)):
         return {'error': 'body invalido'}, 400
     # sql validations
-    if not exists_facultad(body['facultad']):
-        return {'error': 'facultad no existe'}, 404
+    if not exists_facultad(body['faculty']):
+        return {'error': 'faculty no existe'}, 404
     lista = db.select('SELECT * FROM {};'.format(tabla))
     for p in lista:
         if p['codigo'] == body['codigo']:

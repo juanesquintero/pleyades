@@ -6,7 +6,7 @@ from hashlib import md5
 from utils.utils import exception, _format
 
 # Relaciones
-from controllers.Facultades import exists as exists_facultad
+from controllers.Faculties import exists as exists_facultad
 from controllers.Programas import exists as exists_programa
 
 User = Blueprint('User', __name__)
@@ -63,9 +63,9 @@ def create_user(body):
     # sql validations
     if exists(body['correo']):
         return {'error': 'correo ya existe'}, 400
-    if 'facultad' in body.keys() and body['facultad'] is not None:
-        if not exists_facultad(body['facultad']):
-            return {'error': 'facultad no existe'}, 404
+    if 'faculty' in body.keys() and body['faculty'] is not None:
+        if not exists_facultad(body['faculty']):
+            return {'error': 'faculty no existe'}, 404
     if 'programa' in body.keys() and body['programa'] is not None:
         if not exists_programa(body['programa']):
             return {'error': 'programa no existe'}, 404
@@ -97,9 +97,9 @@ def put(correo):
     # sql validations
     if not exists(correo):
         return {'error': 'User no existe'}, 404
-    if ('facultad' in body.keys() and body['facultad'] != None):
-        if not exists_facultad(body['facultad']):
-            return {'error': 'facultad no existe'}, 404
+    if ('faculty' in body.keys() and body['faculty'] != None):
+        if not exists_facultad(body['faculty']):
+            return {'error': 'faculty no existe'}, 404
     if ('programa' in body.keys() and body['programa'] != None):
         if not exists_programa(body['programa']):
             return {'error': 'programa no existe'}, 404

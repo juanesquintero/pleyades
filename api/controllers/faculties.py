@@ -5,7 +5,7 @@ from flask import request, jsonify, Blueprint
 from schemas.facultad_schema import validate_post_schema, validate_put_schema
 
 
-Faculty = Blueprint('facultad', __name__)
+Faculty = Blueprint('faculty', __name__)
 
 tabla = 'VWFACULTADDESERCION'
 
@@ -21,7 +21,7 @@ def get():
     if ex:
         return ex
     if not (query):
-        return {'msg': 'No hay Facultades'}, 404
+        return {'msg': 'No hay Faculties'}, 404
     return jsonify(_format(query))
 
 
@@ -57,7 +57,7 @@ def post():
     ex = exception(insert)
     if ex:
         return ex
-    return {'msg': 'facultad creada'}, 200
+    return {'msg': 'faculty creada'}, 200
 
 
 @Faculty.route('/', methods=['POST'])
@@ -77,14 +77,14 @@ def put(codigo):
         return {'error': 'body invalido'}, 400
     # sql validations
     if not exists(codigo):
-        return {'error': 'facultad no existe'}, 404
+        return {'error': 'faculty no existe'}, 404
     # Uptade
     condicion = 'codigo='+str(codigo)
     update = db.update(body, condicion, '{}'.format(tabla))
     ex = exception(update)
     if ex:
         return ex
-    return {'msg': 'facultad actualizada'}, 200
+    return {'msg': 'faculty actualizada'}, 200
 
 
 @Faculty.route('/<codigo>', methods=['DELETE'])
@@ -94,14 +94,14 @@ def delete_one(codigo):
         return {'error': 'indique el codigo por el path'}, 404
     # sql validations
     if not exists(codigo):
-        return {'error': 'facultad no existe'}, 404
+        return {'error': 'faculty no existe'}, 404
     # delete
     condicion = 'codigo='+str(codigo)
     delete = db.delete(condicion, '{}'.format(tabla))
     ex = exception(delete)
     if ex:
         return ex
-    return {'msg': 'facultad eliminada'}, 200
+    return {'msg': 'faculty eliminada'}, 200
 
 
 def exists(codigo):

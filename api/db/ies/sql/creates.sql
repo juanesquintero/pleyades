@@ -15,7 +15,7 @@ CREATE TABLE VWPROGRAMADESERCION (
   codigo NUMERIC(10,0) NOT NULL,
   nombre VARCHAR(200) NOT NULL,
   nombre_corto VARCHAR(10) NOT NULL,
-  facultad INT NOT NULL,
+  faculty INT NOT NULL,
   nombre_facultad VARCHAR(200));
 END
 
@@ -81,7 +81,7 @@ CREATE TABLE [dbo].[VWDATADESERCION](
 	[tipo_programa] [varchar](64) NOT NULL,
 	[idprograma] [numeric](10, 0) NULL,
 	[idfacultad] [numeric](10, 0) NOT NULL,
-	[facultad] [varchar](128) NOT NULL,
+	[faculty] [varchar](128) NOT NULL,
 	[estrato_residencia] [varchar](20) NULL,
 	[celular_telefono] [varchar](100) NULL,
 	[fecha_nacimiento] [varchar](20) NULL,

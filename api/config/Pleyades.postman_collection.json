@@ -118,7 +118,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:3000/users/facultad/420",
+							"raw": "http://127.0.0.1:3000/users/faculty/420",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -131,7 +131,7 @@
 								"api",
 								"v1",
 								"users",
-								"facultad",
+								"faculty",
 								"420"
 							]
 						}
@@ -383,7 +383,7 @@
 			]
 		},
 		{
-			"name": "Facultades",
+			"name": "Faculties",
 			"item": [
 				{
 					"name": "faculties",
@@ -421,7 +421,7 @@
 					"response": []
 				},
 				{
-					"name": "facultad",
+					"name": "faculty",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -456,7 +456,7 @@
 					"response": []
 				},
 				{
-					"name": "facultad",
+					"name": "faculty",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -507,7 +507,7 @@
 					"response": []
 				},
 				{
-					"name": "facultad",
+					"name": "faculty",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -558,7 +558,7 @@
 					"response": []
 				},
 				{
-					"name": "facultad",
+					"name": "faculty",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -698,7 +698,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:3000/programs/facultad/4",
+							"raw": "http://127.0.0.1:3000/programs/faculty/4",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -711,7 +711,7 @@
 								"api",
 								"v1",
 								"programs",
-								"facultad",
+								"faculty",
 								"4"
 							]
 						}
@@ -742,7 +742,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "  {\r\n    \"codigo\": \"420-2970-01\",\r\n    \"nombre\": \" civilcita\",\r\n    \"nombre_corto\": \"civi\",\r\n    \"facultad\": \"420\",\r\n    \"nombre_facultad\": \"Faculty de Ingenierias\"\r\n  }",
+							"raw": "  {\r\n    \"codigo\": \"420-2970-01\",\r\n    \"nombre\": \" civilcita\",\r\n    \"nombre_corto\": \"civi\",\r\n    \"faculty\": \"420\",\r\n    \"nombre_facultad\": \"Faculty de Ingenierias\"\r\n  }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3790,7 +3790,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://192.168.1.16:3000/programs/facultad/4",
+											"raw": "http://192.168.1.16:3000/programs/faculty/4",
 											"protocol": "http",
 											"host": [
 												"192",
@@ -3803,7 +3803,7 @@
 												"api",
 												"v1",
 												"programs",
-												"facultad",
+												"faculty",
 												"4"
 											]
 										}
@@ -3834,7 +3834,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "  {\r\n    \"codigo\": 29,\r\n    \"nombre\": \" civilcita\",\r\n    \"nombre_corto\": \"civi\",\r\n    \"facultad\": 2,\r\n    \"nombre_facultad\": \"Faculty de Ingenierias\"\r\n  }",
+											"raw": "  {\r\n    \"codigo\": 29,\r\n    \"nombre\": \" civilcita\",\r\n    \"nombre_corto\": \"civi\",\r\n    \"faculty\": 2,\r\n    \"nombre_facultad\": \"Faculty de Ingenierias\"\r\n  }",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -3965,7 +3965,7 @@
 							]
 						},
 						{
-							"name": "Facultades",
+							"name": "Faculties",
 							"item": [
 								{
 									"name": "faculties",
@@ -4002,7 +4002,7 @@
 									"response": []
 								},
 								{
-									"name": "facultad",
+									"name": "faculty",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -4037,7 +4037,7 @@
 									"response": []
 								},
 								{
-									"name": "facultad",
+									"name": "faculty",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -4088,7 +4088,7 @@
 									"response": []
 								},
 								{
-									"name": "facultad",
+									"name": "faculty",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -4139,7 +4139,7 @@
 									"response": []
 								},
 								{
-									"name": "facultad",
+									"name": "faculty",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -4301,7 +4301,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://192.168.1.22:3000/users/facultad/420",
+											"raw": "http://192.168.1.22:3000/users/faculty/420",
 											"protocol": "http",
 											"host": [
 												"192",
@@ -4314,7 +4314,7 @@
 												"api",
 												"v1",
 												"users",
-												"facultad",
+												"faculty",
 												"420"
 											]
 										}
@@ -5736,7 +5736,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://192.168.1.16:3000/programs/facultad/4",
+											"raw": "http://192.168.1.16:3000/programs/faculty/4",
 											"protocol": "http",
 											"host": [
 												"192",
@@ -5749,7 +5749,7 @@
 												"api",
 												"v1",
 												"programs",
-												"facultad",
+												"faculty",
 												"4"
 											]
 										}
@@ -5780,7 +5780,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "  {\r\n    \"codigo\": 29,\r\n    \"nombre\": \" civilcita\",\r\n    \"nombre_corto\": \"civi\",\r\n    \"facultad\": 2,\r\n    \"nombre_facultad\": \"Faculty de Ingenierias\"\r\n  }",
+											"raw": "  {\r\n    \"codigo\": 29,\r\n    \"nombre\": \" civilcita\",\r\n    \"nombre_corto\": \"civi\",\r\n    \"faculty\": 2,\r\n    \"nombre_facultad\": \"Faculty de Ingenierias\"\r\n  }",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -5911,7 +5911,7 @@
 							]
 						},
 						{
-							"name": "Facultades",
+							"name": "Faculties",
 							"item": [
 								{
 									"name": "faculties",
@@ -5948,7 +5948,7 @@
 									"response": []
 								},
 								{
-									"name": "facultad",
+									"name": "faculty",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -5983,7 +5983,7 @@
 									"response": []
 								},
 								{
-									"name": "facultad",
+									"name": "faculty",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -6034,7 +6034,7 @@
 									"response": []
 								},
 								{
-									"name": "facultad",
+									"name": "faculty",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -6085,7 +6085,7 @@
 									"response": []
 								},
 								{
-									"name": "facultad",
+									"name": "faculty",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -6247,7 +6247,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://192.168.1.22:3000/users/facultad/420",
+											"raw": "http://192.168.1.22:3000/users/faculty/420",
 											"protocol": "http",
 											"host": [
 												"192",
@@ -6260,7 +6260,7 @@
 												"api",
 												"v1",
 												"users",
-												"facultad",
+												"faculty",
 												"420"
 											]
 										}
