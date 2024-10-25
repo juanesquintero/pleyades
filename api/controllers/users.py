@@ -138,7 +138,7 @@ def exists(correo):
     return True if correo in lista else False
 
 
-def auth(correo, clave):
+def auth_login(correo, clave):
     query = user_model.get_login(correo, clave)
 
     if query:

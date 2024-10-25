@@ -4,7 +4,7 @@ import datetime as dt
 from hashlib import md5
 
 from schemas.auth_schema import validate_login_schema
-from controllers.users import auth, create_user
+from controllers.users import auth_login, create_user
 
 Auth = Blueprint('auth', __name__)
 
@@ -21,7 +21,7 @@ def login():
     clave = request.json.get('clave', '')
     clave_md5 = str(md5(clave.encode()).hexdigest())
 
-    user = auth(correo, clave_md5)
+    user = auth_login(correo, clave_md5)
 
     if user == (False, None):
         return jsonify({'msg': 'Correo o clave incorrectos'}), 401
