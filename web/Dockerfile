@@ -1,4 +1,4 @@
-FROM python:3.12-slim
+FROM python:3.12-slim as base
 
 WORKDIR /app
 
@@ -32,3 +32,9 @@ RUN pip install --no-cache-dir --no-build-isolation --upgrade --default-timeout=
 
 # Expose port
 EXPOSE 80
+
+
+#######################  DEVELOPMENT  #######################
+FROM base as development
+
+RUN pip install --no-cache-dir debugpy
