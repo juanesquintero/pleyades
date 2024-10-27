@@ -1,4 +1,4 @@
-FROM python:3.12-slim
+FROM python:3.12-slim as base
 
 WORKDIR /app
 
@@ -51,3 +51,9 @@ RUN sed -i -E 's/MinProtocol[=\ ]+.*/MinProtocol = TLSv1.0/g' /etc/ssl/openssl.c
 
 # Expose port
 EXPOSE 80
+
+
+#######################  DEVELOPMENT  #######################
+FROM base as development
+
+RUN pip install --no-cache-dir debugpy

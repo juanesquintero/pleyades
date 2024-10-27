@@ -2,24 +2,34 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug Flask App",
-      "type": "docker",
-      "request": "launch",
-      "preLaunchTask": "docker-run: debug",
-      "python": {
-        "pathMappings": [
-          {
-            "localRoot": "${workspaceFolder}/api",
-            "remoteRoot": "/app"
-          }
-        ],
-        "projectType": "flask"
+      "name": "Pleyades WEB: Flask (Docker)",
+      "type": "debugpy",
+      "request": "attach",
+      "connect": {
+        "host": "localhost",
+        "port": 5678
       },
-      "dockerServerReadyAction": {
-        "action": "openExternally",
-        "pattern": "Running on (http?://\\S+|[0-9]+)",
-        "uriFormat": "%s://localhost:%s/"
-      }
-    }
+      "pathMappings": [
+        {
+          "localRoot": "${workspaceFolder}/web",
+          "remoteRoot": "/app"
+        }
+      ]
+    },
+    {
+      "name": "Pleyades API: Flask (Docker)",
+      "type": "debugpy",
+      "request": "attach",
+      "connect": {
+        "host": "localhost",
+        "port": 5679
+      },
+      "pathMappings": [
+        {
+          "localRoot": "${workspaceFolder}/api",
+          "remoteRoot": "/app"
+        }
+      ]
+    },
   ]
 }

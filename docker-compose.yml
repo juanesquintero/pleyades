@@ -35,6 +35,7 @@ services:
     build:
       context: ./api
       dockerfile: ./Dockerfile
+      target: development
     image: pleyades-api:1.0.0
     volumes:
       - ./api:/app
@@ -46,6 +47,7 @@ services:
       - CLI_IES_NAME=${IES_CLIENT}
     ports:
       - 8001:80
+      - 5679:5679
     links:
       - db
       - db-ies
@@ -53,7 +55,7 @@ services:
       - dev-net
     depends_on:
       - db
-    command: flask run --host 0.0.0.0 --port 80
+    command: python -m debugpy --listen 0.0.0.0:5679 --wait-for-client run.py
 
   db:
     container_name: pleyades-db
