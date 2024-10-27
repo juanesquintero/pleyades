@@ -1,0 +1,49 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "docker-run",
+      "label": "docker-run: debug",
+      "dependsOn": [
+        "docker-build"
+      ],
+      "dockerRun": {
+        "env": {
+          "FLASK_APP": "app/run.py",
+          "FLASK_ENV": "development"
+        },
+        "volumes": [
+          {
+            "containerPath": "/app",
+            "localPath": "${workspaceFolder}/api"
+          }
+        ],
+        "ports": [
+          {
+            "containerPort": 80,
+            "hostPort": 5001
+          }
+        ]
+      },
+      "python": {
+        "args": [
+          "run",
+          "--host",
+          "0.0.0.0",
+          "--port",
+          "80"
+        ],
+        "module": "flask"
+      },
+    },
+    {
+      "label": "docker-build",
+      "type": "docker-build",
+      "dockerBuild": {
+        "context": "${workspaceFolder}/api",
+        "dockerfile": "${workspaceFolder}/api/Dockerfile",
+        "tag": "pleyades-api:1.0.0"
+      }
+    }
+  ]
+}
