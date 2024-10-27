@@ -40,7 +40,7 @@ else
     $sqlcmd_user /tmp/sql/inserts/dependencias.sql
 
     echo "Ejecutando inserts desertion.sql..."
-    $sqlcmd_user /tmp/sql/inserts/desertion.sql
+    $sqlcmd_user /tmp/sql/inserts/desercion.sql
 
     echo -e "\nFinalizó la definicion de la bd de deserción."
 fi
