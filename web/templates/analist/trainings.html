@@ -45,7 +45,7 @@
       </tr>
     </thead>
     <tbody>
-      {% for e in entrenamientos %} {% if e.estado=='Exitosa' and e.results.tipo == 'Entrenamiento' %}
+      {% for e in trainings %} {% if e.estado=='Exitosa' and e.results.tipo == 'Entrenamiento' %}
       {% set info_array = e.conjunto.split(' ')[1:] %}
       <tr>
         <td>
@@ -162,7 +162,7 @@
 
 
             <!-- PREDECIR -->
-            <form action="{{url_for('Analista.predecir')}}" method="POST">
+            <form action="{{url_for('Analista.predict')}}" method="POST">
               <input type="hidden" name="model" value="{{e}}" />
               <button
                 type="submit"
@@ -194,7 +194,7 @@
 
 {% if error %}
 <br />
-{% with titulo='No se pudieron cargar los entrenamientos',error=error %} {%
+{% with titulo='No se pudieron cargar los trainings',error=error %} {%
 include "components/alert.html" %} {% endwith %}
 <br />
 {% endif %}
@@ -206,7 +206,7 @@ include "components/alert.html" %} {% endwith %}
   $(".submit").click(function () {
     handleModal(
       "Su model aparecera cuando acabe el proceso (recuerde refrescar la página)",
-      "{{url_for('Analista.predicciones')}}"
+      "{{url_for('Analista.predictions')}}"
     );
   });
 </script>

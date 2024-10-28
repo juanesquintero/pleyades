@@ -113,7 +113,7 @@
             <!-- Entrenamiento-->
             <div class="btn-group" role="group" aria-label="Basic example">
               <form
-                action="{{url_for('Analista.entrenamientos')}}"
+                action="{{url_for('Analista.trainings')}}"
                 method="GET"
               >
                 <input type="hidden" name="model" value="{{m.conjunto}}" />
@@ -134,9 +134,9 @@
             &nbsp;&nbsp;
 
             <!-- PREDECIR -->
-            <form action="{{url_for('Analista.predecir')}}" method="POST">
+            <form action="{{url_for('Analista.predict')}}" method="POST">
               <input type="hidden" name="model" value="{{m}}" />
-              <!-- Boton para predecir con un model -->
+              <!-- Boton para predict con un model -->
               <button
                 type="submit"
                 data-toggle="tooltip"
@@ -193,7 +193,7 @@
 <br />
 
 <a
-  href="{{url_for('Analista.entrenar') }}"
+  href="{{url_for('Analista.train') }}"
   type="button"
   class="btn btn-dark text-white my-primary mt-4"
 >
@@ -206,7 +206,7 @@
   $(".submit").click(function () {
     handleModal(
       "Su model aparecera cuando acabe el proceso (recuerde refrescar la página)",
-      "{{url_for('Analista.predicciones')}}"
+      "{{url_for('Analista.predictions')}}"
     );
   });
 </script>
