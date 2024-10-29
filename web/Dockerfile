@@ -37,4 +37,4 @@ EXPOSE 80
 #######################  DEVELOPMENT  #######################
 FROM base as development
 
-RUN pip install --no-cache-dir debugpy
+RUN pip install --no-cache-dir --upgrade  -r /app/requirements-dev.txt
