@@ -42,60 +42,60 @@ def models():
     )
 
 
-@Analista.route('/models/entrenar', methods=['GET', 'POST'])
+@Analista.route('/models/train', methods=['GET', 'POST'])
 @login_required
-def entrenar():
+def train():
     if request.method == 'GET':
-        return formulario_entrenar()
+        return form_train()
     conjunto = dict(request.values)
     return sets.post_save(conjunto)
 
 
-@Analista.route('/models/predecir', methods=['POST'])
-def predecir():
+@Analista.route('/models/predict', methods=['POST'])
+def predict():
     model = dict(request.values).get('model')
     return render_template(
-        endopoint+'predecir.html',
+        endopoint+'predict.html',
         model=literal_eval(model)
     )
 
 
-@Analista.route('/entrenamientos', methods=['GET'])
-@Analista.route('/entrenamientos/', methods=['GET'])
+@Analista.route('/trainings', methods=['GET'])
+@Analista.route('/trainings/', methods=['GET'])
 @login_required
-def entrenamientos():
+def trainings():
     model = request.args.get('model')
     success, body = get_models(model)
 
     if not success:
-        flash('User aún no tiene entrenamientos', 'info')
+        flash('User aún no tiene trainings', 'info')
         body = []
 
     return render_template(
-        'analist/entrenamientos.html',
-        entrenamientos=body,
+        'analist/trainings.html',
+        trainings=body,
     )
 
 
-@Analista.route('/predicciones', methods=['GET'])
-@Analista.route('/predicciones/', methods=['GET'])
+@Analista.route('/predictions', methods=['GET'])
+@Analista.route('/predictions/', methods=['GET'])
 @login_required
-def predicciones():
+def predictions():
     model = request.args.get('model')
     success, body = get_models(model)
 
     if not success:
-        flash('User aún no tiene predicciones', 'info')
+        flash('User aún no tiene predictions', 'info')
         body = []
 
     return render_template(
-        'analist/predicciones.html',
-        predicciones=body,
+        'analist/predictions.html',
+        predictions=body,
     )
 
 
-@Analista.route('/predicciones/predecir', methods=['POST'])
-def predecir_model():
+@Analista.route('/predictions/predict', methods=['POST'])
+def predict_model():
     form = dict(request.values)
     ejecucion = literal_eval(form.get('ejecucion'))
     ejecucion['fechaInicial'] = get_now_date()
@@ -113,14 +113,14 @@ def predecir_model():
         'model': model
     }
 
-    # Obtener students a predecir
-    data_a_predecir = DataIES.get_students_period_program(
+    # Obtener students a predict
+    data_a_predict = DataIES.get_students_period_program(
         periodo, idprograma
     )
 
     # Preparar data
-    df_data_a_predecir = pd.DataFrame(data_a_predecir)
-    data_preparada = Modelo.prepare_data(df_data_a_predecir)
+    df_data_a_predict = pd.DataFrame(data_a_predict)
+    data_preparada = Modelo.prepare_data(df_data_a_predict)
 
     # Predecir results
     resultados_model, resultados_desertores = Modelo.predict(
@@ -170,10 +170,10 @@ def predecir_model():
     save_ejecucion(ejecucion, resultados_model, 'Exitosa')
     flash('Predicción exitosa!!', 'success')
 
-    return redirect(url_for('Analista.predicciones'))
+    return redirect(url_for('Analista.predictions'))
 
 
-@Analista.route('/models/descargar', methods=['POST'])
+@Analista.route('/models/donwload', methods=['POST'])
 @login_required
 def download():
     model = dict(request.values).get('model')
@@ -184,7 +184,7 @@ def download():
 
     success, body = get_models()
 
-    flash('No se encontro el archivo a descargar', 'warning')
+    flash('No se encontro el archivo a donwload', 'warning')
 
     if not success:
         flash(f"{body.get('error')}", 'danger')
@@ -214,7 +214,7 @@ def get_models(nombre=None, conjunto=None):
     return get(endopoint)
 
 
-def formulario_entrenar():
+def form_train():
     periods = DataIES.get_periods_origen()
     status_f, body_f = get('faculties')
     status_p, body_p = get('programs')

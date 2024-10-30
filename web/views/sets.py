@@ -78,7 +78,7 @@ def get_list(estado, conjunto=None):
     )
 
 
-@Set.route('/descargar/<estado>/<nombre>')
+@Set.route('/donwload/<estado>/<nombre>')
 def download(estado, nombre):
 
     status_c, body_c = get('sets/'+nombre)
@@ -99,7 +99,7 @@ def download(estado, nombre):
     elif os.path.exists(ruta+'.xls'):
         return send_file(ruta+'.xls', as_attachment=True)
     else:
-        return render_template('utils/mensaje.html', mensaje='No se encontro el archivo a descargar')
+        return render_template('utils/mensaje.html', mensaje='No se encontro el archivo a donwload')
 
 
 @Set.route('/crear')
@@ -134,7 +134,7 @@ def get_periods_program(programa):
 @Set.route('/detalle', methods=['POST'])
 @login_required
 def detalle():
-    # Obtener Lo valores del formulario
+    # Obtener Lo valores del form
     body = dict(request.values)
     conjunto = literal_eval(body['conjunto'])
     # Consultas para mostrar info
@@ -162,7 +162,7 @@ def detalle():
 @login_required
 def post_save(conjunto=None):
     if not conjunto:
-        # Obtener Lo valores del formulario
+        # Obtener Lo valores del form
         conjunto = dict(request.values)
     # Preparar conjunto para la insercion
     del conjunto['faculty']
@@ -255,7 +255,7 @@ def post_save(conjunto=None):
         else:
             return render_template('utils/mensaje.html', mensaje='Incorrecto el formato de la fuente de datos', submensaje=mensaje_error)
     # else:
-    #     return render_template('utils/mensaje.html', mensaje='Formulario incorrecto', submensaje='Verifica el formulario de creacion o notifica al Administrador del sistema')
+    #     return render_template('utils/mensaje.html', mensaje='Formulario incorrecto', submensaje='Verifica el form de creacion o notifica al Administrador del sistema')
 
     # Guardar registro de conjunto en la BD
     conjunto['nombre'] = nombre
@@ -278,7 +278,7 @@ def post_save(conjunto=None):
 @login_required
 def preparar(conjunto=None):
     if not conjunto:
-        # Obtener Lo valores del formulario
+        # Obtener Lo valores del form
         body = dict(request.values)
         conjunto = literal_eval(body['conjunto'])
 
@@ -357,7 +357,7 @@ def ejecutar(conjunto=None):
     ejecucion_guardada = False
 
     if not conjunto:
-        # Obtener Lo valores del formulario
+        # Obtener Lo valores del form
         body = dict(request.values)
         conjunto = literal_eval(body['conjunto'])
 

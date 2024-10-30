@@ -96,17 +96,17 @@ def elimination(data, no_desertion=False):
             'promedio_acumulado > 0.3'
         )
 
-    # Obtener ultimo periodo a predecir
-    period_a_predecir = data['registro'].max()
+    # Obtener ultimo periodo a predict
+    period_a_predict = data['registro'].max()
 
-    if not period_a_predecir or math.isnan(period_a_predecir):
-        raise Exception('Período a predecir (REGISTRO maximo) indefinido.')
+    if not period_a_predict or math.isnan(period_a_predict):
+        raise Exception('Período a predict (REGISTRO maximo) indefinido.')
 
-    # Separar data a predecir y a entrenar
-    data_a_predecir = data.query(f'registro >= {period_a_predecir}')
-    data = data.query(f'registro < {period_a_predecir}')
+    # Separar data a predict y a train
+    data_a_predict = data.query(f'registro >= {period_a_predict}')
+    data = data.query(f'registro < {period_a_predict}')
 
-    # Insertar el N% de la data a predecir en entrenamiento
+    # Insertar el N% de la data a predict en entrenamiento
     period_closed = session.get('period_closed')
 
     # 75% sin cerrar/ 15% cerrado
@@ -117,16 +117,16 @@ def elimination(data, no_desertion=False):
     else:
         umbral = 0.65
 
-    n_rows = int(data_a_predecir.shape[0] * umbral)
-    data_proxima = data_a_predecir.iloc[:n_rows]
+    n_rows = int(data_a_predict.shape[0] * umbral)
+    data_proxima = data_a_predict.iloc[:n_rows]
 
     data = pd.concat([data, data_proxima], ignore_index=True)
 
     # Eliminar columnas inecesarias y nulos
     data = drop_columns(data)
-    data_a_predecir = drop_nulls(data_a_predecir)
+    data_a_predict = drop_nulls(data_a_predict)
 
-    return data, data_a_predecir, period_a_predecir
+    return data, data_a_predict, period_a_predict
 
 
 def elimination_predict(data):

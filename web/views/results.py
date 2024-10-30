@@ -109,7 +109,7 @@ def preparacion_detalle():
         )
 
 
-@Result.route('/descargar/desertores/<ejecucion>', methods=['GET'])
+@Result.route('/donwload/desertores/<ejecucion>', methods=['GET'])
 @login_required
 def download(ejecucion):
     status_c, body_c = get('executions/'+ejecucion)
