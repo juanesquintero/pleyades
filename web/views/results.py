@@ -81,7 +81,7 @@ def ejecucion_detalle():
             return desertores
     else:
         return render_template(
-            'utils/mensaje.html',
+            'utils/message.html',
             mensaje='No se obtener la ejecución',
             submensaje=body
         )
@@ -103,7 +103,7 @@ def preparacion_detalle():
         )
     else:
         return render_template(
-            'utils/mensaje.html',
+            'utils/message.html',
             mensaje='No se obtener los resultaods de la ejecución',
             submensaje=body
         )
@@ -114,7 +114,7 @@ def preparacion_detalle():
 def download(ejecucion):
     status_c, body_c = get('executions/'+ejecucion)
     if not status_c:
-        return render_template('utils/mensaje.html', mensaje='No existe esa ejecución')
+        return render_template('utils/message.html', mensaje='No existe esa ejecución')
 
     archivo = 'D '+ejecucion
     ruta = upload_folder+'/desertores/'+archivo
@@ -122,7 +122,7 @@ def download(ejecucion):
         data = pd.read_json(ruta+'.json')
     except Exception as e:
         return render_template(
-            'utils/mensaje.html',
+            'utils/message.html',
             mensaje='No se pudo abrir el archivo de desertores:',
             submensaje=str(e)
         )

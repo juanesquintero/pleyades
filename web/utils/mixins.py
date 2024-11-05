@@ -28,7 +28,7 @@ def exception(op):
     if isinstance(op, Exception):
         ex = clean_exception(str(op))
         error_logger.error(ex)
-        return render_template('utils/mensaje.html', mensaje='Ocurrió un error accesando a los datos'), 500
+        return render_template('utils/message.html', mensaje='Ocurrió un error accesando a los datos'), 500
     else:
         return False
 
@@ -80,9 +80,9 @@ def eliminar_archivo(ruta):
             os.remove(ruta)
         except Exception as e:
             error_logger.error(e)
-            return False, render_template('utils/mensaje.html', mensaje='No se pudo eliminar el archivo')
+            return False, render_template('utils/message.html', mensaje='No se pudo eliminar el archivo')
     # else:
-    #     return False, render_template('utils/mensaje.html', mensaje='No se pudo eliminar el archivo', submensaje='El archivo no existe')
+    #     return False, render_template('utils/message.html', mensaje='No se pudo eliminar el archivo', submensaje='El archivo no existe')
     return True, 'ERROR'
 
 
@@ -92,7 +92,7 @@ def obtener_archivo_excel(ruta):
     elif os.path.exists(ruta+'.xls'):
         data = pd.read_excel(ruta+'.xls')
     else:
-        return False, render_template('utils/mensaje.html', mensaje='No se encontro el archivo')
+        return False, render_template('utils/message.html', mensaje='No se encontro el archivo')
     return True, data
 
 
@@ -103,16 +103,16 @@ def obtener_archivo_json(ruta):
                 data = json.load(json_file)
         except Exception as e:
             error_logger.error(e)
-            return False, render_template('utils/mensaje.html', mensaje='No se pudo abrir el archivo de desertores:')
+            return False, render_template('utils/message.html', mensaje='No se pudo abrir el archivo de desertores:')
     else:
-        return False, render_template('utils/mensaje.html', mensaje='No se encontro le archivo de desertores')
+        return False, render_template('utils/message.html', mensaje='No se encontro le archivo de desertores')
     return True, data
 
 
 def actualizar_state(nombre, estado):
     status, body = put('sets/'+nombre, {'estado': estado})
     if not status:
-        return render_template('utils/mensaje.html', mensaje='No fue posible actualizar el estado del conjunto a '+estado, submensaje=body)
+        return render_template('utils/message.html', mensaje='No fue posible actualizar el estado del conjunto a '+estado, submensaje=body)
     else:
         return None
 
@@ -151,7 +151,7 @@ def obtener_nombre_conjunto(conjunto):
         return body_n['nombre'], body_n['numero']
 
     error_logger.error(f'API ERROR: {status_n} {body_n}')
-    return False, render_template('utils/mensaje.html', mensaje='No se pudo obtener el nombre del conjunto', submensaje=body_n)
+    return False, render_template('utils/message.html', mensaje='No se pudo obtener el nombre del conjunto', submensaje=body_n)
 
 
 def obtener_nombre_ejecucion(conjunto):

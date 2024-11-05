@@ -42,7 +42,7 @@ def only_admin(f):
             return render_template('utils/login.html'), 200
         if session['user']['rol'] == 'Admin':
             return f(*args, **kwargs)
-        return render_template('utils/mensaje.html', mensaje='Usted no tiene autorizacion para realizar esta accion'), 401
+        return render_template('utils/message.html', mensaje='Usted no tiene autorizacion para realizar esta accion'), 401
     return decorated_function
 
 

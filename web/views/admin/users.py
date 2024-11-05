@@ -32,7 +32,7 @@ def post_save():
     if status:
         return redirect(url_for('User.get_list'))
     else:
-        return render_template('utils/mensaje.html', mensaje='No se pudo save el User', submensaje=body)
+        return render_template('utils/message.html', mensaje='No se pudo save el User', submensaje=body)
 
 
 @User.route('/editar', methods=['POST'])
@@ -43,7 +43,7 @@ def post_edit():
     if usuario:
         return render_template('admin/'+endopoint+'editar.html', u=usuario)
     else:
-        return render_template('utils/mensaje.html', mensaje='No se pudo cargar el usuario')
+        return render_template('utils/message.html', mensaje='No se pudo cargar el usuario')
 
 
 @User.route('/actualizar', methods=['POST'])
@@ -59,7 +59,7 @@ def update():
     if status:
         return redirect(url_for('User.get_list'))
     else:
-        return render_template('utils/mensaje.html', mensaje='No se pudo actualizar el User', submensaje=body)
+        return render_template('utils/message.html', mensaje='No se pudo actualizar el User', submensaje=body)
 
 
 @User.route('/borrar', methods=['POST'])
@@ -70,7 +70,7 @@ def remove():
     if usuario:
         return render_template('admin/'+endopoint+'borrar.html', u=usuario)
     else:
-        return render_template('utils/mensaje.html', mensaje='No se pudo actualizar el User')
+        return render_template('utils/message.html', mensaje='No se pudo actualizar el User')
 
 
 @User.route('/eliminar', methods=['POST'])
@@ -82,4 +82,4 @@ def post_delete():
     if status:
         return redirect(url_for('User.get_list'))
     else:
-        return render_template('utils/mensaje.html', mensaje='No se pudo Eliminar el User', submensaje=body)
+        return render_template('utils/message.html', mensaje='No se pudo Eliminar el User', submensaje=body)

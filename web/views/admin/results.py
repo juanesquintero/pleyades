@@ -78,13 +78,13 @@ def actualizar_preparacion():
                 preparacion['observaciones'].replace("'", '"'))
             preparacion['observaciones'] = dict(preparacion['observaciones'])
         except:
-            return render_template('utils/mensaje.html', mensaje='No se pudo actualizar la preparación', submensaje='Error con el campo observaciones no es un json o nulo')
+            return render_template('utils/message.html', mensaje='No se pudo actualizar la preparación', submensaje='Error con el campo observaciones no es un json o nulo')
 
     status, body = put('preparations/'+nombre, preparacion)
     if status:
         return redirect(url_for('ResultAdmin.preparations'))
     else:
-        return render_template('utils/mensaje.html', mensaje='No se pudo actualizar la preparación', submensaje=body)
+        return render_template('utils/message.html', mensaje='No se pudo actualizar la preparación', submensaje=body)
 
 
 @ResultAdmin.route('/preparations/borrar', methods=['POST'])
@@ -104,7 +104,7 @@ def eliminar_preparacion():
     if status:
         return redirect(url_for('ResultAdmin.preparations'))
     else:
-        return render_template('utils/mensaje.html', mensaje='No se pudo Eliminar la preparación', submensaje=body)
+        return render_template('utils/message.html', mensaje='No se pudo Eliminar la preparación', submensaje=body)
 
 ########################################################### EJECUCIONES ###################################################################
 
@@ -128,13 +128,13 @@ def actualizar_ejecucion():
             ejecucion['results'].replace("'", '"'))
         ejecucion['results'] = dict(ejecucion['results'])
     except:
-        return render_template('utils/mensaje.html', mensaje='No se pudo actualizar la ejecución', submensaje='Error con el campo results no es un json')
+        return render_template('utils/message.html', mensaje='No se pudo actualizar la ejecución', submensaje='Error con el campo results no es un json')
 
     status, body = put('executions/'+nombre, ejecucion)
     if status:
         return redirect(url_for('ResultAdmin.executions'))
     else:
-        return render_template('utils/mensaje.html', mensaje='No se pudo actualizar la ejecución', submensaje=body)
+        return render_template('utils/message.html', mensaje='No se pudo actualizar la ejecución', submensaje=body)
 
 
 @ResultAdmin.route('/executions/borrar', methods=['POST'])
@@ -162,4 +162,4 @@ def eliminar_ejecucion():
 
         return redirect(url_for('ResultAdmin.executions'))
     else:
-        return render_template('utils/mensaje.html', mensaje='No se pudo Eliminar la ejecución', submensaje=body)
+        return render_template('utils/message.html', mensaje='No se pudo Eliminar la ejecución', submensaje=body)

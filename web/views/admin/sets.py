@@ -68,7 +68,7 @@ def post_edit():
         )
     else:
         return render_template(
-            "utils/mensaje.html",
+            "utils/message.html",
             mensaje="No se obtener los programs",
             submensaje=body_p,
         )
@@ -85,7 +85,7 @@ def update():
         return redirect(url_for("SetAdmin.crudos"))
 
     return render_template(
-        "utils/mensaje.html",
+        "utils/message.html",
         mensaje="No se pudo actualizar la conjunto",
         submensaje=body,
     )
@@ -103,7 +103,7 @@ def post_delete():
         )
     else:
         return render_template(
-            "utils/mensaje.html",
+            "utils/message.html",
             mensaje="No se obtener los programs",
             submensaje=body_p,
         )
@@ -132,7 +132,7 @@ def eliminar():
         return redirect(url_for("SetAdmin.crudos"))
     else:
         return render_template(
-            "utils/mensaje.html",
+            "utils/message.html",
             mensaje="No se pudo Eliminar el conjunto",
             submensaje=body,
         )
@@ -151,7 +151,7 @@ def eliminar_todos():
         return redirect(url_for(f"SetAdmin.{route}"))
 
     return render_template(
-        "utils/mensaje.html",
+        "utils/message.html",
         mensaje="No se pudo Eliminar los sets",
         submensaje=body,
     )
