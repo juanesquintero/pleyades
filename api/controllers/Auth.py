@@ -12,10 +12,10 @@ Auth = Blueprint('auth', __name__)
 @Auth.route('/login', methods=['POST'])
 def login():
     if not request.is_json:
-        return jsonify({'msg': 'Falta body en el request'}), 400
+        return jsonify({'msg': 'Request body is missing'}), 400
 
     if not validate_login_schema(request.json):
-        return jsonify({'msg': 'Body invalido para login'}), 400
+        return jsonify({'msg': 'Invalid body for login'}), 400
 
     correo = request.json.get('correo', None)
     clave = request.json.get('clave', '')
@@ -24,7 +24,7 @@ def login():
     user = auth_login(correo, clave_md5)
 
     if user == (False, None):
-        return jsonify({'msg': 'Correo o clave incorrectos'}), 401
+        return jsonify({'msg': 'Incorrect email or password'}), 401
 
     if user[0] is True:
         access_token = create_access_token(
