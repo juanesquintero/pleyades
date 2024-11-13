@@ -6,18 +6,21 @@ from app import db
 
 
 class DTO():
+    @staticmethod
     def insert(_class, fields):
         row = _class(**fields)
         db.session.add(row)
         db.session.commit()
         return row
 
+    @staticmethod
     def post_delete(_class, field):
         row = _class._get_one(field)
         db.session.delete(row)
         db.session.commit()
         return row
 
+    @staticmethod
     def update(sql):
         row = db.session.execute(sql)
         db.session.commit()
@@ -31,19 +34,24 @@ class User(db.Model, SerializerMixin):
     clave = db.Column(db.String, nullable=False)
     rol = db.Column(db.String, nullable=False)
 
+    @staticmethod
     def get_all():
         return [row.to_dict() for row in User.query.all()]
 
+    @staticmethod
     def _get_one(correo):
         return User.query.filter(User.correo == correo).first_or_404()
 
+    @staticmethod
     def get_one(correo):
         return User._get_one(correo).to_dict()
 
+    @staticmethod
     def get_rol(rol):
         query = User.query.filter(User.rol == rol).all()
         return [row.to_dict() for row in query]
 
+    @staticmethod
     def get_login(correo, clave):
         row = User.query.filter(
             User.correo == correo,
@@ -56,12 +64,15 @@ class User(db.Model, SerializerMixin):
         except:
             return None
 
+    @staticmethod
     def insert(fields):
         return DTO.insert(User, fields)
 
+    @staticmethod
     def post_delete(correo):
         return DTO.delete(User, correo)
 
+    @staticmethod
     def update(correo, fields):
         return DTO.update(
             update(User).where(User.correo == correo).values(**fields)
@@ -80,21 +91,26 @@ class Set(db.Model, SerializerMixin):
     periodoFinal = db.Column(db.Integer, nullable=False)
     estado = db.Column(db.String, nullable=False)
 
+    @staticmethod
     def get_all():
         return [row.to_dict() for row in Set.query.all()]
 
+    @staticmethod
     def get_state(estado):
         query = Set.query.filter(Set.estado == estado)
         return [row.to_dict() for row in query.all()]
 
+    @staticmethod
     def get_tipo(tipo):
         query = Set.query.filter(Set.tipo == tipo)
         return [row.to_dict() for row in query.all()]
 
+    @staticmethod
     def get_programa(programa):
         query = Set.query.filter(Set.programa == programa)
         return [row.to_dict() for row in query.all()]
 
+    @staticmethod
     def get_rango(inicio, fin):
         query = Set.query.filter(
             Set.periodoInicial == inicio,
@@ -102,6 +118,7 @@ class Set(db.Model, SerializerMixin):
         )
         return [row.to_dict() for row in query.all()]
 
+    @staticmethod
     def get_numero(programa, inicio, fin):
         query = Set.query.filter(
             Set.programa == programa,
@@ -110,24 +127,30 @@ class Set(db.Model, SerializerMixin):
         ).order_by(Set.numero.desc())
         return [row.to_dict() for row in query.all()]
 
+    @staticmethod
     def get_encargado(encargado, estado=None):
         query = Set.query.filter(Set.encargado == encargado)
         if estado:
             query = query.filter(Set.estado == estado)
         return [row.to_dict() for row in query.all()]
 
+    @staticmethod
     def _get_one(nombre):
         return Set.query.filter(Set.nombre == nombre).first_or_404()
 
+    @staticmethod
     def get_one(nombre):
         return Set._get_one(nombre).to_dict()
 
+    @staticmethod
     def insert(fields):
         return DTO.insert(Set, fields)
 
+    @staticmethod
     def post_delete(nombre):
         return DTO.delete(Set, nombre)
 
+    @staticmethod
     def update(nombre, fields):
         return DTO.update(
             update(Set).where(
@@ -166,38 +189,48 @@ class Preparacion(db.Model, SerializerMixin):
     def duracion(cls):
         return int((cls.fechaFinal - cls.fechaInicial).total_seconds())
 
+    @staticmethod
     def get_all():
         return [row.to_dict() for row in Preparacion.query.all()]
 
+    @staticmethod
     def get_conjunto(conjunto):
         query = Preparacion.query.filter(
             Preparacion.conjunto == conjunto).all()
         return [row.to_dict() for row in query]
 
+    @staticmethod
     def get_consecutivo(conjunto):
         query = Preparacion.query.filter(Preparacion.conjunto == conjunto)
         return [row.to_dict() for row in query.order_by(Preparacion.numero.desc()).all()]
 
+    @staticmethod
     def get_preparador(preparador):
         query = Preparacion.query.filter(
             Preparacion.preparador == preparador).all()
         return [row.to_dict() for row in query]
 
+    @staticmethod
     def _get_one(nombre):
         return Preparacion.query.filter(Preparacion.nombre == nombre).first_or_404()
 
+    @staticmethod
     def get_one(nombre):
         return Preparacion._get_one(nombre).to_dict()
 
+    @staticmethod
     def insert(fields):
         return DTO.insert(Preparacion, fields)
 
+    @staticmethod
     def post_delete(nombre):
         return DTO.delete(Preparacion, nombre)
 
+    @staticmethod
     def delete_conjunto(conjunto):
         return Preparacion.__table__.delete().where(Preparacion.conjunto == conjunto)
 
+    @staticmethod
     def update(nombre, fields):
         return DTO.update(
             update(Preparacion).where(
@@ -238,41 +271,52 @@ class Ejecucion(db.Model, SerializerMixin):
     def duracion(cls):
         return int((cls.fechaFinal - cls.fechaInicial).total_seconds())
 
+    @staticmethod
     def get_all():
         return [row.to_dict() for row in Ejecucion.query.all()]
 
+    @staticmethod
     def get_conjunto(conjunto):
         query = Ejecucion.query.filter(Ejecucion.conjunto == conjunto).all()
         return [row.to_dict() for row in query]
 
+    @staticmethod
     def get_consecutivo(conjunto):
         query = Ejecucion.query.filter(Ejecucion.conjunto == conjunto)
         return [row.to_dict() for row in query.order_by(Ejecucion.numero.desc()).all()]
 
+    @staticmethod
     def get_ejecutor(ejecutor):
         query = Ejecucion.query.filter(Ejecucion.ejecutor == ejecutor).all()
         return [row.to_dict() for row in query]
 
+    @staticmethod
     def get_ejecutor_one(ejecutor, conjunto):
         query = Ejecucion.query.filter(
             Ejecucion.ejecutor == ejecutor, Ejecucion.conjunto == conjunto).all()
         return [row.to_dict() for row in query]
 
+    @staticmethod
     def _get_one(nombre):
         return Ejecucion.query.filter(Ejecucion.nombre == nombre).first_or_404()
 
+    @staticmethod
     def get_one(nombre):
         return Ejecucion._get_one(nombre).to_dict()
 
+    @staticmethod
     def insert(fields):
         return DTO.insert(Ejecucion, fields)
 
+    @staticmethod
     def post_delete(nombre):
         return DTO.delete(Ejecucion, nombre)
 
+    @staticmethod
     def delete_conjunto(conjunto):
         return Ejecucion.__table__.delete().where(Ejecucion.conjunto == conjunto)
 
+    @staticmethod
     def update(nombre, fields):
         return DTO.update(
             update(Ejecucion).where(
