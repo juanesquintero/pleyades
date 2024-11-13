@@ -2,56 +2,56 @@
 -- ************ Tables **************
 -- **********************************
 -- table users
-CREATE TABLE  users (
-	correo VARCHAR (200) NOT NULL 	,
-	nombre VARCHAR (200) NOT NULL 	,
-	clave VARCHAR (50) NOT NULL 	,
-	rol VARCHAR (50) NOT NULL 	,
-	CONSTRAINT  pk_Usuario 
-	PRIMARY KEY( correo )
+CREATE TABLE users (
+	email VARCHAR (200) NOT NULL ,
+	name VARCHAR (200) NOT NULL ,
+	password VARCHAR (50) NOT NULL ,
+	role VARCHAR (50) NOT NULL ,
+	CONSTRAINT pk_User 
+	PRIMARY KEY( email )
 );
 
--- table conjuntosdedatos
-CREATE TABLE  conjuntosdedatos (
-	programa INT (30) NOT NULL 	,
-	encargado VARCHAR (200) NOT NULL 	,
-	nombre VARCHAR (200) NOT NULL 	,
-	tipo VARCHAR (50) NOT NULL 	,
-	numero INT (30) NOT NULL 	,
-	periodoInicial INT (6) NOT NULL 	,
-	periodoFinal INT (6) NOT NULL 	,
-	estado VARCHAR (50) NOT NULL 	,
-	CONSTRAINT  pk_ConjuntoDeDatos 
-	PRIMARY KEY( nombre )
+-- table datasets
+CREATE TABLE datasets (
+	program INT (30) NOT NULL ,
+	manager VARCHAR (200) NOT NULL ,
+	name VARCHAR (200) NOT NULL ,
+	type VARCHAR (50) NOT NULL ,
+	number INT (30) NOT NULL ,
+	initialPeriod INT (6) NOT NULL ,
+	finalPeriod INT (6) NOT NULL ,
+	status VARCHAR (50) NOT NULL ,
+	CONSTRAINT pk_Dataset 
+	PRIMARY KEY( name )
 );
 
 -- table preparations
-CREATE TABLE  preparations (
-	preparador VARCHAR (200) NOT NULL 	,
-	conjunto VARCHAR (200) NOT NULL 	,
-	nombre VARCHAR (250) NOT NULL 	,
-	numero INT (30) NOT NULL 	,
-	fechaInicial DATETIME  NOT NULL 	,
-	fechaFinal DATETIME 	,
-	estado VARCHAR (50) NOT NULL 	,
-	observaciones JSON NULL,
-	CONSTRAINT  pk_Preparacion 
-	PRIMARY KEY( nombre )
+CREATE TABLE preparations (
+	preparer VARCHAR (200) NOT NULL ,
+	dataset VARCHAR (200) NOT NULL ,
+	name VARCHAR (250) NOT NULL ,
+	number INT (30) NOT NULL ,
+	startDate DATETIME NOT NULL ,
+	endDate DATETIME ,
+	status VARCHAR (50) NOT NULL ,
+	observations JSON NULL,
+	CONSTRAINT pk_Preparation 
+	PRIMARY KEY( name )
 );
 
 -- table executions
-CREATE TABLE  executions (
-	ejecutor VARCHAR (200) NOT NULL 	,	
-	conjunto VARCHAR (200) NOT NULL 	,
-	nombre VARCHAR (250) NOT NULL 	,
-	numero INT (30) NOT NULL 	,
-	fechaInicial DATETIME NOT NULL 	,
-	fechaFinal DATETIME NOT NULL 	,
-	estado VARCHAR (50) NOT NULL 	,
-	precision_model FLOAT		,
-	resultados JSON NOT NULL,
-	CONSTRAINT  pk_Ejecucion 
-	PRIMARY KEY( nombre )
+CREATE TABLE executions (
+	executor VARCHAR (200) NOT NULL ,	
+	dataset VARCHAR (200) NOT NULL ,
+	name VARCHAR (250) NOT NULL ,
+	number INT (30) NOT NULL ,
+	startDate DATETIME NOT NULL ,
+	endDate DATETIME NOT NULL ,
+	status VARCHAR (50) NOT NULL ,
+	modelPrecision FLOAT ,
+	results JSON NOT NULL,
+	CONSTRAINT pk_Execution 
+	PRIMARY KEY( name )
 );
 
 
@@ -60,47 +60,47 @@ CREATE TABLE  executions (
 -- ************ Foreign Keys **************
 -- ****************************************
 
--- For conjuntosdedatos(fk_ConjuntoDeDatos_Usuario) 
-ALTER TABLE conjuntosdedatos ADD(
-	CONSTRAINT fk_ConjuntoDeDatos_Usuario
-	FOREIGN KEY ( encargado )
-	REFERENCES  users ( correo )
+-- For datasets(fk_Dataset_User) 
+ALTER TABLE datasets ADD(
+	CONSTRAINT fk_Dataset_User
+	FOREIGN KEY ( manager )
+	REFERENCES users ( email )
 	ON DELETE CASCADE
     ON UPDATE CASCADE
 );
 
--- For executions(fk_Preparacion_ConjuntoDeDatos) 
+-- For executions(fk_Execution_Dataset) 
 ALTER TABLE executions ADD(
-	CONSTRAINT fk_Ejecucion_ConjuntoDeDatos
-	FOREIGN KEY ( student_set )
-	REFERENCES  conjuntosdedatos ( nombre )
+	CONSTRAINT fk_Execution_Dataset
+	FOREIGN KEY ( dataset )
+	REFERENCES datasets ( name )
 	ON DELETE CASCADE
     ON UPDATE CASCADE
 );
 
--- For executions(fk_Ejecucion_Usuario) 
+-- For executions(fk_Execution_User) 
 ALTER TABLE executions ADD(
-	CONSTRAINT fk_Ejecucion_Usuario
-	FOREIGN KEY ( ejecutor )
-	REFERENCES  users ( correo )
+	CONSTRAINT fk_Execution_User
+	FOREIGN KEY ( executor )
+	REFERENCES users ( email )
 	ON DELETE CASCADE
     ON UPDATE CASCADE
 );
 
--- For preparations(fk_Preparacion_ConjuntoDeDatos) 
+-- For preparations(fk_Preparation_Dataset) 
 ALTER TABLE preparations ADD(
-	CONSTRAINT fk_Preparacion_ConjuntoDeDatos
-	FOREIGN KEY ( student_set )
-	REFERENCES  conjuntosdedatos ( nombre )
+	CONSTRAINT fk_Preparation_Dataset
+	FOREIGN KEY ( dataset )
+	REFERENCES datasets ( name )
 	ON DELETE CASCADE
     ON UPDATE CASCADE
 );
 
--- For preparations(fk_Preparacion_Usuario) 
+-- For preparations(fk_Preparation_User) 
 ALTER TABLE preparations ADD(
-	CONSTRAINT fk_Preparacion_Usuario
-	FOREIGN KEY ( preparador )
-	REFERENCES  users ( correo )
+	CONSTRAINT fk_Preparation_User
+	FOREIGN KEY ( preparer )
+	REFERENCES users ( email )
 	ON DELETE CASCADE
     ON UPDATE CASCADE
 );
@@ -110,5 +110,5 @@ ALTER TABLE preparations ADD(
 -- ************ Initial Inserts **************
 -- **********************************
     
-INSERT INTO `users`(`nombre`,`correo`,`clave`,`rol`) VALUES
+INSERT INTO `users` (`name`,`email`,`password`,`role`) VALUES
 ('SUPER ADMIN','admin@pleyades.com','25d55ad283aa400af464c76d713c07ad','Admin');
