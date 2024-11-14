@@ -26,6 +26,12 @@ class DTO():
         db.session.commit()
         return row
 
+    @staticmethod
+    def delete(_class, field):
+        row = _class._get_one(field)
+        db.session.delete(row)
+        db.session.commit()
+
 
 class User(db.Model, SerializerMixin):
     __tablename__ = 'users'
@@ -79,7 +85,7 @@ class User(db.Model, SerializerMixin):
         )
 
 
-class Dataset(db.Model, SerializerMixin):
+class DataSet(db.Model, SerializerMixin):
     __tablename__ = 'datasets'
 
     program = db.Column(db.Integer, nullable=False)
