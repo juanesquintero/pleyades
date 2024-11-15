@@ -2,17 +2,17 @@ from flask import request, jsonify, Blueprint
 from flask_jwt_extended import jwt_required
 import json
 from schemas.preparation_schema import validate_post_schema, validate_put_schema
-from db.pleyades.db import Preparacion as preparation_model
+from db.pleyades.db import Preparation as preparation_model
 from utils.utils import exception, _format
 # Relaciones
 from controllers.sets import exists as exists_set
 from controllers.users import exists as exists_usuario
 
-Preparacion = Blueprint('Preparacion', __name__)
+Preparation = Blueprint('Preparation', __name__)
 
 
-@Preparacion.route('')
-@Preparacion.route('/')
+@Preparation.route('')
+@Preparation.route('/')
 @jwt_required()
 def get():
     query = preparation_model.get_all()
@@ -25,7 +25,7 @@ def get():
     return jsonify(query)
 
 
-@Preparacion.route('/<nombre>')
+@Preparation.route('/<nombre>')
 @jwt_required()
 def get_one(nombre):
     query = preparation_model.get_one(nombre)
@@ -38,7 +38,7 @@ def get_one(nombre):
     return jsonify(query[0])
 
 
-@Preparacion.route('/set/<set>')
+@Preparation.route('/set/<set>')
 @jwt_required()
 def get_by_set(set):
     if not exists_set(set):
@@ -53,7 +53,7 @@ def get_by_set(set):
     return jsonify(query)
 
 
-@Preparacion.route('/preparador/<preparador>')
+@Preparation.route('/preparador/<preparador>')
 @jwt_required()
 def get_by_usuario(preparador):
     if not exists_usuario(preparador):
@@ -68,7 +68,7 @@ def get_by_usuario(preparador):
     return jsonify(query)
 
 
-@Preparacion.route('/nombre/<set>')
+@Preparation.route('/nombre/<set>')
 @jwt_required()
 def nombre(set):
     if not exists_set(set):
@@ -85,7 +85,7 @@ def nombre(set):
     return {'nombre': set+'.'+str(numero), 'numero': numero}, 200
 
 
-@Preparacion.route('', methods=['POST'])
+@Preparation.route('', methods=['POST'])
 @jwt_required()
 def post():
     body = request.get_json()
@@ -109,16 +109,16 @@ def post():
     ex = exception(insert)
     if ex:
         return ex
-    return {'msg': 'Preparacion creada'}, 200
+    return {'msg': 'Preparation creada'}, 200
 
 
-@Preparacion.route('/', methods=['POST'])
+@Preparation.route('/', methods=['POST'])
 @jwt_required()
 def post2():
     return post()
 
 
-@Preparacion.route('/<nombre>', methods=['PUT'])
+@Preparation.route('/<nombre>', methods=['PUT'])
 @jwt_required()
 def put(nombre):
     body = request.get_json()
@@ -130,7 +130,7 @@ def put(nombre):
         return {'error': 'body invalido'}, 400
     # sql validations
     if not exists(nombre):
-        return {'error': 'Preparacion no existe'}, 400
+        return {'error': 'Preparation no existe'}, 400
     # Cambiar formato de campo observaciones desde dict a str json para mysql
     body['observaciones'] = str(json.dumps(body['observaciones']))
     # Uptade
@@ -138,26 +138,26 @@ def put(nombre):
     ex = exception(update)
     if ex:
         return ex
-    return {'msg': 'Preparacion actualizada'}, 200
+    return {'msg': 'Preparation actualizada'}, 200
 
 
-@Preparacion.route('/<nombre>', methods=['DELETE'])
+@Preparation.route('/<nombre>', methods=['DELETE'])
 @jwt_required()
 def delete_one(nombre):
     if not (nombre):
         return {'error': 'indique el nombre por el path'}, 400
     # sql validations
     if not exists(nombre):
-        return {'error': 'Preparacion no existe'}, 400
+        return {'error': 'Preparation no existe'}, 400
     # delete
     delete = preparation_model.delete(nombre)
     ex = exception(delete)
     if ex:
         return ex
-    return {'msg': 'Preparacion eliminada'}, 200
+    return {'msg': 'Preparation eliminada'}, 200
 
 
-@Preparacion.route('/set/<set>', methods=['DELETE'])
+@Preparation.route('/set/<set>', methods=['DELETE'])
 @jwt_required()
 def delete_by_set(set):
     if not (set):

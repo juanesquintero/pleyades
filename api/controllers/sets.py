@@ -1,6 +1,6 @@
 from flask import request, jsonify, Blueprint
 from db.ies.db import DB as db_ies
-from db.pleyades.db import DataSet as set_model, Ejecucion as execution_model, Preparacion as preparation_model
+from db.pleyades.db import DataSet as set_model, Execution as execution_model, Preparation as preparation_model
 from schemas.set_schema import validate_post_schema, validate_put_schema, validate_nombre_schema
 from flask_jwt_extended import jwt_required
 from utils.utils import exception, _format

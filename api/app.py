@@ -108,8 +108,8 @@ def app_routes(app):
     from controllers.programs import Program
     from controllers.users import User
     from controllers.sets import Set
-    from controllers.preparations import Preparacion
-    from controllers.executions import Ejecucion
+    from controllers.preparations import Preparation
+    from controllers.executions import Execution
     from controllers.desertion.institute import IES
     from controllers.desertion.students import Student
     from controllers.desertion.results import Result
@@ -120,8 +120,8 @@ def app_routes(app):
     app.register_blueprint(Program, url_prefix=base_path+'programs')
     app.register_blueprint(User, url_prefix=base_path+'users')
     app.register_blueprint(Set, url_prefix=base_path+'sets')
-    app.register_blueprint(Preparacion, url_prefix=base_path+'preparations')
-    app.register_blueprint(Ejecucion, url_prefix=base_path+'executions')
+    app.register_blueprint(Preparation, url_prefix=base_path+'preparations')
+    app.register_blueprint(Execution, url_prefix=base_path+'executions')
     app.register_blueprint(IES, url_prefix=base_path+'desertion/institute')
     app.register_blueprint(
         Student, url_prefix=base_path+'desertion/students'
