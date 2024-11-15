@@ -138,7 +138,7 @@ def save_ejecucion(ejecucion, results, estado):
 
     if not status:
         raise Exception(
-            f"No se pudo save la Ejecucion: {body.get('error')}"
+            f"Execution could be NOT saved: {body.get('error')}"
         )
 
     return True, 'ERROR'
