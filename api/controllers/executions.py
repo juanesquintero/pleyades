@@ -3,16 +3,16 @@ from flask import request, jsonify, Blueprint
 from schemas.execution_schema import validate_post_schema, validate_put_schema
 from flask_jwt_extended import jwt_required
 from utils.utils import exception, _format
-from db.pleyades.db import Ejecucion as execution_model
+from db.pleyades.db import Execution as execution_model
 # Relaciones
 from controllers.sets import exists as exists_set
 from controllers.users import exists as exists_usuario
 
-Ejecucion = Blueprint('Ejecucion', __name__)
+Execution = Blueprint('Execution', __name__)
 
 
-@Ejecucion.route('')
-@Ejecucion.route('/')
+@Execution.route('')
+@Execution.route('/')
 @jwt_required()
 def get():
     query = execution_model.get_all()
@@ -25,7 +25,7 @@ def get():
     return jsonify(query)
 
 
-@Ejecucion.route('/<nombre>')
+@Execution.route('/<nombre>')
 @jwt_required()
 def get_one(nombre):
     query = execution_model.get_one(nombre)
@@ -38,33 +38,33 @@ def get_one(nombre):
     return jsonify(query[0])
 
 
-@Ejecucion.route('/set/<set>')
+@Execution.route('/data_set/<data_set>')
 @jwt_required()
-def get_by_set(set):
-    if not exists_set(set):
-        return {'error': 'set no existe'}, 400
-    query = execution_model.get_set(set)
+def get_by_set(data_set):
+    if not exists_set(data_set):
+        return {'error': 'data_set no existe'}, 400
+    query = execution_model.get_set(data_set)
     ex = exception(query)
     if ex:
         return ex
     if not query:
-        return {'msg': 'set no tiene executions'}, 404
+        return {'msg': 'data_set no tiene executions'}, 404
     query = strdate_to_datetime(query)
     return jsonify(query)
 
 
-@Ejecucion.route('/ejecutor/<ejecutor>')
+@Execution.route('/ejecutor/<ejecutor>')
 @jwt_required()
 def get_by_usuario(ejecutor):
-    student_set = request.args.get('set')
+    data_set = request.args.get('data_set')
     nombre = request.args.get('nombre')
     if not exists_usuario(ejecutor):
         return {'error': 'usuario no existe'}, 400
 
     if nombre:
         query = execution_model.get_ejecutor_one(ejecutor, nombre)
-    elif set:
-        query = execution_model.get_ejecutor_set(ejecutor, set)
+    elif data_set:
+        query = execution_model.get_ejecutor_set(ejecutor, data_set)
     else:
         query = execution_model.get_ejecutor(ejecutor)
 
@@ -77,13 +77,13 @@ def get_by_usuario(ejecutor):
     return jsonify(query)
 
 
-@Ejecucion.route('/nombre/<set>')
+@Execution.route('/nombre/<data_set>')
 @jwt_required()
-def nombre(set):
-    if not exists_set(set):
-        return {'error': 'set no existe'}, 400
-    # Obtener el numero consecutivo para el student_set de datos
-    query = execution_model.get_consecutivo(set)
+def nombre(data_set):
+    if not exists_set(data_set):
+        return {'error': 'data_set no existe'}, 400
+    # Obtener el numero consecutivo para el data_set de datos
+    query = execution_model.get_consecutivo(data_set)
     ex = exception(query)
     if ex:
         return ex
@@ -91,10 +91,10 @@ def nombre(set):
         numero = query[0].get('numero')+1
     else:
         numero = 1
-    return {'nombre': set+'.'+str(numero), 'numero': numero}, 200
+    return {'nombre': data_set+'.'+str(numero), 'numero': numero}, 200
 
 
-@Ejecucion.route('', methods=['POST'])
+@Execution.route('', methods=['POST'])
 @jwt_required()
 def post():
     body = request.get_json()
@@ -104,8 +104,8 @@ def post():
     # sql validations
     if not exists_usuario(body['ejecutor']):
         return {'error': 'usuario no existe'}, 404
-    if not exists_set(body['set']):
-        return {'error': 'set no existe'}, 404
+    if not exists_set(body['data_set']):
+        return {'error': 'data_set no existe'}, 404
     if exists(body['nombre']):
         return {'error': 'ejecución ya existe'}, 400
     # Cambiar formato de fechas
@@ -121,24 +121,24 @@ def post():
     return {'msg': 'ejecución creada'}, 200
 
 
-@Ejecucion.route('/', methods=['POST'])
+@Execution.route('/', methods=['POST'])
 @jwt_required()
 def post2():
     return post()
 
 
-@Ejecucion.route('/<nombre>', methods=['PUT'])
+@Execution.route('/<nombre>', methods=['PUT'])
 @jwt_required()
 def put(nombre):
     body = request.get_json()
     if not nombre:
-        return {'error': 'indique el nombre por el path'}, 404
+        return {'error': 'provide the name in the path'}, 404
     # validate schema
     if not validate_put_schema(body):
-        return {'error': 'body invalido'}, 400
+        return {'error': 'invalid body'}, 400
     # sql validations
     if not exists(nombre):
-        return {'error': 'Ejecucion no existe'}, 404
+        return {'error': 'Execution does NOT exists'}, 404
     # Cambiar formato de campo results desde dict a str json para mysql
     body['results'] = str(json.dumps(body['results']))
     # Uptade
@@ -146,40 +146,40 @@ def put(nombre):
     ex = exception(update)
     if ex:
         return ex
-    return {'msg': 'Ejecucion actualizada'}, 200
+    return {'msg': 'Execution updated'}, 200
 
 
-@Ejecucion.route('/<nombre>', methods=['DELETE'])
+@Execution.route('/<nombre>', methods=['DELETE'])
 @jwt_required()
 def delete_one(nombre):
     if not nombre:
-        return {'error': 'indique el nombre por el path'}, 404
+        return {'error': 'provide the name in the path'}, 404
     # sql validations
     if not exists(nombre):
-        return {'error': 'Ejecucion no existe'}, 404
+        return {'error': 'Execution NOT exists'}, 404
     # delete
     delete = execution_model.delete(nombre)
     ex = exception(delete)
     if ex:
         return ex
-    return {'msg': 'Ejecucion eliminada'}, 200
+    return {'msg': 'Execution deleted'}, 200
 
 
-@Ejecucion.route('/set/<set>', methods=['DELETE'])
+@Execution.route('/data_set/<data_set>', methods=['DELETE'])
 @jwt_required()
-def delete_by_set(set):
-    if not set:
-        return {'error': 'indique el student_set por el path'}, 400
+def delete_by_set(data_set):
+    if not data_set:
+        return {'error': 'indique el data_set por el path'}, 400
     # sql validations
-    if not exists_set(set):
-        return {'error': 'set no existe'}, 400
-    # if not set_preparations(conjun):  return {'error': "set no tiene preparations"}, 400
+    if not exists_set(data_set):
+        return {'error': 'data_set no existe'}, 400
+    # if not set_preparations(conjun):  return {'error': "data_set no tiene preparations"}, 400
     # delete
-    delete = execution_model.delete_set(set)
+    delete = execution_model.delete_set(data_set)
     ex = exception(delete)
     if ex:
         return ex
-    return {'msg': 'executions del student_set eliminadas'}, 200
+    return {'msg': 'executions del data_set eliminadas'}, 200
 
 
 def exists(nombre):
