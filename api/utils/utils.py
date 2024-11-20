@@ -12,7 +12,9 @@ def exception(op):
         if exception_info:
             message += f'   ---->   {exception_info}'
         error_logger.error(message, exc_info=True)
-        return {'error': 'Ha ocurrido un error en la ejecución del servidor, si es necesario contacte al Admin del sistema para verificar el error.'}, 500
+        return {
+            'error': 'An error occurred during server execution. If necessary, contact the system administrator to verify the error.'
+        }, 500
 
     return False
 

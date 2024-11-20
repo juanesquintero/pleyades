@@ -27,10 +27,10 @@ def get():
     return jsonify(query)
 
 
-@Set.route('/<nombre>')
+@Set.route('/<name>')
 @jwt_required()
-def get_one(nombre):
-    query = set_model.get_one(nombre)
+def get_one(name):
+    query = set_model.get_one(name)
     ex = exception(query)
     if ex:
         return ex
@@ -112,12 +112,12 @@ def post():
     body = request.get_json()
     # validate schema
     if not (validate_post_schema(body)):
-        return {'error': 'body invalido'}, 400
+        return {'error': 'invalid body content'}, 400
     # Logical Validations
     if body['periodoInicial'] > body['periodoFinal']:
         return {'error': 'Periodo Inicial no puede ser mayor al Final'}, 400
     # sql validations
-    if exists(body['nombre']):
+    if exists(body['name']):
         return {'error': 'Set Ya existe'}, 400
     if not exists_usuario(body['encargado']):
         return {'error': 'usuario no existe'}, 400
@@ -130,7 +130,7 @@ def post():
     ex = exception(insert)
     if ex:
         return ex
-    return {'msg': 'Set creado'}, 200
+    return {'msg': 'Set created'}, 200
 
 
 @Set.route('/', methods=['POST'])
@@ -139,13 +139,13 @@ def post2():
     return post()
 
 
-@Set.route('/nombre', methods=['POST'])
+@Set.route('/name', methods=['POST'])
 @jwt_required()
-def nombre():
+def name():
     body = request.get_json()
     # validate schema
     if not validate_nombre_schema(body):
-        return {'error': 'body invalido'}, 400
+        return {'error': 'invalid body content'}, 400
     # sql validations
     if not exists_usuario(body['encargado']):
         return {'error': 'usuario no existe'}, 400
@@ -168,19 +168,19 @@ def nombre():
         numero = query[0].get('numero')+1
     else:
         numero = 1
-    # Obtener la sigla del nombre del programa
+    # Obtener la sigla del name del programa
     programa = db_ies.select(
         'SELECT * FROM VWPROGRAMADESERCION WHERE codigo={};'.format(str(body['programa'])))
     ex = exception(programa)
     if ex:
         return ex
     nombre_corto = programa[0]['nombre_corto']
-    # Definir el nombre del student_set con la notacion
-    nombre = nombre_corto+' ' + \
+    # Definir el name del student_set con la notacion
+    name = nombre_corto+' ' + \
         str(body['periodoInicial'])+' ' + \
         str(body['periodoFinal'])+' '+str(numero)
 
-    return {'nombre': nombre, 'numero': numero}, 200
+    return {'name': name, 'numero': numero}, 200
 
 
 @Set.route('/todos/<estado>', methods=['DELETE'])
@@ -196,7 +196,7 @@ def delete_many(estado):
     if not query:
         return {'msg': 'No hay concidencias'}, 404
 
-    sets_nombres = [c['nombre'] for c in query]
+    sets_nombres = [c['name'] for c in query]
     for student_set in sets_nombres:
         # delete set
         delete = set_model.delete(set)
@@ -210,36 +210,36 @@ def delete_many(estado):
     return {'msg': 'Sets eliminados', 'data': sets_nombres}, 200
 
 
-@Set.route('/<nombre>', methods=['DELETE'])
+@Set.route('/<name>', methods=['DELETE'])
 @jwt_required()
-def delete_one(nombre):
-    if not (nombre):
-        return {'error': 'indique el nombre por el path'}, 400
+def delete_one(name):
+    if not (name):
+        return {'error': 'indique el name por el path'}, 400
     # sql validations
-    if not exists(nombre):
+    if not exists(name):
         return {'error': 'Set no existe'}, 404
     # delete
-    delete = set_model.delete(nombre)
+    delete = set_model.delete(name)
     # delete results
-    delete = execution_model.delete_set(nombre)
-    delete = preparation_model.delete_set(nombre)
+    delete = execution_model.delete_set(name)
+    delete = preparation_model.delete_set(name)
     ex = exception(delete)
     if ex:
         return ex
     return {'msg': 'Set eliminado'}, 200
 
 
-@Set.route('/<nombre>', methods=['PUT'])
+@Set.route('/<name>', methods=['PUT'])
 @jwt_required()
-def put(nombre):
+def put(name):
     body = request.get_json()
-    if not (nombre):
-        return {'error': 'indique el nombre por el path'}, 404
+    if not (name):
+        return {'error': 'indique el name por el path'}, 404
     # validate schema
     if not (validate_put_schema(body)):
-        return {'error': 'body invalido'}, 400
+        return {'error': 'invalid body content'}, 400
     # sql validations
-    if not exists(nombre):
+    if not exists(name):
         return {'error': 'Set no existe'}, 404
     if 'estado' in body.keys():
         if not body['estado'] in ['Crudos', 'Procesados', 'En Proceso']:
@@ -248,16 +248,16 @@ def put(nombre):
         if not exists_usuario(body['encargado']):
             return {'error': 'encargado invalido'}, 400
     # Uptade
-    update = set_model.update(nombre, body)
+    update = set_model.update(name, body)
     ex = exception(update)
     if ex:
         return ex
     return {'msg': 'Set actualizado'}, 200
 
 
-def exists(nombre):
+def exists(name):
     query = set_model.get_all()
     if exception(query):
         return False
-    lista = map(lambda c: c['nombre'], query)
-    return True if nombre in list(lista) else False
+    lista = map(lambda c: c['name'], query)
+    return True if name in list(lista) else False

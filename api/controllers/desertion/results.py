@@ -34,10 +34,10 @@ def put_ultimo(semestre, programa):
 
 @Result.route('', methods=['POST'])
 @jwt_required()
-def post_insertar_results():
+def post_insert_results():
     body = request.get_json()
     if not body or not validate_post_schema(body):
-        return {'error': 'body invalido'}, 400
+        return {'error': 'invalid body content'}, 400
     data = pd.DataFrame(body)
     data = data[
         [
