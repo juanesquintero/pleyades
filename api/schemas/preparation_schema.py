@@ -3,7 +3,7 @@ from jsonschema import Draft4Validator, draft4_format_checker
 post_schema = {
     "type": "object",
     "properties": {
-        "nombre": {"type": "string", "maxLength": 250},
+        "name": {"type": "string", "maxLength": 250},
         "set":  {"type": "string", "maxLength": 200},
         "numero": {"type": "integer", "maxLength": 30},
         "preparador":   {"type": "string", "format": "email", "maxLength": 200},
@@ -12,7 +12,7 @@ post_schema = {
         "estado":  {"type": "string", "maxLength": 50, "enum": ["Fallida", "Exitosa"]},
         "observaciones":  {"type": ["object", "null"]},
     },
-    "required": ["nombre", "numero", "set", "preparador", "fechaInicial", "fechaFinal", "estado"],
+    "required": ["name", "numero", "set", "preparador", "fechaInicial", "fechaFinal", "estado"],
     "additionalProperties": False
 }
 
