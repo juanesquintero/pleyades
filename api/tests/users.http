@@ -15,10 +15,10 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODYyMjA0M
 Content-Type: application/json
 
 {
-  "nombre": "JUANES QUINTERO",
-  "correo": "juanes@gmail.com",
-  "clave": "81dc9bdb52d04dc20036dbd8313ed055",
-  "rol": "Admin"
+  "name": "JUANES QUINTERO",
+  "email": "juanes@gmail.com",
+  "password": "81dc9bdb52d04dc20036dbd8313ed055",
+  "role": "Admin"
 }
 
 ###
@@ -28,9 +28,9 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODYyMjA0M
 Content-Type: application/json
 
 {
-  "nombre": "JHONNY ALBERT PEREZ",
-  "clave": "12345678",
-  "rol": "Analista"
+  "name": "JHONNY ALBERT PEREZ",
+  "password": "12345678",
+  "role": "Analista"
 }
 
 
