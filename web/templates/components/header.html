@@ -151,7 +151,10 @@
           <span class="fa fa-user-circle fa-fw fa-sm"></span>
           {% endif %} &nbsp;
           <span
-            >{{session.get('user').get('nombre').split(' ')[0].upper()}}
+            >
+            {{
+              session.get('user', {}).get('name', '').split(' ')[0].upper()
+            }}
             &nbsp;</span
           >
         </button>
@@ -163,7 +166,7 @@
             <em><strong>{{session['user']['rol']}}</strong></em></span
           >
           <span class="dropdown-item"
-            >{{session['user']['nombre'].title()}}</span
+            >{{session['user']['name'].title()}}</span
           >
           <span class="dropdown-item">{{session['user']['correo']}}</span>
           <div class="dropdown-divider"></div>
