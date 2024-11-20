@@ -17,14 +17,16 @@ def login():
     if not validate_login_schema(request.json):
         return jsonify({'msg': 'Invalid body for login'}), 400
 
-    correo = request.json.get('correo', None)
-    clave = request.json.get('clave', '')
-    clave_md5 = str(md5(clave.encode()).hexdigest())
+    email = request.json.get('email', None)
+    password = request.json.get('password', '')
+    clave_md5 = str(md5(password.encode()).hexdigest())
 
-    user = auth_login(correo, clave_md5)
+    user = auth_login(email, clave_md5)
 
     if user == (False, None):
-        return jsonify({'msg': 'Incorrect email or password'}), 401
+        return jsonify({
+            'msg': 'Incorrect email or password'
+        }), 401
 
     if user[0] is True:
         access_token = create_access_token(
