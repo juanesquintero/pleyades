@@ -50,16 +50,16 @@ def post_edit():
 @only_admin
 def update():
     usuario = dict(request.values)
-    if 'clave' in usuario.keys():
-        if len(usuario['clave']) < 8:
-            del usuario['clave']
+    if 'password' in usuario.keys():
+        if len(usuario['password']) < 8:
+            del usuario['password']
 
-    correo = usuario.pop('correo', '')
-    status, body = put(endopoint+correo, usuario)
+    email = usuario.pop('email', '')
+    status, body = put(endopoint+email, usuario)
     if status:
         return redirect(url_for('User.get_list'))
-    else:
-        return render_template('utils/message.html', mensaje='No se pudo actualizar el User', submensaje=body)
+
+    return render_template('utils/message.html', mensaje='No se pudo actualizar el User', submensaje=body)
 
 
 @User.route('/borrar', methods=['POST'])
@@ -77,8 +77,8 @@ def remove():
 @only_admin
 def post_delete():
     usuario = dict(request.values)
-    correo = usuario.pop('correo', '')
-    status, body = delete(endopoint+correo)
+    email = usuario.pop('email', '')
+    status, body = delete(endopoint+email)
     if status:
         return redirect(url_for('User.get_list'))
     else:

@@ -52,9 +52,7 @@ def login():
     if request.method == 'GET':
         return render_template('utils/login.html'), 200
     # Loguear
-    raw_usuario = dict(request.values)
-    usuario = {'correo': raw_usuario['InputEmailLogin'],
-               'clave': raw_usuario['InputPasswordLogin']}
+    usuario = dict(request.values)
 
     status, body = post('auth/login', usuario)
     if status:
