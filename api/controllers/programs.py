@@ -57,7 +57,7 @@ def post():
     body = request.get_json()
     # validate schema
     if not (validate_post_schema(body)):
-        return {'error': 'body invalido'}, 400
+        return {'error': 'invalid body content'}, 400
     # sql validations
     if not exists_faculty(body['faculty']):
         return {'error': 'faculty no existe'}, 404
@@ -65,14 +65,14 @@ def post():
     for p in lista:
         if p['codigo'] == body['codigo']:
             return {'error': 'codigo ya existe'}, 400
-        if p['nombre'] == body['nombre']:
-            return {'error': 'nombre ya existe'}, 400
+        if p['name'] == body['name']:
+            return {'error': 'name ya existe'}, 400
     # Insert
     insert = db.insert(body, '{}'.format(tabla))
     ex = exception(insert)
     if ex:
         return ex
-    return {'msg': 'Program creado'}, 200
+    return {'msg': 'Program created'}, 200
 
 
 @Program.route('/', methods=['POST'])
@@ -89,7 +89,7 @@ def put(codigo):
         return {'error': 'indique el codigo por el path'}, 404
     # validate schema
     if not (validate_put_schema(body)):
-        return {'error': 'body invalido'}, 400
+        return {'error': 'invalid body content'}, 400
     # sql validations
     if not exists(codigo):
         return {'error': 'Program no existe'}, 404

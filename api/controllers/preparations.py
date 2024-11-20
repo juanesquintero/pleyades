@@ -25,10 +25,10 @@ def get():
     return jsonify(query)
 
 
-@Preparation.route('/<nombre>')
+@Preparation.route('/<name>')
 @jwt_required()
-def get_one(nombre):
-    query = preparation_model.get_one(nombre)
+def get_one(name):
+    query = preparation_model.get_one(name)
     ex = exception(query)
     if ex:
         return ex
@@ -68,9 +68,9 @@ def get_by_usuario(preparador):
     return jsonify(query)
 
 
-@Preparation.route('/nombre/<set>')
+@Preparation.route('/name/<set>')
 @jwt_required()
-def nombre(set):
+def name(set):
     if not exists_set(set):
         return {'error': 'set no existe'}, 400
     # Obtener el numero consecutivo para el student_set de datos
@@ -82,7 +82,7 @@ def nombre(set):
         numero = query[0].get('numero')+1
     else:
         numero = 1
-    return {'nombre': set+'.'+str(numero), 'numero': numero}, 200
+    return {'name': set+'.'+str(numero), 'numero': numero}, 200
 
 
 @Preparation.route('', methods=['POST'])
@@ -91,13 +91,13 @@ def post():
     body = request.get_json()
     # validate schema
     if not (validate_post_schema(body)):
-        return {'error': 'body invalido'}, 400
+        return {'error': 'invalid body content'}, 400
     # sql validations
     if not exists_usuario(body['preparador']):
         return {'error': 'usuario no existe'}, 400
     if not exists_set(body['set']):
         return {'error': 'set no existe'}, 400
-    if exists(body['nombre']):
+    if exists(body['name']):
         return {'error': 'preparation ya existe'}, 400
     # Cambiar formato de fechas
     body['fechaInicial'] = body['fechaInicial'].split('+')[0]
@@ -118,39 +118,39 @@ def post2():
     return post()
 
 
-@Preparation.route('/<nombre>', methods=['PUT'])
+@Preparation.route('/<name>', methods=['PUT'])
 @jwt_required()
-def put(nombre):
+def put(name):
     body = request.get_json()
 
-    if not (nombre):
-        return {'error': 'indique el nombre por el path'}, 400
+    if not (name):
+        return {'error': 'indique el name por el path'}, 400
     # validate schema
     if not (validate_put_schema(body)):
-        return {'error': 'body invalido'}, 400
+        return {'error': 'invalid body content'}, 400
     # sql validations
-    if not exists(nombre):
+    if not exists(name):
         return {'error': 'Preparation no existe'}, 400
     # Cambiar formato de campo observaciones desde dict a str json para mysql
     body['observaciones'] = str(json.dumps(body['observaciones']))
     # Uptade
-    update = preparation_model.update(nombre, body)
+    update = preparation_model.update(name, body)
     ex = exception(update)
     if ex:
         return ex
     return {'msg': 'Preparation actualizada'}, 200
 
 
-@Preparation.route('/<nombre>', methods=['DELETE'])
+@Preparation.route('/<name>', methods=['DELETE'])
 @jwt_required()
-def delete_one(nombre):
-    if not (nombre):
-        return {'error': 'indique el nombre por el path'}, 400
+def delete_one(name):
+    if not (name):
+        return {'error': 'indique el name por el path'}, 400
     # sql validations
-    if not exists(nombre):
+    if not exists(name):
         return {'error': 'Preparation no existe'}, 400
     # delete
-    delete = preparation_model.delete(nombre)
+    delete = preparation_model.delete(name)
     ex = exception(delete)
     if ex:
         return ex
@@ -174,12 +174,12 @@ def delete_by_set(set):
     return {'msg': 'preparations del student_set eliminadas'}, 200
 
 
-def exists(nombre):
+def exists(name):
     query = preparation_model.get_all()
     if exception(query):
         return False
-    lista = map(lambda p: p['nombre'], query)
-    return True if nombre in list(lista) else False
+    lista = map(lambda p: p['name'], query)
+    return True if name in list(lista) else False
 
 
 def strdate_to_datetime(query):

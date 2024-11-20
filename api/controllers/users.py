@@ -25,10 +25,10 @@ def get():
     return jsonify(query)
 
 
-@User.route('/<correo>')
+@User.route('/<email>')
 @jwt_required()
-def get_one(correo):
-    query = user_model.get_one(correo)
+def get_one(email):
+    query = user_model.get_one(email)
     ex = exception(query)
     if ex:
         return ex
@@ -37,10 +37,10 @@ def get_one(correo):
     return jsonify(query)
 
 
-@User.route('rol/<rol>')
+@User.route('role/<role>')
 @jwt_required()
-def getByRol(rol):
-    query = user_model.get_rol(rol)
+def getByRol(role):
+    query = user_model.get_rol(role)
     ex = exception(query)
     if ex:
         return ex
@@ -59,24 +59,24 @@ def post():
 def create_user(body):
     # validate schema
     if not validate_post_schema(body):
-        return {'error': 'body invalido'}, 400
+        return {'error': 'invalid body content'}, 400
     # sql validations
-    if exists(body.get('correo')):
-        return {'error': 'correo ya existe'}, 400
+    if exists(body.get('email')):
+        return {'error': 'email ya existe'}, 400
     if body.get('faculty'):
         if not exists_faculty(body['faculty']):
             return {'error': 'faculty no existe'}, 404
     if body.get('programa'):
         if not exists_program(body['programa']):
             return {'error': 'programa no existe'}, 404
-    if not body['rol'] in ['Analista', 'Admin']:
+    if not body['role'] in ['Analista', 'Admin']:
         return {'error': 'Rol invalido'}, 404
     # Insert
     insert = user_model.insert(body)
     ex = exception(insert)
     if ex:
         return ex
-    return {'msg': 'User creado'}, 200
+    return {'msg': 'User created'}, 200
 
 
 @ User.route('/', methods=['POST'])
@@ -85,17 +85,17 @@ def post2():
     return post()
 
 
-@ User.route('/<correo>', methods=['PUT'])
+@ User.route('/<email>', methods=['PUT'])
 @ jwt_required()
-def put(correo):
+def put(email):
     body = request.get_json()
-    if not correo:
-        return {'error': 'indique el correo por el path'}, 404
+    if not email:
+        return {'error': 'indique el email por el path'}, 404
     # validate schema
     if not validate_put_schema(body):
-        return {'error': 'body invalido'}, 400
+        return {'error': 'invalid body content'}, 400
     # sql validations
-    if not exists(correo):
+    if not exists(email):
         return {'error': 'User no existe'}, 404
     if body.get('faculty'):
         if not exists_faculty(body['faculty']):
@@ -103,43 +103,43 @@ def put(correo):
     if body.get('program'):
         if not exists_program(body['programa']):
             return {'error': 'programa no existe'}, 404
-    if 'clave' in body.keys():
-        body['clave'] = str(md5(body['clave'].encode()).hexdigest())
+    if 'password' in body.keys():
+        body['password'] = str(md5(body['password'].encode()).hexdigest())
 
     # Uptade
-    update = user_model.update(correo, body)
+    update = user_model.update(email, body)
     ex = exception(update)
     if ex:
         return ex
     return {'msg': 'User actualizado'}, 200
 
 
-@ User.route('/<correo>', methods=['DELETE'])
+@ User.route('/<email>', methods=['DELETE'])
 @ jwt_required()
-def delete_one(correo):
-    if not correo:
-        return {'error': 'indique el correo por el path'}, 404
+def delete_one(email):
+    if not email:
+        return {'error': 'indique el email por el path'}, 404
     # sql validations
-    if not exists(correo):
+    if not exists(email):
         return {'error': 'User no existe'}, 404
     # delete
-    delete = user_model.delete(correo)
+    delete = user_model.delete(email)
     ex = exception(delete)
     if ex:
         return ex
     return {'msg': 'User eliminado'}, 200
 
 
-def exists(correo):
+def exists(email):
     query = user_model.get_all()
     if exception(query):
         return False
-    lista = map(lambda u: u['correo'], query)
-    return True if correo in lista else False
+    lista = map(lambda u: u['email'], query)
+    return True if email in lista else False
 
 
-def auth_login(correo, clave):
-    query = user_model.get_login(correo, clave)
+def auth_login(email, password):
+    query = user_model.get_login(email, password)
 
     if query:
         return True, query

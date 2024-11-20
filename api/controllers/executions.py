@@ -25,10 +25,10 @@ def get():
     return jsonify(query)
 
 
-@Execution.route('/<nombre>')
+@Execution.route('/<name>')
 @jwt_required()
-def get_one(nombre):
-    query = execution_model.get_one(nombre)
+def get_one(name):
+    query = execution_model.get_one(name)
     ex = exception(query)
     if ex:
         return ex
@@ -57,12 +57,12 @@ def get_by_set(data_set):
 @jwt_required()
 def get_by_usuario(ejecutor):
     data_set = request.args.get('data_set')
-    nombre = request.args.get('nombre')
+    name = request.args.get('name')
     if not exists_usuario(ejecutor):
         return {'error': 'usuario no existe'}, 400
 
-    if nombre:
-        query = execution_model.get_ejecutor_one(ejecutor, nombre)
+    if name:
+        query = execution_model.get_ejecutor_one(ejecutor, name)
     elif data_set:
         query = execution_model.get_ejecutor_set(ejecutor, data_set)
     else:
@@ -77,9 +77,9 @@ def get_by_usuario(ejecutor):
     return jsonify(query)
 
 
-@Execution.route('/nombre/<data_set>')
+@Execution.route('/name/<data_set>')
 @jwt_required()
-def nombre(data_set):
+def name(data_set):
     if not exists_set(data_set):
         return {'error': 'data_set no existe'}, 400
     # Obtener el numero consecutivo para el data_set de datos
@@ -91,7 +91,7 @@ def nombre(data_set):
         numero = query[0].get('numero')+1
     else:
         numero = 1
-    return {'nombre': data_set+'.'+str(numero), 'numero': numero}, 200
+    return {'name': data_set+'.'+str(numero), 'numero': numero}, 200
 
 
 @Execution.route('', methods=['POST'])
@@ -100,13 +100,13 @@ def post():
     body = request.get_json()
     # validate schema
     if not validate_post_schema(body):
-        return {'error': 'body invalido'}, 400
+        return {'error': 'invalid body content'}, 400
     # sql validations
     if not exists_usuario(body['ejecutor']):
         return {'error': 'usuario no existe'}, 404
     if not exists_set(body['data_set']):
         return {'error': 'data_set no existe'}, 404
-    if exists(body['nombre']):
+    if exists(body['name']):
         return {'error': 'ejecución ya existe'}, 400
     # Cambiar formato de fechas
     body['fechaInicial'] = body['fechaInicial'].split('+')[0]
@@ -127,38 +127,38 @@ def post2():
     return post()
 
 
-@Execution.route('/<nombre>', methods=['PUT'])
+@Execution.route('/<name>', methods=['PUT'])
 @jwt_required()
-def put(nombre):
+def put(name):
     body = request.get_json()
-    if not nombre:
+    if not name:
         return {'error': 'provide the name in the path'}, 404
     # validate schema
     if not validate_put_schema(body):
         return {'error': 'invalid body'}, 400
     # sql validations
-    if not exists(nombre):
+    if not exists(name):
         return {'error': 'Execution does NOT exists'}, 404
     # Cambiar formato de campo results desde dict a str json para mysql
     body['results'] = str(json.dumps(body['results']))
     # Uptade
-    update = execution_model.update(nombre, body)
+    update = execution_model.update(name, body)
     ex = exception(update)
     if ex:
         return ex
     return {'msg': 'Execution updated'}, 200
 
 
-@Execution.route('/<nombre>', methods=['DELETE'])
+@Execution.route('/<name>', methods=['DELETE'])
 @jwt_required()
-def delete_one(nombre):
-    if not nombre:
+def delete_one(name):
+    if not name:
         return {'error': 'provide the name in the path'}, 404
     # sql validations
-    if not exists(nombre):
+    if not exists(name):
         return {'error': 'Execution NOT exists'}, 404
     # delete
-    delete = execution_model.delete(nombre)
+    delete = execution_model.delete(name)
     ex = exception(delete)
     if ex:
         return ex
@@ -182,12 +182,12 @@ def delete_by_set(data_set):
     return {'msg': 'executions del data_set eliminadas'}, 200
 
 
-def exists(nombre):
+def exists(name):
     query = execution_model.get_all()
     if exception(query):
         return False
-    lista = map(lambda e: e['nombre'], query)
-    return True if nombre in list(lista) else False
+    lista = map(lambda e: e['name'], query)
+    return True if name in list(lista) else False
 
 
 def strdate_to_datetime(query):
