@@ -75,21 +75,28 @@ services:
       - deploy-net
 
   db-ies:
-    image: mcr.microsoft.com/mssql/server:2019-CU3-ubuntu-18.04
-    user: "0:0"
+    # image: mcr.microsoft.com/mssql/server:2019-CU3-ubuntu-18.04
+    # user: "0:0"
+    build:
+      context: ./api/db/ies
+      dockerfile: ./Dockerfile
+    image: pleyades-db-ies:1.0.0
     container_name: pleyades-db-ies
+    healthcheck:
+      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "$MSSQL_SA_PASSWORD" -Q "SELECT 1"
+      interval: 10s
+      timeout: 5s
+      retries: 5
     ports:
       - 1433:1433
     env_file:
       - ./api/db/ies/.env
-    volumes:
-      - ./api/db/ies/sqlserver-data:/var/opt/mssql
-      - ./api/db/ies/sql:/tmp/sql
-      - ./api/db/ies/init.sh:/tmp/init.sh
+    # volumes:
+      # - ./api/db/ies/sqlserver-data:/var/opt/mssql
     networks:
       - dev-net
       - deploy-net
-    command: /bin/bash -c "/opt/mssql/bin/sqlservr & /tmp/init.sh && wait"
+
 
   adminer:
     container_name: pleyades-adminer
