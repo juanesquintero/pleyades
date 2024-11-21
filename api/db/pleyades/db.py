@@ -1,3 +1,4 @@
+import traceback
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.dialects.mysql import JSON
 from sqlalchemy import update
@@ -67,7 +68,8 @@ class User(db.Model, SerializerMixin):
             return None
         try:
             return row.one().to_dict()
-        except:
+        except Exception as e:
+            print(e, traceback.format_exc(), flush=True)
             return None
 
     @staticmethod
@@ -99,68 +101,68 @@ class DataSet(db.Model, SerializerMixin):
 
     @staticmethod
     def get_all():
-        return [row.to_dict() for row in Dataset.query.all()]
+        return [row.to_dict() for row in DataSet.query.all()]
 
     @staticmethod
     def get_status(status):
-        query = Dataset.query.filter(Dataset.status == status)
+        query = DataSet.query.filter(DataSet.status == status)
         return [row.to_dict() for row in query.all()]
 
     @staticmethod
     def get_type(type):
-        query = Dataset.query.filter(Dataset.type == type)
+        query = DataSet.query.filter(DataSet.type == type)
         return [row.to_dict() for row in query.all()]
 
     @staticmethod
     def get_program(program):
-        query = Dataset.query.filter(Dataset.program == program)
+        query = DataSet.query.filter(DataSet.program == program)
         return [row.to_dict() for row in query.all()]
 
     @staticmethod
     def get_range(start, end):
-        query = Dataset.query.filter(
-            Dataset.initialPeriod == start,
-            Dataset.finalPeriod == end,
+        query = DataSet.query.filter(
+            DataSet.initialPeriod == start,
+            DataSet.finalPeriod == end,
         )
         return [row.to_dict() for row in query.all()]
 
     @staticmethod
     def get_number(program, start, end):
-        query = Dataset.query.filter(
-            Dataset.program == program,
-            Dataset.initialPeriod == start,
-            Dataset.finalPeriod == end
-        ).order_by(Dataset.number.desc())
+        query = DataSet.query.filter(
+            DataSet.program == program,
+            DataSet.initialPeriod == start,
+            DataSet.finalPeriod == end
+        ).order_by(DataSet.number.desc())
         return [row.to_dict() for row in query.all()]
 
     @staticmethod
     def get_manager(manager, status=None):
-        query = Dataset.query.filter(Dataset.manager == manager)
+        query = DataSet.query.filter(DataSet.manager == manager)
         if status:
-            query = query.filter(Dataset.status == status)
+            query = query.filter(DataSet.status == status)
         return [row.to_dict() for row in query.all()]
 
     @staticmethod
     def _get_one(name):
-        return Dataset.query.filter(Dataset.name == name).first_or_404()
+        return DataSet.query.filter(DataSet.name == name).first_or_404()
 
     @staticmethod
     def get_one(name):
-        return Dataset._get_one(name).to_dict()
+        return DataSet._get_one(name).to_dict()
 
     @staticmethod
     def insert(fields):
-        return DTO.insert(Dataset, fields)
+        return DTO.insert(DataSet, fields)
 
     @staticmethod
     def post_delete(name):
-        return DTO.delete(Dataset, name)
+        return DTO.delete(DataSet, name)
 
     @staticmethod
     def update(name, fields):
         return DTO.update(
-            update(Dataset).where(
-                Dataset.name == name).values(**fields)
+            update(DataSet).where(
+                DataSet.name == name).values(**fields)
         )
 
 
