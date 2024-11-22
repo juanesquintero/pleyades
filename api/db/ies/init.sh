@@ -1,3 +1,8 @@
+## Reuse variables
+sqlcmd='/opt/mssql-tools/bin/sqlcmd -S localhost -U'
+
+sqlcmd_sa=$sqlcmd" sa -P $MSSQL_SA_PASSWORD"
+sqlcmd_user=$sqlcmd" $MSSQL_DBUSER -P $MSSQL_DBUSERPWD"
 
 ## Debugging: Print variables
 echo -e "\nMSSQL_SA_PASSWORD: $MSSQL_SA_PASSWORD"
@@ -11,7 +16,7 @@ ls -ld /var/opt/mssql
 ## Wait for SQL Server to be ready
 echo -e "\nWaiting for SQL Server to be ready..."
 for i in {1..20}; do
-    /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "$MSSQL_SA_PASSWORD" -Q "SELECT 1" &>/dev/null && break
+    $sqlcmd_sa -Q "SELECT 1" &>/dev/null && break
     echo "SQL Server not ready yet. Retrying in 10 seconds..."
     sleep 10
 done
@@ -26,20 +31,17 @@ if [[ $DB_EXISTS == "EXISTS" ]]; then
     echo -e "\nThe database '$MSSQL_DBNAME' already exists."
 else
     echo -e "\nCreating the dropout database/schema..."
-    envsubst < tmp/sql/init.sql > tmp/sql/init.sql
-    $sqlcmd_sa /tmp/sql/init.sql
+    $sqlcmd_sa -i /tmp/sql/init.sql
 
     echo -e "\nExecuting table creation scripts..."
-    envsubst < tmp/sql/creates.sql > tmp/sql/creates.sql
-    $sqlcmd_sa /tmp/sql/creates.sql
+    $sqlcmd_sa -i /tmp/sql/creates.sql
 
     echo -e "\nExecuting dependency inserts..."
-    envsubst < tmp/sql/inserts/dependencies.sql > tmp/sql/inserts/dependencies.sql
-    $sqlcmd_user /tmp/sql/inserts/dependencies.sql
+    $sqlcmd_user -i /tmp/sql/inserts/dependencies.sql
 
     echo -e "\nExecuting dropout inserts..."
-    envsubst < tmp/sql/inserts/desertion.sql > tmp/sql/inserts/desertion.sql
-    $sqlcmd_user /tmp/sql/inserts/desertion.sql
+    $sqlcmd_user -i /tmp/sql/inserts/desertion.sql
 
     echo -e "\nFinished setting up the dropout database."
 fi
+
