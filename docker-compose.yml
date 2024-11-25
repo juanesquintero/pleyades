@@ -75,8 +75,6 @@ services:
       - deploy-net
 
   db-ies:
-    # image: mcr.microsoft.com/mssql/server:2019-CU3-ubuntu-18.04
-    # user: "0:0"
     build:
       context: ./api/db/ies
       dockerfile: ./Dockerfile
@@ -91,8 +89,8 @@ services:
       - 1433:1433
     env_file:
       - ./api/db/ies/.env
-    # volumes:
-      # - ./api/db/ies/sqlserver-data:/var/opt/mssql
+    volumes:
+      - ./api/db/ies/sqlserver-data:/var/opt/mssql
     networks:
       - dev-net
       - deploy-net
@@ -100,7 +98,7 @@ services:
 
   adminer:
     container_name: pleyades-adminer
-    image: adminer:4
+    image: adminer:4.8.1
     ports:
       - 8080:8080
     links:
