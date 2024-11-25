@@ -14,8 +14,8 @@ endopoint = 'users/'
 def get_list():
     status, body = get(endopoint)
     if status:
-        return render_template('admin/'+endopoint+'listar.html', users=body)
-    return render_template('admin/'+endopoint+'listar.html', users=[], error=body)
+        return render_template('admin/'+endopoint+'list.html', users=body)
+    return render_template('admin/'+endopoint+'list.html', users=[], error=body)
 
 
 @User.route('/crear')

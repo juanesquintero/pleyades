@@ -37,7 +37,7 @@ def models():
         body = []
 
     return render_template(
-        'analist/models/listar.html',
+        'analist/models/list.html',
         models=body,
     )
 
@@ -190,7 +190,7 @@ def download():
         flash(f"{body.get('error')}", 'danger')
 
     return render_template(
-        'analist/models/listar.html',
+        'analist/models/list.html',
         models=body,
     )
 

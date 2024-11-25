@@ -16,7 +16,7 @@ def login_required(f):
     def decorated_function(*args, **kwargs):
         if not 'user' in session.keys():
             return render_template('utils/login.html'), 200
-        if session['user'] is None:
+        if session.get('user') is None:
             return render_template('utils/login.html'), 200
         return f(*args, **kwargs)
     return decorated_function
@@ -27,7 +27,7 @@ def logout_required(f):
     def decorated_function(*args, **kwargs):
         if not 'user' in session.keys():
             return f(*args, **kwargs)
-        if session['user'] is None:
+        if session.get('user') is None:
             return f(*args, **kwargs)
         return render_template('utils/home.html'), 200
     return decorated_function
@@ -38,9 +38,9 @@ def only_admin(f):
     def decorated_function(*args, **kwargs):
         if not 'user' in session.keys():
             return render_template('utils/login.html'), 200
-        if session['user'] is None:
+        if session.get('user') is None:
             return render_template('utils/login.html'), 200
-        if session['user']['rol'] == 'Admin':
+        if session.get('user').get('role') == 'Admin':
             return f(*args, **kwargs)
         return render_template('utils/message.html', mensaje='Usted no tiene autorizacion para realizar esta accion'), 401
     return decorated_function

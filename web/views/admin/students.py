@@ -12,8 +12,8 @@ endopoint = 'students/'
 def get_list():
     status, body = get('programs')
     if status:
-        return render_template('admin/'+endopoint+'listar.html', programs=body)
-    return render_template('admin/'+endopoint+'listar.html', programs=[], error=body)
+        return render_template('admin/'+endopoint+'list.html', programs=body)
+    return render_template('admin/'+endopoint+'list.html', programs=[], error=body)
 
 
 @Student.route('/detalle', methods=['POST'])
