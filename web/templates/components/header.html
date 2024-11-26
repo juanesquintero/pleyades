@@ -135,8 +135,8 @@
       </div>
 
       <!-- User options-->
-      {% if session['user'] %}
-
+      {% set user = session.get('user')%} 
+      {% if user %}
       <div class="dropdown">
         <button
           type="button"
@@ -145,30 +145,22 @@
           aria-haspopup="true"
           aria-expanded="false"
         >
-          {% if session['user']['rol'] == 'Admin' %}
+          {% if session.get('user').get('role') == 'Admin' %}
           <i class="fas fa-user-shield fa-fw fa-sm"></i>
           {% else %}
           <span class="fa fa-user-circle fa-fw fa-sm"></span>
           {% endif %} &nbsp;
-          <span
-            >
-            {{
-              session.get('user', {}).get('name', '').split(' ')[0].upper()
-            }}
-            &nbsp;</span
-          >
+          <span> {{ user.get('name', '').split(' ')[0].upper() }} &nbsp;</span>
         </button>
         <div
           class="dropdown-menu dropdown-menu-right border border-dark"
           style="right: 0 !important; left: auto !important"
         >
           <span class="dropdown-item">
-            <em><strong>{{session['user']['rol']}}</strong></em></span
+            <em><strong>{{user.get('role')}}</strong></em></span
           >
-          <span class="dropdown-item"
-            >{{session['user']['name'].title()}}</span
-          >
-          <span class="dropdown-item">{{session['user']['correo']}}</span>
+          <span class="dropdown-item">{{user.get('name').title()}}</span>
+          <span class="dropdown-item">{{user.get('email')}}</span>
           <div class="dropdown-divider"></div>
           <button class="dropdown-item" type="button">
             <span class="fa fa-user fa-fw"></span>

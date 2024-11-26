@@ -38,7 +38,7 @@
 
 
 <!-- Contenedor Dasboard -->
-<div class="container m-0 p-3 mt-3 w-100 {% if session['user'] %} {% if session['user']['rol'] == 'Admin' %} h-75 {% else %} h-100 {% endif %} {% else %} h-dashboard {% endif %}">
+<div class="container m-0 p-3 mt-3 w-100 {% if session.get('user') %} {% if session.get('user').get('role') == 'Admin' %} h-75 {% else %} h-100 {% endif %} {% else %} h-dashboard {% endif %}">
     {% if students_list %}
     <div class="row w-50 mt-2">
         <div class="col-11 d-flex">

@@ -2,7 +2,7 @@
 <div class="container-fluid p-0">
   <div class="row" id="body-row">
     <!-- Sidebar -->
-    {% if session['user'] %} <div id="sidebar-container" class="sidebar
+    {% if session.get('user') %} <div id="sidebar-container" class="sidebar
     border-right my-secondary"">
     <!-- d-* hiddens the Sidebar in smaller devices. Its itens can be kept on the Navbar 'Menu' -->
     <!-- Bootstrap List Group -->
@@ -91,7 +91,7 @@
       <!-- END Opciones -->
 
       <!--  ADMINISTRACIÓN -->
-      {% if session['user']['rol']=='Admin' %}
+      {% if session.get('user').get('role')=='Admin' %}
       <li
         class="list-group-item sidebar-separator-title text-white d-flex align-items-center menu-collapsed text-white mb-1 border-bottom border-right-0 border-left-0 mt-5 my-secondary"
       >

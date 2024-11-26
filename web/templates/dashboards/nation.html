@@ -37,7 +37,7 @@
 <br>
 
 <!-- Contenedor Dasboard -->
-<div class="container m-0 p-0 w-100 {% if session['user'] %} {% if session['user']['rol'] == 'Admin' %} h-75 {% else %} h-100 {% endif %} {% else %} h-dashboard {% endif %}">
+<div class="container m-0 p-0 w-100 {% if session.get('user') %} {% if session.get('user').get('role') == 'Admin' %} h-75 {% else %} h-100 {% endif %} {% else %} h-dashboard {% endif %}">
 
     <!-- Fila 1 -->
     {% if indicadores_plot and indicadores2_plot %}
