@@ -11,7 +11,7 @@ from controllers.programs import exists as exists_program
 Result = Blueprint('Result', __name__)
 
 db = DB.getInstance()
-tabla = 'TBLDES_RESULTADO_PREDICCION'
+table = 'TBLDES_RESULTADO_PREDICCION'
 msg_error = {'msg': 'No se puedo completar la operación'}, 500
 msg_exito = {'msg': 'Operación completada con exito!'}, 200
 
@@ -21,7 +21,7 @@ msg_exito = {'msg': 'Operación completada con exito!'}, 200
 @Result.route('/ultimo/<programa>/<int:semestre>', methods=['PUT'])
 @jwt_required()
 def put_ultimo(semestre, programa):
-    sql = f'UPDATE {tabla} SET blnultimo=0 WHERE semestre_prediccion={
+    sql = f'UPDATE {table} SET blnultimo=0 WHERE semestre_prediccion={
         semestre} AND idprograma={programa};'
     result = db.execute(sql)
     ex = exception(result)
@@ -45,7 +45,7 @@ def post_insert_results():
             'prediccion', 'desertor', 'semestre_prediccion'
         ]
     ]
-    result = db.multi_insert(data, tabla)
+    result = db.multi_insert(data, table)
     ex = exception(result)
     if ex:
         return ex

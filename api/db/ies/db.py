@@ -98,24 +98,24 @@ class DB:
             raise e
 
     @validate_connection
-    def insert(self, body, tabla):
+    def insert(self, body, table):
         # Keys Body
         columns = str(tuple(body.keys())).replace("'", "")
         # Values Body
         values = str((tuple(body.values())))
         # Sentencia SQL
         sql = "INSERT INTO {} {} VALUES{}".format(
-            tabla, columns, values).replace('None', 'NULL')
+            table, columns, values).replace('None', 'NULL')
         return self.execute(sql)
 
     @validate_connection
-    def multi_insert(self, data, tabla):
+    def multi_insert(self, data, table):
         columnas = str(tuple(data.columns)).replace("'", "")
         valores = '( ?'
         for _ in range(len(data.columns)-1):
             valores += ', ?'
         valores += ')'
-        sql = "INSERT INTO {} {} VALUES {}".format(tabla, columnas, valores)
+        sql = "INSERT INTO {} {} VALUES {}".format(table, columnas, valores)
         registros = list(tuple(row) for row in data.values)
 
         try:
@@ -132,17 +132,17 @@ class DB:
         return self.execute(sql)
 
     @validate_connection
-    def update(self, body, condicion, tabla):
+    def update(self, body, condicion, table):
         set_values = str(body)[2:-1].replace("':", " =").replace(", '", ", ")
         sql = "UPDATE {} SET {} WHERE {};".format(
-            tabla, set_values, condicion
+            table, set_values, condicion
         ).replace('None', 'NULL')
         return self.execute(sql)
 
     @validate_connection
-    def post_delete(self, condicion, tabla):
+    def post_delete(self, condicion, table):
         # Sentencia SQL
-        sql = "DELETE FROM {} WHERE {};".format(tabla, condicion)
+        sql = "DELETE FROM {} WHERE {};".format(table, condicion)
         return self.execute(sql)
 
     @validate_connection

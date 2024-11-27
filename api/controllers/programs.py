@@ -9,14 +9,14 @@ from controllers.faculties import exists as exists_faculty
 Program = Blueprint('Program', __name__)
 db = DB.getInstance()
 
-tabla = 'VWPROGRAMADESERCION'
+table = 'VWPROGRAMADESERCION'
 
 
 @Program.route('')
 @Program.route('/')
 @jwt_required()
 def get():
-    query = db.select('SELECT * FROM {};'.format(tabla))
+    query = db.select('SELECT * FROM {};'.format(table))
     ex = exception(query)
     if ex:
         return ex
@@ -29,7 +29,7 @@ def get():
 @jwt_required()
 def get_one(codigo):
     query = db.select(
-        'SELECT * FROM {} WHERE codigo={};'.format(tabla, codigo))
+        'SELECT * FROM {} WHERE codigo={};'.format(table, codigo))
     ex = exception(query)
     if ex:
         return ex
@@ -42,7 +42,7 @@ def get_one(codigo):
 @jwt_required()
 def getByFacultad(faculty):
     query = db.select(
-        'SELECT * FROM {} WHERE faculty={};'.format(tabla, faculty))
+        'SELECT * FROM {} WHERE faculty={};'.format(table, faculty))
     ex = exception(query)
     if ex:
         return ex
@@ -61,14 +61,14 @@ def post():
     # sql validations
     if not exists_faculty(body['faculty']):
         return {'error': 'faculty no existe'}, 404
-    lista = db.select('SELECT * FROM {};'.format(tabla))
+    lista = db.select('SELECT * FROM {};'.format(table))
     for p in lista:
         if p['codigo'] == body['codigo']:
             return {'error': 'codigo ya existe'}, 400
         if p['name'] == body['name']:
             return {'error': 'name ya existe'}, 400
     # Insert
-    insert = db.insert(body, '{}'.format(tabla))
+    insert = db.insert(body, '{}'.format(table))
     ex = exception(insert)
     if ex:
         return ex
@@ -95,7 +95,7 @@ def put(codigo):
         return {'error': 'Program no existe'}, 404
     # Uptade
     condicion = 'codigo='+str(codigo)
-    update = db.update(body, condicion, '{}'.format(tabla))
+    update = db.update(body, condicion, '{}'.format(table))
     ex = exception(update)
     if ex:
         return ex
@@ -112,7 +112,7 @@ def delete_one(codigo):
         return {'error': 'Program no existe'}, 404
     # delete
     condicion = 'codigo='+str(codigo)
-    delete = db.delete(condicion, '{}'.format(tabla))
+    delete = db.delete(condicion, '{}'.format(table))
     ex = exception(delete)
     if ex:
         return ex
@@ -121,7 +121,7 @@ def delete_one(codigo):
 
 def exists(codigo):
     codigo = int(codigo)
-    query = db.select('SELECT * FROM {};'.format(tabla))
+    query = db.select('SELECT * FROM {};'.format(table))
     if exception(query):
         return False
     lista = map(lambda p: p['codigo'], query)

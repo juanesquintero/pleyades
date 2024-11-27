@@ -11,7 +11,7 @@ Student = Blueprint('Student', __name__)
 
 db = DB.getInstance()
 
-tabla = 'VWDATADESERCION'
+table = 'VWDATADESERCION'
 
 msg_error = {'msg': 'No hay concidencias'}, 404
 
@@ -21,7 +21,7 @@ msg_error = {'msg': 'No hay concidencias'}, 404
 @Student.route('/set/<int:programa>/<int:periodoInicio>/<int:periodoFin>')
 @jwt_required()
 def get_set_estudiantes(programa, periodoInicio, periodoFin):
-    sql = f'SELECT * FROM {tabla} WHERE idprograma={programa} AND REGISTRO >= {
+    sql = f'SELECT * FROM {table} WHERE idprograma={programa} AND REGISTRO >= {
         periodoInicio} AND REGISTRO <= {periodoFin} ORDER BY REGISTRO;'
     query = db.select(sql)
     ex = exception(query)
@@ -35,7 +35,7 @@ def get_set_estudiantes(programa, periodoInicio, periodoFin):
 @Student.route('/periodo/<int:periodo>')
 @jwt_required()
 def get_period(periodo):
-    sql = f'SELECT * FROM {tabla} WHERE REGISTRO={periodo};'
+    sql = f'SELECT * FROM {table} WHERE REGISTRO={periodo};'
     query = db.select(sql)
     ex = exception(query)
     if ex:
@@ -48,7 +48,7 @@ def get_period(periodo):
 @Student.route('/programa/<int:programa>')
 @jwt_required()
 def get_program(programa):
-    sql = f"SELECT * FROM {tabla} WHERE idprograma={programa};"
+    sql = f"SELECT * FROM {table} WHERE idprograma={programa};"
     query = db.select(sql)
     ex = exception(query)
     if ex:
@@ -61,7 +61,7 @@ def get_program(programa):
 @Student.route('/programa/<int:programa>/<int:periodo>')
 @jwt_required()
 def get_period_program(programa, periodo):
-    sql = f'SELECT * FROM {tabla} WHERE REGISTRO={
+    sql = f'SELECT * FROM {table} WHERE REGISTRO={
         periodo} and idprograma={programa}'
     query = db.select(sql)
     ex = exception(query)
@@ -75,7 +75,7 @@ def get_period_program(programa, periodo):
 @Student.route('/documento/<documento>')
 @jwt_required()
 def get_documento(documento):
-    sql = f"SELECT * FROM {tabla} WHERE documento='{documento}';"
+    sql = f"SELECT * FROM {table} WHERE documento='{documento}';"
     query = db.select(sql)
     ex = exception(query)
     if ex:
@@ -89,7 +89,7 @@ def get_documento(documento):
 @jwt_required()
 def get_periods():
     # Obtener datos desde la bd SQL server
-    sql = f'SELECT DISTINCT REGISTRO FROM {tabla};'
+    sql = f'SELECT DISTINCT REGISTRO FROM {table};'
     query = db.select(sql)
     ex = exception(query)
     if ex:
@@ -108,7 +108,7 @@ def get_periods():
 @jwt_required()
 def get_periods_program(programa):
     # Obtener datos desde la bd SQL server
-    sql = f'SELECT DISTINCT REGISTRO FROM {tabla} WHERE idprograma={programa};'
+    sql = f'SELECT DISTINCT REGISTRO FROM {table} WHERE idprograma={programa};'
     query = db.select(sql)
 
     ex = exception(query)
@@ -130,7 +130,7 @@ def get_periods_program(programa):
 @jwt_required()
 def get_programs():
     # Obtener datos desde la bd SQL server
-    sql = f'SELECT DISTINCT idprograma, programa FROM {tabla};'
+    sql = f'SELECT DISTINCT idprograma, programa FROM {table};'
     query = db.select(sql)
     ex = exception(query)
     if ex:

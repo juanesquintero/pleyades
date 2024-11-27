@@ -7,7 +7,7 @@ from schemas.faculty_schema import validate_post_schema, validate_put_schema
 
 Faculty = Blueprint('faculty', __name__)
 
-tabla = 'VWFACULTADDESERCION'
+table = 'VWFACULTADDESERCION'
 
 db = DB.getInstance()
 
@@ -16,7 +16,7 @@ db = DB.getInstance()
 @Faculty.route('/')
 @jwt_required()
 def get():
-    query = db.select('SELECT * FROM {};'.format(tabla))
+    query = db.select('SELECT * FROM {};'.format(table))
     ex = exception(query)
     if ex:
         return ex
@@ -29,7 +29,7 @@ def get():
 @jwt_required()
 def get_one(codigo):
     query = db.select(
-        'SELECT * FROM {} WHERE codigo={};'.format(tabla, codigo))
+        'SELECT * FROM {} WHERE codigo={};'.format(table, codigo))
     ex = exception(query)
     if ex:
         return ex
@@ -46,14 +46,14 @@ def post():
     if not (validate_post_schema(body)):
         return {'error': 'invalid body content'}, 400
     # sql validations
-    lista = db.select('SELECT * FROM {};'.format(tabla))
+    lista = db.select('SELECT * FROM {};'.format(table))
     for f in lista:
         if f['codigo'] == body['codigo']:
             return {'error': 'codigo ya existe'}, 400
         if f['name'] == body['name']:
             return {'error': 'name ya existe'}, 400
     # Insert
-    insert = db.insert(body, '{}'.format(tabla))
+    insert = db.insert(body, '{}'.format(table))
     ex = exception(insert)
     if ex:
         return ex
@@ -80,7 +80,7 @@ def put(codigo):
         return {'error': 'faculty no existe'}, 404
     # Uptade
     condicion = 'codigo='+str(codigo)
-    update = db.update(body, condicion, '{}'.format(tabla))
+    update = db.update(body, condicion, '{}'.format(table))
     ex = exception(update)
     if ex:
         return ex
@@ -97,7 +97,7 @@ def delete_one(codigo):
         return {'error': 'faculty no existe'}, 404
     # delete
     condicion = 'codigo='+str(codigo)
-    delete = db.delete(condicion, '{}'.format(tabla))
+    delete = db.delete(condicion, '{}'.format(table))
     ex = exception(delete)
     if ex:
         return ex
@@ -106,7 +106,7 @@ def delete_one(codigo):
 
 def exists(codigo):
     codigo = int(codigo)
-    query = db.select('SELECT * FROM {};'.format(tabla))
+    query = db.select('SELECT * FROM {};'.format(table))
     if exception(query):
         return False
     lista = map(lambda f: f['codigo'], query)
