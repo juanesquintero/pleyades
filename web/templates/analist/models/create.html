@@ -92,7 +92,7 @@
           Periodo Inicial
         </label>
         <select
-          name="periodoInicial"
+          name="initialPeriod"
           id="periodoInicialID"
           class="periods-controls form-control input-sm"
           required
@@ -106,7 +106,7 @@
           Periodo Final
         </label>
         <select
-            name="periodoFinal"
+            name="finalPeriod"
             id="periodoFinalID"
             class="periods-controls form-control input-sm"
             data-toggle="tooltip"
@@ -151,17 +151,17 @@
             data: {},
             dataType: "json",
             success: function (data) {
-              var periodoInicial = document.getElementById("periodoInicialID");
-              var periodoFinal = document.getElementById("periodoFinalID");
+              var initialPeriod = document.getElementById("periodoInicialID");
+              var finalPeriod = document.getElementById("periodoFinalID");
               var i = 1;
-              removeOptions(periodoInicial);
-              removeOptions(periodoFinal);
+              removeOptions(initialPeriod);
+              removeOptions(finalPeriod);
               data.forEach((p) => {
-                periodoInicial.options[i] = new Option(p, p);
-                periodoFinal.options[i] = new Option(p, p);
+                initialPeriod.options[i] = new Option(p, p);
+                finalPeriod.options[i] = new Option(p, p);
                 i = i + 1;
               });
-              periodoInicial.value = data[0];
+              initialPeriod.value = data[0];
             },
           });
         });

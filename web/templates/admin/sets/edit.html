@@ -16,21 +16,21 @@
             </div>
             <div class="col-sm-4">
                 <label>Estado de datos</label>
-                <select name="estado" id="id_state" class="form-control">
+                <select name="status" id="id_state" class="form-control">
                     
-                    {% if c.estado=='Crudos' %}
+                    {% if c.status=='Crudos' %}
                     <option value="Crudos" selected> Crudos </option>
                     {% else %}
                     <option value="Crudos"> Crudos </option>
                     {% endif %}
 
-                    {% if c.estado=='Procesados' %}
+                    {% if c.status=='Procesados' %}
                     <option value="Procesados" selected> Procesados </option>
                     {% else %}
                     <option value="Procesados"> Procesados </option>
                     {% endif %}
 
-                    {% if c.estado=='En Proceso' %}
+                    {% if c.status=='En Proceso' %}
                     <option value="En Proceso" selected> En Proceso </option>
                     {% else %}
                     <option value="En Proceso"> En Proceso </option>
@@ -47,11 +47,11 @@
             </div>
             <div class="col-sm-3">
                 <label>Periodo Inicial</label>
-                <input type="text" class="form-control" maxlength="6" value="{{c.periodoInicial}}" disabled>
+                <input type="text" class="form-control" maxlength="6" value="{{c.initialPeriod}}" disabled>
             </div>
             <div class="col-sm-3">
                 <label>Periodo Final</label>
-                <input type="text" class="form-control" maxlength="6" value="{{c.periodoFinal}}" disabled>
+                <input type="text" class="form-control" maxlength="6" value="{{c.finalPeriod}}" disabled>
             </div>
             <div class="col-sm-3 mr-0 pr-0">
                 <label>Tipo</label>
@@ -95,11 +95,11 @@
             <div class="col-sm-11">
                 <label>Encargado</label>
                 
-                <input type="email" name="encargado" class="form-control" maxlength="200" value="{{c.encargado}}">
+                <input type="email" name="manager" class="form-control" maxlength="200" value="{{c.manager}}">
             </div>
         </div>
 
-        {% if c.estado=='Crudos' %}
+        {% if c.status=='Crudos' %}
         <br>
         <div class="form-group row ">
             <div class="col-sm-11 d-flex justify-content-center align-items-center">
@@ -107,7 +107,7 @@
                 &nbsp;
                 <strong class="mr-2 d-flex ">Descargar: </strong>
                 &nbsp;&nbsp;
-                <a class="btn bg-white btn-sm border text-dark" type="button" href="{{url_for('Dataset.download',estado='crudos',nombre=c.nombre) }}">
+                <a class="btn bg-white btn-sm border text-dark" type="button" href="{{url_for('Dataset.download',status='crudos',nombre=c.nombre) }}">
                     <i class="fas fa-file-excel mr-1"></i>
                     Crudo
                 </a>
@@ -115,7 +115,7 @@
         </div>
         {% endif %}
 
-        {% if c.estado=='Procesados' %}
+        {% if c.status=='Procesados' %}
 
         <br>
         <div class="form-group row ">
@@ -156,14 +156,14 @@
                     <div class="dropdown-menu d-menu border">
 
                         <!-- ARCHIVO CRUDOS-->
-                        <a class="dropdown-item w-100" type="button" href="{{url_for('Dataset.download',estado='crudos',nombre=c.nombre) }}">
+                        <a class="dropdown-item w-100" type="button" href="{{url_for('Dataset.download',status='crudos',nombre=c.nombre) }}">
                             <small>
                                 <i class="fas fa-file-excel mr-1"></i>
                                 Crudo
                             </small>
                         </a>
                         <!-- ARCHIVO PROCESADOS-->
-                        <a class="dropdown-item" type="button"  href="{{url_for('Dataset.download', estado='procesados' ,nombre=c.nombre) }}">
+                        <a class="dropdown-item" type="button"  href="{{url_for('Dataset.download', status='procesados' ,nombre=c.nombre) }}">
                             <small><i class="fas fa-file-excel mr-1"></i>
                                 Procesado
                             </small>

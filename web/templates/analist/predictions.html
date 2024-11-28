@@ -43,7 +43,7 @@
       </tr>
     </thead>
     <tbody>
-      {% for p in predictions %} {% if p.estado=='Exitosa' and p.results.tipo == 'Prediccion' %}
+      {% for p in predictions %} {% if p.status=='Exitosa' and p.results.tipo == 'Prediccion' %}
       {% set info_array = p.nombre.split(' ')[1:] %}
       {% set conjunto = p.conjunto.split(' ')[3:] %}
       

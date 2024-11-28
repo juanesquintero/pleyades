@@ -6,20 +6,20 @@ class="btn btn-lg btn-danger" >Eliminar Todos</button>
 <div class="modal-dialog" role="document">
 <div class="modal-content">
   <div class="modal-header">
-    <h5 class="modal-title" id="exampleModalLabel">Eliminar {{estado}}</h5>
+    <h5 class="modal-title" id="exampleModalLabel">Eliminar {{status}}</h5>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
-    ¿Seguro que quiere eliminar todos los Conjuntos {{estado}} para TODOS los users?!
+    ¿Seguro que quiere eliminar todos los Conjuntos {{status}} para TODOS los users?!
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
     
     
     <form action="{{url_for('DatasetAdmin.eliminar_todos')}}" method="POST">
-        <input type="hidden" name="estado" value="{{estado}}">
+        <input type="hidden" name="status" value="{{status}}">
         <button type="submit"  class="btn btn-danger">Eliminar</button>
       </form>
   </div>

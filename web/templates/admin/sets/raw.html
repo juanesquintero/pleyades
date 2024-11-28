@@ -58,7 +58,7 @@
           <center>{{ c.tipo }}</center>
         </td>
         <td>
-          <center>{{ c.encargado }}</center>
+          <center>{{ c.manager }}</center>
         </td>
 
         <td>
@@ -108,7 +108,7 @@
 
 <br>
 
-{% with estado = 'crudos' %}
+{% with status = 'crudos' %}
 {% include 'utils/borrar_sets.html' %}
 {% endwith %}
 

@@ -63,14 +63,14 @@
         <div class="form-group row">
             <div class="col-sm-2">
                 <label>Periodo Inicial</label>
-                <select name="periodoInicial" id="periodoInicial_id" class="periodosControls form-control input-sm"
+                <select name="initialPeriod" id="periodoInicial_id" class="periodosControls form-control input-sm"
                     required>
                     <option disabled selected hidden></option>
                 </select>
             </div>
             <div class="col-sm-2">
                 <label>Periodo Final</label>
-                <select name="periodoFinal" id="periodoFinal_id" class="periodosControls form-control input-sm"
+                <select name="finalPeriod" id="periodoFinal_id" class="periodosControls form-control input-sm"
                     required>
                     <option disabled selected hidden></option>
                 </select>
@@ -86,15 +86,15 @@
                             data: {},
                             dataType: "json",
                             success: function (data) {
-                                var periodoInicial = document.getElementById("periodoInicial_id");
-                                var periodoFinal = document.getElementById("periodoFinal_id");
+                                var initialPeriod = document.getElementById("periodoInicial_id");
+                                var finalPeriod = document.getElementById("periodoFinal_id");
                                 var i = 1
-                                periodoFinal.options.length = 1
-                                periodoInicial.options.length = 1
+                                finalPeriod.options.length = 1
+                                initialPeriod.options.length = 1
 
                                 data.forEach(p => {
-                                    periodoInicial.options[i] = new Option(p, p);
-                                    periodoFinal.options[i] = new Option(p, p);
+                                    initialPeriod.options[i] = new Option(p, p);
+                                    finalPeriod.options[i] = new Option(p, p);
                                     i = i + 1;
                                 });
                             }
