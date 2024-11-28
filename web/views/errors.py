@@ -1,26 +1,33 @@
 import logging
-from flask import Blueprint, render_template, app, url_for, flash, redirect
+from flask import Blueprint, render_template, url_for, flash, redirect
+from deep_translator import GoogleTranslator
 
 error_logger = logging.getLogger('error_logger')
 
 Error = Blueprint('Error', __name__)
 
+translator = GoogleTranslator(source='en', target='es')
+
+
+def translate(text):
+    return translator.translate(str(text))
+
 
 @Error.app_errorhandler(404)
 def page_not_found(e):
-    return render_template('utils/error.html', error=str(e)), 404
+    return render_template('utils/error.html', error=translate(e)), 404
 
 
 @Error.app_errorhandler(405)
 def method_not_allow(e):
-    return render_template('utils/error.html', error=str(e)), 405
+    return render_template('utils/error.html', error=translate(e)), 405
 
 
 @Error.app_errorhandler(500)
 @Error.route('/error')
 def handle_500(e):
     error_logger.error(e)
-    return render_template('utils/error.html', error=str(e)), 500
+    return render_template('utils/error.html', error=translate(e)), 500
 
 
 @Error.app_errorhandler(Exception)
