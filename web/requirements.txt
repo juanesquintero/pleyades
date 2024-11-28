@@ -15,7 +15,7 @@ gunicorn==22.0.0
 PyJWT==2.8.0
 requests==2.32.3
 python-dotenv==1.0.1
-googletrans==3.1.0a0
+
 
 # Data Proccessing
 numpy==2.1.2
@@ -27,3 +27,8 @@ openpyxl==3.1.5
 
 # Data reporting / dashboard
 plotly==5.24.1
+
+
+flask-babel==4.0.0
+deep-translator==1.11.4
+googletrans==3.0.0

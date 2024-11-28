@@ -4,14 +4,15 @@ import sys
 import locale
 import logging
 import datetime
-from flask import Flask, session, render_template
+from flask import Flask, session, render_template, request, g
+from flask_babel import Babel, _
 from dotenv import load_dotenv
 
 from views.analist import Analista
 from views.errors import Error
 from views.auth import Auth
-from views.admin import ResultAdmin, SetAdmin, Faculty, Program, Student, User
-from views.sets import Set
+from views.admin import ResultAdmin, DatasetAdmin, Faculty, Program, Student, User
+from views.datasets import Dataset
 from views.results import Result
 from utils.mixins import obtener_ies_config
 
@@ -57,10 +58,10 @@ app.register_blueprint(Faculty, url_prefix=base_path+'admin/faculties')
 app.register_blueprint(Program, url_prefix=base_path+'admin/programs')
 app.register_blueprint(Student, url_prefix=base_path+'admin/students')
 app.register_blueprint(User, url_prefix=base_path+'admin/users')
-app.register_blueprint(Set, url_prefix=base_path+'sets')
+app.register_blueprint(Dataset, url_prefix=base_path+'datasets')
 app.register_blueprint(Result, url_prefix=base_path+'results')
 # app.register_blueprint(Tablero, url_prefix=base_path+'_deprecado/#TABLEROS')
-app.register_blueprint(SetAdmin, url_prefix=base_path+'admin/sets')
+app.register_blueprint(DatasetAdmin, url_prefix=base_path+'admin/datasets')
 app.register_blueprint(ResultAdmin, url_prefix=base_path+'admin/results')
 
 '''END ROUTES'''
@@ -100,3 +101,29 @@ def before_each_request():
     session.modified = True
     session.permanent = True
     app.permanent_session_lifetime = datetime.timedelta(hours=3)
+
+
+# Configure available languages and default settings
+app.config['BABEL_DEFAULT_LOCALE'] = 'en'
+app.config['BABEL_DEFAULT_TIMEZONE'] = 'UTC'
+app.config['LANGUAGES'] = ['en', 'es']  # Example languages
+
+
+def get_locale():
+    # if a user is logged in, use the locale from the user settings
+    user = getattr(g, 'user', None)
+    if user is not None:
+        return user.locale
+    # otherwise try to guess the language from the user accept
+    # header the browser transmits.  We support de/fr/en in this
+    # example.  The best match wins.
+    return request.accept_languages.best_match(['de', 'fr', 'en'])
+
+
+def get_timezone():
+    user = getattr(g, 'user', None)
+    if user is not None:
+        return user.timezone
+
+
+babel = Babel(app, locale_selector=get_locale, timezone_selector=get_timezone)
