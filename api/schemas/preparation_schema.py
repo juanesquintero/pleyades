@@ -9,10 +9,10 @@ post_schema = {
         "preparador":   {"type": "string", "format": "email", "maxLength": 200},
         "fechaInicial":  {"type": "string", "format": "date-time"},
         "fechaFinal":  {"type": ["string", "null"], "format": "date-time"},
-        "estado":  {"type": "string", "maxLength": 50, "enum": ["Fallida", "Exitosa"]},
+        "status":  {"type": "string", "maxLength": 50, "enum": ["Fallida", "Exitosa"]},
         "observaciones":  {"type": ["object", "null"]},
     },
-    "required": ["name", "numero", "set", "preparador", "fechaInicial", "fechaFinal", "estado"],
+    "required": ["name", "numero", "set", "preparador", "fechaInicial", "fechaFinal", "status"],
     "additionalProperties": False
 }
 
@@ -20,7 +20,7 @@ put_schema = {
     "type": "object",
     "minProperties": 1,
     "properties": {
-        "estado":  {"type": "string", "maxLength": 50, "enum": ["Fallida", "Exitosa"]},
+        "status":  {"type": "string", "maxLength": 50, "enum": ["Fallida", "Exitosa"]},
         "observaciones":  {"type": ["object", "null"]},
     },
     "additionalProperties": False

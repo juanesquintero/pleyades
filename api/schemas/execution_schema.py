@@ -9,11 +9,11 @@ post_schema = {
         'ejecutor':   {'type': 'string', 'format': 'email', 'maxLength': 200},
         'fechaInicial':  {'type': 'string', 'format': 'date-time'},
         'fechaFinal':  {'type': ['string', 'null'], 'format': 'date-time'},
-        'estado':  {'type': 'string', 'maxLength': 50, 'enum': ['Fallida', 'Exitosa']},
+        'status':  {'type': 'string', 'maxLength': 50, 'enum': ['Fallida', 'Exitosa']},
         'precision_model': {'type': ['number', 'null'], 'maxLength': 5},
         'results':  {'type': 'object'},
     },
-    'required': ['name', 'set', 'numero', 'ejecutor', 'fechaInicial', 'fechaFinal', 'estado', 'results'],
+    'required': ['name', 'set', 'numero', 'ejecutor', 'fechaInicial', 'fechaFinal', 'status', 'results'],
     'additionalProperties': False
 }
 
@@ -22,7 +22,7 @@ put_schema = {
     'minProperties': 1,
     'properties': {
         'results':  {'type': 'object'},
-        'estado':  {'type': 'string', 'maxLength': 50, 'enum': ['Fallida', 'Exitosa']},
+        'status':  {'type': 'string', 'maxLength': 50, 'enum': ['Fallida', 'Exitosa']},
     },
     'additionalProperties': False
 }

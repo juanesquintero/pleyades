@@ -66,9 +66,9 @@ def create_user(body):
     if body.get('faculty'):
         if not exists_faculty(body['faculty']):
             return {'error': 'faculty no existe'}, 404
-    if body.get('programa'):
-        if not exists_program(body['programa']):
-            return {'error': 'programa no existe'}, 404
+    if body.get('program'):
+        if not exists_program(body['program']):
+            return {'error': 'program no existe'}, 404
     if not body['role'] in ['Analista', 'Admin']:
         return {'error': 'Rol invalido'}, 404
     # Insert
@@ -101,8 +101,8 @@ def put(email):
         if not exists_faculty(body['faculty']):
             return {'error': 'faculty no existe'}, 404
     if body.get('program'):
-        if not exists_program(body['programa']):
-            return {'error': 'programa no existe'}, 404
+        if not exists_program(body['program']):
+            return {'error': 'program no existe'}, 404
     if 'password' in body.keys():
         body['password'] = str(md5(body['password'].encode()).hexdigest())
 

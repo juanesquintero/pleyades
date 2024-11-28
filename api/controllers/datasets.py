@@ -39,10 +39,10 @@ def get_one(name):
     return jsonify(query)
 
 
-@Dataset.route('/estado/<estado>')
+@Dataset.route('/status/<status>')
 @jwt_required()
-def get_by_state(estado):
-    query = dataset_model.get_state(estado)
+def get_by_state(status):
+    query = dataset_model.get_state(status)
     ex = exception(query)
     if ex:
         return ex
@@ -63,10 +63,10 @@ def get_by_tipo(tipo):
     return jsonify(query)
 
 
-@Dataset.route('/programa/<int:programa>')
+@Dataset.route('/program/<int:program>')
 @jwt_required()
-def get_by_program(programa):
-    query = dataset_model.get_program(programa)
+def get_by_program(program):
+    query = dataset_model.get_program(program)
     ex = exception(query)
     if ex:
         return ex
@@ -75,17 +75,17 @@ def get_by_program(programa):
     return jsonify(query)
 
 
-@Dataset.route('encargado/<encargado>')
+@Dataset.route('manager/<manager>')
 @jwt_required()
-def get_by_encargado(encargado):
-    estado = request.args.get('estado')
-    if estado:
-        if estado.lower().strip() in ['crudos', 'procesados', 'en proceso']:
-            query = dataset_model.get_encargado(encargado, estado)
+def get_by_encargado(manager):
+    status = request.args.get('status')
+    if status:
+        if status.lower().strip() in ['crudos', 'procesados', 'en proceso']:
+            query = dataset_model.get_encargado(manager, status)
         else:
             return {'msg': 'Estado invalido'}, 404
     else:
-        query = dataset_model.get_encargado(encargado)
+        query = dataset_model.get_encargado(manager)
     ex = exception(query)
     if ex:
         return ex
@@ -114,17 +114,17 @@ def post():
     if not (validate_post_schema(body)):
         return {'error': 'invalid body content'}, 400
     # Logical Validations
-    if body['periodoInicial'] > body['periodoFinal']:
+    if body['initialPeriod'] > body['finalPeriod']:
         return {'error': 'Periodo Inicial no puede ser mayor al Final'}, 400
     # sql validations
     if exists(body['name']):
         return {'error': 'Dataset Ya existe'}, 400
-    if not exists_usuario(body['encargado']):
+    if not exists_usuario(body['manager']):
         return {'error': 'usuario no existe'}, 400
-    if not exists_program(body['programa']):
-        return {'error': 'programa no existe'}, 400
-    if not body['estado'] in ['Crudos', 'Procesados', 'En Proceso']:
-        return {'error': 'estado invalido'}, 400
+    if not exists_program(body['program']):
+        return {'error': 'program no existe'}, 400
+    if not body['status'] in ['Crudos', 'Procesados', 'En Proceso']:
+        return {'error': 'status invalido'}, 400
     # Insert
     insert = dataset_model.insert(body)
     ex = exception(insert)
@@ -147,19 +147,19 @@ def name():
     if not validate_nombre_schema(body):
         return {'error': 'invalid body content'}, 400
     # sql validations
-    if not exists_usuario(body['encargado']):
+    if not exists_usuario(body['manager']):
         return {'error': 'usuario no existe'}, 400
-    if not exists_program(body['programa']):
-        return {'error': 'programa no existe'}, 400
-    if not body['estado'] in ['Crudos', 'Procesados', 'En Proceso']:
-        return {'error': 'estado invalido'}, 400
+    if not exists_program(body['program']):
+        return {'error': 'program no existe'}, 400
+    if not body['status'] in ['Crudos', 'Procesados', 'En Proceso']:
+        return {'error': 'status invalido'}, 400
     if not body['tipo'] in ['consulta', 'excel']:
         return {'error': 'tipo invalido'}, 400
     # Obtener el numero consecutivo para el student_dataset de datos
     query = dataset_model.get_numero(
-        body['programa'],
-        body['periodoInicial'],
-        body['periodoFinal']
+        body['program'],
+        body['initialPeriod'],
+        body['finalPeriod']
     )
     ex = exception(query)
     if ex:
@@ -168,28 +168,28 @@ def name():
         numero = query[0].get('numero')+1
     else:
         numero = 1
-    # Obtener la sigla del name del programa
-    programa = db_ies.select(
-        'SELECT * FROM VWPROGRAMADESERCION WHERE codigo={};'.format(str(body['programa'])))
-    ex = exception(programa)
+    # Obtener la sigla del name del program
+    program = db_ies.select(
+        'SELECT * FROM VWPROGRAMADESERCION WHERE codigo={};'.format(str(body['program'])))
+    ex = exception(program)
     if ex:
         return ex
-    nombre_corto = programa[0]['nombre_corto']
+    nombre_corto = program[0]['nombre_corto']
     # Definir el name del student_dataset con la notacion
     name = nombre_corto+' ' + \
-        str(body['periodoInicial'])+' ' + \
-        str(body['periodoFinal'])+' '+str(numero)
+        str(body['initialPeriod'])+' ' + \
+        str(body['finalPeriod'])+' '+str(numero)
 
     return {'name': name, 'numero': numero}, 200
 
 
-@Dataset.route('/todos/<estado>', methods=['DELETE'])
+@Dataset.route('/todos/<status>', methods=['DELETE'])
 @jwt_required()
-def delete_many(estado):
-    if not (estado):
-        return {'error': 'indique el estado por el path'}, 400
-    estado = estado.title()
-    query = dataset_model.get_state(estado)
+def delete_many(status):
+    if not (status):
+        return {'error': 'indique el status por el path'}, 400
+    status = status.title()
+    query = dataset_model.get_state(status)
     ex = exception(query)
     if ex:
         return ex
@@ -241,12 +241,12 @@ def put(name):
     # sql validations
     if not exists(name):
         return {'error': 'Dataset no existe'}, 404
-    if 'estado' in body.keys():
-        if not body['estado'] in ['Crudos', 'Procesados', 'En Proceso']:
-            return {'error': 'estado invalido'}, 400
-    if 'encargado' in body.keys():
-        if not exists_usuario(body['encargado']):
-            return {'error': 'encargado invalido'}, 400
+    if 'status' in body.keys():
+        if not body['status'] in ['Crudos', 'Procesados', 'En Proceso']:
+            return {'error': 'status invalido'}, 400
+    if 'manager' in body.keys():
+        if not exists_usuario(body['manager']):
+            return {'error': 'manager invalido'}, 400
     # Uptade
     update = dataset_model.update(name, body)
     ex = exception(update)
