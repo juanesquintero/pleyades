@@ -8,7 +8,7 @@ from flask import request, session, Blueprint, render_template, send_file, redir
 
 import utils.model as Modelo
 from services.API import get, post
-import views.sets as sets
+import views.datasets as datasets
 from views.auth import login_required
 import utils.dashboards.data_ies as DataIES
 from utils.mixins import save_archivo, save_ejecucion, get_now_date, obtener_nombre_ejecucion
@@ -48,7 +48,7 @@ def train():
     if request.method == 'GET':
         return form_train()
     conjunto = dict(request.values)
-    return sets.post_save(conjunto)
+    return datasets.post_save(conjunto)
 
 
 @Analista.route('/models/predict', methods=['POST'])

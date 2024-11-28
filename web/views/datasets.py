@@ -8,7 +8,7 @@ import utils.dashboards.data_ies as DataIES
 from flask import request, session, Blueprint, render_template, redirect, send_file, url_for, jsonify, flash
 from dotenv import load_dotenv
 from ast import literal_eval
-from googletrans import Translator
+from deep_translator import GoogleTranslator
 
 from utils.model import prepare_data, verify_data, execute_model
 from views.auth import login_required
@@ -21,27 +21,27 @@ error_logger = logging.getLogger('error_logger')
 
 load_dotenv()
 
-Set = Blueprint('Set', __name__)
+Dataset = Blueprint('Dataset', __name__)
 
 endopoint = 'sets/'
 
 upload_folder = os.getcwd()+'/uploads'
 
-translator = Translator()
+translator = GoogleTranslator(source='en', target='es')
 
 
-@Set.route('')
-@Set.route('/')
-@Set.route('/crudos')
-@Set.route('/crudos/')
+@Dataset.route('')
+@Dataset.route('/')
+@Dataset.route('/crudos')
+@Dataset.route('/crudos/')
 @login_required
 def crudos():
     return get_list('crudos')
 
 
-@Set.route('/procesados')
-@Set.route('/procesados/')
-@Set.route('/procesados/<conjunto>')
+@Dataset.route('/procesados')
+@Dataset.route('/procesados/')
+@Dataset.route('/procesados/<conjunto>')
 @login_required
 def procesados(conjunto=None):
     if conjunto:
@@ -78,7 +78,7 @@ def get_list(estado, conjunto=None):
     )
 
 
-@Set.route('/donwload/<estado>/<nombre>')
+@Dataset.route('/donwload/<estado>/<nombre>')
 def download(estado, nombre):
 
     status_c, body_c = get('sets/'+nombre)
@@ -102,8 +102,8 @@ def download(estado, nombre):
         return render_template('utils/message.html', mensaje='No se encontro el archivo a donwload')
 
 
-@Set.route('/crear')
-@Set.route('/crear/')
+@Dataset.route('/crear')
+@Dataset.route('/crear/')
 @login_required
 def post_create():
     periods = DataIES.get_periods_origen()
@@ -121,7 +121,7 @@ def post_create():
     return render_template('utils/message.html', mensaje='No se pudieron cargar las programs y las faculties', submensaje=error)
 
 
-@Set.route('crear/periods/programa/<int:programa>')
+@Dataset.route('crear/periods/programa/<int:programa>')
 @login_required
 def get_periods_program(programa):
     status, body = get(
@@ -131,7 +131,7 @@ def get_periods_program(programa):
     return jsonify([])
 
 
-@Set.route('/detalle', methods=['POST'])
+@Dataset.route('/detalle', methods=['POST'])
 @login_required
 def detalle():
     # Obtener Lo valores del form
@@ -157,8 +157,8 @@ def detalle():
     return render_template('utils/message.html', mensaje='No se pudieron cargar los datos para detallar el conjunto', submensaje=error)
 
 
-@Set.route('/crear', methods=['POST'])
-@Set.route('/crear/', methods=['POST'])
+@Dataset.route('/crear', methods=['POST'])
+@Dataset.route('/crear/', methods=['POST'])
 @login_required
 def post_save(conjunto=None):
     if not conjunto:
@@ -264,7 +264,7 @@ def post_save(conjunto=None):
 
     # TODO DEPRECATED! version 1 v1.5.0
     # if status:
-    #     return redirect(url_for('Set.crudos'))
+    #     return redirect(url_for('Dataset.crudos'))
 
     # TODO NEW! version 2 v2.0.0
     if status:
@@ -274,7 +274,7 @@ def post_save(conjunto=None):
     return render_template('utils/message.html', mensaje='No se pudo save el conjunto', submensaje=body)
 
 
-@Set.route('/preparar', methods=['POST'])
+@Dataset.route('/preparar', methods=['POST'])
 @login_required
 def preparar(conjunto=None):
     if not conjunto:
@@ -344,14 +344,14 @@ def preparar(conjunto=None):
         return act_state
 
     # TODO DEPRECATED! version 1 v1.5.0
-    # return redirect(url_for('Set.procesados', conjunto=conjunto['nombre']))
+    # return redirect(url_for('Dataset.procesados', conjunto=conjunto['nombre']))
 
     # TODO NEW! version 2 v2.0.0
     # ejecutar() luego de preparar()
     return ejecutar(conjunto)
 
 
-@Set.route('/ejecutar', methods=['POST'])
+@Dataset.route('/ejecutar', methods=['POST'])
 @login_required
 def ejecutar(conjunto=None):
     ejecucion_guardada = False
