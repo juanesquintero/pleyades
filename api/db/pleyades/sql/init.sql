@@ -55,6 +55,15 @@ CREATE TABLE executions (
 );
 
 
+CREATE TABLE criteria (
+	name VARCHAR (150) NOT NULL,
+	value VARCHAR (200) NOT NULL,
+	type VARCHAR (50) NOT NULL,
+	description VARCHAR (200) NULL,
+	PRIMARY KEY( name )
+);
+
+
 
 -- ****************************************
 -- ************ Foreign Keys **************
