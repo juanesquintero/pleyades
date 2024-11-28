@@ -35,7 +35,7 @@ def executions(conjunto=None):
 
 def get_list(results):
     rol = 'preparador' if results == 'preparations' else 'ejecutor'
-    status, body = get(results+'/'+rol+'/'+session['user']['correo'])
+    status, body = get(results+'/'+rol+'/'+session.get('user')['correo'])
     if status:
         return render_template(endopoint+results+'.html', results=set_date_format(body))
     else:

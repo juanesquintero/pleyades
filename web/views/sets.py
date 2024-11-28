@@ -176,7 +176,7 @@ def post_save(conjunto=None):
     conjunto['periodoInicial'] = int(conjunto['periodoInicial'])
     conjunto['periodoFinal'] = int(conjunto['periodoFinal'])
     conjunto['programa'] = int(conjunto['programa'])
-    conjunto['encargado'] = session['user']['correo']
+    conjunto['encargado'] = session.get('user', {}).get('email')
 
     tipo = conjunto.get('tipo', 'consulta')
     archivo = request.files.get('archivo')
@@ -292,7 +292,7 @@ def preparar(conjunto=None):
     # Crear prepraracion
     preparacion = {}
     preparacion['conjunto'] = conjunto['nombre']
-    preparacion['preparador'] = session['user']['correo']
+    preparacion['preparador'] = session.get('user', {}).get('email')
     preparacion['fechaInicial'] = get_now_date()
     # Obtener numero de preparacion para el conjunto
     status_p, body_p = get('preparations/nombre/'+nombre)
@@ -371,7 +371,7 @@ def ejecutar(conjunto=None):
     # Crear prepraracion
     ejecucion = {}
     ejecucion['conjunto'] = conjunto['nombre']
-    ejecucion['ejecutor'] = session['user']['correo']
+    ejecucion['ejecutor'] = session.get('user', {}).get('email')
     ejecucion['fechaInicial'] = get_now_date()
 
     # Obtener numero de ejecución para el conjunto
