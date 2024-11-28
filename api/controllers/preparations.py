@@ -5,7 +5,7 @@ from schemas.preparation_schema import validate_post_schema, validate_put_schema
 from db.pleyades.db import Preparation as preparation_model
 from utils.utils import exception, _format
 # Relaciones
-from controllers.sets import exists as exists_set
+from controllers.datasets import exists as exists_set
 from controllers.users import exists as exists_usuario
 
 Preparation = Blueprint('Preparation', __name__)
@@ -48,7 +48,7 @@ def get_by_set(set):
     if ex:
         return ex
     if not (query):
-        return {'msg': 'Set no tiene preparations'}, 404
+        return {'msg': 'Dataset no tiene preparations'}, 404
     query = strdate_to_datetime(query)
     return jsonify(query)
 

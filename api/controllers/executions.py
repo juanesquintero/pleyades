@@ -5,7 +5,7 @@ from flask_jwt_extended import jwt_required
 from utils.utils import exception, _format
 from db.pleyades.db import Execution as execution_model
 # Relaciones
-from controllers.sets import exists as exists_set
+from controllers.datasets import exists as exists_set
 from controllers.users import exists as exists_usuario
 
 Execution = Blueprint('Execution', __name__)
