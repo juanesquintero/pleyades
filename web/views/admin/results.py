@@ -95,7 +95,7 @@ def borrar_preparacion():
     return render_template('admin/'+endopoint+'preparacion_borrar.html', p=preparacion)
 
 
-@ResultAdmin.route('/preparations/eliminar', methods=['POST'])
+@ResultAdmin.route('/preparations/remove', methods=['POST'])
 @only_admin
 def eliminar_preparacion():
     preparacion = dict(request.values)
@@ -145,7 +145,7 @@ def borrar_ejecucion():
     return render_template('admin/'+endopoint+'ejecucion_borrar.html', e=ejecucion)
 
 
-@ResultAdmin.route('/executions/eliminar', methods=['POST'])
+@ResultAdmin.route('/executions/remove', methods=['POST'])
 @only_admin
 def eliminar_ejecucion():
     ejecucion = dict(request.values)

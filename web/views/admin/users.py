@@ -73,7 +73,7 @@ def remove():
         return render_template('utils/message.html', mensaje='No se pudo actualizar el User')
 
 
-@User.route('/eliminar', methods=['POST'])
+@User.route('/remove', methods=['POST'])
 @only_admin
 def post_delete():
     usuario = dict(request.values)

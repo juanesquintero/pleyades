@@ -9,27 +9,27 @@ from utils.mixins import *
 
 load_dotenv()
 
-SetAdmin = Blueprint("SetAdmin", __name__)
+DatasetAdmin = Blueprint("DatasetAdmin", __name__)
 
-endopoint = "sets/"
+endopoint = "datasets/"
 
 upload_folder = os.getcwd() + "/uploads"
 
 
-@SetAdmin.route("/")
-@SetAdmin.route("/crudos")
+@DatasetAdmin.route("/")
+@DatasetAdmin.route("/crudos")
 @only_admin
 def crudos():
     return get_list("crudos")
 
 
-@SetAdmin.route("/enproceso")
+@DatasetAdmin.route("/enproceso")
 @only_admin
 def en_proceso():
     return get_list("en proceso")
 
 
-@SetAdmin.route("/procesados")
+@DatasetAdmin.route("/procesados")
 @only_admin
 def procesados():
     return get_list("procesados")
@@ -37,10 +37,10 @@ def procesados():
 
 def get_list(estado: str):
     status_p, body_p = get("programs")
-    status_c, body_c = get("sets/estado/" + estado)
+    status_c, body_c = get("datasets/estado/" + estado)
     if status_c and status_p:
         return render_template(
-            "admin/" + endopoint + estado.replace(" ", "_") + ".html", sets=body_c, programs=body_p
+            "admin/" + endopoint + estado.replace(" ", "_") + ".html", datasets=body_c, programs=body_p
         )
 
     if not (status_c) and not (status_p):
@@ -51,12 +51,12 @@ def get_list(estado: str):
         error = body_p
     return render_template(
         "admin/" + endopoint + estado.replace(" ", "_") + ".html",
-        sets=[],
+        datasets=[],
         error=error,
     )
 
 
-@SetAdmin.route("/editar", methods=["POST"])
+@DatasetAdmin.route("/editar", methods=["POST"])
 @only_admin
 def post_edit():
     body = dict(request.values)
@@ -74,15 +74,15 @@ def post_edit():
         )
 
 
-@SetAdmin.route("/actualizar", methods=["POST"])
+@DatasetAdmin.route("/actualizar", methods=["POST"])
 @only_admin
 def update():
     conjunto = dict(request.values)
     nombre = conjunto.pop("nombre")
 
-    status, body = put("sets/" + nombre, conjunto)
+    status, body = put("datasets/" + nombre, conjunto)
     if status:
-        return redirect(url_for("SetAdmin.crudos"))
+        return redirect(url_for("DatasetAdmin.crudos"))
 
     return render_template(
         "utils/message.html",
@@ -91,7 +91,7 @@ def update():
     )
 
 
-@SetAdmin.route("/borrar", methods=["POST"])
+@DatasetAdmin.route("/borrar", methods=["POST"])
 @only_admin
 def post_delete():
     body = dict(request.values)
@@ -109,12 +109,12 @@ def post_delete():
         )
 
 
-@SetAdmin.route("/eliminar", methods=["POST"])
+@DatasetAdmin.route("/remove", methods=["POST"])
 @only_admin
-def eliminar():
+def remove():
     conjunto = dict(request.values)
     nombre = conjunto.pop("nombre")
-    status, body = delete("sets/" + nombre)
+    status, body = delete("datasets/" + nombre)
     if status:
         # Eliminar archivos relacionados en el servidor
         exito, pagina_error = eliminar_archivo(
@@ -129,7 +129,7 @@ def eliminar():
             if not (exito):
                 return pagina_error
 
-        return redirect(url_for("SetAdmin.crudos"))
+        return redirect(url_for("DatasetAdmin.crudos"))
     else:
         return render_template(
             "utils/message.html",
@@ -138,21 +138,21 @@ def eliminar():
         )
 
 
-@SetAdmin.route("/eliminar/todos", methods=["POST"])
+@DatasetAdmin.route("/remove/todos", methods=["POST"])
 @only_admin
 def eliminar_todos():
     estado = dict(request.values).pop("estado")
-    status, body = delete(f"sets/todos/{estado}")
+    status, body = delete(f"datasets/todos/{estado}")
 
     if status:
         # Eliminar archivos relacionados en el servidor
         remove_all_files(f"{upload_folder}/{estado}")
         route = estado.replace(" ", "_")
-        return redirect(url_for(f"SetAdmin.{route}"))
+        return redirect(url_for(f"DatasetAdmin.{route}"))
 
     return render_template(
         "utils/message.html",
-        mensaje="No se pudo Eliminar los sets",
+        mensaje="No se pudo Eliminar los datasets",
         submensaje=body,
     )
 
