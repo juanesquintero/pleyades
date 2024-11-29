@@ -12,7 +12,7 @@
 <div class="container border rounded pt-3 pl-5 float-left">
 
   <div class="row">
-    {% if desertores %}
+    {% if deserters %}
     <div class="col">
       <h5 class="mb-3 font-weight-bold ">Desertores</h5>
       <div class="d-flex ml-1 mt-2">
@@ -39,7 +39,7 @@
             </tr>
           </thead>
           <tbody class="bg-light rounded">
-            {% for d in desertores %}
+            {% for d in deserters %}
             <tr>
               <td><center>{{ d.semestre }}</center></td>
               <td>
@@ -170,14 +170,14 @@
         </tbody>
       </table>
       
-      {% if desertores %}
+      {% if deserters %}
         <div class="d-flex justify-content-center align-items-center  ml-0 pl-0 mr-5 pr-5">
           <i class="fa fa-download" aria-hidden="true"></i>
           &nbsp;
           <div class="ml-0 pl-0 mr-2 d-flex ">Descargar: </div>
           &nbsp;&nbsp;
           <a class="btn bg-light btn-sm border text-dark px-2" type=" button"
-            href="{{url_for('Result.download',ejecucion=ejecucion.nombre)}}">
+            href="{{url_for('Result.download',execution=execution.nombre)}}">
             <i class="fas fa-file-excel mr-1" aria-hidden="true"></i>
             Desertores
           </a>
@@ -191,7 +191,7 @@
         
         <table class="table table-bordered">
           <tbody>
-            {% for key, value in ejecucion.items() %}
+            {% for key, value in execution.items() %}
             <tr>
               <td><strong>{{ key.title()|replace('_',' ') }}</strong></td>
               
