@@ -49,18 +49,18 @@ def procesados(conjunto=None):
     return get_list('procesados')
 
 
-def get_list(estado, conjunto=None):
+def get_list(status, conjunto=None):
     user = session.get('user', {'correo': ''}).get('correo')
     status_p, body_p = get('programs')
     status_c, body_c = get(
-        f'sets/encargado/{user}?estado={estado}'
+        f'sets/manager/{user}?status={status}'
     )
 
     if status_c and status_p:
         if conjunto:
             body_c = [d for d in body_c if conjunto in d['nombre']]
         return render_template(
-            endopoint+estado.replace(' ', '_')+'.html',
+            endopoint+status.replace(' ', '_')+'.html',
             sets=body_c,
             programs=body_p
         )
@@ -72,27 +72,27 @@ def get_list(estado, conjunto=None):
     else:
         error = body_p
     return render_template(
-        endopoint+estado.replace(' ', '_')+'.html',
+        endopoint+status.replace(' ', '_')+'.html',
         sets=[],
         error=error
     )
 
 
-@Dataset.route('/donwload/<estado>/<nombre>')
-def download(estado, nombre):
+@Dataset.route('/donwload/<status>/<nombre>')
+def download(status, nombre):
 
     status_c, body_c = get('sets/'+nombre)
     if not status_c:
         return render_template('utils/message.html', mensaje='No existe ese conjunto')
 
-    if estado.lower() == 'crudos':
+    if status.lower() == 'crudos':
         nombre = 'C '+nombre
-    elif estado.lower() == 'procesados':
+    elif status.lower() == 'procesados':
         nombre = 'P '+nombre
     else:
         return render_template('utils/message.html', mensaje='Estado del conjunto incorrecto')
 
-    ruta = upload_folder+'/'+estado.lower()+'/'+nombre
+    ruta = upload_folder+'/'+status.lower()+'/'+nombre
 
     if os.path.exists(ruta+'.xlsx'):
         return send_file(ruta+'.xlsx', as_attachment=True)
@@ -172,11 +172,11 @@ def post_save(conjunto=None):
     if session.get('period_closed'):
         del conjunto['period_closed']
 
-    conjunto['estado'] = 'Crudos'
-    conjunto['periodoInicial'] = int(conjunto['periodoInicial'])
-    conjunto['periodoFinal'] = int(conjunto['periodoFinal'])
+    conjunto['status'] = 'Crudos'
+    conjunto['initialPeriod'] = int(conjunto['initialPeriod'])
+    conjunto['finalPeriod'] = int(conjunto['finalPeriod'])
     conjunto['programa'] = int(conjunto['programa'])
-    conjunto['encargado'] = session.get('user', {}).get('email')
+    conjunto['manager'] = session.get('user', {}).get('email')
 
     tipo = conjunto.get('tipo', 'consulta')
     archivo = request.files.get('archivo')
@@ -194,9 +194,9 @@ def post_save(conjunto=None):
 
         # VERIFICACION de formato
         data = pd.read_excel(archivo)
-        validacion, mensaje_error, data_verificada, periodoInicial = verify_data(
-            data, conjunto.get('periodoInicial'), conjunto.get('periodoFinal'), conjunto.get('programa'))
-        conjunto['periodoInicial'] = periodoInicial
+        validacion, mensaje_error, data_verificada, initialPeriod = verify_data(
+            data, conjunto.get('initialPeriod'), conjunto.get('finalPeriod'), conjunto.get('programa'))
+        conjunto['initialPeriod'] = initialPeriod
 
         # Obtener nombre del conjunto desde el api
         nombre, numero = obtener_nombre_conjunto(conjunto)
@@ -223,7 +223,7 @@ def post_save(conjunto=None):
         # Obtener datos de los students en ese programs y periods
         endpoint_conjunto = 'desertion/students/set/{}/{}/{}'
         endpoint_conjunto_values = endpoint_conjunto.format(
-            conjunto['programa'], conjunto['periodoInicial'], conjunto['periodoFinal'])
+            conjunto['programa'], conjunto['initialPeriod'], conjunto['finalPeriod'])
         status, body = get(endpoint_conjunto_values)
         if status:
             data = pd.DataFrame(body)
@@ -231,9 +231,9 @@ def post_save(conjunto=None):
             return render_template('utils/message.html', mensaje='Consulta fallida a la base de datos')
 
         # VERIFICACION de formato
-        validacion, mensaje_error, data_verificada, periodoInicial = verify_data(
-            data, conjunto.get('periodoInicial'), conjunto.get('periodoFinal'), conjunto.get('programa'))
-        conjunto['periodoInicial'] = periodoInicial
+        validacion, mensaje_error, data_verificada, initialPeriod = verify_data(
+            data, conjunto.get('initialPeriod'), conjunto.get('finalPeriod'), conjunto.get('programa'))
+        conjunto['initialPeriod'] = initialPeriod
 
         # Obtener nombre del conjunto desde el api
         nombre, numero = obtener_nombre_conjunto(conjunto)
@@ -369,16 +369,16 @@ def ejecutar(conjunto=None):
         return act_state
 
     # Crear prepraracion
-    ejecucion = {}
-    ejecucion['conjunto'] = conjunto['nombre']
-    ejecucion['ejecutor'] = session.get('user', {}).get('email')
-    ejecucion['fechaInicial'] = get_now_date()
+    execution = {}
+    execution['conjunto'] = conjunto['nombre']
+    execution['ejecutor'] = session.get('user', {}).get('email')
+    execution['fechaInicial'] = get_now_date()
 
     # Obtener numero de ejecución para el conjunto
     status_p, body_p = get('executions/nombre/'+nombre)
     if status_p:
-        ejecucion['nombre'] = body_p['nombre']
-        ejecucion['numero'] = body_p['numero']
+        execution['nombre'] = body_p['nombre']
+        execution['numero'] = body_p['numero']
     else:
         return render_template('utils/message.html', mensaje='No se pudo obtener el consecutivo de la preparación para este conjunto', submensaje=body_p)
 
@@ -412,7 +412,7 @@ def ejecutar(conjunto=None):
 
         results = {'error': error_spa}
         exito, pagina_error = save_ejecucion(
-            ejecucion, results, 'Fallida')
+            execution, results, 'Fallida')
         ejecucion_guardada = True
         if not exito:
             return pagina_error
@@ -433,7 +433,7 @@ def ejecutar(conjunto=None):
     # Actualizar los results a ultimo
     endpoint_ultimo = 'desertion/results/ultimo/{}/{}'
     endpoint_ultimo_values = endpoint_ultimo.format(
-        conjunto['programa'], conjunto['periodoFinal']
+        conjunto['programa'], conjunto['finalPeriod']
     )
     status_update, body_update = put(endpoint_ultimo_values, {})
 
@@ -462,10 +462,10 @@ def ejecutar(conjunto=None):
 
         state_ejecucion = 'Exitosa'
         # Guardar results de desertotres en Upload folder desertores
-        archivo_desertores = 'D '+ejecucion['nombre']+'.json'
-        ruta = upload_folder+'/desertores/'+archivo_desertores
+        archivo_desertores = 'D '+execution['nombre']+'.json'
+        ruta = upload_folder+'/deserters/'+archivo_desertores
         exito, pagina_error = save_archivo(
-            resultados_model.pop('desertores'), ruta, 'json'
+            resultados_model.pop('deserters'), ruta, 'json'
         )
         if not exito:
             return pagina_error
@@ -476,12 +476,12 @@ def ejecutar(conjunto=None):
         flash(
             'Revise si hay students ó desertores suficientes en el programa', 'warning'
         )
-        resultados_model.pop('desertores')
+        resultados_model.pop('deserters')
         state_ejecucion = 'Fallida'
     # Guardar registro de ejecución en la BD
     if not ejecucion_guardada:
         exito, pagina_error = save_ejecucion(
-            ejecucion=ejecucion, results=resultados_model, estado=state_ejecucion)
+            execution=execution, results=resultados_model, status=state_ejecucion)
         if not exito:
             act_state = actualizar_state(nombre, 'Procesados')
             if act_state:

@@ -33,7 +33,7 @@ def predict(data_a_predict, period_a_predict, basic_info):
     results = {
         **basic_info,
         'tipo': 'Prediccion',
-        'desertores': result.get('desertores'),
+        'deserters': result.get('deserters'),
         'period_a_predict': int(period_a_predict),
         'students_analizados': result.get('total_analizados'),
         'desercion_prevista': result.get('desertion'),
@@ -129,35 +129,35 @@ def predict_classifier(data_a_predict, period_a_predict, mejor_clasificador):
 
     return {
         'resultado': resultados_desertores,
-        'desertores': potenciales_desertores,
+        'deserters': potenciales_desertores,
         'total': int(total_desertores),
         'total_analizados': int(total_students_analizados),
         'desertion': float(round(desercion_prevista, 3))
     }
 
 
-def filter_high_desertion(desertores, total_estudiantes):
+def filter_high_desertion(deserters, total_estudiantes):
     low_average = 3.5
     level = 1
     total_desertores, desercion_prevista = calculate_desercion(
-        total_estudiantes, desertores
+        total_estudiantes, deserters
     )
 
     while desercion_prevista > 0.19:
         # Elminar desercíon temprana
         if level < 2:
-            no_desercion_temprana = desertores.query(
+            no_desercion_temprana = deserters.query(
                 f'semestre > {level} & promedio_acumulado > 0.4'
             )
             if not no_desercion_temprana.empty:
-                desertores = no_desercion_temprana
+                deserters = no_desercion_temprana
 
                 total_desertores, desercion_prevista = calculate_desercion(
-                    total_estudiantes, desertores
+                    total_estudiantes, deserters
                 )
 
         # Filtrar bajo promedio por alta deserción
-        _desertores = desertores.query(
+        _desertores = deserters.query(
             f'promedio_acumulado < {low_average}'
         )
         _total_desertores, _desercion_prevista = calculate_desercion(
@@ -165,10 +165,10 @@ def filter_high_desertion(desertores, total_estudiantes):
         )
 
         if _desercion_prevista > 0:
-            desertores, total_desertores, desercion_prevista = _desertores, _total_desertores, _desercion_prevista
+            deserters, total_desertores, desercion_prevista = _desertores, _total_desertores, _desercion_prevista
             low_average -= 0.05
             level += 1
         else:
             continue
 
-    return desertores, total_desertores, desercion_prevista
+    return deserters, total_desertores, desercion_prevista

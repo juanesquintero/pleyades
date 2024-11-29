@@ -100,7 +100,7 @@ def execute_model(data, conjunto, no_desertion=False):
         'clasificador': str(AML_best['Nombre'].tolist()[0]),
         'precision': float(round(precision_model, 2)),
         'period_anterior': int(period_a_predict),
-        'desertores': result.get('desertores'),
+        'deserters': result.get('deserters'),
         'period_a_predict': int(period_a_predict),
         'students_analizados': result.get('total_analizados'),
         'desercion_prevista': result.get('desertion'),

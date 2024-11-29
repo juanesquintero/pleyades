@@ -35,12 +35,12 @@ def procesados():
     return get_list("procesados")
 
 
-def get_list(estado: str):
+def get_list(status: str):
     status_p, body_p = get("programs")
-    status_c, body_c = get("datasets/estado/" + estado)
+    status_c, body_c = get("datasets/status/" + status)
     if status_c and status_p:
         return render_template(
-            "admin/" + endopoint + estado.replace(" ", "_") + ".html", datasets=body_c, programs=body_p
+            "admin/" + endopoint + status.replace(" ", "_") + ".html", datasets=body_c, programs=body_p
         )
 
     if not (status_c) and not (status_p):
@@ -50,7 +50,7 @@ def get_list(estado: str):
     else:
         error = body_p
     return render_template(
-        "admin/" + endopoint + estado.replace(" ", "_") + ".html",
+        "admin/" + endopoint + status.replace(" ", "_") + ".html",
         datasets=[],
         error=error,
     )
@@ -117,13 +117,13 @@ def remove():
     status, body = delete("datasets/" + nombre)
     if status:
         # Eliminar archivos relacionados en el servidor
-        exito, pagina_error = eliminar_archivo(
+        exito, pagina_error = remove_file(
             upload_folder + "/crudos/" + "C " + nombre + ".xls"
         )
         if not (exito):
             return pagina_error
-        if conjunto["estado"] == "Procesados":
-            exito, pagina_error = eliminar_archivo(
+        if conjunto["status"] == "Procesados":
+            exito, pagina_error = remove_file(
                 upload_folder + "/procesados/" + "P " + nombre + ".xls"
             )
             if not (exito):
@@ -141,13 +141,13 @@ def remove():
 @DatasetAdmin.route("/remove/todos", methods=["POST"])
 @only_admin
 def eliminar_todos():
-    estado = dict(request.values).pop("estado")
-    status, body = delete(f"datasets/todos/{estado}")
+    status = dict(request.values).pop("status")
+    status, body = delete(f"datasets/todos/{status}")
 
     if status:
         # Eliminar archivos relacionados en el servidor
-        remove_all_files(f"{upload_folder}/{estado}")
-        route = estado.replace(" ", "_")
+        remove_all_files(f"{upload_folder}/{status}")
+        route = status.replace(" ", "_")
         return redirect(url_for(f"DatasetAdmin.{route}"))
 
     return render_template(

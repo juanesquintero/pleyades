@@ -8,7 +8,7 @@ from flask import request, Blueprint, render_template, redirect, url_for
 from views.auth import only_admin
 from services.API import get, put, delete
 
-from utils.mixins import *
+from utils.mixins import remove_file
 
 load_dotenv()
 
@@ -103,8 +103,8 @@ def eliminar_preparacion():
     status, body = delete('preparations/'+nombre)
     if status:
         return redirect(url_for('ResultAdmin.preparations'))
-    else:
-        return render_template('utils/message.html', mensaje='No se pudo Eliminar la preparación', submensaje=body)
+
+    return render_template('utils/message.html', mensaje='No se pudo Eliminar la preparación', submensaje=body)
 
 ########################################################### EJECUCIONES ###################################################################
 
@@ -113,53 +113,60 @@ def eliminar_preparacion():
 @only_admin
 def editar_ejecucion():
     body = dict(request.values)
-    ejecucion = literal_eval(body['ejecucion'])
-    ejecucion['results'] = json.dumps(ejecucion['results'])
-    return render_template('admin/'+endopoint+'ejecucion_editar.html', e=ejecucion)
+    execution = literal_eval(body['execution'])
+    execution['results'] = json.dumps(execution['results'])
+    return render_template('admin/'+endopoint+'ejecucion_editar.html', e=execution)
 
 
 @ResultAdmin.route('/executions/actualizar', methods=['POST'])
 @only_admin
 def actualizar_ejecucion():
-    ejecucion = dict(request.values)
-    nombre = ejecucion.pop('nombre')
+    execution = dict(request.values)
+    nombre = execution.pop('nombre')
     try:
-        ejecucion['results'] = json.loads(
-            ejecucion['results'].replace("'", '"'))
-        ejecucion['results'] = dict(ejecucion['results'])
+        execution['results'] = json.loads(
+            execution['results'].replace("'", '"'))
+        execution['results'] = dict(execution['results'])
     except:
-        return render_template('utils/message.html', mensaje='No se pudo actualizar la ejecución', submensaje='Error con el campo results no es un json')
+        return render_template(
+            'utils/message.html',
+            mensaje='No se pudo actualizar la ejecución', submensaje='Error con el campo results no es un json'
+        )
 
-    status, body = put('executions/'+nombre, ejecucion)
+    status, body = put('executions/'+nombre, execution)
     if status:
         return redirect(url_for('ResultAdmin.executions'))
-    else:
-        return render_template('utils/message.html', mensaje='No se pudo actualizar la ejecución', submensaje=body)
+
+    return render_template(
+        'utils/message.html',
+        mensaje='No se pudo actualizar la ejecución',
+        submensaje=body
+    )
 
 
 @ResultAdmin.route('/executions/borrar', methods=['POST'])
 @only_admin
 def borrar_ejecucion():
     body = dict(request.values)
-    ejecucion = literal_eval(body['ejecucion'])
-    return render_template('admin/'+endopoint+'ejecucion_borrar.html', e=ejecucion)
+    execution = literal_eval(body['execution'])
+    return render_template('admin/'+endopoint+'ejecucion_borrar.html', e=execution)
 
 
 @ResultAdmin.route('/executions/remove', methods=['POST'])
 @only_admin
 def eliminar_ejecucion():
-    ejecucion = dict(request.values)
-    nombre = ejecucion.pop('nombre')
+    execution = dict(request.values)
+    nombre = execution.pop('nombre')
     status, body = delete('executions/'+nombre)
     if status:
         # Borrar archivo
-        if ejecucion['estado'] == 'Exitosa':
-            exito, pagina_error = eliminar_archivo(
-                upload_folder+'/desertores/'+'D '+nombre+'.json')
+        if execution['status'] == 'Exitosa':
+            exito, pagina_error = remove_file(
+                upload_folder+'/deserters/'+'D '+nombre+'.json')
             if not (exito):
                 return pagina_error
-            eliminar_archivo(upload_folder+'/desertores/'+'D '+nombre+'.xls')
+            remove_file(upload_folder+'/deserters/'+'D '+nombre+'.xls')
 
         return redirect(url_for('ResultAdmin.executions'))
-    else:
-        return render_template('utils/message.html', mensaje='No se pudo Eliminar la ejecución', submensaje=body)
+
+    return render_template('utils/message.html', mensaje='No se pudo Eliminar la ejecución', submensaje=body)

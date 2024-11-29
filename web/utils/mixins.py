@@ -74,7 +74,7 @@ def save_archivo(data, ruta, tipo):
     return True, 'ERROR'
 
 
-def eliminar_archivo(ruta):
+def remove_file(ruta):
     if os.path.exists(ruta):
         try:
             os.remove(ruta)
@@ -109,32 +109,32 @@ def obtener_archivo_json(ruta):
     return True, data
 
 
-def actualizar_state(nombre, estado):
-    status, body = put('sets/'+nombre, {'estado': estado})
+def actualizar_state(nombre, status):
+    status, body = put('sets/'+nombre, {'status': status})
     if not status:
-        return render_template('utils/message.html', mensaje='No fue posible actualizar el estado del conjunto a '+estado, submensaje=body)
+        return render_template('utils/message.html', mensaje='No fue posible actualizar el status del conjunto a '+status, submensaje=body)
     else:
         return None
 
 
-def save_preparacion(preparacion, observaciones, estado):
+def save_preparacion(preparacion, observaciones, status):
     # Guardar REGISTRO de preparacion
     preparacion['fechaFinal'] = get_now_date()
     preparacion['observaciones'] = observaciones
-    preparacion['estado'] = estado
+    preparacion['status'] = status
     post('preparations', preparacion)
     return True, 'ERROR'
 
 
-def save_ejecucion(ejecucion, results, estado):
+def save_ejecucion(execution, results, status):
 
     # Guardar REGISTRO de ejecución
-    ejecucion['precision_model'] = results.get('precision', None)
-    ejecucion['fechaFinal'] = get_now_date()
-    ejecucion['results'] = dict(results)
-    ejecucion['estado'] = estado
+    execution['precision_model'] = results.get('precision', None)
+    execution['fechaFinal'] = get_now_date()
+    execution['results'] = dict(results)
+    execution['status'] = status
 
-    status, body = post('executions', dict(ejecucion))
+    status, body = post('executions', dict(execution))
 
     if not status:
         raise Exception(
@@ -155,7 +155,7 @@ def obtener_nombre_conjunto(conjunto):
 
 
 def obtener_nombre_ejecucion(conjunto):
-    # Obtener nombre de la ejecucion desde el api
+    # Obtener nombre de la execution desde el api
     status_n, body_n = get(f'executions/nombre/{conjunto}')
     if status_n:
         return body_n['nombre'], body_n['numero']

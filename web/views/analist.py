@@ -97,12 +97,12 @@ def predictions():
 @Analista.route('/predictions/predict', methods=['POST'])
 def predict_model():
     form = dict(request.values)
-    ejecucion = literal_eval(form.get('ejecucion'))
-    ejecucion['fechaInicial'] = get_now_date()
+    execution = literal_eval(form.get('execution'))
+    execution['fechaInicial'] = get_now_date()
 
     periodo = form.get('periodo')
-    results = ejecucion.pop('results')
-    model = ejecucion.get('conjunto')
+    results = execution.pop('results')
+    model = execution.get('conjunto')
     idprograma = results.get('idprograma')
 
     basic_info = {
@@ -135,7 +135,7 @@ def predict_model():
 
     # Insertar los results
     if resultados_desertores.empty:
-        flash('No hay desertores para esta predicción', 'warning')
+        flash('No hay deserters para esta predicción', 'warning')
         return redirect(url_for('Analista.models'))
 
     resultados_insert = json.loads(
@@ -149,25 +149,25 @@ def predict_model():
 
     if not status_insert:
         error_logger.error(
-            'Error insertando los nuevos desertores'.format(
+            'Error insertando los nuevos deserters'.format(
                 json.dumps(body_insert))
         )
         raise Exception(
             'Ocurrió un error insertando y/o actualizando los results'
         )
 
-    ejecucion['nombre'], ejecucion['numero'] = obtener_nombre_ejecucion(model)
+    execution['nombre'], execution['numero'] = obtener_nombre_ejecucion(model)
 
     # Guardar desertotres
-    archivo_desertores = f"D {ejecucion.get('nombre')}.json"
-    ruta = upload_folder+'/desertores/'+archivo_desertores
+    archivo_desertores = f"D {execution.get('nombre')}.json"
+    ruta = upload_folder+'/deserters/'+archivo_desertores
     save_archivo(
-        resultados_model.pop('desertores'), ruta, 'json'
+        resultados_model.pop('deserters'), ruta, 'json'
     )
 
     # Guardar ejecución
-    resultados_model['duracion'] = ejecucion.pop('duracion')
-    save_ejecucion(ejecucion, resultados_model, 'Exitosa')
+    resultados_model['duracion'] = execution.pop('duracion')
+    save_ejecucion(execution, resultados_model, 'Exitosa')
     flash('Predicción exitosa!!', 'success')
 
     return redirect(url_for('Analista.predictions'))

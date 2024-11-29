@@ -50,35 +50,35 @@ def list_set(results, conjunto):
         return render_template(endopoint+results+'.html', results=[], error=body)
 
 
-@Result.route('/ejecucion/detalle', methods=['POST'])
+@Result.route('/execution/detalle', methods=['POST'])
 @login_required
 def ejecucion_detalle():
     body = dict(request.values)
-    ejecucion = body['ejecucion']
+    execution = body['execution']
 
     # Obtener el archivo de desertores
-    archivo = 'D '+ejecucion
-    ruta = upload_folder+'/desertores/'+archivo
-    exito, desertores = obtener_archivo_json(ruta)
+    archivo = 'D '+execution
+    ruta = upload_folder+'/deserters/'+archivo
+    exito, deserters = obtener_archivo_json(ruta)
 
-    status, body = get('executions/'+ejecucion)
+    status, body = get('executions/'+execution)
 
     if status and exito:
         del body['precision_model']
         del body['numero']
-        return render_template(endopoint+'ejecucion_detalle.html', desertores=desertores, results=body.pop('results'), ejecucion=body)
+        return render_template(endopoint+'ejecucion_detalle.html', deserters=deserters, results=body.pop('results'), execution=body)
     elif status and not (exito):
-        if body['estado'] == 'Fallida':
+        if body['status'] == 'Fallida':
             del body['precision_model']
             del body['numero']
             return render_template(
                 endopoint+'ejecucion_detalle.html',
-                desertores=None,
+                deserters=None,
                 results=body.pop('results'),
-                ejecucion=body
+                execution=body
             )
         else:
-            return desertores
+            return deserters
     else:
         return render_template(
             'utils/message.html',
@@ -109,15 +109,15 @@ def preparacion_detalle():
         )
 
 
-@Result.route('/donwload/desertores/<ejecucion>', methods=['GET'])
+@Result.route('/donwload/deserters/<execution>', methods=['GET'])
 @login_required
-def download(ejecucion):
-    status_c, body_c = get('executions/'+ejecucion)
+def download(execution):
+    status_c, body_c = get('executions/'+execution)
     if not status_c:
         return render_template('utils/message.html', mensaje='No existe esa ejecución')
 
-    archivo = 'D '+ejecucion
-    ruta = upload_folder+'/desertores/'+archivo
+    archivo = 'D '+execution
+    ruta = upload_folder+'/deserters/'+archivo
     try:
         data = pd.read_json(ruta+'.json')
     except Exception as e:

@@ -22,7 +22,7 @@ def detalle():
     form = dict(request.values)
     idprograma = form.get('idprograma')
     programa = form.get('programa')
-    status, body = get(f'desertion/students/programa/{idprograma}')
+    status, body = get(f'desertion/students/program/{idprograma}')
     if status:
         return render_template(
             'admin/'+endopoint+'detalle.html',
