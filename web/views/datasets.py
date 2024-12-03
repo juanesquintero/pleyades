@@ -83,14 +83,14 @@ def download(status, nombre):
 
     status_c, body_c = get('sets/'+nombre)
     if not status_c:
-        return render_template('utils/message.html', mensaje='No existe ese conjunto')
+        return render_template('utils/message.html', message='No existe ese conjunto')
 
     if status.lower() == 'crudos':
         nombre = 'C '+nombre
     elif status.lower() == 'procesados':
         nombre = 'P '+nombre
     else:
-        return render_template('utils/message.html', mensaje='Estado del conjunto incorrecto')
+        return render_template('utils/message.html', message='Estado del conjunto incorrecto')
 
     ruta = upload_folder+'/'+status.lower()+'/'+nombre
 
@@ -99,7 +99,7 @@ def download(status, nombre):
     elif os.path.exists(ruta+'.xls'):
         return send_file(ruta+'.xls', as_attachment=True)
     else:
-        return render_template('utils/message.html', mensaje='No se encontro el archivo a donwload')
+        return render_template('utils/message.html', message='No se encontro el archivo a donwload')
 
 
 @Dataset.route('/crear')
@@ -118,7 +118,7 @@ def post_create():
         error = body_f
     else:
         error = body_p
-    return render_template('utils/message.html', mensaje='No se pudieron cargar las programs y las faculties', submensaje=error)
+    return render_template('utils/message.html', message='No se pudieron cargar las programs y las faculties', submensaje=error)
 
 
 @Dataset.route('crear/periods/programa/<int:programa>')
@@ -151,10 +151,10 @@ def detalle():
     elif not status_p:
         error = body_p
     elif not conjunto:
-        return render_template('utils/message.html', mensaje='No se encontro un conjunto para detallar')
+        return render_template('utils/message.html', message='No se encontro un conjunto para detallar')
     else:
         error = body_u
-    return render_template('utils/message.html', mensaje='No se pudieron cargar los datos para detallar el conjunto', submensaje=error)
+    return render_template('utils/message.html', message='No se pudieron cargar los datos para detallar el conjunto', submensaje=error)
 
 
 @Dataset.route('/crear', methods=['POST'])
@@ -190,7 +190,7 @@ def post_save(conjunto=None):
         # Guardar archivo de excel
 
         if extension not in ['.xls', '.xlsx']:
-            return render_template('utils/message.html', mensaje='Extension de archivo incorrecta: '+str(extension), submensaje='Solo se permiten archivos excel .xls & xlsx')
+            return render_template('utils/message.html', message='Extension de archivo incorrecta: '+str(extension), submensaje='Solo se permiten archivos excel .xls & xlsx')
 
         # VERIFICACION de formato
         data = pd.read_excel(archivo)
@@ -213,9 +213,9 @@ def post_save(conjunto=None):
                 )
             except Exception as e:
                 error_logger.error(e)
-                return render_template('utils/message.html', mensaje='Ocurrió un error guardando el conjunto de datos')
+                return render_template('utils/message.html', message='Ocurrió un error guardando el conjunto de datos')
         else:
-            return render_template('utils/message.html', mensaje='Incorrecto el formato de la fuente de datos', submensaje=mensaje_error)
+            return render_template('utils/message.html', message='Incorrecto el formato de la fuente de datos', submensaje=mensaje_error)
 
     ############# CONSULTA ##############
     # elif tipo == 'consulta':
@@ -228,7 +228,7 @@ def post_save(conjunto=None):
         if status:
             data = pd.DataFrame(body)
         else:
-            return render_template('utils/message.html', mensaje='Consulta fallida a la base de datos')
+            return render_template('utils/message.html', message='Consulta fallida a la base de datos')
 
         # VERIFICACION de formato
         validacion, mensaje_error, data_verificada, initialPeriod = verify_data(
@@ -251,11 +251,11 @@ def post_save(conjunto=None):
                 )
             except Exception as e:
                 error_logger.error(e)
-                return render_template('utils/message.html', mensaje='Ocurrió un error guardando el conjunto de datos')
+                return render_template('utils/message.html', message='Ocurrió un error guardando el conjunto de datos')
         else:
-            return render_template('utils/message.html', mensaje='Incorrecto el formato de la fuente de datos', submensaje=mensaje_error)
+            return render_template('utils/message.html', message='Incorrecto el formato de la fuente de datos', submensaje=mensaje_error)
     # else:
-    #     return render_template('utils/message.html', mensaje='Formulario incorrecto', submensaje='Verifica el form de creacion o notifica al Administrador del sistema')
+    #     return render_template('utils/message.html', message='Formulario incorrecto', submensaje='Verifica el form de creacion o notifica al Administrador del sistema')
 
     # Guardar registro de conjunto en la BD
     conjunto['nombre'] = nombre
@@ -271,7 +271,7 @@ def post_save(conjunto=None):
         # preparar() luego de post_save()
         return preparar(conjunto)
 
-    return render_template('utils/message.html', mensaje='No se pudo save el conjunto', submensaje=body)
+    return render_template('utils/message.html', message='No se pudo save el conjunto', submensaje=body)
 
 
 @Dataset.route('/preparar', methods=['POST'])
@@ -300,7 +300,7 @@ def preparar(conjunto=None):
         preparacion['numero'] = body_p['numero']
         preparacion['nombre'] = body_p['nombre']
     else:
-        return render_template('utils/message.html', mensaje='No se pudo obtener el consecutivo de la preparación para este conjunto', submensaje=body_p)
+        return render_template('utils/message.html', message='No se pudo obtener el consecutivo de la preparación para este conjunto', submensaje=body_p)
 
     ########### PREPARAR ############
 
@@ -322,7 +322,7 @@ def preparar(conjunto=None):
             preparacion, observaciones, 'Fallida')
         if not exito:
             return pagina_error
-        return render_template('utils/message.html', mensaje='la preparación falló')
+        return render_template('utils/message.html', message='la preparación falló')
 
     # Guardar archivo en Upload folder procesados
     archivo_procesado = 'P '+nombre+'.xls'
@@ -380,7 +380,7 @@ def ejecutar(conjunto=None):
         execution['nombre'] = body_p['nombre']
         execution['numero'] = body_p['numero']
     else:
-        return render_template('utils/message.html', mensaje='No se pudo obtener el consecutivo de la preparación para este conjunto', submensaje=body_p)
+        return render_template('utils/message.html', message='No se pudo obtener el consecutivo de la preparación para este conjunto', submensaje=body_p)
 
     ########### EJECUTAR ############
 
@@ -419,14 +419,14 @@ def ejecutar(conjunto=None):
         act_state = actualizar_state(nombre, 'Procesados')
         if act_state:
             return act_state
-        return render_template('utils/message.html', mensaje='La ejecución falló', submensaje=error_spa)
+        return render_template('utils/message.html', message='La ejecución falló', submensaje=error_spa)
 
     if not resultados_model:
         # Actualizar conjunto de datos de crudo a procesado
         act_state = actualizar_state(nombre, 'Procesados')
         if act_state:
             return act_state
-        return render_template('utils/message.html', mensaje='La ejecución falló', submensaje=resultados_desertores)
+        return render_template('utils/message.html', message='La ejecución falló', submensaje=resultados_desertores)
 
     # Guardar registro de los desertores en la BD del ies
 
@@ -458,7 +458,7 @@ def ejecutar(conjunto=None):
                 error_logger.error('Error actualizando los desertores del programa'.format(
                     json.dumps(body_update)))
 
-            return render_template('utils/message.html', mensaje='Ocurrió un error insertando y/o actualizando los results'), 500
+            return render_template('utils/message.html', message='Ocurrió un error insertando y/o actualizando los results'), 500
 
         state_ejecucion = 'Exitosa'
         # Guardar results de desertotres en Upload folder desertores

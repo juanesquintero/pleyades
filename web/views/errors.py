@@ -37,4 +37,4 @@ def handle_exception(e):
         return redirect(url_for('Analista.models'))
 
     error_logger.error(f'EXCEPTION: {e}', exc_info=True)
-    return render_template('utils/error.html', exception=True, mensaje=str(e), status=404), 500
+    return render_template('utils/error.html', exception=True, message=str(e), status=404), 500

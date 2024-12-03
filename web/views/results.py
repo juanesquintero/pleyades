@@ -82,7 +82,7 @@ def ejecucion_detalle():
     else:
         return render_template(
             'utils/message.html',
-            mensaje='No se obtener la ejecución',
+            message='No se obtener la ejecución',
             submensaje=body
         )
 
@@ -104,7 +104,7 @@ def preparacion_detalle():
     else:
         return render_template(
             'utils/message.html',
-            mensaje='No se obtener los resultaods de la ejecución',
+            message='No se obtener los resultaods de la ejecución',
             submensaje=body
         )
 
@@ -114,7 +114,7 @@ def preparacion_detalle():
 def download(execution):
     status_c, body_c = get('executions/'+execution)
     if not status_c:
-        return render_template('utils/message.html', mensaje='No existe esa ejecución')
+        return render_template('utils/message.html', message='No existe esa ejecución')
 
     archivo = 'D '+execution
     ruta = upload_folder+'/deserters/'+archivo
@@ -123,7 +123,7 @@ def download(execution):
     except Exception as e:
         return render_template(
             'utils/message.html',
-            mensaje='No se pudo abrir el archivo de desertores:',
+            message='No se pudo abrir el archivo de desertores:',
             submensaje=str(e)
         )
 

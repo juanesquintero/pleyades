@@ -42,7 +42,7 @@ def only_admin(f):
             return render_template('utils/login.html'), 200
         if session.get('user').get('role') == 'Admin':
             return f(*args, **kwargs)
-        return render_template('utils/message.html', mensaje='Usted no tiene autorizacion para realizar esta accion'), 401
+        return render_template('utils/message.html', message='Usted no tiene autorizacion para realizar esta accion'), 401
     return decorated_function
 
 
@@ -73,8 +73,8 @@ def login():
 
         return render_template('utils/home.html'), 200
     if 'msg' in body.keys():
-        return render_template('utils/login.html', mensaje=body.get('msg')), 401
-    return render_template('utils/error.html', mensaje='Ocurrió un error loguandose', submensaje=body.get('error')), 400
+        return render_template('utils/login.html', message=body.get('msg')), 401
+    return render_template('utils/error.html', message='Ocurrió un error loguandose', submensaje=body.get('error')), 400
 
 
 @Auth.route('/logout')

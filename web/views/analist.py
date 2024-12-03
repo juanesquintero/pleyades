@@ -230,6 +230,6 @@ def form_train():
         error = body_p
     return render_template(
         'utils/message.html',
-        mensaje='No se pudieron cargar las programs y las faculties',
+        message='No se pudieron cargar las programs y las faculties',
         submensaje=error
     )

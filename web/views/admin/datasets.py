@@ -69,7 +69,7 @@ def post_edit():
     else:
         return render_template(
             "utils/message.html",
-            mensaje="No se obtener los programs",
+            message="No se obtener los programs",
             submensaje=body_p,
         )
 
@@ -86,7 +86,7 @@ def update():
 
     return render_template(
         "utils/message.html",
-        mensaje="No se pudo actualizar la conjunto",
+        message="No se pudo actualizar la conjunto",
         submensaje=body,
     )
 
@@ -104,7 +104,7 @@ def post_delete():
     else:
         return render_template(
             "utils/message.html",
-            mensaje="No se obtener los programs",
+            message="No se obtener los programs",
             submensaje=body_p,
         )
 
@@ -133,7 +133,7 @@ def remove():
     else:
         return render_template(
             "utils/message.html",
-            mensaje="No se pudo Eliminar el conjunto",
+            message="No se pudo Eliminar el conjunto",
             submensaje=body,
         )
 
@@ -152,7 +152,7 @@ def eliminar_todos():
 
     return render_template(
         "utils/message.html",
-        mensaje="No se pudo Eliminar los datasets",
+        message="No se pudo Eliminar los datasets",
         submensaje=body,
     )
 
