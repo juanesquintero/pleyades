@@ -33,19 +33,25 @@
       />
       &nbsp;
       <div
-        class="align-self-center fa fa-eye ml-1"
-        onclick="password()"
+        id="toggle-password"
+        class="align-self-center ml-1 btn btn-light fa fa-eye"
+        onclick="tooglePassword()"
         style="cursor: pointer"
       ></div>
     </div>
 
     <script>
-      function password() {
-        var x = document.getElementById("InputPasswordLoginID");
-        if (x.type === "password") {
-          x.type = "text";
+      function tooglePassword() {
+        const psswdInputEl = document.getElementById("password");
+        const togglePasswordEl = document.getElementById("toggle-password");
+        if (psswdInputEl.type === "password") {
+          psswdInputEl.type = "text";
+          togglePasswordEl.classList.add("fa-eye-slash");
+          togglePasswordEl.classList.remove("fa-eye");
         } else {
-          x.type = "password";
+          psswdInputEl.type = "password";
+          togglePasswordEl.classList.add("fa-eye");
+          togglePasswordEl.classList.remove("fa-eye-slash");
         }
       }
     </script>
