@@ -62,7 +62,7 @@
         $("#myModal").modal("show");
       }
       // Funcion para manejar el modal
-      function handleModal(mensaje, ruta) {
+      function handleModal(message, ruta) {
         $(".submit").css("display", "none");
         $(".btn-loading").css("display", "inline");
         $("#myModal").modal({
@@ -72,7 +72,7 @@
         $("#myModal").modal("show");
         $(document).keydown(function (e) {
           if (e.which == 27) {
-            alert(mensaje);
+            alert(message);
             $("#myModal").modal("hide");
             e.preventDefault();
             window.location.href = ruta;

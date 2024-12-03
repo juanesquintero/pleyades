@@ -14,14 +14,14 @@
       <h4 class="alert-heading">ERROR!!</h4>
       <p>Ha ocurrido un error en la ejecución del servidor, si es necesario contacte al Admin del sistema para verificar el error.</p>
       <hr>
-      {% if mensaje %}
-        <p>{{mensaje}}</p>
+      {% if message %}
+        <p>{{message}}</p>
       {% endif %}
     {% else %}
 
-      {% if mensaje %}
+      {% if message %}
         <h4 class="alert-heading">Aviso!!</h4>
-        <p>{{mensaje}}</p>
+        <p>{{message}}</p>
         <hr>
         <p>{{submensaje}}</p>
         {% else %}
