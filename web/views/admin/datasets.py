@@ -140,7 +140,7 @@ def remove():
 
 @DatasetAdmin.route("/remove/todos", methods=["POST"])
 @only_admin
-def eliminar_todos():
+def delete_todos():
     status = dict(request.values).pop("status")
     status, body = delete(f"datasets/todos/{status}")
 

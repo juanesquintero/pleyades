@@ -97,7 +97,7 @@ def borrar_preparacion():
 
 @ResultAdmin.route('/preparations/remove', methods=['POST'])
 @only_admin
-def eliminar_preparacion():
+def delete_preparacion():
     preparacion = dict(request.values)
     nombre = preparacion.pop('nombre')
     status, body = delete('preparations/'+nombre)
@@ -154,7 +154,7 @@ def borrar_ejecucion():
 
 @ResultAdmin.route('/executions/remove', methods=['POST'])
 @only_admin
-def eliminar_ejecucion():
+def delete_ejecucion():
     execution = dict(request.values)
     nombre = execution.pop('nombre')
     status, body = delete('executions/'+nombre)
