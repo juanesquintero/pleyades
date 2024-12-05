@@ -18,7 +18,7 @@ def predict(data_a_predict, period_a_predict, basic_info):
                 period_a_predict} (menos de 3)', True
         )
 
-    # Eliminacion depuracion de columnas
+    # Eliminacion depuracion de columns
     data_a_predict = elimination_predict(data_a_predict)
 
     # Obtener el clasificador como archivo local
@@ -115,7 +115,7 @@ def predict_classifier(data_a_predict, period_a_predict, mejor_clasificador):
 
     potenciales_desertores.drop(['index'], axis=1, inplace=True)
 
-    # Reasignar el tipo de la columna documento
+    # Reasignar el tipo de la column documento
     resultados_desertores['documento'] = resultados_desertores['documento'].astype(
         str, copy=False)
     resultados_desertores = resultados_desertores[[

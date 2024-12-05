@@ -18,7 +18,7 @@ def execute_model(data, conjunto, no_desertion=False):
         'tipo': 'Entrenamiento',
     }
 
-    # Eliminacion depuracion de columnas
+    # Eliminacion depuracion de columns
     data, data_a_predict, period_a_predict = elimination(data, no_desertion)
 
     basic_info['period_a_predict_mas_1'] = f'{period_a_predict} + 1'

@@ -1,6 +1,6 @@
 import logging
 from flask import flash
-from utils.constants import condiciones
+from utils.constants import conditions
 
 
 model_logger = logging.getLogger('model_logger')
@@ -9,33 +9,33 @@ model_logger = logging.getLogger('model_logger')
 ############################################# VERIFICACION DE DATOS CONJUNTO #####################################################
 
 def assign_types(data):
-    # Asignar tipos de datos en cada columna
-    for key, value in condiciones.items():
+    # Asignar tipos de datos en cada column
+    for key, value in conditions.items():
         mask = data[key].notna()
         data.loc[mask, key] = data.loc[mask, key].astype(value)
     return data
 
 
 def verify_data(data, period_inicial, period_final, programa):
-    columnas = list(condiciones.keys())
+    columns = list(conditions.keys())
 
-    # Verificar si conjunto tiene columnas en str y la primera fila
+    # Verificar si conjunto tiene columns en str y la primera fila
     try:
         data.columns = map(str.lower, data.columns)
     except Exception as excep:
         model_logger.error(excep)
-        return False, 'El conjunto no tiene columnas', None, period_inicial
+        return False, 'El conjunto no tiene columns', None, period_inicial
 
     # Verificar si hay registros
     if not len(data) > 0:
         return False, 'El conjunto no tiene registros (esta vacio)', None, period_inicial
 
-    # Verificar Si todas las columnas existen
-    if not all(col in data.columns for col in columnas):
-        return False, 'El conjunto ingresado no posee las columnas requeridas', None, period_inicial
+    # Verificar Si todas las columns existen
+    if not all(col in data.columns for col in columns):
+        return False, 'El conjunto ingresado no posee las columns requeridas', None, period_inicial
 
-    if not len(data.columns) == len(columnas):
-        msg = 'El conjunto ingresado tiene mas columnas de las requeridas'
+    if not len(data.columns) == len(columns):
+        msg = 'El conjunto ingresado tiene mas columns de las requeridas'
         return False, msg, None, period_inicial
 
     # Verificar si los tipos de datos de colunma son correctos
@@ -43,10 +43,10 @@ def verify_data(data, period_inicial, period_final, programa):
         data_verificada = assign_types(data)
     except Exception as excep:
         model_logger.error(excep)
-        msg = 'El conjunto ingresado no tiene los tipos de dato por columna requeridos'
+        msg = 'El conjunto ingresado no tiene los tipos de dato por column requeridos'
         return False, msg, None, period_inicial
 
-    # Verificar si en conjunto posee mas de un  valor en la columna programa
+    # Verificar si en conjunto posee mas de un  valor en la column programa
     if not len(set(data_verificada['programa'].tolist())) == 1:
         msg = 'El conjunto tiene resgistros de mas de un programa, los models se ejecutan por programa'
         return False, msg, None, period_inicial

@@ -59,7 +59,7 @@ AML = [
 ]
 
 
-columnas_eliminar_1_anteriores = [
+columns_delete_1_anteriores = [
     'registro',
     'nombre_completo',
     'tipo_documento',
@@ -96,7 +96,7 @@ columnas_eliminar_1_anteriores = [
     'idprograma'
 ]
 
-columnas_eliminar_1 = [
+columns_delete_1 = [
     'registro',
     'nombre_completo',
     'tipo_documento',
@@ -141,7 +141,7 @@ columnas_eliminar_1 = [
     'idestado '
 ]
 
-columnas_eliminar_nulos = [
+columns_delete_nulos = [
     'semestre', 'genero', 'estado_civil', 'etnia', 'victima',
     'pertenece_grupo_vulnerable', 'promedio_acumulado', 'creditos_program',
     'creditos_aprobados_sem', 'creditos_aprobados_acum', 'creditos_reprobados_sem',
@@ -149,11 +149,11 @@ columnas_eliminar_nulos = [
     'creditos_matriculados_sem', 'intersemestral', 'creditos_matriculados_acum'
 ]
 
-columnas_eliminar_2_anteriores = [
+columns_delete_2_anteriores = [
     'asignaturas_aprobadas_acum', 'asignaturas_reprobadas_acum'
 ]
 
-columnas_eliminar_2 = [
+columns_delete_2 = [
     'asignaturas_aprobadas_acum', 'asignaturas_reprobadas_acum',
     'asignaturas_program', 'asignaturas_canceladas_sem', 'asignaturas_canceladas_acum',
 ]
@@ -167,7 +167,7 @@ col_preparadas = [
     'promedio_acumulado', 'intersemestral'
 ]
 
-condiciones = {
+conditions = {
     'registro':                                 int,
     'semestre':                                 int,
     'jornada':                                  str,

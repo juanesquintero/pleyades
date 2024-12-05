@@ -3,11 +3,11 @@ import pandas as pd
 import warnings
 from flask import session
 from utils.constants import (
-    columnas_eliminar_nulos,
-    columnas_eliminar_1,
-    columnas_eliminar_1_anteriores,
-    columnas_eliminar_2,
-    columnas_eliminar_2_anteriores,
+    remove_columns_nulos,
+    remove_columns_1,
+    remove_columns_1_anteriores,
+    remove_columns_2,
+    remove_columns_2_anteriores,
 )
 
 ################################################################################################################ PREPARACION DE DATOS DE UN CONJUNTO ##############################################################################################################
@@ -15,7 +15,7 @@ from utils.constants import (
 
 def prepare_data(data):
     # Condiciones Precisas
-    condiciones_precisas = [
+    conditions_precisas = [
         ('jornada', 'DIURNA'),
         ('genero', 'MASCULINO'),
         ('estado_civil', 'SOLTERO(A)'),
@@ -26,16 +26,16 @@ def prepare_data(data):
         ('intersemestral', 'SI'),
         ('desertor', 'SI'),
     ]
-    for cond in condiciones_precisas:
-        columna, criterio = cond[0], cond[1]
+    for cond in conditions_precisas:
+        column, criterio = cond[0], cond[1]
 
         def condicion_precisa_fn(
-            row): return 1 if row[columna] == criterio else 0
+            row): return 1 if row[column] == criterio else 0
 
-        data[columna] = data.apply(condicion_precisa_fn, axis=1)
+        data[column] = data.apply(condicion_precisa_fn, axis=1)
 
     # Condiciones conjuntas
-    condiciones_conjuntas = [
+    conditions_conjuntas = [
         (
             'lugar_residencia_sede',
             ['MEDELLIN', 'BELLO', 'ITAGUI', 'COPACABANA',
@@ -51,17 +51,17 @@ def prepare_data(data):
         ),
     ]
 
-    for cond in condiciones_conjuntas:
-        columna, criterios = cond[0], cond[1]
+    for cond in conditions_conjuntas:
+        column, criterios = cond[0], cond[1]
         yes_value, no_value = cond[2], cond[3]
 
         def condicion_conjunta_fn(row):
-            value = str(row[columna]).lower()
+            value = str(row[column]).lower()
             return yes_value if any(
                 c.lower() if isinstance(c, str) else c in value for c in criterios
             ) else no_value
 
-        data[columna] = data.apply(condicion_conjunta_fn, axis=1)
+        data[column] = data.apply(condicion_conjunta_fn, axis=1)
 
     # # Condiciones Especiales
     # def etnia_fn(row):
@@ -122,7 +122,7 @@ def elimination(data, no_desertion=False):
 
     data = pd.concat([data, data_proxima], ignore_index=True)
 
-    # Eliminar columnas inecesarias y nulos
+    # Eliminar columns inecesarias y nulos
     data = drop_columns(data)
     data_a_predict = drop_nulls(data_a_predict)
 
@@ -145,20 +145,20 @@ def elimination_predict(data):
 
 def drop_columns(data):
     try:
-        data = data.drop(columnas_eliminar_1, axis=1)
+        data = data.drop(remove_columns_1, axis=1)
     except Exception as excep:
-        data = data.drop(columnas_eliminar_1_anteriores, axis=1)
+        data = data.drop(remove_columns_1_anteriores, axis=1)
 
     data = drop_nulls(data)
 
     try:
-        data = data.drop(columnas_eliminar_2, axis=1)
+        data = data.drop(remove_columns_2, axis=1)
     except Exception as excep:
-        data = data.drop(columnas_eliminar_2_anteriores, axis=1)
+        data = data.drop(remove_columns_2_anteriores, axis=1)
 
     return data
 
 
 def drop_nulls(data):
-    data.dropna(subset=columnas_eliminar_nulos, how='any', inplace=True)
+    data.dropna(subset=remove_columns_nulos, how='any', inplace=True)
     return data

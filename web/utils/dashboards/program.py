@@ -241,7 +241,7 @@ class Program:
             data = data.sort_values(by='estrato_residencia', ascending=False)
             estratos_str = sorted(data['estrato_residencia'].unique())
 
-            # Quitar el ESTRATO de la columna
+            # Quitar el ESTRATO de la column
             estratos = []
             for e in estratos_str:
                 if any(char.isdigit() for char in e):
