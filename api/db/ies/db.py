@@ -110,12 +110,12 @@ class DB:
 
     @validate_connection
     def multi_insert(self, data, table):
-        columnas = str(tuple(data.columns)).replace("'", "")
+        columns = str(tuple(data.columns)).replace("'", "")
         valores = '( ?'
         for _ in range(len(data.columns)-1):
             valores += ', ?'
         valores += ')'
-        sql = "INSERT INTO {} {} VALUES {}".format(table, columnas, valores)
+        sql = "INSERT INTO {} {} VALUES {}".format(table, columns, valores)
         registros = list(tuple(row) for row in data.values)
 
         try:
