@@ -33,7 +33,7 @@ def get_one(email):
     if ex:
         return ex
     if not query:
-        return {'msg': 'No hay concidencias'}, 404
+        return {'msg': 'Not found'}, 404
     return jsonify(query)
 
 
@@ -45,7 +45,7 @@ def getByRol(role):
     if ex:
         return ex
     if not query:
-        return {'msg': 'No hay concidencias'}, 404
+        return {'msg': 'Not found'}, 404
     return jsonify(query)
 
 

@@ -35,7 +35,7 @@ def get_one(name):
     if ex:
         return ex
     if not query:
-        return {'msg': 'No hay concidencias'}, 404
+        return {'msg': 'Not found'}, 404
     return jsonify(query)
 
 
@@ -47,7 +47,7 @@ def get_by_state(status):
     if ex:
         return ex
     if not query:
-        return {'msg': 'No hay concidencias'}, 404
+        return {'msg': 'Not found'}, 404
     return jsonify(query)
 
 
@@ -59,7 +59,7 @@ def get_by_tipo(tipo):
     if ex:
         return ex
     if not query:
-        return {'msg': 'No hay concidencias'}, 404
+        return {'msg': 'Not found'}, 404
     return jsonify(query)
 
 
@@ -71,7 +71,7 @@ def get_by_program(program):
     if ex:
         return ex
     if not query:
-        return {'msg': 'No hay concidencias'}, 404
+        return {'msg': 'Not found'}, 404
     return jsonify(query)
 
 
@@ -90,7 +90,7 @@ def get_by_encargado(manager):
     if ex:
         return ex
     if not query:
-        return {'msg': 'No hay concidencias'}, 404
+        return {'msg': 'Not found'}, 404
     return jsonify(query)
 
 
@@ -102,7 +102,7 @@ def get_by_periods(inicio, fin):
     if ex:
         return ex
     if not query:
-        return {'msg': 'No hay concidencias'}, 404
+        return {'msg': 'Not found'}, 404
     return jsonify(query)
 
 
@@ -194,7 +194,7 @@ def delete_many(status):
     if ex:
         return ex
     if not query:
-        return {'msg': 'No hay concidencias'}, 404
+        return {'msg': 'Not found'}, 404
 
     datasets_nombres = [c['name'] for c in query]
     for student_dataset in datasets_nombres:

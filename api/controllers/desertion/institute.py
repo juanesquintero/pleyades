@@ -11,7 +11,7 @@ IES = Blueprint('IES', __name__)
 
 db = DB.getInstance()
 table = 'VWDATADESERCION'
-msg_error = {'msg': 'No hay concidencias'}, 404
+msg_error = {'msg': 'Not found'}, 404
 
 ##########################################################  VWDATADESERCIONINSTITUCION ##########################################################
 

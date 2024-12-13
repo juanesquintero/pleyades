@@ -34,7 +34,7 @@ def get_one(codigo):
     if ex:
         return ex
     if not (query):
-        return {'msg': 'No hay concidencias'}, 404
+        return {'msg': 'Not found'}, 404
     return jsonify(_format(query)[0])
 
 

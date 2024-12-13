@@ -45,7 +45,7 @@ $(document).ready(function () {
 });
 
 
-// ordenar por columna
+// ordenar por column
 // function sortTable(column) {
 //     let table = $('table');
 //     console.log(table);

@@ -39,7 +39,7 @@ def create_app():
         @jwt.expired_token_loader
         def expired_token_callback(jwt_header=None, jwt_data=None):
             return jsonify({
-                'msg': 'Su sesión ha expirado, vuelva a loguearse'
+                'msg': 'Su session ha expired, vuelva a loguearse'
             }), 401
 
         # ROUTES
