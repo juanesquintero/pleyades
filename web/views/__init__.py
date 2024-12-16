@@ -6,9 +6,40 @@ from views.admin import ResultAdmin, DatasetAdmin, Faculty, Program, Student, Us
 from views.datasets import Dataset
 from views.results import Result
 # from views.dashboards import Tablero
+from flask import render_template, session
+import datetime
 
 
-def add_app_routes(app, base_path):
+def add_route_config(app, base_path):
+
+    excel_enabled = app.config.get('EXCEL_ENABLED')
+    ies = app.config.get('IES')
+
+    @app.before_request
+    def before_each_request():
+        # Excel data loading enabled
+        session['excel'] = excel_enabled
+        # Session permanent
+        session.modified = True
+        session.permanent = True
+        app.permanent_session_lifetime = datetime.timedelta(hours=3)
+
+    @app.route(base_path)
+    @app.route(base_path+'inicio')
+    def index():
+        return render_template('utils/home.html'), 200
+
+    @app.route(base_path+'contactanos')
+    def contact_us():
+        return render_template('utils/contact_us.html', ies=ies), 200
+
+
+def add_app_routes(app):
+    base_path = app.config.get('BASE_PATH')
+
+    # Add route configuration
+    add_route_config(app, base_path)
+
     # Register routes
     app.register_blueprint(Error, url_prefix=base_path)
     app.register_blueprint(Auth, url_prefix=base_path)
