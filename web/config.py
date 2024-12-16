@@ -2,6 +2,7 @@ import os
 import sys
 import locale
 import logging
+import datetime
 from dotenv import load_dotenv
 
 from utils.mixins import obtener_ies_config
@@ -12,16 +13,14 @@ sys.path.append('./')
 load_dotenv()
 
 
-'''LOGGING CONFIGURATION'''
+##### LOGGING CONFIG #####
 LOG_FORMAT = '%(levelname)s %(asctime)s - %(message)s'
-
 # GENERAL (ALL) LOGS
 logging.basicConfig(
     filename=os.getcwd()+'/logs/GENERALS.log',
     level=logging.DEBUG,
     format=LOG_FORMAT
 )
-
 # APP ERROR LOGS
 error_logger = logging.getLogger('error_logger')
 error_logger.setLevel(logging.ERROR)
@@ -36,19 +35,27 @@ file_handler = logging.FileHandler(os.getcwd()+'/logs/MODEL.log')
 file_handler.setFormatter(logging.Formatter(LOG_FORMAT))
 model_logger.addHandler(file_handler)
 
-'''END LOGGING CONFIGURATION'''
+##### END LOGGING CONFIG #####
 
 
+##### SESSION CONFIG #####
 SECRET_KEY = os.getenv('SESSION_KEY')
+SESSION_PERMANENT = True
+SESSION_TYPE = 'filesystem'
+PERMANENT_SESSION_LIFETIME = datetime.timedelta(hours=3)
+SESSION_FILE_THRESHOLD = 100
+#### END SESSION CONFIG #####
 
 
-# IES config
+#### BABEL LANGS CONFIG ####
+BABEL_DEFAULT_LOCALE = 'es'
+BABEL_DEFAULT_TIMEZONE = 'UTC'
+LANGUAGES = ['en', 'es']
+#### END BABEL LANGS CONFIG ####
+
+#### CUSTOM APP CONFIG ####
 IES = obtener_ies_config()
 IES_NAME = os.getenv('CLI_IES_NAME')
-BASE_PATH = '/'  # base_path = ('/' + ies_name) if ies_name else '/'
+BASE_PATH = '/'  # BASE_PATH = ('/' + ies_name) if ies_name else '/'
 EXCEL_ENABLED = os.getenv('EXCEL', 'false').lower() in ('true', '1', 't')
-
-
-BABEL_DEFAULT_LOCALE = 'en'
-BABEL_DEFAULT_TIMEZONE = 'UTC'
-LANGUAGES = ['en', 'es']  # Example languages
+#### END CUSTOM APP CONFIG ####
