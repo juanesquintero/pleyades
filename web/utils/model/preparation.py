@@ -3,11 +3,11 @@ import pandas as pd
 import warnings
 from flask import session
 from utils.constants import (
-    remove_columns_nulos,
-    remove_columns_1,
-    remove_columns_1_anteriores,
-    remove_columns_2,
-    remove_columns_2_anteriores,
+    columns_to_remove_nulls,
+    columns_to_remove_1,
+    columns_to_remove_1_past,
+    columns_to_remove_2,
+    columns_to_remove_2_past,
 )
 
 ################################################################################################################ PREPARACION DE DATOS DE UN CONJUNTO ##############################################################################################################
@@ -27,10 +27,10 @@ def prepare_data(data):
         ('desertor', 'SI'),
     ]
     for cond in conditions_precisas:
-        column, criterio = cond[0], cond[1]
+        column, criteria = cond[0], cond[1]
 
         def condicion_precisa_fn(
-            row): return 1 if row[column] == criterio else 0
+            row): return 1 if row[column] == criteria else 0
 
         data[column] = data.apply(condicion_precisa_fn, axis=1)
 
@@ -52,13 +52,13 @@ def prepare_data(data):
     ]
 
     for cond in conditions_conjuntas:
-        column, criterios = cond[0], cond[1]
+        column, criterias = cond[0], cond[1]
         yes_value, no_value = cond[2], cond[3]
 
         def condicion_conjunta_fn(row):
             value = str(row[column]).lower()
             return yes_value if any(
-                c.lower() if isinstance(c, str) else c in value for c in criterios
+                c.lower() if isinstance(c, str) else c in value for c in criterias
             ) else no_value
 
         data[column] = data.apply(condicion_conjunta_fn, axis=1)
@@ -85,8 +85,8 @@ def elimination(data, no_desertion=False):
     warnings.filterwarnings('ignore')
 
     x = data.groupby('semestre')['edad'].mean()
-    for indice_fila, fila in data.loc[data.edad.isnull()].iterrows():
-        data.loc[indice_fila, 'edad'] = x[fila['semestre']]
+    for indice_row, row in data.loc[data.edad.isnull()].iterrows():
+        data.loc[indice_row, 'edad'] = x[row['semestre']]
 
     # Elminar desercíon temprana
     data = data.query('semestre != 1')
@@ -122,7 +122,7 @@ def elimination(data, no_desertion=False):
 
     data = pd.concat([data, data_proxima], ignore_index=True)
 
-    # Eliminar columns inecesarias y nulos
+    # Eliminar columns inecesarias y nulls
     data = drop_columns(data)
     data_a_predict = drop_nulls(data_a_predict)
 
@@ -134,8 +134,8 @@ def elimination_predict(data):
 
     # Rellenar la edad con promedio por semestre(nivel)
     average = data.groupby('semestre')['edad'].mean()
-    for indice_fila, fila in data.loc[data.edad.isnull()].iterrows():
-        data.loc[indice_fila, 'edad'] = average[fila['semestre']]
+    for indice_row, row in data.loc[data.edad.isnull()].iterrows():
+        data.loc[indice_row, 'edad'] = average[row['semestre']]
 
     # Elminar desercíon temprana
     data = data.query('semestre != 1 & promedio_acumulado > 0.5')
@@ -145,20 +145,20 @@ def elimination_predict(data):
 
 def drop_columns(data):
     try:
-        data = data.drop(remove_columns_1, axis=1)
+        data = data.drop(columns_to_remove_1, axis=1)
     except Exception as excep:
-        data = data.drop(remove_columns_1_anteriores, axis=1)
+        data = data.drop(columns_to_remove_1_past, axis=1)
 
     data = drop_nulls(data)
 
     try:
-        data = data.drop(remove_columns_2, axis=1)
+        data = data.drop(columns_to_remove_2, axis=1)
     except Exception as excep:
-        data = data.drop(remove_columns_2_anteriores, axis=1)
+        data = data.drop(columns_to_remove_2_past, axis=1)
 
     return data
 
 
 def drop_nulls(data):
-    data.dropna(subset=remove_columns_nulos, how='any', inplace=True)
+    data.dropna(subset=columns_to_remove_nulls, how='any', inplace=True)
     return data

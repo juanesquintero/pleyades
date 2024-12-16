@@ -59,7 +59,7 @@ AML = [
 ]
 
 
-columns_delete_1_anteriores = [
+columns_to_remove_1_past = [
     'registro',
     'nombre_completo',
     'tipo_documento',
@@ -96,7 +96,7 @@ columns_delete_1_anteriores = [
     'idprograma'
 ]
 
-columns_delete_1 = [
+columns_to_remove_1 = [
     'registro',
     'nombre_completo',
     'tipo_documento',
@@ -141,7 +141,7 @@ columns_delete_1 = [
     'idestado '
 ]
 
-columns_delete_nulos = [
+columns_to_remove_nulls = [
     'semestre', 'genero', 'estado_civil', 'etnia', 'victima',
     'pertenece_grupo_vulnerable', 'promedio_acumulado', 'creditos_program',
     'creditos_aprobados_sem', 'creditos_aprobados_acum', 'creditos_reprobados_sem',
@@ -149,11 +149,11 @@ columns_delete_nulos = [
     'creditos_matriculados_sem', 'intersemestral', 'creditos_matriculados_acum'
 ]
 
-columns_delete_2_anteriores = [
+columns_to_remove_2_past = [
     'asignaturas_aprobadas_acum', 'asignaturas_reprobadas_acum'
 ]
 
-columns_delete_2 = [
+columns_to_remove_2 = [
     'asignaturas_aprobadas_acum', 'asignaturas_reprobadas_acum',
     'asignaturas_program', 'asignaturas_canceladas_sem', 'asignaturas_canceladas_acum',
 ]
