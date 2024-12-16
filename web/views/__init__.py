@@ -25,11 +25,11 @@ def add_route_config(app, base_path):
         app.permanent_session_lifetime = datetime.timedelta(hours=3)
 
     @app.route(base_path)
-    @app.route(base_path+'inicio')
+    @app.route(base_path+'home')
     def index():
         return render_template('utils/home.html'), 200
 
-    @app.route(base_path+'contactanos')
+    @app.route(base_path+'contact')
     def contact_us():
         return render_template('utils/contact_us.html', ies=ies), 200
 
