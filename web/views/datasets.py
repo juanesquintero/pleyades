@@ -143,7 +143,7 @@ def detalle():
     status_u, body_u = get('users')
 
     if status_p and status_f and status_u and conjunto:
-        return render_template(endopoint+'detalle.html', faculties=body_f, programs=body_p, users=body_u, c=conjunto)
+        return render_template(endopoint+'detail.html', faculties=body_f, programs=body_p, users=body_u, c=conjunto)
     elif not status_f and not status_p and not status_u:
         error = {**body_f, **body_p, **body_u}
     elif not status_f:
@@ -354,7 +354,7 @@ def preparar(conjunto=None):
 @Dataset.route('/ejecutar', methods=['POST'])
 @login_required
 def ejecutar(conjunto=None):
-    ejecucion_guardada = False
+    execution_saved = False
 
     if not conjunto:
         # Obtener Lo valores del form
@@ -413,7 +413,7 @@ def ejecutar(conjunto=None):
         results = {'error': error_spa}
         exito, pagina_error = save_ejecucion(
             execution, results, 'Fallida')
-        ejecucion_guardada = True
+        execution_saved = True
         if not exito:
             return pagina_error
         act_state = actualizar_state(nombre, 'Procesados')
@@ -479,7 +479,7 @@ def ejecutar(conjunto=None):
         resultados_model.pop('deserters')
         state_ejecucion = 'Fallida'
     # Guardar registro de ejecución en la BD
-    if not ejecucion_guardada:
+    if not execution_saved:
         exito, pagina_error = save_ejecucion(
             execution=execution, results=resultados_model, status=state_ejecucion)
         if not exito:

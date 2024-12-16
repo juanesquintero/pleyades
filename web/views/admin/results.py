@@ -115,7 +115,7 @@ def editar_ejecucion():
     body = dict(request.values)
     execution = literal_eval(body['execution'])
     execution['results'] = json.dumps(execution['results'])
-    return render_template('admin/'+endopoint+'ejecucion_editar.html', e=execution)
+    return render_template('admin/'+endopoint+'execution_editar.html', e=execution)
 
 
 @ResultAdmin.route('/executions/actualizar', methods=['POST'])
@@ -149,7 +149,7 @@ def actualizar_ejecucion():
 def borrar_ejecucion():
     body = dict(request.values)
     execution = literal_eval(body['execution'])
-    return render_template('admin/'+endopoint+'ejecucion_borrar.html', e=execution)
+    return render_template('admin/'+endopoint+'execution_borrar.html', e=execution)
 
 
 @ResultAdmin.route('/executions/remove', methods=['POST'])

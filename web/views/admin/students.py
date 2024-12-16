@@ -25,12 +25,12 @@ def detalle():
     status, body = get(f'desertion/students/program/{idprograma}')
     if status:
         return render_template(
-            'admin/'+endopoint+'detalle.html',
+            'admin/'+endopoint+'detail.html',
             students=body,
             programa=programa
         )
     return render_template(
-        'admin/'+endopoint+'detalle.html',
+        'admin/'+endopoint+'detail.html',
         students=[],
         error=body,
         programa=programa

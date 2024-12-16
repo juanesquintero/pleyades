@@ -52,7 +52,7 @@ def list_set(results, conjunto):
 
 @Result.route('/execution/detalle', methods=['POST'])
 @login_required
-def ejecucion_detalle():
+def execution_detalle():
     body = dict(request.values)
     execution = body['execution']
 
@@ -66,13 +66,13 @@ def ejecucion_detalle():
     if status and exito:
         del body['precision_model']
         del body['numero']
-        return render_template(endopoint+'ejecucion_detalle.html', deserters=deserters, results=body.pop('results'), execution=body)
+        return render_template(endopoint+'execution_detail.html', deserters=deserters, results=body.pop('results'), execution=body)
     elif status and not (exito):
         if body['status'] == 'Fallida':
             del body['precision_model']
             del body['numero']
             return render_template(
-                endopoint+'ejecucion_detalle.html',
+                endopoint+'execution_detail.html',
                 deserters=None,
                 results=body.pop('results'),
                 execution=body
@@ -97,7 +97,7 @@ def preparacion_detalle():
     if status:
         del body['numero']
         return render_template(
-            endopoint+'preparacion_detalle.html',
+            endopoint+'preparacion_detail.html',
             observaciones=body.pop('observaciones'),
             p=body
         )
