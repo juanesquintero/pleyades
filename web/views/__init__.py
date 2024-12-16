@@ -34,7 +34,7 @@ def add_route_config(app, base_path):
         return render_template('utils/contact_us.html', ies=ies), 200
 
 
-def add_app_routes(app):
+def add_routes(app):
     base_path = app.config.get('BASE_PATH')
 
     # Add route configuration
