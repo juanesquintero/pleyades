@@ -30,8 +30,8 @@ def add_route_config(app, base_path):
         return render_template('utils/home.html'), 200
 
     @app.route(base_path+'contact')
-    def contact_us():
-        return render_template('utils/contact_us.html', ies=ies), 200
+    def contact():
+        return render_template('utils/contact.html', ies=ies), 200
 
 
 def add_routes(app):
