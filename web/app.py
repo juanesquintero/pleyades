@@ -48,10 +48,7 @@ def create_app(config_object='config') -> Flask:
 
 
 # Entry point for Celery initialization
-def create_celery_app(config_object='config') -> Celery:
-    """Factory function to create a Celery instance."""
-    flask_app = create_app(config_object)
-
+def create_celery_app(flask_app: Flask) -> Celery:
     class FlaskTask(Task):
         """Initialize Celery with Flask App Context."""
 
