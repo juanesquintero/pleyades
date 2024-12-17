@@ -11,3 +11,5 @@ flask_session/
 web/ies.json
 sqlserver-data
 .idea
+!redis_data/.gitkeep
+redis_data/*
