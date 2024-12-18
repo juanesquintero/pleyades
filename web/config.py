@@ -4,6 +4,7 @@ import locale
 import logging
 import datetime
 from dotenv import load_dotenv
+from redis import Redis
 
 from utils.mixins import obtener_ies_config
 
@@ -27,23 +28,23 @@ error_logger.setLevel(logging.ERROR)
 file_handler = logging.FileHandler(os.getcwd()+'/logs/ERRORS.log')
 file_handler.setFormatter(logging.Formatter(LOG_FORMAT))
 error_logger.addHandler(file_handler)
-
 # MODEL ERROR LOGS
 model_logger = logging.getLogger('model_logger')
 model_logger.setLevel(logging.ERROR)
 file_handler = logging.FileHandler(os.getcwd()+'/logs/MODEL.log')
 file_handler.setFormatter(logging.Formatter(LOG_FORMAT))
 model_logger.addHandler(file_handler)
-
 ##### END LOGGING CONFIG #####
 
 
 ##### SESSION CONFIG #####
 SECRET_KEY = os.getenv('SESSION_KEY')
+SESSION_TYPE = 'redis'
+SESSION_REDIS = Redis.from_url('redis://redis:6379')
 SESSION_PERMANENT = True
-SESSION_TYPE = 'filesystem'
 PERMANENT_SESSION_LIFETIME = datetime.timedelta(hours=3)
-SESSION_FILE_THRESHOLD = 100
+SESSION_USE_SIGNER = True
+SESSION_KEY_PREFIX = 'PLEY_'
 #### END SESSION CONFIG #####
 
 
