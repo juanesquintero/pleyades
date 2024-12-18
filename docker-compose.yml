@@ -49,13 +49,27 @@ services:
       - 8001:80
       - 5679:5679
     links:
+      - redis
       - db
       - db-ies
     networks:
       - dev-net
     depends_on:
       - db
-    command: python -m debugpy --listen 0.0.0.0:5679 --wait-for-client run.py
+    command: python -m debugpy --listen 0.0.0.0:5679 --wait-for-client run.py --celery
+    # command: python -m debugpy --listen 0.0.0.0:5679 --wait-for-client run.py
+
+  redis:
+    image: redis:latest
+    container_name: pleyades-redis
+    restart: unless-stopped
+    ports:
+      - 6379:6379
+    volumes:
+      - ./redis_data:/data
+    networks:
+      - dev-net
+      - deploy-net
 
   db:
     container_name: pleyades-db
