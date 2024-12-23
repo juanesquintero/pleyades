@@ -1,3 +1,4 @@
+from flask import Flask
 # Import controllers
 from views.index import Index
 from views.errors import Error
@@ -11,7 +12,7 @@ from flask import session
 import datetime
 
 
-def add_route_config(app):
+def add_route_config(app: Flask):
     excel_enabled = app.config.get('EXCEL_ENABLED')
     ies = app.config.get('IES')
 
@@ -26,23 +27,21 @@ def add_route_config(app):
         app.permanent_session_lifetime = datetime.timedelta(hours=3)
 
 
-def add_routes(app):
-    base_path = app.config.get('BASE_PATH')
-
+def add_routes(app: Flask):
     # Add route configuration
     add_route_config(app)
 
     # Register routes
-    app.register_blueprint(Index, url_prefix=base_path)
-    app.register_blueprint(Error, url_prefix=base_path)
-    app.register_blueprint(Auth, url_prefix=base_path)
-    app.register_blueprint(Analista, url_prefix=base_path)
-    app.register_blueprint(Faculty, url_prefix=base_path+'admin/faculties')
-    app.register_blueprint(Program, url_prefix=base_path+'admin/programs')
-    app.register_blueprint(Student, url_prefix=base_path+'admin/students')
-    app.register_blueprint(User, url_prefix=base_path+'admin/users')
-    app.register_blueprint(Dataset, url_prefix=base_path+'datasets')
-    app.register_blueprint(Result, url_prefix=base_path+'results')
-    app.register_blueprint(DatasetAdmin, url_prefix=base_path+'admin/datasets')
-    app.register_blueprint(ResultAdmin, url_prefix=base_path+'admin/results')
-    # app.register_blueprint(Tablero, url_prefix=base_path+'_deprecado/#TABLEROS')
+    app.register_blueprint(Index)
+    app.register_blueprint(Error)
+    app.register_blueprint(Auth)
+    app.register_blueprint(Analista, )
+    app.register_blueprint(Faculty, url_prefix='/admin/faculties')
+    app.register_blueprint(Program, url_prefix='/admin/programs')
+    app.register_blueprint(Student, url_prefix='/admin/students')
+    app.register_blueprint(User, url_prefix='/admin/users')
+    app.register_blueprint(Dataset, url_prefix='/datasets')
+    app.register_blueprint(Result, url_prefix='/results')
+    app.register_blueprint(DatasetAdmin, url_prefix='/admin/datasets')
+    app.register_blueprint(ResultAdmin, url_prefix='/admin/results')
+    # app.register_blueprint(Tablero, url_prefix='#deprecated/#dashboards')
