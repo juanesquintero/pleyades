@@ -30,7 +30,6 @@ upload_folder = os.getcwd()+'/uploads'
 translator = GoogleTranslator(source='en', target='es')
 
 
-@Dataset.route('')
 @Dataset.route('/')
 @Dataset.route('/crudos')
 @Dataset.route('/crudos/')
