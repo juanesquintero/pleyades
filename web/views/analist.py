@@ -33,7 +33,7 @@ def models():
     success, body = get_models(model)
 
     if not success:
-        flash('User aún no tiene models de deserción', 'warning')
+        flash('User does not have  models de deserción', 'warning')
         body = []
 
     return render_template(
@@ -68,7 +68,7 @@ def trainings():
     success, body = get_models(model)
 
     if not success:
-        flash('User aún no tiene trainings', 'info')
+        flash('User does not have trainings', 'info')
         body = []
 
     return render_template(
@@ -85,7 +85,7 @@ def predictions():
     success, body = get_models(model)
 
     if not success:
-        flash('User aún no tiene predictions', 'info')
+        flash('User does not have predictions', 'info')
         body = []
 
     return render_template(
