@@ -1,4 +1,4 @@
-FROM python:3.12-slim as base
+FROM python:3.12-slim AS base
 
 WORKDIR /app
 
@@ -30,11 +30,18 @@ COPY . /app
 # Install requirements
 RUN pip install --no-cache-dir --no-build-isolation --upgrade --default-timeout=300 -r /app/requirements.txt
 
+WORKDIR /app
+
 # Expose port
 EXPOSE 80
 
 
 #######################  DEVELOPMENT  #######################
-FROM base as development
+FROM base AS development
+
+ENV PYTHONUNBUFFERED=1
+ENV FLASK_DEBUG=1
+ENV FLASK_APP=run.py
+ENV TEMPLATES_AUTO_RELOAD=1
 
 RUN pip install --no-cache-dir --upgrade  -r /app/requirements-dev.txt
