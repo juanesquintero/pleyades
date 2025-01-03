@@ -13,3 +13,4 @@ sqlserver-data
 .idea
 !redis_data/.gitkeep
 redis_data/*
+.codegpt
