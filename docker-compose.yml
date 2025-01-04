@@ -3,40 +3,41 @@ name: pleyades
 services:
   web:
     container_name: pleyades-web_dev
+    restart: on-failure
+    image: pleyades-web:1.0.0
     build:
       context: ./web
       dockerfile: ./Dockerfile
       target: development
-    image: pleyades-web:1.0.0
     volumes:
       - ./ies.json:/app/ies.json
       - ./web:/app
     env_file:
       - ./web/.env
     environment:
-      - FLASK_DEBUG=1
-      - FLASK_APP=run.py
-      - TEMPLATES_AUTO_RELOAD=1
       - CLI_IES_NAME=${IES_CLIENT}
     ports:
       - 5001:80
       - 5678:5678
     links:
-      - api:api
+      - api
+      - redis
     networks:
       - dev-net
     depends_on:
       - api
-    working_dir: /app
-    command: python -m debugpy --listen 0.0.0.0:5678 --wait-for-client run.py
+      - celery
+    command: python -m debugpy --listen 0.0.0.0:5679 --wait-for-client run.py  
+    # python run.py --celery
 
   api:
     container_name: pleyades-api_dev
+    restart: on-failure
+    image: pleyades-api:1.0.0
     build:
       context: ./api
       dockerfile: ./Dockerfile
       target: development
-    image: pleyades-api:1.0.0
     volumes:
       - ./api:/app
     env_file:
@@ -49,7 +50,6 @@ services:
       - 8001:80
       - 5679:5679
     links:
-      - redis
       - db
       - db-ies
     networks:
@@ -57,14 +57,31 @@ services:
     depends_on:
       - db
     command: python -m debugpy --listen 0.0.0.0:5679 --wait-for-client run.py --celery
-    # command: python -m debugpy --listen 0.0.0.0:5679 --wait-for-client run.py
+
+  celery:
+    container_name: pleyades-celery
+    restart: on-failure
+    image: pleyades-web:1.0.0
+    volumes:
+      - ./ies.json:/app/ies.json
+      - ./web:/app
+    env_file:
+      - ./web/.env
+    environment:
+      - CLI_IES_NAME=${IES_CLIENT}
+    links:
+      - redis
+    networks:
+      - dev-net
+      - deploy-net
+    depends_on:
+      - redis
+    command: python run.py --celery
 
   redis:
-    image: redis:latest
     container_name: pleyades-redis
-    restart: unless-stopped
-    ports:
-      - 6379:6379
+    restart: on-failure
+    image: redis:latest
     volumes:
       - ./redis_data:/data
     networks:
@@ -73,6 +90,7 @@ services:
 
   db:
     container_name: pleyades-db
+    restart: on-failure
     image: mysql:8.0.3
     cap_add:
       - SYS_NICE
@@ -89,11 +107,12 @@ services:
       - deploy-net
 
   db-ies:
+    container_name: pleyades-db-ies
+    restart: on-failure
+    image: pleyades-db-ies:1.0.0
     build:
       context: ./api/db/ies
       dockerfile: ./Dockerfile
-    image: pleyades-db-ies:1.0.0
-    container_name: pleyades-db-ies
     healthcheck:
       test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "$MSSQL_SA_PASSWORD" -Q "SELECT 1"
       interval: 10s
@@ -109,9 +128,9 @@ services:
       - dev-net
       - deploy-net
 
-
   adminer:
     container_name: pleyades-adminer
+    restart: on-failure
     image: adminer:4.8.1
     ports:
       - 8080:8080
