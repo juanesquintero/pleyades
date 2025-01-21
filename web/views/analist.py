@@ -204,13 +204,13 @@ def get_periods_program(programa):
     return jsonify([])
 
 
-def get_models(nombre=None, conjunto=None):
-    user = session.get('user', {'correo': ''}).get('correo')
-    endopoint = f'executions/ejecutor/{user}'
-    if nombre:
-        endopoint += f'?nombre={nombre}'
-    elif conjunto:
-        endopoint += f'?conjunto={conjunto}'
+def get_models(name=None, dataset=None):
+    user = session.get('user', {'email': ''}).get('email')
+    endopoint = f'executions/executor/{user}'
+    if name:
+        endopoint += f'?name={name}'
+    elif dataset:
+        endopoint += f'?dataset={dataset}'
     return get(endopoint)
 
 
@@ -220,7 +220,7 @@ def form_train():
     status_p, body_p = get('programs')
 
     if status_f and status_p and periods:
-        return render_template(endopoint+'crear.html', faculties=body_f, programs=body_p)
+        return render_template(endopoint+'create.html', faculties=body_f, programs=body_p)
 
     if not status_f and not status_p:
         error = {**body_f, **body_p}
