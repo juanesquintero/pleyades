@@ -53,20 +53,20 @@ def get_by_set(data_set):
     return jsonify(query)
 
 
-@Execution.route('/ejecutor/<ejecutor>')
+@Execution.route('/executor/<executor>')
 @jwt_required()
-def get_by_usuario(ejecutor):
+def get_by_usuario(executor):
     data_set = request.args.get('data_set')
     name = request.args.get('name')
-    if not exists_usuario(ejecutor):
+    if not exists_usuario(executor):
         return {'error': 'usuario no existe'}, 400
 
     if name:
-        query = execution_model.get_ejecutor_one(ejecutor, name)
+        query = execution_model.get_ejecutor_one(executor, name)
     elif data_set:
-        query = execution_model.get_ejecutor_set(ejecutor, data_set)
+        query = execution_model.get_ejecutor_set(executor, data_set)
     else:
-        query = execution_model.get_ejecutor(ejecutor)
+        query = execution_model.get_ejecutor(executor)
 
     ex = exception(query)
     if ex:
@@ -102,7 +102,7 @@ def post():
     if not validate_post_schema(body):
         return {'error': 'invalid body content'}, 400
     # sql validations
-    if not exists_usuario(body['ejecutor']):
+    if not exists_usuario(body['executor']):
         return {'error': 'usuario no existe'}, 404
     if not exists_set(body['data_set']):
         return {'error': 'data_set no existe'}, 404

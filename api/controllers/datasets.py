@@ -80,7 +80,7 @@ def get_by_program(program):
 def get_by_encargado(manager):
     status = request.args.get('status')
     if status:
-        if status.lower().strip() in ['crudos', 'procesados', 'en proceso']:
+        if status.lower().strip() in ['raw', 'processed', 'in progress']:
             query = dataset_model.get_encargado(manager, status)
         else:
             return {'msg': 'Estado invalido'}, 404
@@ -123,7 +123,7 @@ def post():
         return {'error': 'usuario no existe'}, 400
     if not exists_program(body['program']):
         return {'error': 'program no existe'}, 400
-    if not body['status'] in ['Crudos', 'Procesados', 'En Proceso']:
+    if not body['status'] in ['Raw', 'Processed', 'In Progress']:
         return {'error': 'status invalido'}, 400
     # Insert
     insert = dataset_model.insert(body)
@@ -151,7 +151,7 @@ def name():
         return {'error': 'usuario no existe'}, 400
     if not exists_program(body['program']):
         return {'error': 'program no existe'}, 400
-    if not body['status'] in ['Crudos', 'Procesados', 'En Proceso']:
+    if not body['status'] in ['Raw', 'Processed', 'In Progress']:
         return {'error': 'status invalido'}, 400
     if not body['tipo'] in ['consulta', 'excel']:
         return {'error': 'tipo invalido'}, 400
@@ -242,7 +242,7 @@ def put(name):
     if not exists(name):
         return {'error': 'Dataset no existe'}, 404
     if 'status' in body.keys():
-        if not body['status'] in ['Crudos', 'Procesados', 'En Proceso']:
+        if not body['status'] in ['Raw', 'Processed', 'In Progress']:
             return {'error': 'status invalido'}, 400
     if 'manager' in body.keys():
         if not exists_usuario(body['manager']):

@@ -134,8 +134,8 @@ def exists(email):
     query = user_model.get_all()
     if exception(query):
         return False
-    lista = map(lambda u: u['email'], query)
-    return True if email in lista else False
+    user_list = map(lambda user: user.get('email'), query)
+    return bool(email in user_list)
 
 
 def auth_login(email, password):
