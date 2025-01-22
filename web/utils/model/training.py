@@ -12,7 +12,7 @@ def execute_model(data, conjunto, no_desertion=False):
 
     basic_info = {
         'idprograma': int(data['idprograma'][0]),
-        'programa': str(data['programa'][0]),
+        'program': str(data['program'][0]),
         'idfacultad': int(data['idfacultad'][0]),
         'faculty': str(data['faculty'][0]),
         'tipo': 'Entrenamiento',

@@ -19,18 +19,18 @@ def get_IES_period(periodo: int):
     return validate(status, body, True)
 
 
-def get_IES_program(programa: int):
-    status, body = get(ies_route+'programa/{}'.format(programa))
+def get_IES_program(program: int):
+    status, body = get(ies_route+'program/{}'.format(program))
     return validate(status, body, True)
 
 
-def get_IES_period_program(periodo: int, programa: int):
-    status, body = get(ies_route+'programa/{}/{}'.format(programa, periodo))
+def get_IES_period_program(periodo: int, program: int):
+    status, body = get(ies_route+'program/{}/{}'.format(program, periodo))
     return validate(status, body, True)
 
 
-def check_IES_period_program(periodo: int, programa: int):
-    status, body = get(ies_route+'programa/{}/{}'.format(programa, periodo))
+def check_IES_period_program(periodo: int, program: int):
+    status, body = get(ies_route+'program/{}/{}'.format(program, periodo))
     return status
 
 
@@ -49,20 +49,20 @@ def get_programs_by_period(periodo: int):
     return validate(status, body)
 
 
-def get_program(programa: int):
-    status, body = get(ies_route+'programa/{}'.format(programa))
+def get_program(program: int):
+    status, body = get(ies_route+'program/{}'.format(program))
     return validate(status, body, True)
 
 ########################################################### Vista VWDATADESERCION de students ##########################################################
 
 
-def get_students_period_program(periodo: int, programa: int):
-    status, body = get(f'{students_route}programa/{programa}/{periodo}')
+def get_students_period_program(periodo: int, program: int):
+    status, body = get(f'{students_route}program/{program}/{periodo}')
     return validate(status, body, True)
 
 
-def get_students_program(programa: str):
-    status, body = get(f'{students_route}programa/{programa}')
+def get_students_program(program: str):
+    status, body = get(f'{students_route}program/{program}')
     return validate(status, body, True)
 
 

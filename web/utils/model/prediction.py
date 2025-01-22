@@ -21,7 +21,7 @@ def predict(data_a_predict, period_a_predict, basic_info):
     # Eliminacion depuracion de columns
     data_a_predict = elimination_predict(data_a_predict)
 
-    # Obtener el clasificador como archivo local
+    # Obtener el clasificador como file local
     nombre_model = basic_info.get('model')
     mejor_clasificador = load_classifer(nombre_model)
 
@@ -71,7 +71,7 @@ def predict_classifier(data_a_predict, period_a_predict, mejor_clasificador):
         )
     except Exception as excep:
         model_logger.error(excep)
-        flash('Por favor intente con otro periodo o programa', 'warning')
+        flash('Por favor intente con otro periodo o program', 'warning')
         raise Exception('<b>Ocurrió un error al ejecutar la predicción!</b>')
     total_students_analizados = len(predc_sem_act['documento'].unique())
     potenciales_desertores = predc_sem_act.query('prediccion == 1 & desertor == 0').drop_duplicates(

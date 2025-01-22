@@ -18,10 +18,10 @@ msg_error = {'msg': 'Not found'}, 404
 ##########################################################  VWDATADESERCION ##########################################################
 
 
-@Student.route('/set/<int:programa>/<int:periodoInicio>/<int:periodoFin>')
+@Student.route('/dataset/<int:program>/<int:periodoInicio>/<int:periodoFin>')
 @jwt_required()
-def get_set_estudiantes(programa, periodoInicio, periodoFin):
-    sql = f'SELECT * FROM {table} WHERE idprograma={programa} AND REGISTRO >= {
+def get_set_estudiantes(program, periodoInicio, periodoFin):
+    sql = f'SELECT * FROM {table} WHERE idprograma={program} AND REGISTRO >= {
         periodoInicio} AND REGISTRO <= {periodoFin} ORDER BY REGISTRO;'
     query = db.select(sql)
     ex = exception(query)
@@ -45,10 +45,10 @@ def get_period(periodo):
     return jsonify(_format(query))
 
 
-@Student.route('/programa/<int:programa>')
+@Student.route('/program/<int:program>')
 @jwt_required()
-def get_program(programa):
-    sql = f"SELECT * FROM {table} WHERE idprograma={programa};"
+def get_program(program):
+    sql = f"SELECT * FROM {table} WHERE idprograma={program};"
     query = db.select(sql)
     ex = exception(query)
     if ex:
@@ -58,11 +58,11 @@ def get_program(programa):
     return jsonify(_format(query))
 
 
-@Student.route('/programa/<int:programa>/<int:periodo>')
+@Student.route('/program/<int:program>/<int:periodo>')
 @jwt_required()
-def get_period_program(programa, periodo):
+def get_period_program(program, periodo):
     sql = f'SELECT * FROM {table} WHERE REGISTRO={
-        periodo} and idprograma={programa}'
+        periodo} and idprograma={program}'
     query = db.select(sql)
     ex = exception(query)
     if ex:
@@ -104,11 +104,11 @@ def get_periods():
     return jsonify(_format(periods))
 
 
-@Student.route('/periods/programa/<int:programa>')
+@Student.route('/periods/program/<int:program>')
 @jwt_required()
-def get_periods_program(programa):
+def get_periods_program(program):
     # Obtener datos desde la bd SQL server
-    sql = f'SELECT DISTINCT REGISTRO FROM {table} WHERE idprograma={programa};'
+    sql = f'SELECT DISTINCT REGISTRO FROM {table} WHERE idprograma={program};'
     query = db.select(sql)
 
     ex = exception(query)
@@ -130,7 +130,7 @@ def get_periods_program(programa):
 @jwt_required()
 def get_programs():
     # Obtener datos desde la bd SQL server
-    sql = f'SELECT DISTINCT idprograma, programa FROM {table};'
+    sql = f'SELECT DISTINCT idprograma, program FROM {table};'
     query = db.select(sql)
     ex = exception(query)
     if ex:
@@ -139,7 +139,7 @@ def get_programs():
         return msg_error
 
     programs_df = pd.DataFrame(query).sort_values(
-        by='programa', ascending=True
+        by='program', ascending=True
     )
     programs_df['idprograma'] = programs_df['idprograma'].astype(int)
     programs = json.loads(programs_df.to_json(orient='records'))

@@ -47,7 +47,7 @@ def get_list(results):
 
 
 def list_set(results, conjunto):
-    status, body = get(results+'/set/'+conjunto)
+    status, body = get(results+'/dataset/'+conjunto)
     if status:
         return render_template('admin/'+endopoint+results+'.html', results=body)
     else:
@@ -65,9 +65,9 @@ def editar_preparation():
     return render_template('admin/'+endopoint+'preparation_editar.html', p=preparation)
 
 
-@ResultAdmin.route('/preparations/actualizar', methods=['POST'])
+@ResultAdmin.route('/preparations/update', methods=['POST'])
 @only_admin
-def actualizar_preparation():
+def update_preparation():
     preparation = dict(request.values)
     nombre = preparation.pop('nombre')
     if preparation['observaciones'].lower().strip() in ['none', 'nulo', 'null', '']:
@@ -78,13 +78,13 @@ def actualizar_preparation():
                 preparation['observaciones'].replace("'", '"'))
             preparation['observaciones'] = dict(preparation['observaciones'])
         except:
-            return render_template('utils/message.html', message='No se pudo actualizar la preparación', submensaje='Error con el campo observaciones no es un json o nulo')
+            return render_template('utils/message.html', message='No se pudo update la preparación', submensaje='Error con el campo observaciones no es un json o nulo')
 
     status, body = put('preparations/'+nombre, preparation)
     if status:
         return redirect(url_for('ResultAdmin.preparations'))
     else:
-        return render_template('utils/message.html', message='No se pudo actualizar la preparación', submensaje=body)
+        return render_template('utils/message.html', message='No se pudo update la preparación', submensaje=body)
 
 
 @ResultAdmin.route('/preparations/delete', methods=['POST'])
@@ -118,9 +118,9 @@ def editar_execution():
     return render_template('admin/'+endopoint+'execution_editar.html', e=execution)
 
 
-@ResultAdmin.route('/executions/actualizar', methods=['POST'])
+@ResultAdmin.route('/executions/update', methods=['POST'])
 @only_admin
-def actualizar_execution():
+def update_execution():
     execution = dict(request.values)
     nombre = execution.pop('nombre')
     try:
@@ -130,7 +130,7 @@ def actualizar_execution():
     except:
         return render_template(
             'utils/message.html',
-            message='No se pudo actualizar la ejecución', submensaje='Error con el campo results no es un json'
+            message='No se pudo update la ejecución', submensaje='Error con el campo results no es un json'
         )
 
     status, body = put('executions/'+nombre, execution)
@@ -139,7 +139,7 @@ def actualizar_execution():
 
     return render_template(
         'utils/message.html',
-        message='No se pudo actualizar la ejecución',
+        message='No se pudo update la ejecución',
         submensaje=body
     )
 
@@ -159,7 +159,7 @@ def remove_execution():
     nombre = execution.pop('nombre')
     status, body = delete('executions/'+nombre)
     if status:
-        # Borrar archivo
+        # Borrar file
         if execution['status'] == 'Exitosa':
             exito, pagina_error = remove_file(
                 upload_folder+'/deserters/'+'D '+nombre+'.json')

@@ -23,12 +23,12 @@
                 </select>
             </div>
             <div class="col-6">
-                <label for="period_select" class="text-white">Selecciona un programa:</label>
+                <label for="period_select" class="text-white">Selecciona un program:</label>
                 <br>
                 <select id="program_select" class="form-control-sm w-100">
                     {% for p in programs_list %}
-                    <option value="{{p.idprograma}}" {% if p.idprograma|string==programa|string %} selected {% endif %}>
-                        {{p.programa}}
+                    <option value="{{p.idprograma}}" {% if p.idprograma|string==program|string %} selected {% endif %}>
+                        {{p.program}}
                     </option>
                     {% endfor %}
                 </select>
@@ -36,15 +36,15 @@
         </div>
     </div>
     <script>
-        var programa = '{{ programa }}';
+        var program = '{{ program }}';
         var periodo = '{{ periodo }}';
         $('#period_select').on('change', function () {
             openModal();
-            window.location.href = "{{url_for('Tablero.program_dashboard')}}"  + '?programa=' + programa + '&periodo=' + this.value;
+            window.location.href = "{{url_for('Tablero.program_dashboard')}}"  + '?program=' + program + '&periodo=' + this.value;
         })
         $('#program_select').on('change', function () {
             openModal();
-            window.location.href = "{{url_for('Tablero.program_dashboard')}}" +'?programa=' + this.value + '&periodo=' + periodo;
+            window.location.href = "{{url_for('Tablero.program_dashboard')}}" +'?program=' + this.value + '&periodo=' + periodo;
         })
     </script>
 </div>
@@ -61,7 +61,7 @@
                 NO HAY DATOS DE ESTE PROGRAMA EN EL PERÍODO SELECCIONADO...
             </h6>
             <br>
-            Intenta con otro período o programa
+            Intenta con otro período o program
         </div>
     </center>
     {% else %}

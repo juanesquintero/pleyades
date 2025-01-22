@@ -85,8 +85,8 @@
             <div class="col-sm-11">
                 <label>Program</label>
                 {% for p in programs %}
-                {% if c.programa==p.codigo %}
-                <input type="text" class="form-control" maxlength="250" value="{{c.programa}}   {{p.nombre}}" disabled>
+                {% if c.program==p.codigo %}
+                <input type="text" class="form-control" maxlength="250" value="{{c.program}}   {{p.nombre}}" disabled>
                 {% endif %}
                 {% endfor %}
             </div>

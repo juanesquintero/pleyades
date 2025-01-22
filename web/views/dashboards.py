@@ -13,7 +13,7 @@ import utils.dashboards.pais as Pais
 import utils.dashboards.region as Region
 import utils.dashboards.data_ies as DataIES
 from utils.dashboards.ies import IES
-from utils.dashboards.programa import Program
+from utils.dashboards.program import Program
 import utils.dashboards.estudiante as Estudiante_file
 
 
@@ -255,7 +255,7 @@ def ies_dashboard():
 ############################################################## NIVEL PROGRAMA ################################################################
 
 
-@Tablero.route('/programa')
+@Tablero.route('/program')
 @login_required
 def program_dashboard():
 
@@ -263,7 +263,7 @@ def program_dashboard():
     programs = DataIES.get_programs_origen()
 
     periodo = request.args.get('periodo')
-    programa = request.args.get('programa')
+    program = request.args.get('program')
 
     try:
         periodo = int(periodo)
@@ -271,26 +271,26 @@ def program_dashboard():
         periodo = max(periods)
 
     programs_id = [str(p['idprograma']) for p in programs]
-    if not (programa in programs_id):
-        programa = programs[0]
+    if not (program in programs_id):
+        program = programs[0]
     else:
         for p in programs:
-            if str(p['idprograma']) == programa:
-                programa = p
+            if str(p['idprograma']) == program:
+                program = p
 
-    if not DataIES.check_IES_period_program(periodo, programa['idprograma']):
+    if not DataIES.check_IES_period_program(periodo, program['idprograma']):
         return render_template(
-            endopoint+'programa.html',
+            endopoint+'program.html',
             notfound=True,
             periodo=int(periodo),
-            programa=programa['idprograma'],
-            nombre_program=programa['programa'],
+            program=program['idprograma'],
+            nombre_program=program['program'],
             periodos_list=periods,
             programs_list=programs,
         )
 
     program_graph = Program(
-        periodo=periodo, programa=programa['idprograma'], periods=periods)
+        periodo=periodo, program=program['idprograma'], periods=periods)
 
     # Indicadores Program
     indicadores = program_graph.indicadores()
@@ -316,11 +316,11 @@ def program_dashboard():
         periodos_size = 0
 
     return render_template(
-        endopoint+'programa.html',
+        endopoint+'program.html',
         periodo=int(periodo),
-        programa=programa['idprograma'],
+        program=program['idprograma'],
 
-        nombre_program=programa['programa'],
+        nombre_program=program['program'],
         nombre_ies=os.getenv('CLI_IES_NAME'),
         periodos_list=periods,
         programs_list=programs,
@@ -342,20 +342,20 @@ def student_dashboard():
     programs = DataIES.get_programs()
 
     periodo = request.args.get('periodo')
-    programa = request.args.get('programa')
+    program = request.args.get('program')
     documento = request.args.get('documento')
 
-    # Obtener la lista de students de un programa
-    if programa and not documento:
-        students_program = Estudiante_file.students_program(programa)
+    # Obtener la lista de students de un program
+    if program and not documento:
+        students_program = Estudiante_file.students_program(program)
         return render_template(
             endopoint+'students_program.html',
             students_list=students_program,
-            programa=programa,
+            program=program,
             programs_list=programs,
         )
 
-    # Buscar estudiante por programa o cedula
+    # Buscar estudiante por program o cedula
     if not documento:
         return render_template(
             endopoint+'buscar_estudiante.html',
@@ -364,22 +364,22 @@ def student_dashboard():
         )
 
     for p in programs:
-        if str(p['idprograma']) == str(programa):
-            programa = p
+        if str(p['idprograma']) == str(program):
+            program = p
 
-    if programa and not (isinstance(programa, dict)):
+    if program and not (isinstance(program, dict)):
         return render_template(
             endopoint+'estudiante.html',
             estudiante=None,
             documento=documento,
             periodo=periodo,
-            programa=programa,
+            program=program,
         )
 
     try:
         # Obtener los graficos del students por documento identificacion
         estudiante = Student(identificacion=documento,
-                             programa=programa, periodo=periodo)
+                             program=program, periodo=periodo)
 
         info, periodos_estudiante, programs_estudiante = estudiante.get_estudiante()
 
@@ -400,16 +400,16 @@ def student_dashboard():
             endopoint+'estudiante.html',
             estudiante=None,
             documento=documento,
-            programa=programa,
+            program=program,
             periodo=periodo,
         )
 
     # Validar los periods y programs
     if info:
-        if not programa:
+        if not program:
             for p in programs:
                 if str(p['idprograma']) == str(info['idprograma']):
-                    programa = p
+                    program = p
         if not periodo:
             periodo = int(info['REGISTRO'])
 
@@ -422,7 +422,7 @@ def student_dashboard():
         estudiante=info,
 
         documento=documento,
-        programa=programa,
+        program=program,
         periodo=periodo,
 
         serie_promedio_plot=serie_promedio,

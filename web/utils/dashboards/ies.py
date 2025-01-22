@@ -272,7 +272,7 @@ class IES:
             data_facultyes = self.df_IES.dropna(subset=['faculty'], axis=0)
 
             data_facultyes = data_facultyes[[
-                'faculty', 'programa', 'program_nombre_corto', 'mat_total', 'admi_total', 'insc_total', 'mat_nuevos_total']]
+                'faculty', 'program', 'program_nombre_corto', 'mat_total', 'admi_total', 'insc_total', 'mat_nuevos_total']]
             data_facultyes = data_facultyes.groupby(
                 ['faculty'], as_index=False).sum()
             data_facultyes = data_facultyes.sort_values(
@@ -407,7 +407,7 @@ class IES:
                 subset=['faculty'], axis=0)
 
             data_facultyes = data_facultyes[[
-                'faculty', 'programa', 'program_nombre_corto', 'mat_total', 'admi_total', 'insc_total', 'mat_nuevos_total']]
+                'faculty', 'program', 'program_nombre_corto', 'mat_total', 'admi_total', 'insc_total', 'mat_nuevos_total']]
             data_facultyes = data_facultyes.groupby(
                 ['faculty'], as_index=False).sum()
             data_facultyes = data_facultyes.sort_values(
@@ -465,7 +465,7 @@ class IES:
             # Recorrer arreglo de programs y agregar cada fila con graficos
             cont = 0
             for i, p in enumerate(list_programs):
-                # Filtrar por programa
+                # Filtrar por program
                 data = Data.get_program(p['idprograma']).reset_index()
 
                 # Filtrar por periodo actual
@@ -535,7 +535,7 @@ class IES:
             # Recorrer arreglo de programs y agregar cada fila con graficos
             for i, p in enumerate(list_programs):
                 data = Data.get_program(p['idprograma'])
-                data = data[['periodo', 'programa',
+                data = data[['periodo', 'program',
                              'program_nombre_corto', 'idprograma', 'desertion']]
                 data = data.dropna().reset_index()
                 # data['periodo'] = data['periodo'].astype(str)

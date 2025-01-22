@@ -1,4 +1,4 @@
-from flask import request, jsonify, Blueprint
+from flask import jsonify, Blueprint
 from db.ies.db import DB
 from flask_jwt_extended import jwt_required
 from utils.utils import exception, _format
@@ -24,7 +24,7 @@ def get_period(periodo: int):
     ex = exception(query)
     if ex:
         return ex
-    if not (query):
+    if not query:
         return msg_error
     return jsonify(_format(query))
 
@@ -37,34 +37,34 @@ def get_totales_period(periodo: int):
     ex = exception(query)
     if ex:
         return ex
-    if not (query):
+    if not query:
         return msg_error
     return jsonify(_format(query))
 
 
-@IES.route('/programa/<int:programa>')
+@IES.route('/program/<int:program>')
 @jwt_required()
-def get_program(programa: int):
-    sql = "SELECT * FROM {} WHERE idprograma={};".format(table, programa)
+def get_program(program: int):
+    sql = "SELECT * FROM {} WHERE idprograma={};".format(table, program)
     query = db.select(sql)
     ex = exception(query)
     if ex:
         return ex
-    if not (query):
+    if not query:
         return msg_error
     return jsonify(_format(query))
 
 
-@IES.route('/programa/<int:programa>/<int:periodo>')
+@IES.route('/program/<int:program>/<int:periodo>')
 @jwt_required()
-def get_period_program(programa: int, periodo: int):
+def get_period_program(program: int, periodo: int):
     sql = "SELECT * FROM {} WHERE periodo={} and idprograma={}".format(
-        table, periodo, programa)
+        table, periodo, program)
     query = db.select(sql)
     ex = exception(query)
     if ex:
         return ex
-    if not (query):
+    if not query:
         return msg_error
     return jsonify(_format(query))
 
@@ -82,7 +82,7 @@ def get_periods():
         return msg_error
     periodos_list = [int(p['periodo']) for p in query]
     periods = sorted(periodos_list)
-    if not (periods):
+    if not periods:
         return msg_error
     return jsonify(_format(periods))
 
@@ -99,10 +99,12 @@ def get_programs():
     if not query:
         return msg_error
     programs_df = pd.DataFrame(query).sort_values(
-        by='programa', ascending=True)
+        by='programa',
+        ascending=True
+    )
     programs_df['idprograma'] = programs_df['idprograma'].astype(int)
     programs = json.loads(programs_df.to_json(orient='records'))
-    if not (programs):
+    if not programs:
         return msg_error
     return jsonify(_format(programs))
 
@@ -120,9 +122,11 @@ def get_programs_by_period(periodo: int):
     if not query:
         return msg_error
     programs_df = pd.DataFrame(query).sort_values(
-        by='programa', ascending=True)
+        by='programa',
+        ascending=True
+    )
     programs_df['idprograma'] = programs_df['idprograma'].astype(int)
     programs = json.loads(programs_df.to_json(orient='records'))
-    if not (programs):
+    if not programs:
         return msg_error
     return jsonify(_format(programs))

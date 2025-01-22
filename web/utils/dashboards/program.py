@@ -97,24 +97,24 @@ def barras_period(df, p, fig, i, azules):
 
 class Program:
 
-    def __init__(self, periodo: int, programa: int, periods: list):
-        self.df_IES = Data.get_IES_program(programa)
-        self.df_ESTUDIANTES_total = Data.get_students_program(programa)
+    def __init__(self, periodo: int, program: int, periods: list):
+        self.df_IES = Data.get_IES_program(program)
+        self.df_ESTUDIANTES_total = Data.get_students_program(program)
         self.df_ESTUDIANTES = self.df_ESTUDIANTES_total.query(
             "REGISTRO == '{}'".format(periodo))
         self.periodos_list = periods
         self.periodo = periodo
-        self.programa = programa
+        self.program = program
 
         # Obtener data anterior
         index_period_actual = self.periodos_list.index(self.periodo)
-        self.data_actual = Data.get_IES_period_program(periodo, programa)
+        self.data_actual = Data.get_IES_period_program(periodo, program)
 
         if 0 <= index_period_actual <= len(self.periodos_list):
             period_anterior = self.periodos_list[index_period_actual-1]
-            if Data.check_IES_period_program(period_anterior, programa):
+            if Data.check_IES_period_program(period_anterior, program):
                 self.data_anterior = Data.get_IES_period_program(
-                    period_anterior, programa)
+                    period_anterior, program)
             else:
                 self.data_anterior = self.data_actual
         else:
@@ -123,7 +123,7 @@ class Program:
     ############################################################### INDICADORES PROGRAMA ####################################################################
     def indicadores(self):
         try:
-            # Dataframe del programa
+            # Dataframe del program
             data_anterior = self.data_anterior
             data_actual = self.data_actual
 
@@ -168,7 +168,7 @@ class Program:
     ############################################################### RADIAL MATRICULA ####################################################################
     def radial(self):
         try:
-            # Dataframe del programa
+            # Dataframe del program
             data_ies = self.df_IES
 
             data = data_ies.dropna(subset=['periodo', 'mat_total'], axis=0)
@@ -283,8 +283,8 @@ class Program:
     ############################################################### BARRAS DESERTORES ####################################################################
     def barras(self):
         try:
-            # Dataframe del programa
-            # TODO hacer el filtro por codigo o nombre de programa en la tabla VWDATADESERCION
+            # Dataframe del program
+            # TODO hacer el filtro por codigo o nombre de program en la tabla VWDATADESERCION
             data = pd.DataFrame(self.df_ESTUDIANTES_total.loc[:, [
                                 'semestre', 'REGISTRO', 'desertor']])
             data[['desertor']] = data[['desertor']
@@ -310,7 +310,7 @@ class Program:
                 # horizontal_spacing = 0.3,
             )
 
-            # Definir el mayor numeto de niveles-semestres para ese programa en todos los periods
+            # Definir el mayor numeto de niveles-semestres para ese program en todos los periods
             niveles = []
             for p in periods:
                 data_period = data.query("REGISTRO == '{}'".format(p))

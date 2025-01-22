@@ -38,12 +38,12 @@ def get_one(name):
     return jsonify(query[0])
 
 
-@Preparation.route('/set/<set>')
+@Preparation.route('/dataset/<dataset>')
 @jwt_required()
-def get_by_set(set):
-    if not exists_set(set):
-        return {'error': 'set no existe'}, 400
-    query = preparation_model.get_set(set)
+def get_by_set(dataset):
+    if not exists_set(dataset):
+        return {'error': 'dataset no existe'}, 400
+    query = preparation_model.get_set(dataset)
     ex = exception(query)
     if ex:
         return ex
@@ -68,13 +68,13 @@ def get_by_usuario(preparador):
     return jsonify(query)
 
 
-@Preparation.route('/name/<set>')
+@Preparation.route('/name/<dataset>')
 @jwt_required()
-def name(set):
-    if not exists_set(set):
-        return {'error': 'set no existe'}, 400
+def name(dataset):
+    if not exists_set(dataset):
+        return {'error': 'dataset no existe'}, 400
     # Obtener el numero consecutivo para el student_set de datos
-    query = preparation_model.get_consecutivo(set)
+    query = preparation_model.get_consecutivo(dataset)
     ex = exception(query)
     if ex:
         return ex
@@ -82,7 +82,7 @@ def name(set):
         numero = query[0].get('numero')+1
     else:
         numero = 1
-    return {'name': set+'.'+str(numero), 'numero': numero}, 200
+    return {'name': dataset+'.'+str(numero), 'numero': numero}, 200
 
 
 @Preparation.route('', methods=['POST'])
@@ -95,8 +95,8 @@ def post():
     # sql validations
     if not exists_usuario(body['preparador']):
         return {'error': 'usuario no existe'}, 400
-    if not exists_set(body['set']):
-        return {'error': 'set no existe'}, 400
+    if not exists_set(body['dataset']):
+        return {'error': 'dataset no existe'}, 400
     if exists(body['name']):
         return {'error': 'preparation ya existe'}, 400
     # Cambiar formato de fechas
@@ -157,17 +157,17 @@ def delete_one(name):
     return {'msg': 'Preparation eliminada'}, 200
 
 
-@Preparation.route('/set/<set>', methods=['DELETE'])
+@Preparation.route('/dataset/<dataset>', methods=['DELETE'])
 @jwt_required()
-def delete_by_set(set):
-    if not (set):
+def delete_by_set(dataset):
+    if not (dataset):
         return {'error': 'indique el student_set por el path'}, 400
     # sql validations
-    if not exists_set(set):
-        return {'error': 'set no existe'}, 400
-    # if not set_preparations(conjun):  return {'error': 'set no tiene preparations'}, 400
+    if not exists_set(dataset):
+        return {'error': 'dataset no existe'}, 400
+    # if not set_preparations(conjun):  return {'error': 'dataset no tiene preparations'}, 400
     # delete
-    delete = preparation_model.delete_set(set)
+    delete = preparation_model.delete_set(dataset)
     ex = exception(delete)
     if ex:
         return ex

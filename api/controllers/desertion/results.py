@@ -18,11 +18,11 @@ msg_exito = {'msg': 'Operación completada con exito!'}, 200
 ##########################################################  TBLDES_RESULTADO_PREDICCION ##########################################################
 
 
-@Result.route('/ultimo/<programa>/<int:semestre>', methods=['PUT'])
+@Result.route('/ultimo/<program>/<int:semestre>', methods=['PUT'])
 @jwt_required()
-def put_ultimo(semestre, programa):
+def put_ultimo(semestre, program):
     sql = f'UPDATE {table} SET blnultimo=0 WHERE semestre_prediccion={
-        semestre} AND idprograma={programa};'
+        semestre} AND idprograma={program};'
     result = db.execute(sql)
     ex = exception(result)
     if ex:

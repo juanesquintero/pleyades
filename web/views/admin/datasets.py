@@ -74,7 +74,7 @@ def post_edit():
         )
 
 
-@DatasetAdmin.route("/actualizar", methods=["POST"])
+@DatasetAdmin.route("/update", methods=["POST"])
 @only_admin
 def update():
     conjunto = dict(request.values)
@@ -86,7 +86,7 @@ def update():
 
     return render_template(
         "utils/message.html",
-        message="No se pudo actualizar la conjunto",
+        message="No se pudo update la conjunto",
         submensaje=body,
     )
 
@@ -116,7 +116,7 @@ def remove():
     nombre = conjunto.pop("nombre")
     status, body = delete("datasets/" + nombre)
     if status:
-        # Eliminar archivos relacionados en el servidor
+        # Eliminar files relacionados en el servidor
         exito, pagina_error = remove_file(
             upload_folder + "/raw/" + "C " + nombre + ".xls"
         )
@@ -145,7 +145,7 @@ def delete_todos():
     status, body = delete(f"datasets/todos/{status}")
 
     if status:
-        # Eliminar archivos relacionados en el servidor
+        # Eliminar files relacionados en el servidor
         remove_all_files(f"{upload_folder}/{status}")
         route = status.replace(" ", "_")
         return redirect(url_for(f"DatasetAdmin.{route}"))

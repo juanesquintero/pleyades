@@ -14,7 +14,7 @@ from utils.model import prepare_data, verify_data, execute_model
 from views.auth import login_required
 from services.API import get, post, put
 
-from utils.mixins import actualizar_state, save_archivo, save_execution, save_preparation, get_now_date, obtener_archivo_excel, obtener_nombre_conjunto
+from utils.mixins import update_state, save_file, save_execution, save_preparation, get_now_date, obtener_file_excel, obtener_nombre_conjunto
 
 model_logger = logging.getLogger('model_logger')
 error_logger = logging.getLogger('error_logger')
@@ -98,7 +98,7 @@ def download(status, nombre):
     elif os.path.exists(ruta+'.xls'):
         return send_file(ruta+'.xls', as_attachment=True)
     else:
-        return render_template('utils/message.html', message='No se encontro el archivo a donwload')
+        return render_template('utils/message.html', message='No se encontro el file a donwload')
 
 
 @Dataset.route('/crear')
@@ -120,11 +120,11 @@ def post_create():
     return render_template('utils/message.html', message='No se pudieron cargar las programs y las faculties', submensaje=error)
 
 
-@Dataset.route('crear/periods/programa/<int:programa>')
+@Dataset.route('crear/periods/program/<int:program>')
 @login_required
-def get_periods_program(programa):
+def get_periods_program(program):
     status, body = get(
-        'desertion/students/periods/programa/{}'.format(programa))
+        'desertion/students/periods/program/{}'.format(program))
     if status:
         return jsonify(body)
     return jsonify([])
@@ -174,39 +174,39 @@ def post_save(conjunto=None):
     conjunto['status'] = 'Raw'
     conjunto['initialPeriod'] = int(conjunto['initialPeriod'])
     conjunto['finalPeriod'] = int(conjunto['finalPeriod'])
-    conjunto['programa'] = int(conjunto['programa'])
+    conjunto['program'] = int(conjunto['program'])
     conjunto['manager'] = session.get('user', {}).get('email')
 
     tipo = conjunto.get('tipo', 'consulta')
-    archivo = request.files.get('archivo')
+    file = request.files.get('file')
     ruta = upload_folder+'/raw'
 
-    # Guardar archivo en Upload folder
+    # Guardar file en Upload folder
 
     ############# ARCHIVO ##############
-    if (archivo and archivo.filename and tipo == 'excel'):
-        extension = '.'+archivo.filename.split('.')[1]
-        # Guardar archivo de excel
+    if (file and file.filename and tipo == 'excel'):
+        extension = '.'+file.filename.split('.')[1]
+        # Guardar file de excel
 
         if extension not in ['.xls', '.xlsx']:
-            return render_template('utils/message.html', message='Extension de archivo incorrecta: '+str(extension), submensaje='Solo se permiten archivos excel .xls & xlsx')
+            return render_template('utils/message.html', message='Extension de file incorrecta: '+str(extension), submensaje='Solo se permiten files excel .xls & xlsx')
 
         # VERIFICACION de formato
-        data = pd.read_excel(archivo)
+        data = pd.read_excel(file)
         validacion, mensaje_error, data_verificada, initialPeriod = verify_data(
-            data, conjunto.get('initialPeriod'), conjunto.get('finalPeriod'), conjunto.get('programa'))
+            data, conjunto.get('initialPeriod'), conjunto.get('finalPeriod'), conjunto.get('program'))
         conjunto['initialPeriod'] = initialPeriod
 
         # Obtener nombre del conjunto desde el api
         nombre, numero = obtener_nombre_conjunto(conjunto)
         if not nombre:
             return numero
-        archivo_save = 'C ' + nombre + '.xlsx'
+        file_save = 'C ' + nombre + '.xlsx'
 
         if validacion:
             try:
                 data_verificada.to_excel(
-                    ruta+'/'+archivo_save,
+                    ruta+'/'+file_save,
                     engine='openpyxl',
                     index=False
                 )
@@ -220,9 +220,9 @@ def post_save(conjunto=None):
     # elif tipo == 'consulta':
     else:
         # Obtener datos de los students en ese programs y periods
-        endpoint_conjunto = 'desertion/students/set/{}/{}/{}'
+        endpoint_conjunto = 'desertion/students/dataset/{}/{}/{}'
         endpoint_conjunto_values = endpoint_conjunto.format(
-            conjunto['programa'], conjunto['initialPeriod'], conjunto['finalPeriod'])
+            conjunto['program'], conjunto['initialPeriod'], conjunto['finalPeriod'])
         status, body = get(endpoint_conjunto_values)
         if status:
             data = pd.DataFrame(body)
@@ -231,20 +231,20 @@ def post_save(conjunto=None):
 
         # VERIFICACION de formato
         validacion, mensaje_error, data_verificada, initialPeriod = verify_data(
-            data, conjunto.get('initialPeriod'), conjunto.get('finalPeriod'), conjunto.get('programa'))
+            data, conjunto.get('initialPeriod'), conjunto.get('finalPeriod'), conjunto.get('program'))
         conjunto['initialPeriod'] = initialPeriod
 
         # Obtener nombre del conjunto desde el api
         nombre, numero = obtener_nombre_conjunto(conjunto)
         if not nombre:
             return numero
-        archivo_save = 'C ' + nombre + '.xlsx'
+        file_save = 'C ' + nombre + '.xlsx'
 
         if validacion:
             # Guardar tabla sql como excel
             try:
                 data_verificada.to_excel(
-                    ruta+'/'+archivo_save,
+                    ruta+'/'+file_save,
                     engine='openpyxl',
                     index=False
                 )
@@ -284,7 +284,7 @@ def preparar(conjunto=None):
     nombre = conjunto['nombre']
 
     # Actualizar conjunto de datos de crudo a in progress
-    act_state = actualizar_state(nombre, 'In Progress')
+    act_state = update_state(nombre, 'In Progress')
     if act_state:
         return act_state
 
@@ -303,10 +303,10 @@ def preparar(conjunto=None):
 
     ########### PREPARAR ############
 
-    # Obtener archivo crudo
-    archivo_crudo = 'C '+nombre
-    ruta = upload_folder+'/raw/'+archivo_crudo
-    exito, data_cruda = obtener_archivo_excel(ruta)
+    # Obtener file crudo
+    file_crudo = 'C '+nombre
+    ruta = upload_folder+'/raw/'+file_crudo
+    exito, data_cruda = obtener_file_excel(ruta)
     if not exito:
         return data_cruda
 
@@ -323,10 +323,10 @@ def preparar(conjunto=None):
             return pagina_error
         return render_template('utils/message.html', message='la preparación falló')
 
-    # Guardar archivo en Upload folder processed
-    archivo_procesado = 'P '+nombre+'.xls'
-    ruta = upload_folder+'/processed/'+archivo_procesado
-    exito, pagina_error = save_archivo(data_preparada, ruta, 'excel')
+    # Guardar file en Upload folder processed
+    file_procesado = 'P '+nombre+'.xls'
+    ruta = upload_folder+'/processed/'+file_procesado
+    exito, pagina_error = save_file(data_preparada, ruta, 'excel')
     if not exito:
         return pagina_error
 
@@ -338,7 +338,7 @@ def preparar(conjunto=None):
     ########### FIN PREPARAR ############
 
     # Actualizar conjunto de datos de crudo a processed
-    act_state = actualizar_state(nombre, 'Processed')
+    act_state = update_state(nombre, 'Processed')
     if act_state:
         return act_state
 
@@ -363,7 +363,7 @@ def ejecutar(conjunto=None):
     nombre = conjunto['nombre']
 
     # Actualizar conjunto de datos de crudo a processed
-    act_state = actualizar_state(nombre, 'In Progress')
+    act_state = update_state(nombre, 'In Progress')
     if act_state:
         return act_state
 
@@ -383,10 +383,10 @@ def ejecutar(conjunto=None):
 
     ########### EJECUTAR ############
 
-    # Obtener archivo processed
-    archivo_procesado = 'P '+nombre
-    ruta = upload_folder+'/processed/'+archivo_procesado
-    exito, data_preparada = obtener_archivo_excel(ruta)
+    # Obtener file processed
+    file_procesado = 'P '+nombre
+    ruta = upload_folder+'/processed/'+file_procesado
+    exito, data_preparada = obtener_file_excel(ruta)
     if not exito:
         return data_preparada
 
@@ -415,14 +415,14 @@ def ejecutar(conjunto=None):
         execution_saved = True
         if not exito:
             return pagina_error
-        act_state = actualizar_state(nombre, 'Processed')
+        act_state = update_state(nombre, 'Processed')
         if act_state:
             return act_state
         return render_template('utils/message.html', message='La ejecución falló', submensaje=error_spa)
 
     if not resultados_model:
         # Actualizar conjunto de datos de crudo a processed
-        act_state = actualizar_state(nombre, 'Processed')
+        act_state = update_state(nombre, 'Processed')
         if act_state:
             return act_state
         return render_template('utils/message.html', message='La ejecución falló', submensaje=resultados_desertores)
@@ -432,7 +432,7 @@ def ejecutar(conjunto=None):
     # Actualizar los results a ultimo
     endpoint_ultimo = 'desertion/results/ultimo/{}/{}'
     endpoint_ultimo_values = endpoint_ultimo.format(
-        conjunto['programa'], conjunto['finalPeriod']
+        conjunto['program'], conjunto['finalPeriod']
     )
     status_update, body_update = put(endpoint_ultimo_values, {})
 
@@ -445,7 +445,7 @@ def ejecutar(conjunto=None):
             'desertion/results', resultados_insert
         )
         if not status_update or not status_insert:
-            act_state = actualizar_state(nombre, 'Processed')
+            act_state = update_state(nombre, 'Processed')
             if act_state:
                 return act_state
 
@@ -454,16 +454,16 @@ def ejecutar(conjunto=None):
                     'Error insertando los nuevos desertores'.format(json.dumps(body_insert)))
 
             if not status_update:
-                error_logger.error('Error actualizando los desertores del programa'.format(
+                error_logger.error('Error actualizando los desertores del program'.format(
                     json.dumps(body_update)))
 
             return render_template('utils/message.html', message='Ocurrió un error insertando y/o actualizando los results'), 500
 
         state_execution = 'Exitosa'
         # Guardar results de desertotres en Upload folder desertores
-        archivo_desertores = 'D '+execution['nombre']+'.json'
-        ruta = upload_folder+'/deserters/'+archivo_desertores
-        exito, pagina_error = save_archivo(
+        file_desertores = 'D '+execution['nombre']+'.json'
+        ruta = upload_folder+'/deserters/'+file_desertores
+        exito, pagina_error = save_file(
             resultados_model.pop('deserters'), ruta, 'json'
         )
         if not exito:
@@ -473,7 +473,7 @@ def ejecutar(conjunto=None):
         # TODO data
         flash('<b>El model detectó 0 desertores, Deserción 0%</b>', 'danger')
         flash(
-            'Revise si hay students ó desertores suficientes en el programa', 'warning'
+            'Revise si hay students ó desertores suficientes en el program', 'warning'
         )
         resultados_model.pop('deserters')
         state_execution = 'Fallida'
@@ -482,14 +482,14 @@ def ejecutar(conjunto=None):
         exito, pagina_error = save_execution(
             execution=execution, results=resultados_model, status=state_execution)
         if not exito:
-            act_state = actualizar_state(nombre, 'Processed')
+            act_state = update_state(nombre, 'Processed')
             if act_state:
                 return act_state
             return pagina_error
 
     ########### FIN EJECUTAR ############
     # Actualizar conjunto de datos de crudo a processed
-    act_state = actualizar_state(nombre, 'Processed')
+    act_state = update_state(nombre, 'Processed')
     if act_state:
         return act_state
 

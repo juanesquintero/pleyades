@@ -13,14 +13,14 @@
     <div class="row">
         <h3 class="ml-2 mt-2 p-0 text-white">Nivel Student</h3>
         <!-- Controles -->
-        {% if programa %}
+        {% if program %}
         <div class="row ml-auto" style="width: 40%;;">
             <div class="col-10 ml-3">
-                <label for="period_select" class="text-white">Selecciona un programa:</label>
+                <label for="period_select" class="text-white">Selecciona un program:</label>
                 <br>
                 <select id="program_select" class="form-control-sm w-100">
                     {% for p in programs_list %}
-                    <option value="{{p.idprograma}}" {% if p.idprograma|string==programa|string %} selected {% endif %}>{{p.programa}}</option>
+                    <option value="{{p.idprograma}}" {% if p.idprograma|string==program|string %} selected {% endif %}>{{p.program}}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -28,10 +28,10 @@
         {% endif %}
     </div>
     <script>
-        var programa = '{{ programa }}';
+        var program = '{{ program }}';
         $('#program_select').on('change', function () {
             openModal();
-            window.location.href ="{{url_for('Tablero.student_dashboard')}}" + '?programa=' + this.value;
+            window.location.href ="{{url_for('Tablero.student_dashboard')}}" + '?program=' + this.value;
         })
     </script>
 </div>
@@ -79,8 +79,8 @@
                                 data-toggle="validator">
                                 <input type="text" name="documento" class="form-control-sm w-100" maxlength="50"
                                     value="{{e.documento}}" required hidden>
-                                <input type="text" name="programa" class="form-control-sm w-100" maxlength="200"
-                                    value="{{programa}}" required hidden>
+                                <input type="text" name="program" class="form-control-sm w-100" maxlength="200"
+                                    value="{{program}}" required hidden>
                                 <button type="submit" class="btn btn-dark btn-sm text-white my-primary submit">
                                     <i class="fas fa-search mr-1"></i>
                                 </button>
@@ -100,14 +100,14 @@
 
                 {% else %}
                 <tr>
-                    <center><b>No hay students en este programa!!</b> </center>
+                    <center><b>No hay students en este program!!</b> </center>
                 </tr>
                 {% endif %}
             </tbody>
         </table>
     </div>
     {% else %}
-    <center><b>No hay students en este programa!!</b> </center>
+    <center><b>No hay students en este program!!</b> </center>
     {% endif %}
 </div>
 

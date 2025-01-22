@@ -22,7 +22,7 @@
     <div style="height: 20%;">
         <!-- Formulario Busqueda por Program -->
         <div class="text-center">
-            <h6 class="text-dark">Buscar por programa</h6>
+            <h6 class="text-dark">Buscar por program</h6>
         </div>
         {% with titulo='Cargando...', message='Por favor espere que se carguen los students'%}
         {% include 'components/modal.html' %}
@@ -35,9 +35,9 @@
                 </div>
                 <div class="col-10">
                     <label>Program</label>
-                    <select id="program_select" class="form-control-sm w-100" name="programa" required>
+                    <select id="program_select" class="form-control-sm w-100" name="program" required>
                         {% for p in programs_list %}
-                        <option value="{{p.idprograma}}">{{p.programa}}</option>
+                        <option value="{{p.idprograma}}">{{p.program}}</option>
                         {% endfor %}
                     </select>
                 </div>

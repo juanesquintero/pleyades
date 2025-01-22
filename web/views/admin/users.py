@@ -46,7 +46,7 @@ def post_edit():
         return render_template('utils/message.html', message='No se pudo cargar el usuario')
 
 
-@User.route('/actualizar', methods=['POST'])
+@User.route('/update', methods=['POST'])
 @only_admin
 def update():
     usuario = dict(request.values)
@@ -59,7 +59,7 @@ def update():
     if status:
         return redirect(url_for('User.get_list'))
 
-    return render_template('utils/message.html', message='No se pudo actualizar el User', submensaje=body)
+    return render_template('utils/message.html', message='No se pudo update el User', submensaje=body)
 
 
 @User.route('/delete', methods=['POST'])
@@ -70,7 +70,7 @@ def remove():
     if usuario:
         return render_template('admin/'+endopoint+'delete.html', u=usuario)
     else:
-        return render_template('utils/message.html', message='No se pudo actualizar el User')
+        return render_template('utils/message.html', message='No se pudo update el User')
 
 
 @User.route('/remove', methods=['POST'])

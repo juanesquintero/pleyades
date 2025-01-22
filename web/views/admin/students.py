@@ -21,17 +21,17 @@ def get_list():
 def detalle():
     form = dict(request.values)
     idprograma = form.get('idprograma')
-    programa = form.get('programa')
+    program = form.get('program')
     status, body = get(f'desertion/students/program/{idprograma}')
     if status:
         return render_template(
             'admin/'+endopoint+'detail.html',
             students=body,
-            programa=programa
+            program=program
         )
     return render_template(
         'admin/'+endopoint+'detail.html',
         students=[],
         error=body,
-        programa=programa
+        program=program
     )

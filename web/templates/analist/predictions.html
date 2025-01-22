@@ -44,8 +44,8 @@
     </thead>
     <tbody>
       {% for p in predictions %} {% if p.status=='Exitosa' and p.results.tipo == 'Prediccion' %}
-      {% set info_array = p.nombre.split(' ')[1:] %}
-      {% set conjunto = p.conjunto.split(' ')[3:] %}
+      {% dataset info_array = p.nombre.split(' ')[1:] %}
+      {% dataset conjunto = p.conjunto.split(' ')[3:] %}
       
       <tr>
         <td>
@@ -60,7 +60,7 @@
               {{ conjunto[0] }}
             </b>
             &nbsp;
-            {{p.results.programa}}
+            {{p.results.program}}
             &nbsp;
             
               {{ info_array[:2]|join(' ') }}
@@ -108,7 +108,7 @@
         </td>
         
         <td>
-          {% set proc = p.results.desercion_prevista * 100 %}
+          {% dataset proc = p.results.desercion_prevista * 100 %}
     
           <center>
             

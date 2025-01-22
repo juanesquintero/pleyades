@@ -46,7 +46,7 @@
     </thead>
     <tbody>
       {% for e in trainings %} {% if e.status=='Exitosa' and e.results.tipo == 'Entrenamiento' %}
-      {% set info_array = e.conjunto.split(' ')[1:] %}
+      {% dataset info_array = e.conjunto.split(' ')[1:] %}
       <tr>
         <td>
           <h6 >
@@ -54,7 +54,7 @@
           </h6>
         </td>
         <td>
-          <center>{{e.results.programa}}</center>
+          <center>{{e.results.program}}</center>
         </td>
         <td>
           <center>
@@ -62,7 +62,7 @@
           </center>
         </td>
         <td>
-          {% set proc = e.results.desercion_prevista * 100 %}
+          {% dataset proc = e.results.desercion_prevista * 100 %}
           <center>
 
               {% if e.results.desercion_prevista > 0.15  %}
@@ -106,8 +106,8 @@
             data-placement="bottom"
             style="cursor: pointer"
             title="{{e.fechaInicial}}<br>{{e.fechaFinal}}">
-            {% set minutes = e.duracion // 60 %}
-            {% set seconds = e.duracion % 60 %}
+            {% dataset minutes = e.duracion // 60 %}
+            {% dataset seconds = e.duracion % 60 %}
             {{ minutes }} min {{ seconds }} sec
 
             <div hidden>

@@ -17,9 +17,9 @@ colores = CONSTANTS.colores
 #################################### FUNCIONES GLOBALES #############################################
 
 
-def students_program(programa: str):
+def students_program(program: str):
     try:
-        data = Data.get_students_program(programa)
+        data = Data.get_students_program(program)
         data = data[['documento', 'nombre_completo']]
         students = data.drop_duplicates()
         return students.to_dict(orient='records')
@@ -30,11 +30,11 @@ def students_program(programa: str):
 
 class Student:
 
-    def __init__(self, identificacion, programa=None,  periodo=None, ):
+    def __init__(self, identificacion, program=None,  periodo=None, ):
         self.df_ESTUDIANTE = Data.get_students_documento(identificacion)
         self.identificacion = identificacion
         self.periodo = periodo
-        self.programa = programa
+        self.program = program
         self.info = None
         self.periodos_estudiante = None
         self.programs_estudiante = None
@@ -43,19 +43,19 @@ class Student:
     # Funcion para agregar un indicador a la figura
     def get_estudiante(self,):
         try:
-            # Dataframe del programa
+            # Dataframe del program
             data = self.df_ESTUDIANTE
             programs_student_filter = json.loads(data.drop_duplicates(
                 subset=['idprograma']).to_json(orient='records'))
             self.programs_estudiante = [
-                {'idprograma': p['idprograma'], 'programa': p['programa']} for p in programs_student_filter]
+                {'idprograma': p['idprograma'], 'program': p['program']} for p in programs_student_filter]
             self.periodos_student_todos = list(data['REGISTRO'].unique())
             self.periodos_estudiante = list(data['REGISTRO'].unique())
 
             # Filtrar Program
-            if self.programa:
+            if self.program:
                 data = data.query("idprograma == '{}'".format(
-                    self.programa['idprograma']))
+                    self.program['idprograma']))
                 self.periodos_estudiante = list(data['REGISTRO'].unique())
 
             # Filtrar Periodo
@@ -68,13 +68,13 @@ class Student:
 
             self.info = data.to_dict(orient='records')[0]
 
-            # Setear perioodo y programa si no lo hay
+            # Setear perioodo y program si no lo hay
             if not self.periodo:
                 self.periodo = self.info['REGISTRO']
-            if not self.programa:
-                self.programa = {
+            if not self.program:
+                self.program = {
                     'idprograma': self.info['idprograma'],
-                    'programa': self.info['programa']
+                    'program': self.info['program']
                 }
 
             self.info['fecha_nacimiento'] = str(
@@ -188,12 +188,12 @@ class Student:
 
     def set_promedios(self,):
         try:
-            # Dataframe del programa
+            # Dataframe del program
             data = self.df_ESTUDIANTE
             promedios = {}
             # Para obtener los promeios de los diferentes programs
             # for p in self.programs_estudiante:
-            #     estu = data.query("programa == '{}'".format(p))
+            #     estu = data.query("program == '{}'".format(p))
             #     estu = estu.sort_values(by=['REGISTRO'], ascending=[True])
             #     promedios[p] = {
             #         # 'REGISTRO': [str(e) for e in estu['REGISTRO']],
@@ -201,10 +201,10 @@ class Student:
             #         'promedio': list(estu['promedio_semestre'])
             #     }
             estu = data.query("idprograma == '{}'".format(
-                self.programa['idprograma']))
+                self.program['idprograma']))
             estu = estu.sort_values(by=['REGISTRO'], ascending=[True])
-            promedios[self.programa['idprograma']] = {
-                'programa': self.programa['programa'],
+            promedios[self.program['idprograma']] = {
+                'program': self.program['program'],
                 'REGISTRO': list(estu['REGISTRO']),
                 'promedio': list(estu['promedio_semestre'])
             }
@@ -220,11 +220,11 @@ class Student:
 
             fig = make_subplots(specs=[[{"secondary_y": False}]])
 
-            # Serie por promedios de un programa
-            for i, programa in enumerate(self.promedios_estudiante.keys()):
-                nombre_program = self.promedios_estudiante[programa]['programa']
-                del self.promedios_estudiante[programa]['programa']
-                df = pd.DataFrame(self.promedios_estudiante[programa])
+            # Serie por promedios de un program
+            for i, program in enumerate(self.promedios_estudiante.keys()):
+                nombre_program = self.promedios_estudiante[program]['program']
+                del self.promedios_estudiante[program]['program']
+                df = pd.DataFrame(self.promedios_estudiante[program])
 
                 fig.add_trace(go.Scatter(
                     x=df['REGISTRO'],

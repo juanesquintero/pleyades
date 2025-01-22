@@ -1,16 +1,16 @@
 # Python Tools for Visual Studio
 # Copyright(c) Microsoft Corporation
 # All rights reserved.
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the License); you may not use
 # this file except in compliance with the License. You may obtain a copy of the
 # License at http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # THIS CODE IS PROVIDED ON AN  *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS
 # OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY
 # IMPLIED WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
 # MERCHANTABLITY OR NON-INFRINGEMENT.
-# 
+#
 # See the Apache Version 2.0 License for specific language governing
 # permissions and limitations under the License.
 from __future__ import absolute_import, print_function, with_statement
@@ -50,53 +50,55 @@ else:
 FCGI_VERSION_1 = 1
 FCGI_HEADER_LEN = 8
 
-FCGI_BEGIN_REQUEST       = 1
-FCGI_ABORT_REQUEST       = 2
-FCGI_END_REQUEST         = 3
-FCGI_PARAMS              = 4
-FCGI_STDIN               = 5
-FCGI_STDOUT              = 6
-FCGI_STDERR              = 7
-FCGI_DATA                = 8
-FCGI_GET_VALUES          = 9
-FCGI_GET_VALUES_RESULT  = 10
-FCGI_UNKNOWN_TYPE       = 11
+FCGI_BEGIN_REQUEST = 1
+FCGI_ABORT_REQUEST = 2
+FCGI_END_REQUEST = 3
+FCGI_PARAMS = 4
+FCGI_STDIN = 5
+FCGI_STDOUT = 6
+FCGI_STDERR = 7
+FCGI_DATA = 8
+FCGI_GET_VALUES = 9
+FCGI_GET_VALUES_RESULT = 10
+FCGI_UNKNOWN_TYPE = 11
 FCGI_MAXTYPE = FCGI_UNKNOWN_TYPE
 
-FCGI_NULL_REQUEST_ID    = 0
+FCGI_NULL_REQUEST_ID = 0
 
 FCGI_KEEP_CONN = 1
 
-FCGI_RESPONDER  = 1
+FCGI_RESPONDER = 1
 FCGI_AUTHORIZER = 2
-FCGI_FILTER     = 3
+FCGI_FILTER = 3
 
 FCGI_REQUEST_COMPLETE = 0
-FCGI_CANT_MPX_CONN    = 1
-FCGI_OVERLOADED       = 2
-FCGI_UNKNOWN_ROLE     = 3
+FCGI_CANT_MPX_CONN = 1
+FCGI_OVERLOADED = 2
+FCGI_UNKNOWN_ROLE = 3
 
-FCGI_MAX_CONNS  = "FCGI_MAX_CONNS"
-FCGI_MAX_REQS   = "FCGI_MAX_REQS"
+FCGI_MAX_CONNS = "FCGI_MAX_CONNS"
+FCGI_MAX_REQS = "FCGI_MAX_REQS"
 FCGI_MPXS_CONNS = "FCGI_MPXS_CONNS"
+
 
 class FastCgiRecord(object):
     """Represents a FastCgiRecord.  Encapulates the type, role, flags.  Holds
     onto the params which we will receive and update later."""
+
     def __init__(self, type, req_id, role, flags):
         self.type = type
         self.req_id = req_id
         self.role = role
         self.flags = flags
         self.params = {}
-        
+
     def __repr__(self):
-        return '<FastCgiRecord(%d, %d, %d, %d)>' % (self.type, 
-                                                    self.req_id, 
-                                                    self.role, 
+        return '<FastCgiRecord(%d, %d, %d, %d)>' % (self.type,
+                                                    self.req_id,
+                                                    self.role,
                                                     self.flags)
 
-#typedef struct {
+# typedef struct {
 #   unsigned char version;
 #   unsigned char type;
 #   unsigned char requestIdB1;
@@ -107,21 +109,25 @@ class FastCgiRecord(object):
 #   unsigned char reserved;
 #   unsigned char contentData[contentLength];
 #   unsigned char paddingData[paddingLength];
-#} FCGI_Record;
+# } FCGI_Record;
+
 
 class _ExitException(Exception):
     pass
+
 
 if sys.version_info[0] >= 3:
     # indexing into byte strings gives us an int, so
     # ord is unnecessary on Python 3
     def ord(x):
         return x
+
     def chr(x):
         return bytes((x, ))
 
     def wsgi_decode(x):
         return x.decode('iso-8859-1')
+
     def wsgi_encode(x):
         return x.encode('iso-8859-1')
 
@@ -138,6 +144,7 @@ else:
 
     def wsgi_decode(x):
         return x
+
     def wsgi_encode(x):
         return x
 
@@ -153,6 +160,7 @@ else:
     def zero_bytes(length):
         return '\x00' * length
 
+
 def read_fastcgi_record(stream):
     """reads the main fast cgi record"""
     data = stream.read(8)     # read record
@@ -160,7 +168,8 @@ def read_fastcgi_record(stream):
         # no more data, our other process must have died...
         raise _ExitException()
 
-    fcgi_ver, reqtype, req_id, content_size, padding_len, _ = struct.unpack('>BBHHBB', data)
+    fcgi_ver, reqtype, req_id, content_size, padding_len, _ = struct.unpack(
+        '>BBHHBB', data)
 
     content = stream.read(content_size)  # read content
     stream.read(padding_len)
@@ -174,7 +183,8 @@ def read_fastcgi_record(stream):
 
     # unknown type requested, send response
     log('Unknown request type %s' % reqtype)
-    send_response(stream, req_id, FCGI_UNKNOWN_TYPE, chr(reqtype) + zero_bytes(7))
+    send_response(stream, req_id, FCGI_UNKNOWN_TYPE,
+                  chr(reqtype) + zero_bytes(7))
     return None
 
 
@@ -197,12 +207,13 @@ def read_fastcgi_begin_request(stream, req_id, content):
     )
     _REQUESTS[req_id] = res
 
+
 def read_encoded_int(content, offset):
     i = struct.unpack_from('>B', content, offset)[0]
 
     if i < 0x80:
         return offset + 1, i
-    
+
     return offset + 4, struct.unpack_from('>I', content, offset)[0] & ~0x80000000
 
 
@@ -214,7 +225,7 @@ def read_fastcgi_keyvalue_pairs(content, offset):
 
     name = content[offset:(offset + name_len)]
     offset += name_len
-    
+
     value = content[offset:(offset + value_len)]
     offset += value_len
 
@@ -229,7 +240,8 @@ def get_encoded_int(i):
     elif i < 0x80000000:
         return struct.pack('>I', i | 0x80000000)
     else:
-        raise ValueError('cannot encode value %s (%x) because it is too large' % (i, i))
+        raise ValueError(
+            'cannot encode value %s (%x) because it is too large' % (i, i))
 
 
 def write_fastcgi_keyvalue_pairs(pairs):
@@ -238,7 +250,7 @@ def write_fastcgi_keyvalue_pairs(pairs):
     for raw_key, raw_value in pairs.items():
         key = wsgi_encode(raw_key)
         value = wsgi_encode(raw_value)
-        
+
         parts.append(get_encoded_int(len(key)))
         parts.append(get_encoded_int(len(value)))
         parts.append(key)
@@ -246,15 +258,17 @@ def write_fastcgi_keyvalue_pairs(pairs):
 
     return bytes().join(parts)
 
-# Keys in this set will be stored in the record without modification but with a
+
+# Keys in this dataset will be stored in the record without modification but with a
 # 'wsgi.' prefix. The original key will have the decoded version.
 # (Following mod_wsgi from http://wsgi.readthedocs.org/en/latest/python3.html)
 RAW_VALUE_NAMES = {
-    'SCRIPT_NAME' : 'wsgi.script_name',
-    'PATH_INFO' : 'wsgi.path_info',
-    'QUERY_STRING' : 'wsgi.query_string',
-    'HTTP_X_ORIGINAL_URL' : 'wfastcgi.http_x_original_url',
+    'SCRIPT_NAME': 'wsgi.script_name',
+    'PATH_INFO': 'wsgi.path_info',
+    'QUERY_STRING': 'wsgi.query_string',
+    'HTTP_X_ORIGINAL_URL': 'wfastcgi.http_x_original_url',
 }
+
 
 def read_fastcgi_params(stream, req_id, content):
     if not content:
@@ -330,15 +344,16 @@ def read_fastcgi_get_values(stream, req_id, content):
 # Our request processors for different FastCGI protocol requests. Only those
 # requests that we receive are defined here.
 REQUEST_PROCESSORS = {
-    FCGI_BEGIN_REQUEST : read_fastcgi_begin_request,
-    FCGI_ABORT_REQUEST : read_fastcgi_abort_request,
-    FCGI_PARAMS : read_fastcgi_params,
-    FCGI_STDIN : read_fastcgi_input,
-    FCGI_DATA : read_fastcgi_data,
-    FCGI_GET_VALUES : read_fastcgi_get_values
+    FCGI_BEGIN_REQUEST: read_fastcgi_begin_request,
+    FCGI_ABORT_REQUEST: read_fastcgi_abort_request,
+    FCGI_PARAMS: read_fastcgi_params,
+    FCGI_STDIN: read_fastcgi_input,
+    FCGI_DATA: read_fastcgi_data,
+    FCGI_GET_VALUES: read_fastcgi_get_values
 }
 
 APPINSIGHT_CLIENT = None
+
 
 def log(txt):
     """Logs messages to a log file if WSGI_LOG env var is defined."""
@@ -347,12 +362,14 @@ def log(txt):
             APPINSIGHT_CLIENT.track_event(txt)
         except:
             pass
-    
+
     log_file = os.environ.get('WSGI_LOG')
     if log_file:
         with open(log_file, 'a+', encoding='utf-8') as f:
             txt = txt.replace('\r\n', '\n')
-            f.write('%s: %s%s' % (datetime.datetime.now(), txt, '' if txt.endswith('\n') else '\n'))
+            f.write('%s: %s%s' % (datetime.datetime.now(),
+                    txt, '' if txt.endswith('\n') else '\n'))
+
 
 def maybe_log(txt):
     """Logs messages to a log file if WSGI_LOG env var is defined, and does not
@@ -362,13 +379,14 @@ def maybe_log(txt):
     except:
         pass
 
+
 def send_response(stream, req_id, resp_type, content, streaming=True):
     """sends a response w/ the given id, type, and content to the server.
     If the content is streaming then an empty record is sent at the end to 
     terminate the stream"""
     if not isinstance(content, bytes):
         raise TypeError("content must be encoded before sending: %r" % content)
-    
+
     offset = 0
     while True:
         len_remaining = max(min(len(content) - offset, 0xFFFF), 0)
@@ -390,6 +408,7 @@ def send_response(stream, req_id, resp_type, content, streaming=True):
             break
     stream.flush()
 
+
 def get_environment(dir):
     web_config = os.path.join(dir, 'Web.config')
     if not os.path.exists(web_config):
@@ -409,9 +428,10 @@ def get_environment(dir):
                     d[key.strip()] = value
     return d
 
+
 ReadDirectoryChangesW = ctypes.windll.kernel32.ReadDirectoryChangesW
 ReadDirectoryChangesW.restype = ctypes.c_uint32
-ReadDirectoryChangesW.argtypes  = [
+ReadDirectoryChangesW.argtypes = [
     ctypes.c_void_p,     # HANDLE hDirectory
     ctypes.c_void_p,     # LPVOID lpBuffer
     ctypes.c_uint32,     # DWORD nBufferLength
@@ -427,7 +447,7 @@ try:
 except ImportError:
     CreateFile = ctypes.windll.kernel32.CreateFileW
     CreateFile.restype = ctypes.c_void_p
-    CreateFile.argtypes  = [
+    CreateFile.argtypes = [
         ctypes.c_wchar_p,     # lpFilename
         ctypes.c_uint32,      # dwDesiredAccess
         ctypes.c_uint32,      # dwShareMode
@@ -445,7 +465,7 @@ except ImportError:
 
     ExitProcess = ctypes.windll.kernel32.ExitProcess
     ExitProcess.restype = ctypes.c_void_p
-    ExitProcess.argtypes  = [ctypes.c_uint32]
+    ExitProcess.argtypes = [ctypes.c_uint32]
 
     WaitForSingleObject = ctypes.windll.kernel32.WaitForSingleObject
     WaitForSingleObject.argtypes = [ctypes.c_void_p, ctypes.c_uint32]
@@ -460,9 +480,10 @@ FILE_SHARE_WRITE = 0x00000002
 FILE_SHARE_DELETE = 0x00000004
 FILE_FLAG_BACKUP_SEMANTICS = 0x02000000
 MAX_PATH = 260
-FILE_NOTIFY_CHANGE_LAST_WRITE  = 0x10
+FILE_NOTIFY_CHANGE_LAST_WRITE = 0x10
 ERROR_NOTIFY_ENUM_DIR = 1022
 INVALID_HANDLE_VALUE = 0xFFFFFFFF
+
 
 class FILE_NOTIFY_INFORMATION(ctypes.Structure):
     _fields_ = [('NextEntryOffset', ctypes.c_uint32),
@@ -470,7 +491,10 @@ class FILE_NOTIFY_INFORMATION(ctypes.Structure):
                 ('FileNameLength', ctypes.c_uint32),
                 ('Filename', ctypes.c_wchar)]
 
+
 _ON_EXIT_TASKS = None
+
+
 def run_exit_tasks():
     global _ON_EXIT_TASKS
     maybe_log("Running on_exit tasks")
@@ -482,6 +506,7 @@ def run_exit_tasks():
             except Exception:
                 maybe_log("Error in exit task: " + traceback.format_exc())
 
+
 def on_exit(task):
     global _ON_EXIT_TASKS
     if _ON_EXIT_TASKS is None:
@@ -489,7 +514,8 @@ def on_exit(task):
         try:
             evt = int(os.getenv('_FCGI_SHUTDOWN_EVENT_'))
         except (TypeError, ValueError):
-            maybe_log("Could not wait on event %s" % os.getenv('_FCGI_SHUTDOWN_EVENT_'))
+            maybe_log("Could not wait on event %s" %
+                      os.getenv('_FCGI_SHUTDOWN_EVENT_'))
         else:
             def _wait_for_exit():
                 WaitForSingleObject(evt, INFINITE)
@@ -499,13 +525,14 @@ def on_exit(task):
             start_new_thread(_wait_for_exit, ())
     _ON_EXIT_TASKS.append(task)
 
+
 def start_file_watcher(path, restart_regex):
     if restart_regex is None:
         restart_regex = ".*((\\.py)|(\\.config))$"
     elif not restart_regex:
-        # restart regex set to empty string, no restart behavior
+        # restart regex dataset to empty string, no restart behavior
         return
-    
+
     def enum_changes(path):
         """Returns a generator that blocks until a change occurs, then yields
         the filename of the changed file.
@@ -518,8 +545,8 @@ def start_file_watcher(path, restart_regex):
 
         try:
             the_dir = CreateFile(
-                path, 
-                FILE_LIST_DIRECTORY, 
+                path,
+                FILE_LIST_DIRECTORY,
                 FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
                 0,
                 OPEN_EXISTING,
@@ -536,10 +563,10 @@ def start_file_watcher(path, restart_regex):
 
         while True:
             ret_code = ReadDirectoryChangesW(
-                the_dir, 
-                buffer, 
-                ctypes.sizeof(buffer), 
-                True, 
+                the_dir,
+                buffer,
+                ctypes.sizeof(buffer),
+                True,
                 FILE_NOTIFY_CHANGE_LAST_WRITE,
                 ctypes.byref(bytes_ret),
                 None,
@@ -549,9 +576,11 @@ def start_file_watcher(path, restart_regex):
             if ret_code:
                 cur_pointer = ctypes.addressof(buffer)
                 while True:
-                    fni = ctypes.cast(cur_pointer, ctypes.POINTER(FILE_NOTIFY_INFORMATION))
+                    fni = ctypes.cast(cur_pointer, ctypes.POINTER(
+                        FILE_NOTIFY_INFORMATION))
                     # FileName is not null-terminated, so specifying length is mandatory.
-                    filename = ctypes.wstring_at(cur_pointer + 12, fni.contents.FileNameLength // 2)
+                    filename = ctypes.wstring_at(
+                        cur_pointer + 12, fni.contents.FileNameLength // 2)
                     yield filename
                     if fni.contents.NextEntryOffset == 0:
                         break
@@ -564,7 +593,9 @@ def start_file_watcher(path, restart_regex):
                 CloseHandle(the_dir)
                 return
 
-    log('wfastcgi.py will restart when files in %s are changed: %s' % (path, restart_regex))
+    log('wfastcgi.py will restart when files in %s are changed: %s' %
+        (path, restart_regex))
+
     def watcher(path, restart):
         for filename in enum_changes(path):
             if not filename:
@@ -572,7 +603,8 @@ def start_file_watcher(path, restart_regex):
                 run_exit_tasks()
                 ExitProcess(0)
             elif restart.match(filename):
-                log('wfastcgi.py exiting because %s has changed, matching %s' % (filename, restart_regex))
+                log('wfastcgi.py exiting because %s has changed, matching %s' %
+                    (filename, restart_regex))
                 # we call ExitProcess directly to quickly shutdown the whole process
                 # because sys.exit(0) won't have an effect on the main thread.
                 run_exit_tasks()
@@ -581,13 +613,14 @@ def start_file_watcher(path, restart_regex):
     restart = re.compile(restart_regex)
     start_new_thread(watcher, (path, restart))
 
+
 def get_wsgi_handler(handler_name):
     if not handler_name:
-        raise Exception('WSGI_HANDLER env var must be set')
-    
+        raise Exception('WSGI_HANDLER env var must be dataset')
+
     if not isinstance(handler_name, str):
         handler_name = to_str(handler_name)
-    
+
     module_name, _, callable_name = handler_name.rpartition('.')
     should_call = callable_name.endswith('()')
     callable_name = callable_name[:-2] if should_call else callable_name
@@ -607,15 +640,18 @@ def get_wsgi_handler(handler_name):
         except ImportError:
             module_name, _, callable_name = module_name.rpartition('.')
             should_call = callable_name.endswith('()')
-            callable_name = callable_name[:-2] if should_call else callable_name
+            callable_name = callable_name[:-
+                                          2] if should_call else callable_name
             name_list.insert(0, (callable_name, should_call))
             handler = None
             last_tb = ': ' + traceback.format_exc()
-    
+
     if handler is None:
-        raise ValueError('"%s" could not be imported%s' % (handler_name, last_tb))
-    
+        raise ValueError('"%s" could not be imported%s' %
+                         (handler_name, last_tb))
+
     return handler
+
 
 def read_wsgi_handler(physical_path):
     global APPINSIGHT_CLIENT
@@ -629,7 +665,7 @@ def read_wsgi_handler(physical_path):
             path
         )
         sys.path.extend(fs_encode(p) for p in expanded_path.split(';') if p)
-    
+
     handler = get_wsgi_handler(os.getenv("WSGI_HANDLER"))
     instr_key = os.getenv("APPINSIGHTS_INSTRUMENTATIONKEY")
     if instr_key:
@@ -638,7 +674,8 @@ def read_wsgi_handler(physical_path):
             # include applicationinsights themselves.
             from applicationinsights.requests import WSGIApplication
         except ImportError:
-            maybe_log("Failed to import applicationinsights: " + traceback.format_exc())
+            maybe_log("Failed to import applicationinsights: " +
+                      traceback.format_exc())
         else:
             handler = WSGIApplication(instr_key, handler)
             APPINSIGHT_CLIENT = handler.client
@@ -646,6 +683,7 @@ def read_wsgi_handler(physical_path):
             on_exit(handler.client.flush)
 
     return env, handler
+
 
 class handle_response(object):
     """A context manager for handling the response. This will ensure that
@@ -668,12 +706,14 @@ class handle_response(object):
         record = self.record
         record.params['wsgi.input'] = BytesIO(record.params['wsgi.input'])
         record.params['wsgi.version'] = (1, 0)
-        record.params['wsgi.url_scheme'] = 'https' if record.params.get('HTTPS', '').lower() == 'on' else 'http'
+        record.params['wsgi.url_scheme'] = 'https' if record.params.get(
+            'HTTPS', '').lower() == 'on' else 'http'
         record.params['wsgi.multiprocess'] = True
         record.params['wsgi.multithread'] = False
         record.params['wsgi.run_once'] = False
 
-        self.physical_path = record.params.get('APPL_PHYSICAL_PATH', os.path.dirname(__file__))
+        self.physical_path = record.params.get(
+            'APPL_PHYSICAL_PATH', os.path.dirname(__file__))
 
         if 'HTTP_X_ORIGINAL_URL' in record.params:
             # We've been re-written for shared FastCGI hosting, so send the
@@ -682,8 +722,10 @@ class handle_response(object):
             record.params['wsgi.path_info'] = record.params['wfastcgi.http_x_original_url']
 
         # PATH_INFO is not supposed to include the query parameters, so remove them
-        record.params['PATH_INFO'] = record.params['PATH_INFO'].partition('?')[0]
-        record.params['wsgi.path_info'] = record.params['wsgi.path_info'].partition(wsgi_encode('?'))[0]
+        record.params['PATH_INFO'] = record.params['PATH_INFO'].partition('?')[
+            0]
+        record.params['wsgi.path_info'] = record.params['wsgi.path_info'].partition(
+            wsgi_encode('?'))[0]
 
         return self
 
@@ -692,12 +734,14 @@ class handle_response(object):
         if exc_type and exc_type is not _ExitException:
             error_msg = "%s:\n\n%s\n\nStdOut: %s\n\nStdErr: %s" % (
                 self.error_message or 'Error occurred',
-                ''.join(traceback.format_exception(exc_type, exc_value, exc_tb)),
+                ''.join(traceback.format_exception(
+                    exc_type, exc_value, exc_tb)),
                 self._get_output(),
                 self._get_errors(),
             )
             if not self.header_bytes or not self.sent_headers:
-                self.header_bytes = wsgi_encode('Status: 500 Internal Server Error\r\n')
+                self.header_bytes = wsgi_encode(
+                    'Status: 500 Internal Server Error\r\n')
             self.send(FCGI_STDERR, wsgi_encode(error_msg))
             # Best effort at writing to the log. It's more important to
             # finish the response or the user will only see a generic 500
@@ -706,10 +750,10 @@ class handle_response(object):
 
         # End the request. This has to run in both success and failure cases.
         self.send(FCGI_END_REQUEST, zero_bytes(8), streaming=False)
-        
+
         # Remove the request from our global dict
         del _REQUESTS[self.record.req_id]
-        
+
         # Suppress all exceptions unless requested
         return not self.fatal_errors
 
@@ -738,7 +782,8 @@ class handle_response(object):
             status = wsgi_decode(status)
         header_text = 'Status: %s\r\n' % status
         if headers:
-            header_text += ''.join('%s: %s\r\n' % handle_response._decode_header(*i) for i in headers)
+            header_text += ''.join('%s: %s\r\n' %
+                                   handle_response._decode_header(*i) for i in headers)
         self.header_bytes = wsgi_encode(header_text + '\r\n')
 
         return lambda content: self.send(FCGI_STDOUT, content)
@@ -750,12 +795,15 @@ class handle_response(object):
                 raise Exception("start_response has not yet been called")
 
             self.sent_headers = True
-            send_response(self.stream, self.record.req_id, FCGI_STDOUT, self.header_bytes)
+            send_response(self.stream, self.record.req_id,
+                          FCGI_STDOUT, self.header_bytes)
             self.header_bytes = None
 
         return send_response(self.stream, self.record.req_id, resp_type, content, streaming)
 
+
 _REQUESTS = {}
+
 
 def main():
     initialized = False
@@ -763,7 +811,8 @@ def main():
     log('Python version: %s' % sys.version)
 
     try:
-        fcgi_stream = sys.stdin.detach() if sys.version_info[0] >= 3 else sys.stdin
+        fcgi_stream = sys.stdin.detach(
+        ) if sys.version_info[0] >= 3 else sys.stdin
         try:
             import msvcrt
             msvcrt.setmode(fcgi_stream.fileno(), os.O_BINARY)
@@ -775,7 +824,8 @@ def main():
             if not record:
                 continue
 
-            errors = sys.stderr = sys.__stderr__ = record.params['wsgi.errors'] = StringIO()
+            errors = sys.stderr = sys.__stderr__ = record.params['wsgi.errors'] = StringIO(
+            )
             output = sys.stdout = sys.__stdout__ = StringIO()
 
             with handle_response(fcgi_stream, record, output.getvalue, errors.getvalue) as response:
@@ -791,19 +841,22 @@ def main():
                     env, handler = read_wsgi_handler(response.physical_path)
 
                     response.error_message = 'Error occurred starting file watcher'
-                    start_file_watcher(response.physical_path, env.get('WSGI_RESTART_FILE_REGEX'))
+                    start_file_watcher(response.physical_path,
+                                       env.get('WSGI_RESTART_FILE_REGEX'))
 
                     # Enable debugging if possible. Default to local-only, but
                     # allow a web.config to override where we listen
                     ptvsd_secret = env.get('WSGI_PTVSD_SECRET')
                     if ptvsd_secret:
-                        ptvsd_address = (env.get('WSGI_PTVSD_ADDRESS') or 'localhost:5678').split(':', 2)
+                        ptvsd_address = (
+                            env.get('WSGI_PTVSD_ADDRESS') or 'localhost:5678').split(':', 2)
                         try:
                             ptvsd_port = int(ptvsd_address[1])
                         except LookupError:
                             ptvsd_port = 5678
                         except ValueError:
-                            log('"%s" is not a valid port number for debugging' % ptvsd_address[1])
+                            log('"%s" is not a valid port number for debugging' %
+                                ptvsd_address[1])
                             ptvsd_port = 0
 
                         if ptvsd_address[0] and ptvsd_port:
@@ -813,7 +866,8 @@ def main():
                                 log('unable to import ptvsd to enable debugging')
                             else:
                                 addr = ptvsd_address[0], ptvsd_port
-                                ptvsd.enable_attach(secret=ptvsd_secret, address=addr)
+                                ptvsd.enable_attach(
+                                    secret=ptvsd_secret, address=addr)
                                 log('debugging enabled on %s:%s' % addr)
 
                     response.error_message = ''
@@ -836,9 +890,12 @@ def main():
                 # correct SCRIPT_NAME and PATH_INFO if we are told what our SCRIPT_NAME should be
                 if 'SCRIPT_NAME' in os.environ and record.params['PATH_INFO'].lower().startswith(os.environ['SCRIPT_NAME'].lower()):
                     record.params['SCRIPT_NAME'] = os.environ['SCRIPT_NAME']
-                    record.params['PATH_INFO'] = record.params['PATH_INFO'][len(record.params['SCRIPT_NAME']):]
-                    record.params['wsgi.script_name'] = wsgi_encode(record.params['SCRIPT_NAME'])
-                    record.params['wsgi.path_info'] = wsgi_encode(record.params['PATH_INFO'])
+                    record.params['PATH_INFO'] = record.params['PATH_INFO'][len(
+                        record.params['SCRIPT_NAME']):]
+                    record.params['wsgi.script_name'] = wsgi_encode(
+                        record.params['SCRIPT_NAME'])
+                    record.params['wsgi.path_info'] = wsgi_encode(
+                        record.params['PATH_INFO'])
 
                 # Send each part of the response to FCGI_STDOUT.
                 # Exceptions raised in the handler will be logged by the context
@@ -855,24 +912,29 @@ def main():
     except _ExitException:
         pass
     except Exception:
-        maybe_log('Unhandled exception in wfastcgi.py: ' + traceback.format_exc())
+        maybe_log('Unhandled exception in wfastcgi.py: ' +
+                  traceback.format_exc())
     except BaseException:
-        maybe_log('Unhandled exception in wfastcgi.py: ' + traceback.format_exc())
+        maybe_log('Unhandled exception in wfastcgi.py: ' +
+                  traceback.format_exc())
         raise
     finally:
         run_exit_tasks()
         maybe_log('wfastcgi.py %s closed' % __version__)
 
+
 def _run_appcmd(args):
     from subprocess import check_call, CalledProcessError
-    
+
     if len(sys.argv) > 1 and os.path.isfile(sys.argv[1]):
         appcmd = sys.argv[1:]
     else:
-        appcmd = [os.path.join(os.getenv('SystemRoot'), 'system32', 'inetsrv', 'appcmd.exe')]
+        appcmd = [os.path.join(os.getenv('SystemRoot'),
+                               'system32', 'inetsrv', 'appcmd.exe')]
 
     if not os.path.isfile(appcmd[0]):
-        print('IIS configuration tool appcmd.exe was not found at', appcmd, file=sys.stderr)
+        print('IIS configuration tool appcmd.exe was not found at',
+              appcmd, file=sys.stderr)
         return -1
 
     args = appcmd + args
@@ -886,29 +948,38 @@ def _run_appcmd(args):
 Ensure your user has sufficient privileges and try again.''' % args, file=sys.stderr)
         return ex.returncode
 
+
 def enable():
-    executable = '"' + sys.executable + '"' if ' ' in sys.executable else sys.executable
+    executable = '"' + sys.executable + \
+        '"' if ' ' in sys.executable else sys.executable
     quoted_file = '"' + __file__ + '"' if ' ' in __file__ else __file__
     res = _run_appcmd([
-        "set", "config", "/section:system.webServer/fastCGI",
-        "/+[fullPath='" + executable + "', arguments='" + quoted_file + "', signalBeforeTerminateSeconds='30']"
+        "dataset", "config", "/section:system.webServer/fastCGI",
+        "/+[fullPath='" + executable + "', arguments='" +
+        quoted_file + "', signalBeforeTerminateSeconds='30']"
     ])
 
     if res == 0:
-        print('"%s|%s" can now be used as a FastCGI script processor' % (executable, quoted_file))
+        print('"%s|%s" can now be used as a FastCGI script processor' %
+              (executable, quoted_file))
     return res
+
 
 def disable():
-    executable = '"' + sys.executable + '"' if ' ' in sys.executable else sys.executable
-    quoted_file = '"' + __file__ + '"' if ' ' in __file__ else __file__    
+    executable = '"' + sys.executable + \
+        '"' if ' ' in sys.executable else sys.executable
+    quoted_file = '"' + __file__ + '"' if ' ' in __file__ else __file__
     res = _run_appcmd([
-        "set", "config", "/section:system.webServer/fastCGI",
-        "/-[fullPath='" + executable + "', arguments='" + quoted_file + "', signalBeforeTerminateSeconds='30']"
+        "dataset", "config", "/section:system.webServer/fastCGI",
+        "/-[fullPath='" + executable + "', arguments='" +
+        quoted_file + "', signalBeforeTerminateSeconds='30']"
     ])
 
     if res == 0:
-        print('"%s|%s" is no longer registered for use with FastCGI' % (executable, quoted_file))
+        print('"%s|%s" is no longer registered for use with FastCGI' %
+              (executable, quoted_file))
     return res
+
 
 if __name__ == '__main__':
     main()

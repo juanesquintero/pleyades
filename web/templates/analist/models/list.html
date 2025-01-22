@@ -26,7 +26,7 @@
         <th scope="col" class="border-top-0">
         
         </th>
-        <th scope="col" class="col-5 border-top-0 sortable" data-sort="programa"  class="" data-sort="name">
+        <th scope="col" class="col-5 border-top-0 sortable" data-sort="program"  class="" data-sort="name">
           <center><i>Program</i></center>
         </th>
         <th scope="col" class="col-1 border-top-0 sortable" data-sort="info">
@@ -51,7 +51,7 @@
     <tbody>
       {% for m in models %} {% if m.status=='Exitosa' and m.results.tipo ==
       'Entrenamiento' %}
-      {% set info_array = m.conjunto.split(' ')[1:] %}
+      {% dataset info_array = m.conjunto.split(' ')[1:] %}
       <tr>
         <td>
           <h6 >
@@ -59,7 +59,7 @@
           </h6>
         </td>
         <td>
-          <center>{{m.results.programa}}</center>
+          <center>{{m.results.program}}</center>
         </td>
         <td>
           
@@ -89,7 +89,7 @@
         </td>
 
         <td>
-          {% set proc = m.results.desercion_prevista * 100 %}
+          {% dataset proc = m.results.desercion_prevista * 100 %}
 
           <center>
             ~ {{ '%0.0f' % proc|float }}% {% if m.results.desercion_prevista >

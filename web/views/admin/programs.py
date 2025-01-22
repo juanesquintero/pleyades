@@ -23,8 +23,8 @@ def get_list():
 def detalle():
     status_f, body_f = get('faculties')
     body = dict(request.values)
-    programa = literal_eval(body['programa'])
+    program = literal_eval(body['program'])
     if status_f and body:
-        return render_template('admin/'+endopoint+'detail.html', p=programa, faculties=body_f,)
+        return render_template('admin/'+endopoint+'detail.html', p=program, faculties=body_f,)
     else:
         return render_template('utils/message.html', message='No se pudieron cargar las programs y las faculties', submensaje=body_f)

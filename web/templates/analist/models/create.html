@@ -23,7 +23,7 @@
           Faculty
         </label>
         <select
-          class="form-control programa-change"
+          class="form-control program-change"
           name="faculty"
           id="faculty_select"
           required
@@ -40,8 +40,8 @@
           Program
         </label>
         <select
-          class="form-control programa-change"
-          name="programa"
+          class="form-control program-change"
+          name="program"
           id="program_select"
           required
         ></select>
@@ -142,8 +142,8 @@
             options[i].remove();
           }
         }
-        //LLenar con periods del programa
-        $(".programa-change").on("change", function () {
+        //LLenar con periods del program
+        $(".program-change").on("change", function () {
           $.ajax({
             url: "periods/" + $("#program_select").val(),
             type: "GET",
@@ -208,23 +208,23 @@
         </div>
       </div>
 
-      <div class="col-sm-5" id="archivo_control" style="display: none">
+      <div class="col-sm-5" id="file_control" style="display: none">
         <label>Archivo de Excel</label>
         <i class="fas fa-file-excel ml-1"></i>
         <div class="custom-file">
           <input
             type="file"
             accept=".xls,.xlsx"
-            name="archivo"
-            id="archivo_picker"
+            name="file"
+            id="file_picker"
             class="custom-file-input"
             lang="es"
           />
           <label class="custom-file-label" for="customFile"
-            >Seleccionar archivo</label
+            >Seleccionar file</label
           >
           <script>
-            // Mostrar nombre del archivo seleccionado en el campo de texto
+            // Mostrar nombre del file seleccionado en el campo de texto
             $(".custom-file-input").on("change", function () {
               var fileName = $(this).val().split("\\").pop();
               $(this)
@@ -232,33 +232,33 @@
                 .addClass("selected")
                 .html(fileName);
             });
-            // Mostrar control de archivo dependiendo del tipo
+            // Mostrar control de file dependiendo del tipo
             $(document).ready(function () {
               $("#tipo_consulta").prop("checked", true);
             });
 
             $("input[type=radio][name=tipo]").change(function () {
               if (this.value == "consulta") {
-                // Esconder control de archivo
-                $("#archivo_control").css("display", "none");
-                // Limpiar archivo
-                $("#archivo_picker").replaceWith(
-                  $("#archivo_picker").val("").clone(true)
+                // Esconder control de file
+                $("#file_control").css("display", "none");
+                // Limpiar file
+                $("#file_picker").replaceWith(
+                  $("#file_picker").val("").clone(true)
                 );
-                $("#archivo_picker")
+                $("#file_picker")
                   .siblings(".custom-file-label")
-                  .html("Seleccionar archivo");
-                $("#archivo_picker").prop("required", false);
+                  .html("Seleccionar file");
+                $("#file_picker").prop("required", false);
 
                 alert(
-                  "Se hara una consulta a la Base de datos de los students del programa indicado que tengan registros entre los respectivos semestres "
+                  "Se hara una consulta a la Base de datos de los students del program indicado que tengan registros entre los respectivos semestres "
                 );
               } else if (this.value == "excel") {
-                // Mostrar control de archivo
-                $("#archivo_control").css("display", "inline");
-                $("#archivo_picker").prop("required", true);
+                // Mostrar control de file
+                $("#file_control").css("display", "inline");
+                $("#file_picker").prop("required", true);
                 alert(
-                  "Ingrese un archivo excel con los students del programa indicado entre los respectivos semestres"
+                  "Ingrese un file excel con los students del program indicado entre los respectivos semestres"
                 );
               }
             });
@@ -266,9 +266,9 @@
         </div>
       </div>
       <script>
-        $("#archivo_picker").click(function () {
+        $("#file_picker").click(function () {
           alert(
-            "Asegurese que los datos que ingrese tengan el formato de columns correcto para su lectura.\nAdemas que correspondan a la faculty y programa selecccionados.\n\nGRACIAS"
+            "Asegurese que los datos que ingrese tengan el formato de columns correcto para su lectura.\nAdemas que correspondan a la faculty y program selecccionados.\n\nGRACIAS"
           );
         });
       </script>

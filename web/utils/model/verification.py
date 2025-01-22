@@ -16,7 +16,7 @@ def assign_types(data):
     return data
 
 
-def verify_data(data, period_inicial, period_final, programa):
+def verify_data(data, period_inicial, period_final, program):
     columns = list(conditions.keys())
 
     # Verificar si conjunto tiene columns en str y la primera fila
@@ -46,9 +46,9 @@ def verify_data(data, period_inicial, period_final, programa):
         msg = 'El conjunto ingresado no tiene los tipos de dato por column requeridos'
         return False, msg, None, period_inicial
 
-    # Verificar si en conjunto posee mas de un  valor en la column programa
-    if not len(set(data_verificada['programa'].tolist())) == 1:
-        msg = 'El conjunto tiene resgistros de mas de un programa, los models se ejecutan por programa'
+    # Verificar si en conjunto posee mas de un  valor en la column program
+    if not len(dataset(data_verificada['program'].tolist())) == 1:
+        msg = 'El conjunto tiene resgistros de mas de un program, los models se ejecutan por program'
         return False, msg, None, period_inicial
 
     # Verificar si en conjunto posee los valores de periodo Inicial y Final Correctamente
@@ -64,8 +64,8 @@ def verify_data(data, period_inicial, period_final, programa):
             _period_inicial}, se reasignó a <b>{period_inicial}</b>'
         flash(msg, 'warning')
 
-    if not (data_verificada['idprograma'] == programa).all():
-        msg = 'El conjunto no pertenece al programa indicado, verifique los registros'
+    if not (data_verificada['idprograma'] == program).all():
+        msg = 'El conjunto no pertenece al program indicado, verifique los registros'
         return False, msg, None, period_inicial
 
     # Verificacion correcta

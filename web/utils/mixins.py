@@ -28,99 +28,99 @@ def exception(op):
     if isinstance(op, Exception):
         ex = clean_exception(str(op))
         error_logger.error(ex)
-        return render_template('utils/message.html', message='Ocurrió un error accesando a los datos'), 500
+        return render_template('utils/message.html', message='An error occurred accessing the data'), 500
     else:
         return False
 
-####################################### FUNCIONES logicas repetitivas ###############################################
+####################################### Repetitive logical functions ###############################################
 
 
 def get_now_date():
-    formato = '%Y-%m-%d %H:%M:%S'
-    fecha = datetime.strftime(datetime.now(), formato)
-    # Formateo para el api y la bd
-    fecha_formateada = fecha.replace(' ', 'T')+'+00:00'
-    return fecha_formateada
+    format = '%Y-%m-%d %H:%M:%S'
+    date = datetime.strftime(datetime.now(), format)
+    # Format for the API and the database
+    formatted_date = date.replace(' ', 'T')+'+00:00'
+    return formatted_date
 
 
 def set_date_format(results):
     for r in results:
-        r['fechaInicial'] = str_to_date(r['fechaInicial'])
-        r['fechaFinal'] = str_to_date(r['fechaFinal'])
+        r['startDate'] = str_to_date(r['startDate'])
+        r['endDate'] = str_to_date(r['endDate'])
     return results
 
 
-def str_to_date(fecha):
-    formato_lectura = '%Y-%m-%d %H:%M:%S'
-    formato_escritura = '%A %d/%B/%Y - %H:%M %p'
-    fecha_lec = datetime.strptime(fecha, formato_lectura)
-    fecha_escr = fecha_lec.strftime(formato_escritura)
-    return fecha_escr.title()
+def str_to_date(date):
+    read_format = '%Y-%m-%d %H:%M:%S'
+    write_format = '%A %d/%B/%Y - %H:%M %p'
+    read_date = datetime.strptime(date, read_format)
+    write_date = read_date.strftime(write_format)
+    return write_date.title()
 
 
-def save_archivo(data, ruta, tipo):
+def save_file(data, path, type):
     try:
-        if tipo == 'excel':
-            data.to_excel(ruta, engine='openpyxl', index=False)
-        elif tipo == 'json':
-            data.to_json(ruta, orient='records')
+        if type == 'excel':
+            data.to_excel(path, engine='openpyxl', index=False)
+        elif type == 'json':
+            data.to_json(path, orient='records')
         else:
             raise Exception(
-                'No se pudo save el archivo \n Tipo de archivo incorrecto'
+                'Could not save the file \n Incorrect file type'
             )
     except Exception as e:
         error_logger.error(e)
-        raise Exception('No se pudo save el archivo')
+        raise Exception('Could not save the file')
     return True, 'ERROR'
 
 
-def remove_file(ruta):
-    if os.path.exists(ruta):
+def remove_file(path):
+    if os.path.exists(path):
         try:
-            os.remove(ruta)
+            os.remove(path)
         except Exception as e:
             error_logger.error(e)
-            return False, render_template('utils/message.html', message='No se pudo eliminar el archivo')
+            return False, render_template('utils/message.html', message='Could not delete the file')
     # else:
-    #     return False, render_template('utils/message.html', message='No se pudo eliminar el archivo', submensaje='El archivo no existe')
+    #     return False, render_template('utils/message.html', message='Could not delete the file', submessage='The file does not exist')
     return True, 'ERROR'
 
 
-def obtener_archivo_excel(ruta):
-    if os.path.exists(ruta+'.xlsx'):
-        data = pd.read_excel(ruta+'.xlsx')
-    elif os.path.exists(ruta+'.xls'):
-        data = pd.read_excel(ruta+'.xls')
+def get_excel_file(path):
+    if os.path.exists(path+'.xlsx'):
+        data = pd.read_excel(path+'.xlsx')
+    elif os.path.exists(path+'.xls'):
+        data = pd.read_excel(path+'.xls')
     else:
-        return False, render_template('utils/message.html', message='No se encontro el archivo')
+        return False, render_template('utils/message.html', message='File not found')
     return True, data
 
 
-def obtener_archivo_json(ruta):
-    if os.path.exists(ruta+'.json'):
+def get_json_file(path):
+    if os.path.exists(path+'.json'):
         try:
-            with open(ruta+'.json', 'r') as json_file:
+            with open(path+'.json', 'r') as json_file:
                 data = json.load(json_file)
         except Exception as e:
             error_logger.error(e)
-            return False, render_template('utils/message.html', message='No se pudo abrir el archivo de desertores:')
+            return False, render_template('utils/message.html', message='Could not open the deserters file:')
     else:
-        return False, render_template('utils/message.html', message='No se encontro le archivo de desertores')
+        return False, render_template('utils/message.html', message='Deserters file not found')
     return True, data
 
 
-def actualizar_state(nombre, status):
-    status, body = put('sets/'+nombre, {'status': status})
+def update_status(name, status):
+    status, body = put('sets/'+name, {'status': status})
     if not status:
-        return render_template('utils/message.html', message='No fue posible actualizar el status del conjunto a '+status, submensaje=body)
+        return render_template('utils/message.html', message='Could not update the dataset status to '+status, submessage=body)
     else:
         return None
 
 
-def save_preparation(preparation, observaciones, status):
-    # Guardar REGISTRO de preparation
-    preparation['fechaFinal'] = get_now_date()
-    preparation['observaciones'] = observaciones
+def save_preparation(preparation, observations, status):
+    # Save preparation record
+    preparation['endDate'] = get_now_date()
+    preparation['observations'] = observations
     preparation['status'] = status
     post('preparations', preparation)
     return True, 'ERROR'
@@ -128,9 +128,9 @@ def save_preparation(preparation, observaciones, status):
 
 def save_execution(execution, results, status):
 
-    # Guardar REGISTRO de ejecución
-    execution['precision_model'] = results.get('precision', None)
-    execution['fechaFinal'] = get_now_date()
+    # Save execution record
+    execution['model_precision'] = results.get('precision', None)
+    execution['endDate'] = get_now_date()
     execution['results'] = dict(results)
     execution['status'] = status
 
@@ -138,33 +138,33 @@ def save_execution(execution, results, status):
 
     if not status:
         raise Exception(
-            f"Execution could be NOT saved: {body.get('error')}"
+            f"Execution could NOT be saved: {body.get('error')}"
         )
 
     return True, 'ERROR'
 
 
-def obtener_nombre_conjunto(conjunto):
-    # Obtener nombre del conjunto desde el api
-    status_n, body_n = post('sets/nombre', conjunto)
+def get_set_name(dataset):
+    # Get dataset name from the API
+    status_n, body_n = post('sets/name', dataset)
     if status_n:
-        return body_n['nombre'], body_n['numero']
+        return body_n['name'], body_n['number']
 
     error_logger.error(f'API ERROR: {status_n} {body_n}')
-    return False, render_template('utils/message.html', message='No se pudo obtener el nombre del conjunto', submensaje=body_n)
+    return False, render_template('utils/message.html', message='Could not get the dataset name', submessage=body_n)
 
 
-def obtener_nombre_execution(conjunto):
-    # Obtener nombre de la execution desde el api
-    status_n, body_n = get(f'executions/nombre/{conjunto}')
+def get_execution_name(dataset):
+    # Get execution name from the API
+    status_n, body_n = get(f'executions/name/{dataset}')
     if status_n:
-        return body_n['nombre'], body_n['numero']
+        return body_n['name'], body_n['number']
 
     error_logger.error(f'API ERROR: {status_n} {body_n}')
-    raise Exception('No se pudo obtener el nombre de la ejecución')
+    raise Exception('Could not get the execution name')
 
 
-def obtener_ies_config():
+def get_ies_config():
     # Get IES definition
     ies_name = os.getenv('CLI_IES_NAME')
     base_dir = os.path.dirname(os.path.abspath(__file__))
@@ -175,8 +175,8 @@ def obtener_ies_config():
         except Exception as e:
             error_logger.error('EXCEPTION: IES Config ERROR: {}'.format(e))
             return {
-                'nombre': 'Educatic',
+                'name': 'Educatic',
                 'url': 'http://educatic.com.co/',
                 'logo': 'http://educatic.com.co/assets/images/logo.png',
-                'descripcion': 'Oficina: Carrera 42 No 5 SUR 145 Piso 13, oficina 125 WeWork, Medellín, Antioquia Celular: (+57) 311 634 45 26 Email: walter.alvarez@educatic.com.co Servicio y Soporte: soporte@educatic.com.co (+57) 311 634 45 26'
+                'description': 'Office: Carrera 42 No 5 SUR 145 Piso 13, office 125 WeWork, Medellín, Antioquia Mobile: (+57) 311 634 45 26 Email: walter.alvarez@educatic.com.co Service and Support: soporte@educatic.com.co (+57) 311 634 45 26'
             }

@@ -17,12 +17,12 @@
         {% if estudiante %}
         <div class="row ml-auto" style="width:60%;">
             <div class="col-7 m-0 px-1">
-                <label for="period_select" class="text-white">Selecciona un programa:</label>
+                <label for="period_select" class="text-white">Selecciona un program:</label>
                 <br>
                 <select id="program_select" class="form-control-sm w-100">
                     {% for prgm in programs_list %}
-                    <option value="{{prgm.idprograma}}" {% if prgm.idprograma|string==programa.idprograma|string %}
-                        selected {% endif %}>{{prgm.programa}}</option>
+                    <option value="{{prgm.idprograma}}" {% if prgm.idprograma|string==program.idprograma|string %}
+                        selected {% endif %}>{{prgm.program}}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -43,16 +43,16 @@
         {% endif %}
     </div>
     <script>
-        var programa = '{{ programa.idprograma }}';
+        var program = '{{ program.idprograma }}';
         var periodo = '{{ periodo }}';
         var documento = '{{ estudiante.documento }}';
         $('#period_select').on('change', function () {
             openModal();
-            window.location.href = "{{url_for('Tablero.student_dashboard')}}" + "?documento=" + documento + '&programa=' + programa + '&periodo=' + this.value;
+            window.location.href = "{{url_for('Tablero.student_dashboard')}}" + "?documento=" + documento + '&program=' + program + '&periodo=' + this.value;
         })
         $('#program_select').on('change', function () {
             openModal();
-            window.location.href =  "{{url_for('Tablero.student_dashboard')}}" + "?documento=" + documento + '&programa=' + this.value;
+            window.location.href =  "{{url_for('Tablero.student_dashboard')}}" + "?documento=" + documento + '&program=' + this.value;
         })
     </script>
 </div>
@@ -117,7 +117,7 @@
 
                                     {% if ' ' in estudiante.celular_telefono %}
 
-                                    {% set list_numbers = estudiante.celular_telefono.split(' ') %}
+                                    {% dataset list_numbers = estudiante.celular_telefono.split(' ') %}
 
                                     {% for number in list_numbers %}
 
@@ -292,7 +292,7 @@
             <p class="m-0 p-0 mt-3 ml-5 text-black">
                 <b>Promedio por períodos</b>
                 <br>
-                <small>(Serie de tiempo del promedio por período para este programa) </small>
+                <small>(Serie de tiempo del promedio por período para este program) </small>
             </p>
             {% endif %}
             <div class="m-0 p-0" style="height: 85%;" id="serie_promedio"></div>
@@ -435,9 +435,9 @@
             <i>
                 <strong>DOCUMENTO:</strong> &nbsp;{{documento}}
 
-                {% if programa is not none %}
+                {% if program is not none %}
                 <br>
-                <strong>PROGRAMA:</strong> &nbsp;{{programa.programa}}
+                <strong>PROGRAMA:</strong> &nbsp;{{program.program}}
                 {% endif %}
 
                 {% if periodo is not none%}

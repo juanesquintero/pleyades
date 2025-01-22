@@ -6,34 +6,34 @@ from ast import literal_eval
 from dotenv import load_dotenv
 from flask import request, session, Blueprint, render_template, send_file, redirect, url_for, jsonify, flash
 
-import utils.model as Modelo
+import utils.model as Model
 from services.API import get, post
 import views.datasets as datasets
 from views.auth import login_required
 import utils.dashboards.data_ies as DataIES
-from utils.mixins import save_archivo, save_execution, get_now_date, obtener_nombre_execution
+from utils.mixins import save_file, save_execution, get_now_date, get_execution_name
 
 load_dotenv()
 
 error_logger = logging.getLogger('error_logger')
 
-endopoint = 'analist/models/'
+endpoint = 'analist/models/'
 
-Analista = Blueprint('Analista', __name__)
+Analyst = Blueprint('Analyst', __name__)
 
 upload_folder = os.getcwd()+'/uploads'
 models_folder = f'{upload_folder}/models'
 
 
-@Analista.route('/models', methods=['GET'])
-@Analista.route('/models/', methods=['GET'])
+@Analyst.route('/models', methods=['GET'])
+@Analyst.route('/models/', methods=['GET'])
 @login_required
 def models():
     model = request.args.get('model')
     success, body = get_models(model)
 
     if not success:
-        flash('User does not have  models de deserción', 'warning')
+        flash('User does not have dropout models', 'warning')
         body = []
 
     return render_template(
@@ -42,26 +42,26 @@ def models():
     )
 
 
-@Analista.route('/models/train', methods=['GET', 'POST'])
+@Analyst.route('/models/train', methods=['GET', 'POST'])
 @login_required
 def train():
     if request.method == 'GET':
         return form_train()
-    conjunto = dict(request.values)
-    return datasets.post_save(conjunto)
+    dataset = dict(request.values)
+    return datasets.post_save(dataset)
 
 
-@Analista.route('/models/predict', methods=['POST'])
+@Analyst.route('/models/predict', methods=['POST'])
 def predict():
     model = dict(request.values).get('model')
     return render_template(
-        endopoint+'predict.html',
+        endpoint+'predict.html',
         model=literal_eval(model)
     )
 
 
-@Analista.route('/trainings', methods=['GET'])
-@Analista.route('/trainings/', methods=['GET'])
+@Analyst.route('/trainings', methods=['GET'])
+@Analyst.route('/trainings/', methods=['GET'])
 @login_required
 def trainings():
     model = request.args.get('model')
@@ -77,8 +77,8 @@ def trainings():
     )
 
 
-@Analista.route('/predictions', methods=['GET'])
-@Analista.route('/predictions/', methods=['GET'])
+@Analyst.route('/predictions', methods=['GET'])
+@Analyst.route('/predictions/', methods=['GET'])
 @login_required
 def predictions():
     model = request.args.get('model')
@@ -94,97 +94,97 @@ def predictions():
     )
 
 
-@Analista.route('/predictions/predict', methods=['POST'])
+@Analyst.route('/predictions/predict', methods=['POST'])
 def predict_model():
     form = dict(request.values)
     execution = literal_eval(form.get('execution'))
-    execution['fechaInicial'] = get_now_date()
+    execution['startDate'] = get_now_date()
 
-    periodo = form.get('periodo')
+    period = form.get('period')
     results = execution.pop('results')
-    model = execution.get('conjunto')
-    idprograma = results.get('idprograma')
+    model = execution.get('dataset')
+    program_id = results.get('program_id')
 
     basic_info = {
-        'idprograma': idprograma,
-        'programa': results.get('programa'),
-        'idfacultad': results.get('idfacultad'),
+        'program_id': program_id,
+        'program': results.get('program'),
+        'faculty_id': results.get('faculty_id'),
         'faculty': results.get('faculty'),
         'model': model
     }
 
-    # Obtener students a predict
-    data_a_predict = DataIES.get_students_period_program(
-        periodo, idprograma
+    # Get students to predict
+    data_to_predict = DataIES.get_students_period_program(
+        period, program_id
     )
 
-    # Preparar data
-    df_data_a_predict = pd.DataFrame(data_a_predict)
-    data_preparada = Modelo.prepare_data(df_data_a_predict)
+    # Prepare data
+    df_data_to_predict = pd.DataFrame(data_to_predict)
+    prepared_data = Model.prepare_data(df_data_to_predict)
 
-    # Predecir results
-    resultados_model, resultados_desertores = Modelo.predict(
-        data_preparada, periodo, basic_info
+    # Predict results
+    model_results, dropout_results = Model.predict(
+        prepared_data, period, basic_info
     )
-    resultados_desertores['idprograma'] = resultados_desertores['idprograma'].astype(
+    dropout_results['program_id'] = dropout_results['program_id'].astype(
         int
     )
-    resultados_desertores['semestre_prediccion'] = resultados_desertores['semestre_prediccion'].astype(
+    dropout_results['prediction_semester'] = dropout_results['prediction_semester'].astype(
         int
     )
 
-    # Insertar los results
-    if resultados_desertores.empty:
-        flash('No hay deserters para esta predicción', 'warning')
-        return redirect(url_for('Analista.models'))
+    # Insert results
+    if dropout_results.empty:
+        flash('No dropouts for this prediction', 'warning')
+        return redirect(url_for('Analyst.models'))
 
-    resultados_insert = json.loads(
-        resultados_desertores.to_json(orient='records')
+    results_insert = json.loads(
+        dropout_results.to_json(orient='records')
     )
 
     status_insert, body_insert = post(
-        'desertion/results',
-        resultados_insert
+        'dropout/results',
+        results_insert
     )
 
     if not status_insert:
         error_logger.error(
-            'Error insertando los nuevos deserters'.format(
+            'Error inserting new dropouts'.format(
                 json.dumps(body_insert))
         )
         raise Exception(
-            'Ocurrió un error insertando y/o actualizando los results'
+            'An error occurred inserting and/or updating the results'
         )
 
-    execution['nombre'], execution['numero'] = obtener_nombre_execution(model)
+    execution['name'], execution['number'] = get_execution_name(model)
 
-    # Guardar desertotres
-    archivo_desertores = f"D {execution.get('nombre')}.json"
-    ruta = upload_folder+'/deserters/'+archivo_desertores
-    save_archivo(
-        resultados_model.pop('deserters'), ruta, 'json'
+    # Save dropouts
+    dropout_file = f"D {execution.get('name')}.json"
+    path = upload_folder+'/deserters/'+dropout_file
+    save_file(
+        model_results.pop('dropouts'), path, 'json'
     )
 
-    # Guardar ejecución
-    resultados_model['duracion'] = execution.pop('duracion')
-    save_execution(execution, resultados_model, 'Exitosa')
-    flash('Predicción exitosa!!', 'success')
+    # Save execution
+    model_results['duration'] = execution.pop('duration')
+    save_execution(execution, model_results, 'Successful')
+    flash('Prediction successful!!', 'success')
 
-    return redirect(url_for('Analista.predictions'))
+    return redirect(url_for('Analyst.predictions'))
 
 
-@Analista.route('/models/donwload', methods=['POST'])
+@Analyst.route('/models/download', methods=['POST'])
 @login_required
 def download():
     model = dict(request.values).get('model')
-    ruta = f'{models_folder}/{model}.pkl'
+    path = f'{models_folder}/{model}.pkl'
 
-    if os.path.exists(ruta):
-        return send_file(ruta, as_attachment=True)
+    if os.path.exists(path):
+        return send_file(path, as_attachment=True)
 
     success, body = get_models()
 
-    flash('No se encontro el archivo a donwload', 'warning')
+    flash('File not found for download', 'warning')
 
     if not success:
         flash(f"{body.get('error')}", 'danger')
@@ -195,10 +195,10 @@ def download():
     )
 
 
-@Analista.route('/models/periods/<int:programa>')
+@Analyst.route('/models/periods/<int:program>')
 @login_required
-def get_periods_program(programa):
-    status, body = get(f'desertion/students/periods/programa/{programa}')
+def get_periods_program(program):
+    status, body = get(f'dropout/students/periods/program/{program}')
     if status:
         return jsonify(body)
     return jsonify([])
@@ -206,21 +206,21 @@ def get_periods_program(programa):
 
 def get_models(name=None, dataset=None):
     user = session.get('user', {'email': ''}).get('email')
-    endopoint = f'executions/executor/{user}'
+    endpoint = f'executions/executor/{user}'
     if name:
-        endopoint += f'?name={name}'
+        endpoint += f'?name={name}'
     elif dataset:
-        endopoint += f'?dataset={dataset}'
-    return get(endopoint)
+        endpoint += f'?dataset={dataset}'
+    return get(endpoint)
 
 
 def form_train():
-    periods = DataIES.get_periods_origen()
+    periods = DataIES.get_periods_origin()
     status_f, body_f = get('faculties')
     status_p, body_p = get('programs')
 
     if status_f and status_p and periods:
-        return render_template(endopoint+'create.html', faculties=body_f, programs=body_p)
+        return render_template(endpoint+'create.html', faculties=body_f, programs=body_p)
 
     if not status_f and not status_p:
         error = {**body_f, **body_p}
@@ -230,6 +230,6 @@ def form_train():
         error = body_p
     return render_template(
         'utils/message.html',
-        message='No se pudieron cargar las programs y las faculties',
-        submensaje=error
+        message='Could not load programs and faculties',
+        submessage=error
     )
