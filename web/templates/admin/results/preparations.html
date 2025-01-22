@@ -63,14 +63,14 @@
           <center>
             <div class="btn-group" role="group" aria-label="Basic example">
               <!-- Editar -->
-              <form action="{{url_for('ResultAdmin.editar_preparacion')}}" method="POST">
-                <input type="hidden" name="preparacion" value="{{p}}">
+              <form action="{{url_for('ResultAdmin.editar_preparation')}}" method="POST">
+                <input type="hidden" name="preparation" value="{{p}}">
                 <input type="submit" data-toggle="tooltip" data-placement="bottom" title="Editar"
                   class="btn btn-outline-dark btn-sm" value="&#9999;">
               </form>
               <!-- Eliminar -->
-              <form action="{{url_for('ResultAdmin.borrar_preparacion')}}" method="POST">
-                <input type="hidden" name="preparacion" value="{{p}}">
+              <form action="{{url_for('ResultAdmin.delete_preparation')}}" method="POST">
+                <input type="hidden" name="preparation" value="{{p}}">
                 <input type="submit" data-toggle="tooltip" data-placement="bottom" title="Eliminar"
                   class="btn btn-outline-dark btn-sm" value="&#128465;">
               </form>

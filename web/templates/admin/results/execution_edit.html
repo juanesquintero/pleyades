@@ -5,7 +5,7 @@
 <h5>Editar una Ejecucion</h5>
 <br>
 {% if e.nombre %}
-<form action="{{url_for('ResultAdmin.actualizar_ejecucion')}}" method="POST" data-toggle="validator" class="jumbotron py-4 pr-4 bg-light"
+<form action="{{url_for('ResultAdmin.actualizar_execution')}}" method="POST" data-toggle="validator" class="jumbotron py-4 pr-4 bg-light"
     style="max-width:75%;">
     <div class="container">
         <div class="form-group row">
@@ -22,7 +22,7 @@
         <div class="form-group row">
             <div class="col-sm-10">
                 <label>Ejecutor</label>
-                <input type="email" class="form-control input-sm" maxlength="200" required value="{{e.ejecutor}}" disabled>
+                <input type="email" class="form-control input-sm" maxlength="200" required value="{{e.executor}}" disabled>
             </div>
             <div class="col-sm-2">
                 <label>Numero</label>

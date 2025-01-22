@@ -58,48 +58,48 @@ def list_set(results, conjunto):
 
 @ResultAdmin.route('/preparations/editar', methods=['POST'])
 @only_admin
-def editar_preparacion():
+def editar_preparation():
     body = dict(request.values)
-    preparacion = literal_eval(body['preparacion'])
-    preparacion['observaciones'] = json.dumps(preparacion['observaciones'])
-    return render_template('admin/'+endopoint+'preparacion_editar.html', p=preparacion)
+    preparation = literal_eval(body['preparation'])
+    preparation['observaciones'] = json.dumps(preparation['observaciones'])
+    return render_template('admin/'+endopoint+'preparation_editar.html', p=preparation)
 
 
 @ResultAdmin.route('/preparations/actualizar', methods=['POST'])
 @only_admin
-def actualizar_preparacion():
-    preparacion = dict(request.values)
-    nombre = preparacion.pop('nombre')
-    if preparacion['observaciones'].lower().strip() in ['none', 'nulo', 'null', '']:
-        preparacion['observaciones'] = None
+def actualizar_preparation():
+    preparation = dict(request.values)
+    nombre = preparation.pop('nombre')
+    if preparation['observaciones'].lower().strip() in ['none', 'nulo', 'null', '']:
+        preparation['observaciones'] = None
     else:
         try:
-            preparacion['observaciones'] = json.loads(
-                preparacion['observaciones'].replace("'", '"'))
-            preparacion['observaciones'] = dict(preparacion['observaciones'])
+            preparation['observaciones'] = json.loads(
+                preparation['observaciones'].replace("'", '"'))
+            preparation['observaciones'] = dict(preparation['observaciones'])
         except:
             return render_template('utils/message.html', message='No se pudo actualizar la preparación', submensaje='Error con el campo observaciones no es un json o nulo')
 
-    status, body = put('preparations/'+nombre, preparacion)
+    status, body = put('preparations/'+nombre, preparation)
     if status:
         return redirect(url_for('ResultAdmin.preparations'))
     else:
         return render_template('utils/message.html', message='No se pudo actualizar la preparación', submensaje=body)
 
 
-@ResultAdmin.route('/preparations/borrar', methods=['POST'])
+@ResultAdmin.route('/preparations/delete', methods=['POST'])
 @only_admin
-def borrar_preparacion():
+def delete_preparation():
     body = dict(request.values)
-    preparacion = literal_eval(body['preparacion'])
-    return render_template('admin/'+endopoint+'preparacion_borrar.html', p=preparacion)
+    preparation = literal_eval(body['preparation'])
+    return render_template('admin/'+endopoint+'preparation_borrar.html', p=preparation)
 
 
 @ResultAdmin.route('/preparations/remove', methods=['POST'])
 @only_admin
-def delete_preparacion():
-    preparacion = dict(request.values)
-    nombre = preparacion.pop('nombre')
+def remove_preparation():
+    preparation = dict(request.values)
+    nombre = preparation.pop('nombre')
     status, body = delete('preparations/'+nombre)
     if status:
         return redirect(url_for('ResultAdmin.preparations'))
@@ -111,7 +111,7 @@ def delete_preparacion():
 
 @ResultAdmin.route('/executions/editar', methods=['POST'])
 @only_admin
-def editar_ejecucion():
+def editar_execution():
     body = dict(request.values)
     execution = literal_eval(body['execution'])
     execution['results'] = json.dumps(execution['results'])
@@ -120,7 +120,7 @@ def editar_ejecucion():
 
 @ResultAdmin.route('/executions/actualizar', methods=['POST'])
 @only_admin
-def actualizar_ejecucion():
+def actualizar_execution():
     execution = dict(request.values)
     nombre = execution.pop('nombre')
     try:
@@ -144,17 +144,17 @@ def actualizar_ejecucion():
     )
 
 
-@ResultAdmin.route('/executions/borrar', methods=['POST'])
+@ResultAdmin.route('/executions/delete', methods=['POST'])
 @only_admin
-def borrar_ejecucion():
+def delete_execution():
     body = dict(request.values)
     execution = literal_eval(body['execution'])
-    return render_template('admin/'+endopoint+'execution_borrar.html', e=execution)
+    return render_template('admin/'+endopoint+'execution_remove.html', e=execution)
 
 
 @ResultAdmin.route('/executions/remove', methods=['POST'])
 @only_admin
-def delete_ejecucion():
+def remove_execution():
     execution = dict(request.values)
     nombre = execution.pop('nombre')
     status, body = delete('executions/'+nombre)

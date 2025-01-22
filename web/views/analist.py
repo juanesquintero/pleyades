@@ -11,7 +11,7 @@ from services.API import get, post
 import views.datasets as datasets
 from views.auth import login_required
 import utils.dashboards.data_ies as DataIES
-from utils.mixins import save_archivo, save_ejecucion, get_now_date, obtener_nombre_ejecucion
+from utils.mixins import save_archivo, save_execution, get_now_date, obtener_nombre_execution
 
 load_dotenv()
 
@@ -156,7 +156,7 @@ def predict_model():
             'Ocurrió un error insertando y/o actualizando los results'
         )
 
-    execution['nombre'], execution['numero'] = obtener_nombre_ejecucion(model)
+    execution['nombre'], execution['numero'] = obtener_nombre_execution(model)
 
     # Guardar desertotres
     archivo_desertores = f"D {execution.get('nombre')}.json"
@@ -167,7 +167,7 @@ def predict_model():
 
     # Guardar ejecución
     resultados_model['duracion'] = execution.pop('duracion')
-    save_ejecucion(execution, resultados_model, 'Exitosa')
+    save_execution(execution, resultados_model, 'Exitosa')
     flash('Predicción exitosa!!', 'success')
 
     return redirect(url_for('Analista.predictions'))

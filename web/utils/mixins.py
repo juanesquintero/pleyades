@@ -117,16 +117,16 @@ def actualizar_state(nombre, status):
         return None
 
 
-def save_preparacion(preparacion, observaciones, status):
-    # Guardar REGISTRO de preparacion
-    preparacion['fechaFinal'] = get_now_date()
-    preparacion['observaciones'] = observaciones
-    preparacion['status'] = status
-    post('preparations', preparacion)
+def save_preparation(preparation, observaciones, status):
+    # Guardar REGISTRO de preparation
+    preparation['fechaFinal'] = get_now_date()
+    preparation['observaciones'] = observaciones
+    preparation['status'] = status
+    post('preparations', preparation)
     return True, 'ERROR'
 
 
-def save_ejecucion(execution, results, status):
+def save_execution(execution, results, status):
 
     # Guardar REGISTRO de ejecución
     execution['precision_model'] = results.get('precision', None)
@@ -154,7 +154,7 @@ def obtener_nombre_conjunto(conjunto):
     return False, render_template('utils/message.html', message='No se pudo obtener el nombre del conjunto', submensaje=body_n)
 
 
-def obtener_nombre_ejecucion(conjunto):
+def obtener_nombre_execution(conjunto):
     # Obtener nombre de la execution desde el api
     status_n, body_n = get(f'executions/nombre/{conjunto}')
     if status_n:

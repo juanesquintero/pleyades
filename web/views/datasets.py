@@ -14,7 +14,7 @@ from utils.model import prepare_data, verify_data, execute_model
 from views.auth import login_required
 from services.API import get, post, put
 
-from utils.mixins import actualizar_state, save_archivo, save_ejecucion, save_preparacion, get_now_date, obtener_archivo_excel, obtener_nombre_conjunto
+from utils.mixins import actualizar_state, save_archivo, save_execution, save_preparation, get_now_date, obtener_archivo_excel, obtener_nombre_conjunto
 
 model_logger = logging.getLogger('model_logger')
 error_logger = logging.getLogger('error_logger')
@@ -31,21 +31,21 @@ translator = GoogleTranslator(source='en', target='es')
 
 
 @Dataset.route('/')
-@Dataset.route('/crudos')
-@Dataset.route('/crudos/')
+@Dataset.route('/raw')
+@Dataset.route('/raw/')
 @login_required
-def crudos():
-    return get_list('crudos')
+def raw():
+    return get_list('raw')
 
 
-@Dataset.route('/procesados')
-@Dataset.route('/procesados/')
-@Dataset.route('/procesados/<conjunto>')
+@Dataset.route('/processed')
+@Dataset.route('/processed/')
+@Dataset.route('/processed/<conjunto>')
 @login_required
-def procesados(conjunto=None):
+def processed(conjunto=None):
     if conjunto:
-        return get_list('procesados', str(conjunto))
-    return get_list('procesados')
+        return get_list('processed', str(conjunto))
+    return get_list('processed')
 
 
 def get_list(status, conjunto=None):
@@ -84,9 +84,9 @@ def download(status, nombre):
     if not status_c:
         return render_template('utils/message.html', message='No existe ese conjunto')
 
-    if status.lower() == 'crudos':
+    if status.lower() == 'raw':
         nombre = 'C '+nombre
-    elif status.lower() == 'procesados':
+    elif status.lower() == 'processed':
         nombre = 'P '+nombre
     else:
         return render_template('utils/message.html', message='Estado del conjunto incorrecto')
@@ -171,7 +171,7 @@ def post_save(conjunto=None):
     if session.get('period_closed'):
         del conjunto['period_closed']
 
-    conjunto['status'] = 'Crudos'
+    conjunto['status'] = 'Raw'
     conjunto['initialPeriod'] = int(conjunto['initialPeriod'])
     conjunto['finalPeriod'] = int(conjunto['finalPeriod'])
     conjunto['programa'] = int(conjunto['programa'])
@@ -179,7 +179,7 @@ def post_save(conjunto=None):
 
     tipo = conjunto.get('tipo', 'consulta')
     archivo = request.files.get('archivo')
-    ruta = upload_folder+'/crudos'
+    ruta = upload_folder+'/raw'
 
     # Guardar archivo en Upload folder
 
@@ -263,7 +263,7 @@ def post_save(conjunto=None):
 
     # TODO DEPRECATED! version 1 v1.5.0
     # if status:
-    #     return redirect(url_for('Dataset.crudos'))
+    #     return redirect(url_for('Dataset.raw'))
 
     # TODO NEW! version 2 v2.0.0
     if status:
@@ -283,21 +283,21 @@ def preparar(conjunto=None):
 
     nombre = conjunto['nombre']
 
-    # Actualizar conjunto de datos de crudo a en proceso
-    act_state = actualizar_state(nombre, 'En Proceso')
+    # Actualizar conjunto de datos de crudo a in progress
+    act_state = actualizar_state(nombre, 'In Progress')
     if act_state:
         return act_state
 
     # Crear prepraracion
-    preparacion = {}
-    preparacion['conjunto'] = conjunto['nombre']
-    preparacion['preparador'] = session.get('user', {}).get('email')
-    preparacion['fechaInicial'] = get_now_date()
-    # Obtener numero de preparacion para el conjunto
+    preparation = {}
+    preparation['conjunto'] = conjunto['nombre']
+    preparation['preparador'] = session.get('user', {}).get('email')
+    preparation['fechaInicial'] = get_now_date()
+    # Obtener numero de preparation para el conjunto
     status_p, body_p = get('preparations/nombre/'+nombre)
     if status_p:
-        preparacion['numero'] = body_p['numero']
-        preparacion['nombre'] = body_p['nombre']
+        preparation['numero'] = body_p['numero']
+        preparation['nombre'] = body_p['nombre']
     else:
         return render_template('utils/message.html', message='No se pudo obtener el consecutivo de la preparación para este conjunto', submensaje=body_p)
 
@@ -305,45 +305,45 @@ def preparar(conjunto=None):
 
     # Obtener archivo crudo
     archivo_crudo = 'C '+nombre
-    ruta = upload_folder+'/crudos/'+archivo_crudo
+    ruta = upload_folder+'/raw/'+archivo_crudo
     exito, data_cruda = obtener_archivo_excel(ruta)
     if not exito:
         return data_cruda
 
-    # Algoritmo de preparacion
+    # Algoritmo de preparation
     try:
         data_preparada = prepare_data(data_cruda)
     except Exception as e:
         model_logger.error(e)
         model_logger.error(traceback.format_exc())
         observaciones = {'error': str(e)}
-        exito, pagina_error = save_preparacion(
-            preparacion, observaciones, 'Fallida')
+        exito, pagina_error = save_preparation(
+            preparation, observaciones, 'Fallida')
         if not exito:
             return pagina_error
         return render_template('utils/message.html', message='la preparación falló')
 
-    # Guardar archivo en Upload folder procesados
+    # Guardar archivo en Upload folder processed
     archivo_procesado = 'P '+nombre+'.xls'
-    ruta = upload_folder+'/procesados/'+archivo_procesado
+    ruta = upload_folder+'/processed/'+archivo_procesado
     exito, pagina_error = save_archivo(data_preparada, ruta, 'excel')
     if not exito:
         return pagina_error
 
-    # Guardar registro de preparacion en la BD
-    exito, pagina_error = save_preparacion(preparacion, None, 'Exitosa')
+    # Guardar registro de preparation en la BD
+    exito, pagina_error = save_preparation(preparation, None, 'Exitosa')
     if not exito:
         return pagina_error
 
     ########### FIN PREPARAR ############
 
-    # Actualizar conjunto de datos de crudo a procesado
-    act_state = actualizar_state(nombre, 'Procesados')
+    # Actualizar conjunto de datos de crudo a processed
+    act_state = actualizar_state(nombre, 'Processed')
     if act_state:
         return act_state
 
     # TODO DEPRECATED! version 1 v1.5.0
-    # return redirect(url_for('Dataset.procesados', conjunto=conjunto['nombre']))
+    # return redirect(url_for('Dataset.processed', conjunto=conjunto['nombre']))
 
     # TODO NEW! version 2 v2.0.0
     # ejecutar() luego de preparar()
@@ -362,15 +362,15 @@ def ejecutar(conjunto=None):
 
     nombre = conjunto['nombre']
 
-    # Actualizar conjunto de datos de crudo a procesado
-    act_state = actualizar_state(nombre, 'En Proceso')
+    # Actualizar conjunto de datos de crudo a processed
+    act_state = actualizar_state(nombre, 'In Progress')
     if act_state:
         return act_state
 
     # Crear prepraracion
     execution = {}
     execution['conjunto'] = conjunto['nombre']
-    execution['ejecutor'] = session.get('user', {}).get('email')
+    execution['executor'] = session.get('user', {}).get('email')
     execution['fechaInicial'] = get_now_date()
 
     # Obtener numero de ejecución para el conjunto
@@ -383,9 +383,9 @@ def ejecutar(conjunto=None):
 
     ########### EJECUTAR ############
 
-    # Obtener archivo procesado
+    # Obtener archivo processed
     archivo_procesado = 'P '+nombre
-    ruta = upload_folder+'/procesados/'+archivo_procesado
+    ruta = upload_folder+'/processed/'+archivo_procesado
     exito, data_preparada = obtener_archivo_excel(ruta)
     if not exito:
         return data_preparada
@@ -410,19 +410,19 @@ def ejecutar(conjunto=None):
         model_logger.error(traceback.format_exc())
 
         results = {'error': error_spa}
-        exito, pagina_error = save_ejecucion(
+        exito, pagina_error = save_execution(
             execution, results, 'Fallida')
         execution_saved = True
         if not exito:
             return pagina_error
-        act_state = actualizar_state(nombre, 'Procesados')
+        act_state = actualizar_state(nombre, 'Processed')
         if act_state:
             return act_state
         return render_template('utils/message.html', message='La ejecución falló', submensaje=error_spa)
 
     if not resultados_model:
-        # Actualizar conjunto de datos de crudo a procesado
-        act_state = actualizar_state(nombre, 'Procesados')
+        # Actualizar conjunto de datos de crudo a processed
+        act_state = actualizar_state(nombre, 'Processed')
         if act_state:
             return act_state
         return render_template('utils/message.html', message='La ejecución falló', submensaje=resultados_desertores)
@@ -445,7 +445,7 @@ def ejecutar(conjunto=None):
             'desertion/results', resultados_insert
         )
         if not status_update or not status_insert:
-            act_state = actualizar_state(nombre, 'Procesados')
+            act_state = actualizar_state(nombre, 'Processed')
             if act_state:
                 return act_state
 
@@ -459,7 +459,7 @@ def ejecutar(conjunto=None):
 
             return render_template('utils/message.html', message='Ocurrió un error insertando y/o actualizando los results'), 500
 
-        state_ejecucion = 'Exitosa'
+        state_execution = 'Exitosa'
         # Guardar results de desertotres en Upload folder desertores
         archivo_desertores = 'D '+execution['nombre']+'.json'
         ruta = upload_folder+'/deserters/'+archivo_desertores
@@ -476,20 +476,20 @@ def ejecutar(conjunto=None):
             'Revise si hay students ó desertores suficientes en el programa', 'warning'
         )
         resultados_model.pop('deserters')
-        state_ejecucion = 'Fallida'
+        state_execution = 'Fallida'
     # Guardar registro de ejecución en la BD
     if not execution_saved:
-        exito, pagina_error = save_ejecucion(
-            execution=execution, results=resultados_model, status=state_ejecucion)
+        exito, pagina_error = save_execution(
+            execution=execution, results=resultados_model, status=state_execution)
         if not exito:
-            act_state = actualizar_state(nombre, 'Procesados')
+            act_state = actualizar_state(nombre, 'Processed')
             if act_state:
                 return act_state
             return pagina_error
 
     ########### FIN EJECUTAR ############
-    # Actualizar conjunto de datos de crudo a procesado
-    act_state = actualizar_state(nombre, 'Procesados')
+    # Actualizar conjunto de datos de crudo a processed
+    act_state = actualizar_state(nombre, 'Processed')
     if act_state:
         return act_state
 

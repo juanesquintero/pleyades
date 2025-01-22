@@ -17,22 +17,22 @@ upload_folder = os.getcwd() + "/uploads"
 
 
 @DatasetAdmin.route("/")
-@DatasetAdmin.route("/crudos")
+@DatasetAdmin.route("/raw")
 @only_admin
-def crudos():
-    return get_list("crudos")
+def raw():
+    return get_list("raw")
 
 
 @DatasetAdmin.route("/enproceso")
 @only_admin
-def en_proceso():
-    return get_list("en proceso")
+def in_progress():
+    return get_list("in progress")
 
 
-@DatasetAdmin.route("/procesados")
+@DatasetAdmin.route("/processed")
 @only_admin
-def procesados():
-    return get_list("procesados")
+def processed():
+    return get_list("processed")
 
 
 def get_list(status: str):
@@ -82,7 +82,7 @@ def update():
 
     status, body = put("datasets/" + nombre, conjunto)
     if status:
-        return redirect(url_for("DatasetAdmin.crudos"))
+        return redirect(url_for("DatasetAdmin.raw"))
 
     return render_template(
         "utils/message.html",
@@ -91,7 +91,7 @@ def update():
     )
 
 
-@DatasetAdmin.route("/borrar", methods=["POST"])
+@DatasetAdmin.route("/delete", methods=["POST"])
 @only_admin
 def post_delete():
     body = dict(request.values)
@@ -99,7 +99,7 @@ def post_delete():
     status_p, body_p = get("programs")
     if status_p:
         return render_template(
-            "admin/" + endopoint + "borrar.html", c=conjunto, programs=body_p
+            "admin/" + endopoint + "delete.html", c=conjunto, programs=body_p
         )
     else:
         return render_template(
@@ -118,18 +118,18 @@ def remove():
     if status:
         # Eliminar archivos relacionados en el servidor
         exito, pagina_error = remove_file(
-            upload_folder + "/crudos/" + "C " + nombre + ".xls"
+            upload_folder + "/raw/" + "C " + nombre + ".xls"
         )
         if not (exito):
             return pagina_error
-        if conjunto["status"] == "Procesados":
+        if conjunto["status"] == "Processed":
             exito, pagina_error = remove_file(
-                upload_folder + "/procesados/" + "P " + nombre + ".xls"
+                upload_folder + "/processed/" + "P " + nombre + ".xls"
             )
             if not (exito):
                 return pagina_error
 
-        return redirect(url_for("DatasetAdmin.crudos"))
+        return redirect(url_for("DatasetAdmin.raw"))
     else:
         return render_template(
             "utils/message.html",

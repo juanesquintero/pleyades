@@ -6,14 +6,14 @@ post_schema = {
         'name': {'type': 'string', 'maxLength': 250},
         'set':  {'type': 'string', 'maxLength': 200},
         'numero': {'type': 'integer', 'maxLength': 30},
-        'ejecutor':   {'type': 'string', 'format': 'email', 'maxLength': 200},
+        'executor':   {'type': 'string', 'format': 'email', 'maxLength': 200},
         'fechaInicial':  {'type': 'string', 'format': 'date-time'},
         'fechaFinal':  {'type': ['string', 'null'], 'format': 'date-time'},
         'status':  {'type': 'string', 'maxLength': 50, 'enum': ['Fallida', 'Exitosa']},
         'precision_model': {'type': ['number', 'null'], 'maxLength': 5},
         'results':  {'type': 'object'},
     },
-    'required': ['name', 'set', 'numero', 'ejecutor', 'fechaInicial', 'fechaFinal', 'status', 'results'],
+    'required': ['name', 'set', 'numero', 'executor', 'fechaInicial', 'fechaFinal', 'status', 'results'],
     'additionalProperties': False
 }
 

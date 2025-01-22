@@ -62,13 +62,13 @@ def update():
     return render_template('utils/message.html', message='No se pudo actualizar el User', submensaje=body)
 
 
-@User.route('/borrar', methods=['POST'])
+@User.route('/delete', methods=['POST'])
 @only_admin
 def remove():
     body = dict(request.values)
     usuario = literal_eval(body['usuario'])
     if usuario:
-        return render_template('admin/'+endopoint+'borrar.html', u=usuario)
+        return render_template('admin/'+endopoint+'delete.html', u=usuario)
     else:
         return render_template('utils/message.html', message='No se pudo actualizar el User')
 

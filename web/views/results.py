@@ -34,7 +34,7 @@ def executions(conjunto=None):
 
 
 def get_list(results):
-    rol = 'preparador' if results == 'preparations' else 'ejecutor'
+    rol = 'preparador' if results == 'preparations' else 'executor'
     status, body = get(results+'/'+rol+'/'+session.get('user')['correo'])
     if status:
         return render_template(endopoint+results+'.html', results=set_date_format(body))
@@ -87,17 +87,17 @@ def execution_detalle():
         )
 
 
-@Result.route('/preparacion/detalle', methods=['POST'])
+@Result.route('/preparation/detalle', methods=['POST'])
 @login_required
-def preparacion_detalle():
+def preparation_detalle():
     body = dict(request.values)
-    preparacion = body['preparacion']
-    status, body = get('preparations/'+preparacion)
+    preparation = body['preparation']
+    status, body = get('preparations/'+preparation)
 
     if status:
         del body['numero']
         return render_template(
-            endopoint+'preparacion_detail.html',
+            endopoint+'preparation_detail.html',
             observaciones=body.pop('observaciones'),
             p=body
         )

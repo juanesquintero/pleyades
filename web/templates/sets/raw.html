@@ -17,10 +17,10 @@
 <!-- Tabs de navegacion -->
 <ul class="nav nav-tabs mb-4">
   <li class="nav-item">
-    <a class="nav-link active" href="#">Crudos</a>
+    <a class="nav-link active" href="#">Raw</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link text-dark bg-light border" href="{{url_for('Dataset.procesados')}}">Procesados</a>
+    <a class="nav-link text-dark bg-light border" href="{{url_for('Dataset.processed')}}">Processed</a>
   </li>
 </ul>
 
@@ -133,7 +133,7 @@
 <script>
   // Cargando si se esta validando y guardando la data del conjunto 
   $('.submit').click(function () {
-    handleModal('Su conjunto aparecera cuando acabe el proceso (recuerde refrescar la página)', "{{url_for('Dataset.procesados')}}")
+    handleModal('Su conjunto aparecera cuando acabe el proceso (recuerde refrescar la página)', "{{url_for('Dataset.processed')}}")
   })
 </script>
 

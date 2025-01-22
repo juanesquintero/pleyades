@@ -996,7 +996,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:3000/sets/encargado/walter.alvarez@educatic.com.co?estado=Crudos",
+							"raw": "http://127.0.0.1:3000/sets/encargado/walter.alvarez@educatic.com.co?estado=Raw",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -1015,7 +1015,7 @@
 							"query": [
 								{
 									"key": "estado",
-									"value": "Crudos"
+									"value": "Raw"
 								}
 							]
 						}
@@ -1038,7 +1038,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:3000/sets/estado/Procesados",
+							"raw": "http://127.0.0.1:3000/sets/estado/Processed",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -1052,7 +1052,7 @@
 								"v1",
 								"sets",
 								"estado",
-								"Procesados"
+								"Processed"
 							]
 						}
 					},
@@ -1155,7 +1155,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"tipo\": \"consulta\", \r\n\t\"periodoInicial\": 20191, \r\n\t\"periodoFinal\": 20201, \r\n\t\"programa\": \"415-01\", \r\n\t\"estado\":\"Crudos\", \r\n\t\"encargado\": \"juaneschrome@gmail.com\"\r\n}",
+							"raw": "{\r\n\t\"tipo\": \"consulta\", \r\n\t\"periodoInicial\": 20191, \r\n\t\"periodoFinal\": 20201, \r\n\t\"programa\": \"415-01\", \r\n\t\"estado\":\"Raw\", \r\n\t\"encargado\": \"juaneschrome@gmail.com\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1206,7 +1206,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "\r\n  {\r\n  \"encargado\": \"admin@pleyades.com\", \r\n  \"estado\": \"Procesados\", \r\n  \"nombre\": \"P Com 20192 20201 1\", \r\n  \"numero\": 1, \r\n  \"periodoFinal\": 20201, \r\n  \"periodoInicial\": 20192, \r\n  \"programa\": 1001, \r\n  \"tipo\": \"excel\"\r\n}",
+							"raw": "\r\n  {\r\n  \"encargado\": \"admin@pleyades.com\", \r\n  \"estado\": \"Processed\", \r\n  \"nombre\": \"P Com 20192 20201 1\", \r\n  \"numero\": 1, \r\n  \"periodoFinal\": 20201, \r\n  \"periodoInicial\": 20192, \r\n  \"programa\": 1001, \r\n  \"tipo\": \"excel\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1256,7 +1256,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "  {\r\n\t\"estado\": \"Crudos\"\r\n  }",
+							"raw": "  {\r\n\t\"estado\": \"Raw\"\r\n  }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1779,7 +1779,7 @@
 					"response": []
 				},
 				{
-					"name": "usuario ejecutor",
+					"name": "usuario executor",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -1794,7 +1794,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:3000/executions/ejecutor/walter.alvarez@educatic.com.co",
+							"raw": "http://127.0.0.1:3000/executions/executor/walter.alvarez@educatic.com.co",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -1807,7 +1807,7 @@
 								"api",
 								"v1",
 								"executions",
-								"ejecutor",
+								"executor",
 								"walter.alvarez@educatic.com.co"
 							]
 						}
@@ -1838,7 +1838,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"nombre\": \"P Com 20192 20201 1.1\",\r\n\t\"set\": \"P Com 20192 20201 1\",\r\n\t\"numero\": 1,\r\n    \"ejecutor\": \"walter.alvarez@educatic.com.co\",\r\n    \"fechaInicial\":  \"2020-03-24T14:18:28+00:00\",\r\n    \"fechaFinal\":  \"2018-11-13T20:20:39+00:00\",\r\n    \"estado\": \"Exitosa\",\r\n\t\"precision_model\": 93.89,\r\n\t\"results\": {\"exitosa\": false, \"excepciones\": \"\"}\r\n}",
+							"raw": "{\r\n\t\"nombre\": \"P Com 20192 20201 1.1\",\r\n\t\"set\": \"P Com 20192 20201 1\",\r\n\t\"numero\": 1,\r\n    \"executor\": \"walter.alvarez@educatic.com.co\",\r\n    \"fechaInicial\":  \"2020-03-24T14:18:28+00:00\",\r\n    \"fechaFinal\":  \"2018-11-13T20:20:39+00:00\",\r\n    \"estado\": \"Exitosa\",\r\n\t\"precision_model\": 93.89,\r\n\t\"results\": {\"exitosa\": false, \"excepciones\": \"\"}\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2733,7 +2733,7 @@
 									"response": []
 								},
 								{
-									"name": "usuario ejecutor",
+									"name": "usuario executor",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -2748,7 +2748,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://127.0.0.1:3000/executions/ejecutor/walter.alvarez@educatic.com.co",
+											"raw": "http://127.0.0.1:3000/executions/executor/walter.alvarez@educatic.com.co",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -2761,7 +2761,7 @@
 												"api",
 												"v1",
 												"executions",
-												"ejecutor",
+												"executor",
 												"walter.alvarez@educatic.com.co"
 											]
 										}
@@ -2792,7 +2792,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n\t\"nombre\": \"P Com 20192 20201 1.1\",\r\n\t\"set\": \"P Com 20192 20201 1\",\r\n\t\"numero\": 1,\r\n    \"ejecutor\": \"walter.alvarez@educatic.com.co\",\r\n    \"fechaInicial\":  \"2020-03-24T14:18:28+00:00\",\r\n    \"fechaFinal\":  \"2018-11-13T20:20:39+00:00\",\r\n    \"estado\": \"Exitosa\",\r\n\t\"precision_model\": 93.89,\r\n\t\"results\": {\"exitosa\": false, \"excepciones\": \"\"}\r\n}",
+											"raw": "{\r\n\t\"nombre\": \"P Com 20192 20201 1.1\",\r\n\t\"set\": \"P Com 20192 20201 1\",\r\n\t\"numero\": 1,\r\n    \"executor\": \"walter.alvarez@educatic.com.co\",\r\n    \"fechaInicial\":  \"2020-03-24T14:18:28+00:00\",\r\n    \"fechaFinal\":  \"2018-11-13T20:20:39+00:00\",\r\n    \"estado\": \"Exitosa\",\r\n\t\"precision_model\": 93.89,\r\n\t\"results\": {\"exitosa\": false, \"excepciones\": \"\"}\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -3032,7 +3032,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://127.0.0.1:3000/sets/encargado/walter.alvarez@educatic.com.co?estado=Crudos",
+											"raw": "http://127.0.0.1:3000/sets/encargado/walter.alvarez@educatic.com.co?estado=Raw",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -3051,7 +3051,7 @@
 											"query": [
 												{
 													"key": "estado",
-													"value": "Crudos"
+													"value": "Raw"
 												}
 											]
 										}
@@ -3074,7 +3074,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://127.0.0.1:3000/sets/estado/Crudos",
+											"raw": "http://127.0.0.1:3000/sets/estado/Raw",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -3088,7 +3088,7 @@
 												"v1",
 												"sets",
 												"estado",
-												"Crudos"
+												"Raw"
 											]
 										}
 									},
@@ -3191,7 +3191,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n\t\"tipo\": \"consulta\", \r\n\t\"periodoInicial\": 20191, \r\n\t\"periodoFinal\": 20201, \r\n\t\"programa\": \"415-01\", \r\n\t\"estado\":\"Crudos\", \r\n\t\"encargado\": \"juaneschrome@gmail.com\"\r\n}",
+											"raw": "{\r\n\t\"tipo\": \"consulta\", \r\n\t\"periodoInicial\": 20191, \r\n\t\"periodoFinal\": 20201, \r\n\t\"programa\": \"415-01\", \r\n\t\"estado\":\"Raw\", \r\n\t\"encargado\": \"juaneschrome@gmail.com\"\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -3242,7 +3242,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "\r\n  {\r\n  \"encargado\": \"walter.alvarez@educatic.com.co\", \r\n  \"estado\": \"Procesados\", \r\n  \"nombre\": \"P Com 20192 20201 1\", \r\n  \"numero\": 1, \r\n  \"periodoFinal\": 20201, \r\n  \"periodoInicial\": 20192, \r\n  \"programa\": \"409-0010-01\", \r\n  \"tipo\": \"excel\"\r\n}",
+											"raw": "\r\n  {\r\n  \"encargado\": \"walter.alvarez@educatic.com.co\", \r\n  \"estado\": \"Processed\", \r\n  \"nombre\": \"P Com 20192 20201 1\", \r\n  \"numero\": 1, \r\n  \"periodoFinal\": 20201, \r\n  \"periodoInicial\": 20192, \r\n  \"programa\": \"409-0010-01\", \r\n  \"tipo\": \"excel\"\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -3292,7 +3292,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "  {\r\n\t\"estado\": \"Crudos\"\r\n  }",
+											"raw": "  {\r\n\t\"estado\": \"Raw\"\r\n  }",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -4677,7 +4677,7 @@
 									"response": []
 								},
 								{
-									"name": "usuario ejecutor",
+									"name": "usuario executor",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -4692,7 +4692,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://127.0.0.1:3000/executions/ejecutor/walter.alvarez@educatic.com.co",
+											"raw": "http://127.0.0.1:3000/executions/executor/walter.alvarez@educatic.com.co",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -4705,7 +4705,7 @@
 												"api",
 												"v1",
 												"executions",
-												"ejecutor",
+												"executor",
 												"walter.alvarez@educatic.com.co"
 											]
 										}
@@ -4736,7 +4736,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n\t\"nombre\": \"P Com 20192 20201 1.1\",\r\n\t\"set\": \"P Com 20192 20201 1\",\r\n\t\"numero\": 1,\r\n    \"ejecutor\": \"walter.alvarez@educatic.com.co\",\r\n    \"fechaInicial\":  \"2020-03-24T14:18:28+00:00\",\r\n    \"fechaFinal\":  \"2018-11-13T20:20:39+00:00\",\r\n    \"estado\": \"Exitosa\",\r\n\t\"precision_model\": 93.89,\r\n\t\"results\": {\"exitosa\": false, \"excepciones\": \"\"}\r\n}",
+											"raw": "{\r\n\t\"nombre\": \"P Com 20192 20201 1.1\",\r\n\t\"set\": \"P Com 20192 20201 1\",\r\n\t\"numero\": 1,\r\n    \"executor\": \"walter.alvarez@educatic.com.co\",\r\n    \"fechaInicial\":  \"2020-03-24T14:18:28+00:00\",\r\n    \"fechaFinal\":  \"2018-11-13T20:20:39+00:00\",\r\n    \"estado\": \"Exitosa\",\r\n\t\"precision_model\": 93.89,\r\n\t\"results\": {\"exitosa\": false, \"excepciones\": \"\"}\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -4976,7 +4976,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://127.0.0.1:3000/sets/encargado/walter.alvarez@educatic.com.co?estado=Crudos",
+											"raw": "http://127.0.0.1:3000/sets/encargado/walter.alvarez@educatic.com.co?estado=Raw",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -4995,7 +4995,7 @@
 											"query": [
 												{
 													"key": "estado",
-													"value": "Crudos"
+													"value": "Raw"
 												}
 											]
 										}
@@ -5018,7 +5018,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://127.0.0.1:3000/sets/estado/Crudos",
+											"raw": "http://127.0.0.1:3000/sets/estado/Raw",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -5032,7 +5032,7 @@
 												"v1",
 												"sets",
 												"estado",
-												"Crudos"
+												"Raw"
 											]
 										}
 									},
@@ -5135,7 +5135,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n\t\"tipo\": \"consulta\", \r\n\t\"periodoInicial\": 20191, \r\n\t\"periodoFinal\": 20201, \r\n\t\"programa\": \"415-01\", \r\n\t\"estado\":\"Crudos\", \r\n\t\"encargado\": \"juaneschrome@gmail.com\"\r\n}",
+											"raw": "{\r\n\t\"tipo\": \"consulta\", \r\n\t\"periodoInicial\": 20191, \r\n\t\"periodoFinal\": 20201, \r\n\t\"programa\": \"415-01\", \r\n\t\"estado\":\"Raw\", \r\n\t\"encargado\": \"juaneschrome@gmail.com\"\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -5186,7 +5186,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "\r\n  {\r\n  \"encargado\": \"jhoan.echeverri@eia.edu.co\", \r\n  \"estado\": \"Procesados\", \r\n  \"nombre\": \"P Com 20192 20201 1\", \r\n  \"numero\": 1, \r\n  \"periodoFinal\": 20201, \r\n  \"periodoInicial\": 20192, \r\n  \"programa\": 1, \r\n  \"tipo\": \"excel\"\r\n}",
+											"raw": "\r\n  {\r\n  \"encargado\": \"jhoan.echeverri@eia.edu.co\", \r\n  \"estado\": \"Processed\", \r\n  \"nombre\": \"P Com 20192 20201 1\", \r\n  \"numero\": 1, \r\n  \"periodoFinal\": 20201, \r\n  \"periodoInicial\": 20192, \r\n  \"programa\": 1, \r\n  \"tipo\": \"excel\"\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -5236,7 +5236,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "  {\r\n\t\"estado\": \"Crudos\"\r\n  }",
+											"raw": "  {\r\n\t\"estado\": \"Raw\"\r\n  }",
 											"options": {
 												"raw": {
 													"language": "json"

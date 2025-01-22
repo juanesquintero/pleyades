@@ -54,13 +54,13 @@
             </a>
             <div {% if menu=='sets' %} style="display:inline;" {% endif %} id='menuConjuntos'
                 class="sidebar-submenu collapse">
-                <a href="{{url_for('Dataset.crudos')}}"
+                <a href="{{url_for('Dataset.raw')}}"
                     class="list-group-item  text-white  border-right-0 my-secondary">
-                    &#8226;&nbsp;&nbsp;<span class="menu-collapsed text-white">Crudos</span>
+                    &#8226;&nbsp;&nbsp;<span class="menu-collapsed text-white">Raw</span>
                 </a>
-                <a href="{{url_for('Dataset.procesados')}}"
+                <a href="{{url_for('Dataset.processed')}}"
                     class="list-group-item  text-white border-right-0 my-secondary">
-                    &#8226;&nbsp;&nbsp;<span class="menu-collapsed text-white">Procesados</span>
+                    &#8226;&nbsp;&nbsp;<span class="menu-collapsed text-white">Processed</span>
                 </a>
             </div> -->
 
@@ -134,7 +134,7 @@
         </div>
       </a>
       <a
-        href="{{url_for('DatasetAdmin.crudos')}}"
+        href="{{url_for('DatasetAdmin.raw')}}"
         class="list-group-item border-right-0 my-secondary light"
       >
         <div class="d-flex w-100 justify-content-start align-items-center">
