@@ -27,7 +27,7 @@ services:
     depends_on:
       - api
       - celery
-    command: python -m debugpy --listen 0.0.0.0:5678 --wait-for-client run.py  
+    command: python -m debugpy --listen 0.0.0.0:5678 --wait-for-client run.py
     # python run.py --celery
 
   api:
