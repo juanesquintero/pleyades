@@ -78,9 +78,9 @@ def post_edit():
 @only_admin
 def update():
     conjunto = dict(request.values)
-    nombre = conjunto.pop("nombre")
+    name = conjunto.pop("name")
 
-    status, body = put("datasets/" + nombre, conjunto)
+    status, body = put("datasets/" + name, conjunto)
     if status:
         return redirect(url_for("DatasetAdmin.raw"))
 
@@ -113,18 +113,18 @@ def post_delete():
 @only_admin
 def remove():
     conjunto = dict(request.values)
-    nombre = conjunto.pop("nombre")
-    status, body = delete("datasets/" + nombre)
+    name = conjunto.pop("name")
+    status, body = delete("datasets/" + name)
     if status:
         # Eliminar files relacionados en el servidor
         exito, pagina_error = remove_file(
-            upload_folder + "/raw/" + "C " + nombre + ".xls"
+            upload_folder + "/raw/" + "C " + name + ".xls"
         )
         if not (exito):
             return pagina_error
         if conjunto["status"] == "Processed":
             exito, pagina_error = remove_file(
-                upload_folder + "/processed/" + "P " + nombre + ".xls"
+                upload_folder + "/processed/" + "P " + name + ".xls"
             )
             if not (exito):
                 return pagina_error

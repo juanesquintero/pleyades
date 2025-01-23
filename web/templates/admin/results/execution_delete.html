@@ -4,15 +4,15 @@
 
 <h5>Borrar una Ejecución</h5>
 
-{% if e.nombre %}
+{% if e.name %}
 <form action="{{url_for('ResultAdmin.delete_execution')}}" method="POST" data-toggle="validator" class="jumbotron py-4 pr-4 bg-light"
     style="max-width:75%;">
     <div class="container">
         <div class="form-group row">
             <div class="col-sm-6">
                 <label>Nombre</label>
-                <input type="text" name="nombre" maxlength="250" require value="{{e.nombre}}" hidden>
-                <input type="text" class="form-control input-sm" maxlength="250" require value="{{e.nombre}}" disabled>
+                <input type="text" name="name" maxlength="250" require value="{{e.name}}" hidden>
+                <input type="text" class="form-control input-sm" maxlength="250" require value="{{e.name}}" disabled>
             </div>
             <div class="col-sm-6">
                 <label>Conjunto de Datos</label>

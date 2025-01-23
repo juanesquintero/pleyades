@@ -71,7 +71,7 @@ def prepare_data(data):
     #     ) else 1
     # data['etnia'] = data.apply(etnia_fn, axis=1)
 
-    # corregir tipos y nombre de la base de datos de deserción
+    # corregir tipos y name de la base de datos de deserción
     data_preparada = data.rename(columns={'REGISTRO': 'registro'})
     data_preparada['registro'] = data_preparada['registro'].astype(int)
 

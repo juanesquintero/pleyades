@@ -22,12 +22,12 @@ endopoint = 'dashboards/'
 Tablero = Blueprint('Tablero', __name__)
 
 niveles = [
-    {'nombre': 'Nivel Mundo', 'ruta': 'Tablero.mundo_dashboard'},
-    {'nombre': 'Nivel Pais', 'ruta': 'Tablero.pais_dashboard'},
-    {'nombre': 'Nivel Region', 'ruta': 'Tablero.region_dashboard'},
-    {'nombre': 'Nivel IES', 'ruta': 'Tablero.ies_dashboard'},
-    {'nombre': 'Nivel Program', 'ruta': 'Tablero.program_dashboard'},
-    {'nombre': 'Nivel Student', 'ruta': 'Tablero.student_dashboard'},
+    {'name': 'Nivel Mundo', 'ruta': 'Tablero.mundo_dashboard'},
+    {'name': 'Nivel Pais', 'ruta': 'Tablero.pais_dashboard'},
+    {'name': 'Nivel Region', 'ruta': 'Tablero.region_dashboard'},
+    {'name': 'Nivel IES', 'ruta': 'Tablero.ies_dashboard'},
+    {'name': 'Nivel Program', 'ruta': 'Tablero.program_dashboard'},
+    {'name': 'Nivel Student', 'ruta': 'Tablero.student_dashboard'},
 ]
 periods = np.arange(2010, 2019, 1)
 
@@ -235,7 +235,7 @@ def ies_dashboard():
 
         periodos_list=periods,
 
-        nombre_ies=obtener_ies_config().get('nombre'),
+        nombre_ies=obtener_ies_config().get('name'),
 
         indicadores_1_plot=indicadores1,
         indicadores_2_plot=indicadores2,

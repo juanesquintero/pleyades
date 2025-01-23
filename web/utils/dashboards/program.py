@@ -284,7 +284,7 @@ class Program:
     def barras(self):
         try:
             # Dataframe del program
-            # TODO hacer el filtro por codigo o nombre de program en la tabla VWDATADESERCION
+            # TODO hacer el filtro por codigo o name de program en la tabla VWDATADESERCION
             data = pd.DataFrame(self.df_ESTUDIANTES_total.loc[:, [
                                 'semestre', 'REGISTRO', 'desertor']])
             data[['desertor']] = data[['desertor']

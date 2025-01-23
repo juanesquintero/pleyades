@@ -46,13 +46,13 @@ color_cluster_map = {
 
 
 def data_series(codigo):
-    nombre = gastos[gastos['codigo_pais'] == codigo]['nombre_pais'].values[0]
+    name = gastos[gastos['codigo_pais'] == codigo]['nombre_pais'].values[0]
     gastos_pais = gastos[gastos['codigo_pais'] == codigo].loc[:, '2008':'2018']
     inscrp_pais = inscripciones[inscripciones['codigo_pais']
                                 == codigo].loc[:, '2008':'2018']
     data = pd.DataFrame({
         'codigo_pais': codigo,
-        'nombre_pais': nombre,
+        'nombre_pais': name,
         'periods': periods,
         'gastos': gastos_pais.values[0],
         'inscripciones': inscrp_pais.values[0],

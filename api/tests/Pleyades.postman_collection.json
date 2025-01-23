@@ -162,7 +162,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "  {\r\n    \"nombre\": \"JUANES QUINTERO\",\r\n    \"correo\": \"juanes@gmail.com\",\r\n    \"clave\": \"81dc9bdb52d04dc20036dbd8313ed055\",\r\n    \"rol\": \"Admin\"\r\n  }",
+							"raw": "  {\r\n    \"name\": \"JUANES QUINTERO\",\r\n    \"correo\": \"juanes@gmail.com\",\r\n    \"clave\": \"81dc9bdb52d04dc20036dbd8313ed055\",\r\n    \"rol\": \"Admin\"\r\n  }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -213,7 +213,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "  {\r\n    \"nombre\": \"JHONNY ALBERT PEREZ\",\r\n    \"clave\": \"12345678\",\r\n    \"rol\": \"Analista\"\r\n  }",
+							"raw": "  {\r\n    \"name\": \"JHONNY ALBERT PEREZ\",\r\n    \"clave\": \"12345678\",\r\n    \"rol\": \"Analista\"\r\n  }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -479,7 +479,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"codigo\": 8,\n    \"nombre\": \"Derechito\"\n}\n",
+							"raw": "{\n    \"codigo\": 8,\n    \"name\": \"Derechito\"\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -530,7 +530,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"nombre\": \"Faculty de la gente\"\n}\n",
+							"raw": "{\n    \"name\": \"Faculty de la gente\"\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -742,7 +742,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "  {\r\n    \"codigo\": \"420-2970-01\",\r\n    \"nombre\": \" civilcita\",\r\n    \"nombre_corto\": \"civi\",\r\n    \"faculty\": \"420\",\r\n    \"nombre_faculty\": \"Faculty de Ingenierias\"\r\n  }",
+							"raw": "  {\r\n    \"codigo\": \"420-2970-01\",\r\n    \"name\": \" civilcita\",\r\n    \"nombre_corto\": \"civi\",\r\n    \"faculty\": \"420\",\r\n    \"nombre_faculty\": \"Faculty de Ingenierias\"\r\n  }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -792,7 +792,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "  {\r\n    \"nombre\": \"ADMINISTRACIÓN DE EMPRESAS TURÍSTICAS\"\r\n  }",
+							"raw": "  {\r\n    \"name\": \"ADMINISTRACIÓN DE EMPRESAS TURÍSTICAS\"\r\n  }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1132,7 +1132,7 @@
 					"response": []
 				},
 				{
-					"name": "nombre",
+					"name": "name",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -1163,7 +1163,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3000/sets/nombre",
+							"raw": "http://127.0.0.1:3000/sets/name",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -1176,7 +1176,7 @@
 								"api",
 								"v1",
 								"sets",
-								"nombre"
+								"name"
 							]
 						}
 					},
@@ -1206,7 +1206,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "\r\n  {\r\n  \"encargado\": \"admin@pleyades.com\", \r\n  \"estado\": \"Processed\", \r\n  \"nombre\": \"P Com 20192 20201 1\", \r\n  \"numero\": 1, \r\n  \"periodoFinal\": 20201, \r\n  \"periodoInicial\": 20192, \r\n  \"program\": 1001, \r\n  \"tipo\": \"excel\"\r\n}",
+							"raw": "\r\n  {\r\n  \"encargado\": \"admin@pleyades.com\", \r\n  \"estado\": \"Processed\", \r\n  \"name\": \"P Com 20192 20201 1\", \r\n  \"numero\": 1, \r\n  \"periodoFinal\": 20201, \r\n  \"periodoInicial\": 20192, \r\n  \"program\": 1001, \r\n  \"tipo\": \"excel\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1481,7 +1481,7 @@
 					"response": []
 				},
 				{
-					"name": "nombre",
+					"name": "name",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -1496,7 +1496,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:3000/preparations/nombre/Civ 20171 20182 1",
+							"raw": "http://127.0.0.1:3000/preparations/name/Civ 20171 20182 1",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -1509,7 +1509,7 @@
 								"api",
 								"v1",
 								"preparations",
-								"nombre",
+								"name",
 								"Civ 20171 20182 1"
 							]
 						}
@@ -1540,7 +1540,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"nombre\": \"Psi 20151 20201 1.1\",\n\t\"dataset\": \"Psi 20151 20201 1\",\n\t\"numero\": 1,\n    \"preparador\": \"admin@pleyades.com\",\n    \"fechaInicial\":  \"2020-03-24T20:12:28+00:00\",\n    \"fechaFinal\":  \"2020-03-24T20:14:39+00:00\",\n    \"estado\": \"Exitosa\",\n    \"observaciones\":  null\n}\n ",
+							"raw": "{\n\t\"name\": \"Psi 20151 20201 1.1\",\n\t\"dataset\": \"Psi 20151 20201 1\",\n\t\"numero\": 1,\n    \"preparador\": \"admin@pleyades.com\",\n    \"fechaInicial\":  \"2020-03-24T20:12:28+00:00\",\n    \"fechaFinal\":  \"2020-03-24T20:14:39+00:00\",\n    \"estado\": \"Exitosa\",\n    \"observaciones\":  null\n}\n ",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1838,7 +1838,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"nombre\": \"P Com 20192 20201 1.1\",\r\n\t\"dataset\": \"P Com 20192 20201 1\",\r\n\t\"numero\": 1,\r\n    \"executor\": \"walter.alvarez@educatic.com.co\",\r\n    \"fechaInicial\":  \"2020-03-24T14:18:28+00:00\",\r\n    \"fechaFinal\":  \"2018-11-13T20:20:39+00:00\",\r\n    \"estado\": \"Exitosa\",\r\n\t\"precision_model\": 93.89,\r\n\t\"results\": {\"exitosa\": false, \"excepciones\": \"\"}\r\n}",
+							"raw": "{\r\n\t\"name\": \"P Com 20192 20201 1.1\",\r\n\t\"dataset\": \"P Com 20192 20201 1\",\r\n\t\"numero\": 1,\r\n    \"executor\": \"walter.alvarez@educatic.com.co\",\r\n    \"fechaInicial\":  \"2020-03-24T14:18:28+00:00\",\r\n    \"fechaFinal\":  \"2018-11-13T20:20:39+00:00\",\r\n    \"estado\": \"Exitosa\",\r\n\t\"precision_model\": 93.89,\r\n\t\"results\": {\"exitosa\": false, \"excepciones\": \"\"}\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2792,7 +2792,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n\t\"nombre\": \"P Com 20192 20201 1.1\",\r\n\t\"dataset\": \"P Com 20192 20201 1\",\r\n\t\"numero\": 1,\r\n    \"executor\": \"walter.alvarez@educatic.com.co\",\r\n    \"fechaInicial\":  \"2020-03-24T14:18:28+00:00\",\r\n    \"fechaFinal\":  \"2018-11-13T20:20:39+00:00\",\r\n    \"estado\": \"Exitosa\",\r\n\t\"precision_model\": 93.89,\r\n\t\"results\": {\"exitosa\": false, \"excepciones\": \"\"}\r\n}",
+											"raw": "{\r\n\t\"name\": \"P Com 20192 20201 1.1\",\r\n\t\"dataset\": \"P Com 20192 20201 1\",\r\n\t\"numero\": 1,\r\n    \"executor\": \"walter.alvarez@educatic.com.co\",\r\n    \"fechaInicial\":  \"2020-03-24T14:18:28+00:00\",\r\n    \"fechaFinal\":  \"2018-11-13T20:20:39+00:00\",\r\n    \"estado\": \"Exitosa\",\r\n\t\"precision_model\": 93.89,\r\n\t\"results\": {\"exitosa\": false, \"excepciones\": \"\"}\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -3168,7 +3168,7 @@
 									"response": []
 								},
 								{
-									"name": "nombre",
+									"name": "name",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -3199,7 +3199,7 @@
 											}
 										},
 										"url": {
-											"raw": "http://127.0.0.1:3000/sets/nombre",
+											"raw": "http://127.0.0.1:3000/sets/name",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -3212,7 +3212,7 @@
 												"api",
 												"v1",
 												"sets",
-												"nombre"
+												"name"
 											]
 										}
 									},
@@ -3242,7 +3242,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "\r\n  {\r\n  \"encargado\": \"walter.alvarez@educatic.com.co\", \r\n  \"estado\": \"Processed\", \r\n  \"nombre\": \"P Com 20192 20201 1\", \r\n  \"numero\": 1, \r\n  \"periodoFinal\": 20201, \r\n  \"periodoInicial\": 20192, \r\n  \"program\": \"409-0010-01\", \r\n  \"tipo\": \"excel\"\r\n}",
+											"raw": "\r\n  {\r\n  \"encargado\": \"walter.alvarez@educatic.com.co\", \r\n  \"estado\": \"Processed\", \r\n  \"name\": \"P Com 20192 20201 1\", \r\n  \"numero\": 1, \r\n  \"periodoFinal\": 20201, \r\n  \"periodoInicial\": 20192, \r\n  \"program\": \"409-0010-01\", \r\n  \"tipo\": \"excel\"\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -3513,7 +3513,7 @@
 									"response": []
 								},
 								{
-									"name": "nombre",
+									"name": "name",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -3528,7 +3528,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://127.0.0.1:3000/preparations/nombre/Civ 20171 20182 1",
+											"raw": "http://127.0.0.1:3000/preparations/name/Civ 20171 20182 1",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -3541,7 +3541,7 @@
 												"api",
 												"v1",
 												"preparations",
-												"nombre",
+												"name",
 												"Civ 20171 20182 1"
 											]
 										}
@@ -3572,7 +3572,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n\t\"nombre\": \"Psi 20151 20201 1.1\",\n\t\"dataset\": \"Psi 20151 20201 1\",\n\t\"numero\": 1,\n    \"preparador\": \"admin@pleyades.com\",\n    \"fechaInicial\":  \"2020-03-24T20:12:28+00:00\",\n    \"fechaFinal\":  \"2020-03-24T20:14:39+00:00\",\n    \"estado\": \"Exitosa\",\n    \"observaciones\":  null\n}\n ",
+											"raw": "{\n\t\"name\": \"Psi 20151 20201 1.1\",\n\t\"dataset\": \"Psi 20151 20201 1\",\n\t\"numero\": 1,\n    \"preparador\": \"admin@pleyades.com\",\n    \"fechaInicial\":  \"2020-03-24T20:12:28+00:00\",\n    \"fechaFinal\":  \"2020-03-24T20:14:39+00:00\",\n    \"estado\": \"Exitosa\",\n    \"observaciones\":  null\n}\n ",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -3834,7 +3834,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "  {\r\n    \"codigo\": 29,\r\n    \"nombre\": \" civilcita\",\r\n    \"nombre_corto\": \"civi\",\r\n    \"faculty\": 2,\r\n    \"nombre_faculty\": \"Faculty de Ingenierias\"\r\n  }",
+											"raw": "  {\r\n    \"codigo\": 29,\r\n    \"name\": \" civilcita\",\r\n    \"nombre_corto\": \"civi\",\r\n    \"faculty\": 2,\r\n    \"nombre_faculty\": \"Faculty de Ingenierias\"\r\n  }",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -3884,7 +3884,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "  {\r\n    \"nombre\": \" civilcitaaaaaa\"\r\n  }",
+											"raw": "  {\r\n    \"name\": \" civilcitaaaaaa\"\r\n  }",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -4060,7 +4060,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"codigo\": 7,\n    \"nombre\": \"Derechito\"\n}\n",
+											"raw": "{\n    \"codigo\": 7,\n    \"name\": \"Derechito\"\n}\n",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -4111,7 +4111,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"nombre\": \"Faculty de la gente\"\n}\n",
+											"raw": "{\n    \"name\": \"Faculty de la gente\"\n}\n",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -4345,7 +4345,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "  {\r\n    \"nombre\": \"JUANES QUINTERO\",\r\n    \"correo\": \"juanes@gmail.com\",\r\n    \"clave\": \"81dc9bdb52d04dc20036dbd8313ed055\",\r\n    \"rol\": \"Admin\"\r\n  }",
+											"raw": "  {\r\n    \"name\": \"JUANES QUINTERO\",\r\n    \"correo\": \"juanes@gmail.com\",\r\n    \"clave\": \"81dc9bdb52d04dc20036dbd8313ed055\",\r\n    \"rol\": \"Admin\"\r\n  }",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -4396,7 +4396,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "  {\r\n    \"nombre\": \"JHONNY ALBERT PEREZ\",\r\n    \"clave\": \"12345678\",\r\n    \"rol\": \"Analista\"\r\n  }",
+											"raw": "  {\r\n    \"name\": \"JHONNY ALBERT PEREZ\",\r\n    \"clave\": \"12345678\",\r\n    \"rol\": \"Analista\"\r\n  }",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -4736,7 +4736,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n\t\"nombre\": \"P Com 20192 20201 1.1\",\r\n\t\"dataset\": \"P Com 20192 20201 1\",\r\n\t\"numero\": 1,\r\n    \"executor\": \"walter.alvarez@educatic.com.co\",\r\n    \"fechaInicial\":  \"2020-03-24T14:18:28+00:00\",\r\n    \"fechaFinal\":  \"2018-11-13T20:20:39+00:00\",\r\n    \"estado\": \"Exitosa\",\r\n\t\"precision_model\": 93.89,\r\n\t\"results\": {\"exitosa\": false, \"excepciones\": \"\"}\r\n}",
+											"raw": "{\r\n\t\"name\": \"P Com 20192 20201 1.1\",\r\n\t\"dataset\": \"P Com 20192 20201 1\",\r\n\t\"numero\": 1,\r\n    \"executor\": \"walter.alvarez@educatic.com.co\",\r\n    \"fechaInicial\":  \"2020-03-24T14:18:28+00:00\",\r\n    \"fechaFinal\":  \"2018-11-13T20:20:39+00:00\",\r\n    \"estado\": \"Exitosa\",\r\n\t\"precision_model\": 93.89,\r\n\t\"results\": {\"exitosa\": false, \"excepciones\": \"\"}\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -5112,7 +5112,7 @@
 									"response": []
 								},
 								{
-									"name": "nombre",
+									"name": "name",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -5143,7 +5143,7 @@
 											}
 										},
 										"url": {
-											"raw": "http://127.0.0.1:3000/sets/nombre",
+											"raw": "http://127.0.0.1:3000/sets/name",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -5156,7 +5156,7 @@
 												"api",
 												"v1",
 												"sets",
-												"nombre"
+												"name"
 											]
 										}
 									},
@@ -5186,7 +5186,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "\r\n  {\r\n  \"encargado\": \"jhoan.echeverri@eia.edu.co\", \r\n  \"estado\": \"Processed\", \r\n  \"nombre\": \"P Com 20192 20201 1\", \r\n  \"numero\": 1, \r\n  \"periodoFinal\": 20201, \r\n  \"periodoInicial\": 20192, \r\n  \"program\": 1, \r\n  \"tipo\": \"excel\"\r\n}",
+											"raw": "\r\n  {\r\n  \"encargado\": \"jhoan.echeverri@eia.edu.co\", \r\n  \"estado\": \"Processed\", \r\n  \"name\": \"P Com 20192 20201 1\", \r\n  \"numero\": 1, \r\n  \"periodoFinal\": 20201, \r\n  \"periodoInicial\": 20192, \r\n  \"program\": 1, \r\n  \"tipo\": \"excel\"\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -5459,7 +5459,7 @@
 									"response": []
 								},
 								{
-									"name": "nombre",
+									"name": "name",
 									"request": {
 										"auth": {
 											"type": "bearer",
@@ -5474,7 +5474,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "http://127.0.0.1:3000/preparations/nombre/Civ 20171 20182 1",
+											"raw": "http://127.0.0.1:3000/preparations/name/Civ 20171 20182 1",
 											"protocol": "http",
 											"host": [
 												"127",
@@ -5487,7 +5487,7 @@
 												"api",
 												"v1",
 												"preparations",
-												"nombre",
+												"name",
 												"Civ 20171 20182 1"
 											]
 										}
@@ -5518,7 +5518,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n\t\"nombre\": \"Psi 20151 20201 1.1\",\n\t\"dataset\": \"Psi 20151 20201 1\",\n\t\"numero\": 1,\n    \"preparador\": \"admin@pleyades.com\",\n    \"fechaInicial\":  \"2020-03-24T20:12:28+00:00\",\n    \"fechaFinal\":  \"2020-03-24T20:14:39+00:00\",\n    \"estado\": \"Exitosa\",\n    \"observaciones\":  null\n}\n ",
+											"raw": "{\n\t\"name\": \"Psi 20151 20201 1.1\",\n\t\"dataset\": \"Psi 20151 20201 1\",\n\t\"numero\": 1,\n    \"preparador\": \"admin@pleyades.com\",\n    \"fechaInicial\":  \"2020-03-24T20:12:28+00:00\",\n    \"fechaFinal\":  \"2020-03-24T20:14:39+00:00\",\n    \"estado\": \"Exitosa\",\n    \"observaciones\":  null\n}\n ",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -5780,7 +5780,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "  {\r\n    \"codigo\": 29,\r\n    \"nombre\": \" civilcita\",\r\n    \"nombre_corto\": \"civi\",\r\n    \"faculty\": 2,\r\n    \"nombre_faculty\": \"Faculty de Ingenierias\"\r\n  }",
+											"raw": "  {\r\n    \"codigo\": 29,\r\n    \"name\": \" civilcita\",\r\n    \"nombre_corto\": \"civi\",\r\n    \"faculty\": 2,\r\n    \"nombre_faculty\": \"Faculty de Ingenierias\"\r\n  }",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -5830,7 +5830,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "  {\r\n    \"nombre\": \" civilcitaaaaaa\"\r\n  }",
+											"raw": "  {\r\n    \"name\": \" civilcitaaaaaa\"\r\n  }",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -6006,7 +6006,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"codigo\": 7,\n    \"nombre\": \"Derechito\"\n}\n",
+											"raw": "{\n    \"codigo\": 7,\n    \"name\": \"Derechito\"\n}\n",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -6057,7 +6057,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"nombre\": \"Faculty de la gente\"\n}\n",
+											"raw": "{\n    \"name\": \"Faculty de la gente\"\n}\n",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -6291,7 +6291,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "  {\r\n    \"nombre\": \"JUANES1 QUINTERO\",\r\n    \"correo\": \"juanes1@gmail.com\",\r\n    \"clave\": \"12345678\",\r\n    \"rol\": \"Analista\"\r\n  }",
+											"raw": "  {\r\n    \"name\": \"JUANES1 QUINTERO\",\r\n    \"correo\": \"juanes1@gmail.com\",\r\n    \"clave\": \"12345678\",\r\n    \"rol\": \"Analista\"\r\n  }",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -6342,7 +6342,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "  {\r\n    \"nombre\": \"JHONNY ALBERT PEREZ\",\r\n    \"clave\": \"12345678\",\r\n    \"rol\": \"Analista\"\r\n  }",
+											"raw": "  {\r\n    \"name\": \"JHONNY ALBERT PEREZ\",\r\n    \"clave\": \"12345678\",\r\n    \"rol\": \"Analista\"\r\n  }",
 											"options": {
 												"raw": {
 													"language": "json"

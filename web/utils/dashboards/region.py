@@ -481,13 +481,13 @@ def indicadores_ies(dpto):
         df = df_IES[df_IES['departamento'] == dpto]
 
         periods = list(df.loc[:, '2010':'2018'].columns)
-        IES = df['nombre']
+        IES = df['name']
         IES_sigla = ['<b>'+sigla+'</b>' for sigla in df['nombre_corto']]
         cant_ies = len(IES)
 
         matriculas = []
         for ies in IES:
-            matricula_ies = df[df['nombre'] == ies].loc[:, '2010':'2018']
+            matricula_ies = df[df['name'] == ies].loc[:, '2010':'2018']
             matriculas.append(matricula_ies.values[0])
 
         # Arreglo con los datos de cada IES

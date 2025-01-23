@@ -125,7 +125,7 @@
                 action="{{url_for('Result.preparation_detalle')}}"
                 method="POST"
               >
-                <input type="hidden" name="preparation" value="{{e.nombre}}" />
+                <input type="hidden" name="preparation" value="{{e.name}}" />
                 <button
                   type="submit"
                   data-toggle="tooltip"
@@ -145,7 +145,7 @@
                 action="{{url_for('Result.execution_detalle')}}"
                 method="POST"
               >
-                <input type="hidden" name="execution" value="{{e.nombre}}" />
+                <input type="hidden" name="execution" value="{{e.name}}" />
                 <button
                   type="submit"
                   data-toggle="tooltip"

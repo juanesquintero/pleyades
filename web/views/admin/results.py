@@ -69,7 +69,7 @@ def editar_preparation():
 @only_admin
 def update_preparation():
     preparation = dict(request.values)
-    nombre = preparation.pop('nombre')
+    name = preparation.pop('name')
     if preparation['observaciones'].lower().strip() in ['none', 'nulo', 'null', '']:
         preparation['observaciones'] = None
     else:
@@ -80,7 +80,7 @@ def update_preparation():
         except:
             return render_template('utils/message.html', message='No se pudo update la preparación', submensaje='Error con el campo observaciones no es un json o nulo')
 
-    status, body = put('preparations/'+nombre, preparation)
+    status, body = put('preparations/'+name, preparation)
     if status:
         return redirect(url_for('ResultAdmin.preparations'))
     else:
@@ -99,8 +99,8 @@ def delete_preparation():
 @only_admin
 def remove_preparation():
     preparation = dict(request.values)
-    nombre = preparation.pop('nombre')
-    status, body = delete('preparations/'+nombre)
+    name = preparation.pop('name')
+    status, body = delete('preparations/'+name)
     if status:
         return redirect(url_for('ResultAdmin.preparations'))
 
@@ -122,7 +122,7 @@ def editar_execution():
 @only_admin
 def update_execution():
     execution = dict(request.values)
-    nombre = execution.pop('nombre')
+    name = execution.pop('name')
     try:
         execution['results'] = json.loads(
             execution['results'].replace("'", '"'))
@@ -133,7 +133,7 @@ def update_execution():
             message='No se pudo update la ejecución', submensaje='Error con el campo results no es un json'
         )
 
-    status, body = put('executions/'+nombre, execution)
+    status, body = put('executions/'+name, execution)
     if status:
         return redirect(url_for('ResultAdmin.executions'))
 
@@ -156,16 +156,16 @@ def delete_execution():
 @only_admin
 def remove_execution():
     execution = dict(request.values)
-    nombre = execution.pop('nombre')
-    status, body = delete('executions/'+nombre)
+    name = execution.pop('name')
+    status, body = delete('executions/'+name)
     if status:
         # Borrar file
         if execution['status'] == 'Exitosa':
             exito, pagina_error = remove_file(
-                upload_folder+'/deserters/'+'D '+nombre+'.json')
+                upload_folder+'/deserters/'+'D '+name+'.json')
             if not (exito):
                 return pagina_error
-            remove_file(upload_folder+'/deserters/'+'D '+nombre+'.xls')
+            remove_file(upload_folder+'/deserters/'+'D '+name+'.xls')
 
         return redirect(url_for('ResultAdmin.executions'))
 

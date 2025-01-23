@@ -51,7 +51,7 @@
       {% for c in sets %}
       <tr>
         <td>
-          <center>{{ c.nombre }}</center>
+          <center>{{ c.name }}</center>
         </td>
         <td>
           <center>{{ c.tipo }}</center>
@@ -63,7 +63,7 @@
         <td>
           {% for p in programs %}
           {% if c.program==p.codigo %}
-          <center>{{c.program}} {{p.nombre}}</center>
+          <center>{{c.program}} {{p.name}}</center>
           {% endif %}
           {% endfor %}
         </td>

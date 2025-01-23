@@ -57,7 +57,7 @@ def get_list(status, conjunto=None):
 
     if status_c and status_p:
         if conjunto:
-            body_c = [d for d in body_c if conjunto in d['nombre']]
+            body_c = [d for d in body_c if conjunto in d['name']]
         return render_template(
             endopoint+status.replace(' ', '_')+'.html',
             sets=body_c,
@@ -77,21 +77,21 @@ def get_list(status, conjunto=None):
     )
 
 
-@Dataset.route('/donwload/<status>/<nombre>')
-def download(status, nombre):
+@Dataset.route('/donwload/<status>/<name>')
+def download(status, name):
 
-    status_c, body_c = get('sets/'+nombre)
+    status_c, body_c = get('sets/'+name)
     if not status_c:
         return render_template('utils/message.html', message='No existe ese conjunto')
 
     if status.lower() == 'raw':
-        nombre = 'C '+nombre
+        name = 'C '+name
     elif status.lower() == 'processed':
-        nombre = 'P '+nombre
+        name = 'P '+name
     else:
         return render_template('utils/message.html', message='Estado del conjunto incorrecto')
 
-    ruta = upload_folder+'/'+status.lower()+'/'+nombre
+    ruta = upload_folder+'/'+status.lower()+'/'+name
 
     if os.path.exists(ruta+'.xlsx'):
         return send_file(ruta+'.xlsx', as_attachment=True)
@@ -197,11 +197,11 @@ def post_save(conjunto=None):
             data, conjunto.get('initialPeriod'), conjunto.get('finalPeriod'), conjunto.get('program'))
         conjunto['initialPeriod'] = initialPeriod
 
-        # Obtener nombre del conjunto desde el api
-        nombre, numero = obtener_nombre_conjunto(conjunto)
-        if not nombre:
+        # Obtener name del conjunto desde el api
+        name, numero = obtener_nombre_conjunto(conjunto)
+        if not name:
             return numero
-        file_save = 'C ' + nombre + '.xlsx'
+        file_save = 'C ' + name + '.xlsx'
 
         if validacion:
             try:
@@ -234,11 +234,11 @@ def post_save(conjunto=None):
             data, conjunto.get('initialPeriod'), conjunto.get('finalPeriod'), conjunto.get('program'))
         conjunto['initialPeriod'] = initialPeriod
 
-        # Obtener nombre del conjunto desde el api
-        nombre, numero = obtener_nombre_conjunto(conjunto)
-        if not nombre:
+        # Obtener name del conjunto desde el api
+        name, numero = obtener_nombre_conjunto(conjunto)
+        if not name:
             return numero
-        file_save = 'C ' + nombre + '.xlsx'
+        file_save = 'C ' + name + '.xlsx'
 
         if validacion:
             # Guardar tabla sql como excel
@@ -257,7 +257,7 @@ def post_save(conjunto=None):
     #     return render_template('utils/message.html', message='Formulario incorrecto', submensaje='Verifica el form de creacion o notifica al Administrador del sistema')
 
     # Guardar registro de conjunto en la BD
-    conjunto['nombre'] = nombre
+    conjunto['name'] = name
     conjunto['numero'] = numero
     status, body = post('sets', conjunto)
 
@@ -281,30 +281,30 @@ def preparar(conjunto=None):
         body = dict(request.values)
         conjunto = literal_eval(body['conjunto'])
 
-    nombre = conjunto['nombre']
+    name = conjunto['name']
 
     # Actualizar conjunto de datos de crudo a in progress
-    act_state = update_state(nombre, 'In Progress')
+    act_state = update_state(name, 'In Progress')
     if act_state:
         return act_state
 
     # Crear prepraracion
     preparation = {}
-    preparation['conjunto'] = conjunto['nombre']
+    preparation['conjunto'] = conjunto['name']
     preparation['preparador'] = session.get('user', {}).get('email')
     preparation['fechaInicial'] = get_now_date()
     # Obtener numero de preparation para el conjunto
-    status_p, body_p = get('preparations/nombre/'+nombre)
+    status_p, body_p = get('preparations/name/'+name)
     if status_p:
         preparation['numero'] = body_p['numero']
-        preparation['nombre'] = body_p['nombre']
+        preparation['name'] = body_p['name']
     else:
         return render_template('utils/message.html', message='No se pudo obtener el consecutivo de la preparación para este conjunto', submensaje=body_p)
 
     ########### PREPARAR ############
 
     # Obtener file crudo
-    file_crudo = 'C '+nombre
+    file_crudo = 'C '+name
     ruta = upload_folder+'/raw/'+file_crudo
     exito, data_cruda = obtener_file_excel(ruta)
     if not exito:
@@ -324,7 +324,7 @@ def preparar(conjunto=None):
         return render_template('utils/message.html', message='la preparación falló')
 
     # Guardar file en Upload folder processed
-    file_procesado = 'P '+nombre+'.xls'
+    file_procesado = 'P '+name+'.xls'
     ruta = upload_folder+'/processed/'+file_procesado
     exito, pagina_error = save_file(data_preparada, ruta, 'excel')
     if not exito:
@@ -338,12 +338,12 @@ def preparar(conjunto=None):
     ########### FIN PREPARAR ############
 
     # Actualizar conjunto de datos de crudo a processed
-    act_state = update_state(nombre, 'Processed')
+    act_state = update_state(name, 'Processed')
     if act_state:
         return act_state
 
     # TODO DEPRECATED! version 1 v1.5.0
-    # return redirect(url_for('Dataset.processed', conjunto=conjunto['nombre']))
+    # return redirect(url_for('Dataset.processed', conjunto=conjunto['name']))
 
     # TODO NEW! version 2 v2.0.0
     # ejecutar() luego de preparar()
@@ -360,23 +360,23 @@ def ejecutar(conjunto=None):
         body = dict(request.values)
         conjunto = literal_eval(body['conjunto'])
 
-    nombre = conjunto['nombre']
+    name = conjunto['name']
 
     # Actualizar conjunto de datos de crudo a processed
-    act_state = update_state(nombre, 'In Progress')
+    act_state = update_state(name, 'In Progress')
     if act_state:
         return act_state
 
     # Crear prepraracion
     execution = {}
-    execution['conjunto'] = conjunto['nombre']
+    execution['conjunto'] = conjunto['name']
     execution['executor'] = session.get('user', {}).get('email')
     execution['fechaInicial'] = get_now_date()
 
     # Obtener numero de ejecución para el conjunto
-    status_p, body_p = get('executions/nombre/'+nombre)
+    status_p, body_p = get('executions/name/'+name)
     if status_p:
-        execution['nombre'] = body_p['nombre']
+        execution['name'] = body_p['name']
         execution['numero'] = body_p['numero']
     else:
         return render_template('utils/message.html', message='No se pudo obtener el consecutivo de la preparación para este conjunto', submensaje=body_p)
@@ -384,7 +384,7 @@ def ejecutar(conjunto=None):
     ########### EJECUTAR ############
 
     # Obtener file processed
-    file_procesado = 'P '+nombre
+    file_procesado = 'P '+name
     ruta = upload_folder+'/processed/'+file_procesado
     exito, data_preparada = obtener_file_excel(ruta)
     if not exito:
@@ -398,7 +398,7 @@ def ejecutar(conjunto=None):
     try:
         resultados_model, resultados_desertores = execute_model(
             data_preparada,
-            nombre
+            name
         )
     except Exception as e:
         error_logger.error(e)
@@ -415,14 +415,14 @@ def ejecutar(conjunto=None):
         execution_saved = True
         if not exito:
             return pagina_error
-        act_state = update_state(nombre, 'Processed')
+        act_state = update_state(name, 'Processed')
         if act_state:
             return act_state
         return render_template('utils/message.html', message='La ejecución falló', submensaje=error_spa)
 
     if not resultados_model:
         # Actualizar conjunto de datos de crudo a processed
-        act_state = update_state(nombre, 'Processed')
+        act_state = update_state(name, 'Processed')
         if act_state:
             return act_state
         return render_template('utils/message.html', message='La ejecución falló', submensaje=resultados_desertores)
@@ -445,7 +445,7 @@ def ejecutar(conjunto=None):
             'desertion/results', resultados_insert
         )
         if not status_update or not status_insert:
-            act_state = update_state(nombre, 'Processed')
+            act_state = update_state(name, 'Processed')
             if act_state:
                 return act_state
 
@@ -461,7 +461,7 @@ def ejecutar(conjunto=None):
 
         state_execution = 'Exitosa'
         # Guardar results de desertotres en Upload folder desertores
-        file_desertores = 'D '+execution['nombre']+'.json'
+        file_desertores = 'D '+execution['name']+'.json'
         ruta = upload_folder+'/deserters/'+file_desertores
         exito, pagina_error = save_file(
             resultados_model.pop('deserters'), ruta, 'json'
@@ -482,19 +482,19 @@ def ejecutar(conjunto=None):
         exito, pagina_error = save_execution(
             execution=execution, results=resultados_model, status=state_execution)
         if not exito:
-            act_state = update_state(nombre, 'Processed')
+            act_state = update_state(name, 'Processed')
             if act_state:
                 return act_state
             return pagina_error
 
     ########### FIN EJECUTAR ############
     # Actualizar conjunto de datos de crudo a processed
-    act_state = update_state(nombre, 'Processed')
+    act_state = update_state(name, 'Processed')
     if act_state:
         return act_state
 
     # TODO DEPRECATED! version 1 v1.5.0
-    # return redirect(url_for('Result.executions', conjunto=nombre))
+    # return redirect(url_for('Result.executions', conjunto=name))
 
     # TODO NEW! version 2 v2.0.0
-    return redirect(url_for('Analista.models', model=nombre))
+    return redirect(url_for('Analista.models', model=name))

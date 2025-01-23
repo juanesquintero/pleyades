@@ -29,7 +29,7 @@
           required
         >
           {% for f in faculties %}
-          <option key="{{f.codigo}}" value="{{f.codigo}}">{{f.nombre}}</option>
+          <option key="{{f.codigo}}" value="{{f.codigo}}">{{f.name}}</option>
           {% endfor %}
         </select>
       </div>
@@ -66,10 +66,10 @@
             if (p.faculty == faculty) {
               var program_Obj = {
                 codigo: p.codigo,
-                nombre: p.nombre,
+                name: p.name,
               };
               //JSON.stringify(program_Obj)
-              program_select.options[i] = new Option(p.nombre, p.codigo);
+              program_select.options[i] = new Option(p.name, p.codigo);
               i = i + 1;
             }
           });
@@ -224,7 +224,7 @@
             >Seleccionar file</label
           >
           <script>
-            // Mostrar nombre del file seleccionado en el campo de texto
+            // Mostrar name del file seleccionado en el campo de texto
             $(".custom-file-input").on("change", function () {
               var fileName = $(this).val().split("\\").pop();
               $(this)

@@ -5,14 +5,14 @@
 <h4>Editar un Conjunto</h4>
 <br>
 
-{% if c.nombre %}
+{% if c.name %}
 <form action="{{url_for('DatasetAdmin.update')}}" method="POST" data-toggle="validator" class="jumbotron py-4 pr-2 bg-light" style="width:70%;">
     <div class="container">
         <div class="form-group row">
             <div class="col-sm-7">
                 <label>Nombre</label>
-                <input type="text" class="form-control" maxlength="200" value="{{c.nombre}}" disabled>
-                <input type="text" name="nombre" class="form-control" maxlength="200" value="{{c.nombre}}" hidden>
+                <input type="text" class="form-control" maxlength="200" value="{{c.name}}" disabled>
+                <input type="text" name="name" class="form-control" maxlength="200" value="{{c.name}}" hidden>
             </div>
             <div class="col-sm-4">
                 <label>Estado de datos</label>
@@ -86,7 +86,7 @@
                 <label>Program</label>
                 {% for p in programs %}
                 {% if c.program==p.codigo %}
-                <input type="text" class="form-control" maxlength="250" value="{{c.program}}   {{p.nombre}}" disabled>
+                <input type="text" class="form-control" maxlength="250" value="{{c.program}}   {{p.name}}" disabled>
                 {% endif %}
                 {% endfor %}
             </div>
@@ -107,7 +107,7 @@
                 &nbsp;
                 <strong class="mr-2 d-flex ">Descargar: </strong>
                 &nbsp;&nbsp;
-                <a class="btn bg-white btn-sm border text-dark" type="button" href="{{url_for('Dataset.download',status='raw',nombre=c.nombre) }}">
+                <a class="btn bg-white btn-sm border text-dark" type="button" href="{{url_for('Dataset.download',status='raw',name=c.name) }}">
                     <i class="fas fa-file-excel mr-1"></i>
                     Crudo
                 </a>
@@ -131,12 +131,12 @@
                     <div class="dropdown-menu r-menu border">
 
                         <!-- PREPARACIONES-->
-                        <a class="dropdown-item" type="button" href="{{url_for('ResultAdmin.preparations', conjunto=c.nombre) }}">
+                        <a class="dropdown-item" type="button" href="{{url_for('ResultAdmin.preparations', conjunto=c.name) }}">
                             <small>&#9881;
                                 Preparaciones</small>
                         </a>
                         <!-- EJECUCIONES-->
-                        <a class="dropdown-item" type="button" href="{{url_for('ResultAdmin.executions', conjunto=c.nombre) }}">
+                        <a class="dropdown-item" type="button" href="{{url_for('ResultAdmin.executions', conjunto=c.name) }}">
                             <small>&#9654;
                                 Ejecuciones
                             </small>
@@ -156,14 +156,14 @@
                     <div class="dropdown-menu d-menu border">
 
                         <!-- ARCHIVO CRUDOS-->
-                        <a class="dropdown-item w-100" type="button" href="{{url_for('Dataset.download',status='raw',nombre=c.nombre) }}">
+                        <a class="dropdown-item w-100" type="button" href="{{url_for('Dataset.download',status='raw',name=c.name) }}">
                             <small>
                                 <i class="fas fa-file-excel mr-1"></i>
                                 Crudo
                             </small>
                         </a>
                         <!-- ARCHIVO PROCESADOS-->
-                        <a class="dropdown-item" type="button"  href="{{url_for('Dataset.download', status='processed' ,nombre=c.nombre) }}">
+                        <a class="dropdown-item" type="button"  href="{{url_for('Dataset.download', status='processed' ,name=c.name) }}">
                             <small><i class="fas fa-file-excel mr-1"></i>
                                 Procesado
                             </small>
