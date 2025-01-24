@@ -61,7 +61,7 @@ AML = [
 
 columns_to_remove_1_past = [
     'registro',
-    'nombre_completo',
+    'name_completo',
     'tipo_documento',
     'documento',
     'jornada',
@@ -98,7 +98,7 @@ columns_to_remove_1_past = [
 
 columns_to_remove_1 = [
     'registro',
-    'nombre_completo',
+    'name_completo',
     'tipo_documento',
     'documento',
     'jornada',
@@ -171,7 +171,7 @@ conditions = {
     'registro':                                 int,
     'semestre':                                 int,
     'jornada':                                  str,
-    'nombre_completo':                          str,
+    'name_completo':                          str,
     'tipo_documento':                           str,
     'documento':                                str,
     'edad':                                     int,

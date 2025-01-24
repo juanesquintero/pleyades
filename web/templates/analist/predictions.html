@@ -44,8 +44,8 @@
     </thead>
     <tbody>
       {% for p in predictions %} {% if p.status=='Exitosa' and p.results.tipo == 'Prediccion' %}
-      {% dataset info_array = p.name.split(' ')[1:] %}
-      {% dataset conjunto = p.conjunto.split(' ')[3:] %}
+      {% set info_array = p.name.split(' ')[1:] %}
+      {% set conjunto = p.conjunto.split(' ')[3:] %}
       
       <tr>
         <td>
@@ -108,7 +108,7 @@
         </td>
         
         <td>
-          {% dataset proc = p.results.desercion_prevista * 100 %}
+          {% set proc = p.results.desercion_prevista * 100 %}
     
           <center>
             
@@ -158,7 +158,7 @@
             </form>  
             &nbsp;&nbsp;
             <!-- PREDECIR -->
-            <form action="{{url_for('Analista.predict')}}" method="POST">
+            <form action="{{url_for('Analyst.predict')}}" method="POST">
               <input type="hidden" name="model" value="{{p}}" />
               <button
                 type="submit"
@@ -203,7 +203,7 @@ include "components/alert.html" %} {% endwith %}
   $(".submit").click(function () {
     handleModal(
       "Su model aparecera cuando acabe el proceso (recuerde refrescar la página)",
-      "{{url_for('Analista.predictions')}}"
+      "{{url_for('Analyst.predictions')}}"
     );
   });
 </script>

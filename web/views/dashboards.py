@@ -5,7 +5,7 @@ import numpy as np
 from flask import request, Blueprint, render_template, jsonify
 
 from views.auth import login_required
-from utils.mixins import obtener_ies_config
+from utils.mixins import get_ies_config
 
 # Importar dashboards de plotly para cada nivel
 import utils.dashboards.mundo as Mundo
@@ -235,7 +235,7 @@ def ies_dashboard():
 
         periodos_list=periods,
 
-        nombre_ies=obtener_ies_config().get('name'),
+        name_ies=get_ies_config().get('name'),
 
         indicadores_1_plot=indicadores1,
         indicadores_2_plot=indicadores2,
@@ -284,7 +284,7 @@ def program_dashboard():
             notfound=True,
             periodo=int(periodo),
             program=program['idprograma'],
-            nombre_program=program['program'],
+            name_program=program['program'],
             periodos_list=periods,
             programs_list=programs,
         )
@@ -320,8 +320,8 @@ def program_dashboard():
         periodo=int(periodo),
         program=program['idprograma'],
 
-        nombre_program=program['program'],
-        nombre_ies=os.getenv('CLI_IES_NAME'),
+        name_program=program['program'],
+        name_ies=os.getenv('CLI_IES_NAME'),
         periodos_list=periods,
         programs_list=programs,
 

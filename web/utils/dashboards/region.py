@@ -482,7 +482,7 @@ def indicadores_ies(dpto):
 
         periods = list(df.loc[:, '2010':'2018'].columns)
         IES = df['name']
-        IES_sigla = ['<b>'+sigla+'</b>' for sigla in df['nombre_corto']]
+        IES_sigla = ['<b>'+sigla+'</b>' for sigla in df['name_corto']]
         cant_ies = len(IES)
 
         matriculas = []
@@ -541,7 +541,7 @@ def barras_ies(dpto, periodo):
         if len(df) < 1:
             return None
 
-        df = df[['nombre_corto', str(periodo)]]
+        df = df[['name_corto', str(periodo)]]
         cant_ies = len(df)
 
         df[str(periodo)] = df[str(periodo)].values*100
@@ -556,7 +556,7 @@ def barras_ies(dpto, periodo):
 
         fig = go.Figure(go.Bar(
             x=df[str(periodo)],
-            y=df['nombre_corto'],
+            y=df['name_corto'],
             marker=dict(
                 color=CONSTANTS.colores[0],
                 line=dict(color='black', width=0.5)
@@ -585,8 +585,8 @@ def barras_ies(dpto, periodo):
                 showgrid=False,
                 showline=False, linewidth=2, linecolor='black',
                 tickfont=dict(color='black'),
-                ticktext=[' <b>'+ies+'</b>  ' for ies in df['nombre_corto']],
-                tickvals=df['nombre_corto'],
+                ticktext=[' <b>'+ies+'</b>  ' for ies in df['name_corto']],
+                tickvals=df['name_corto'],
                 fixedrange=True
             ),
             xaxis=dict(

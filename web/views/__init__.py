@@ -3,7 +3,7 @@ from flask import Flask
 from views.index import Index
 from views.errors import Error
 from views.auth import Auth
-from views.analist import Analista
+from views.analist import Analyst
 from views.datasets import Dataset
 from views.results import Result
 from views.admin import ResultAdmin, DatasetAdmin, Faculty, Program, Student, User
@@ -35,7 +35,7 @@ def add_routes(app: Flask):
     app.register_blueprint(Index)
     app.register_blueprint(Error)
     app.register_blueprint(Auth)
-    app.register_blueprint(Analista, )
+    app.register_blueprint(Analyst, )
     app.register_blueprint(Faculty, url_prefix='/admin/faculties')
     app.register_blueprint(Program, url_prefix='/admin/programs')
     app.register_blueprint(Student, url_prefix='/admin/students')

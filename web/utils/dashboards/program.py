@@ -127,10 +127,10 @@ class Program:
             data_anterior = self.data_anterior
             data_actual = self.data_actual
 
-            variables_nombre = ['insc_total',
-                                'admi_total', 'mat_total', 'desertion']
+            variables_name = ['insc_total',
+                              'admi_total', 'mat_total', 'desertion']
             variables_indicadores = []
-            for v in variables_nombre:
+            for v in variables_name:
                 variables_indicadores.append(
                     [data_anterior[v][0], data_actual[v][0]])
             cant_indicadores = len(variables_indicadores)

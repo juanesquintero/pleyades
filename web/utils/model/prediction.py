@@ -22,8 +22,8 @@ def predict(data_a_predict, period_a_predict, basic_info):
     data_a_predict = elimination_predict(data_a_predict)
 
     # Obtener el clasificador como file local
-    nombre_model = basic_info.get('model')
-    mejor_clasificador = load_classifer(nombre_model)
+    name_model = basic_info.get('model')
+    mejor_clasificador = load_classifer(name_model)
 
     # Predecir
     result = predict_classifier(
@@ -55,14 +55,14 @@ def calculate_desercion(total_estudiantes, potenciales_desertores):
 def predict_classifier(data_a_predict, period_a_predict, mejor_clasificador):
     predc_sem_act = data_a_predict[
         [
-            'registro', 'semestre', 'documento', 'nombre_completo',
+            'registro', 'semestre', 'documento', 'name_completo',
             'desertor', 'idprograma', 'idestado', 'promedio_acumulado'
         ]
     ]
 
     if data_a_predict.empty:
         raise Exception(
-            'No students para predict en ese conjunto!', True
+            'No students para predict en ese dataset!', True
         )
 
     try:
@@ -120,7 +120,7 @@ def predict_classifier(data_a_predict, period_a_predict, mejor_clasificador):
         str, copy=False)
     resultados_desertores = resultados_desertores[[
         'documento',
-        'nombre_completo',
+        'name_completo',
         'desertor',
         'prediccion',
         'semestre_prediccion',

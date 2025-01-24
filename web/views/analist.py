@@ -33,7 +33,7 @@ def models():
     success, body = get_models(model)
 
     if not success:
-        flash('User does not have dropout models', 'warning')
+        flash('User does not have desertion models', 'warning')
         body = []
 
     return render_template(
@@ -123,33 +123,33 @@ def predict_model():
     prepared_data = Model.prepare_data(df_data_to_predict)
 
     # Predict results
-    model_results, dropout_results = Model.predict(
+    model_results, desertion_results = Model.predict(
         prepared_data, period, basic_info
     )
-    dropout_results['program_id'] = dropout_results['program_id'].astype(
+    desertion_results['program_id'] = desertion_results['program_id'].astype(
         int
     )
-    dropout_results['prediction_semester'] = dropout_results['prediction_semester'].astype(
+    desertion_results['prediction_semester'] = desertion_results['prediction_semester'].astype(
         int
     )
 
     # Insert results
-    if dropout_results.empty:
-        flash('No dropouts for this prediction', 'warning')
+    if desertion_results.empty:
+        flash('No desertions for this prediction', 'warning')
         return redirect(url_for('Analyst.models'))
 
     results_insert = json.loads(
-        dropout_results.to_json(orient='records')
+        desertion_results.to_json(orient='records')
     )
 
     status_insert, body_insert = post(
-        'dropout/results',
+        'desertion/results',
         results_insert
     )
 
     if not status_insert:
         error_logger.error(
-            'Error inserting new dropouts'.format(
+            'Error inserting new desertions'.format(
                 json.dumps(body_insert))
         )
         raise Exception(
@@ -158,11 +158,11 @@ def predict_model():
 
     execution['name'], execution['number'] = get_execution_name(model)
 
-    # Save dropouts
-    dropout_file = f"D {execution.get('name')}.json"
-    path = upload_folder+'/deserters/'+dropout_file
+    # Save desertions
+    desertion_file = f"D {execution.get('name')}.json"
+    path = upload_folder+'/deserters/'+desertion_file
     save_file(
-        model_results.pop('dropouts'), path, 'json'
+        model_results.pop('desertions'), path, 'json'
     )
 
     # Save execution
@@ -198,7 +198,7 @@ def download():
 @Analyst.route('/models/periods/<int:program>')
 @login_required
 def get_periods_program(program):
-    status, body = get(f'dropout/students/periods/program/{program}')
+    status, body = get(f'desertion/students/periods/program/{program}')
     if status:
         return jsonify(body)
     return jsonify([])

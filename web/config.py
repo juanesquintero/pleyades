@@ -6,7 +6,7 @@ import datetime
 from dotenv import load_dotenv
 from redis import Redis
 
-from utils.mixins import obtener_ies_config
+from utils.mixins import get_ies_config
 
 # Config root path and language
 locale.setlocale(locale.LC_ALL, 'es_MX.UTF-8')
@@ -66,7 +66,7 @@ CELERY = dict(
 #### END ASYNC TASKS CONFIG ####
 
 #### CUSTOM APP CONFIG ####
-IES = obtener_ies_config()
+IES = get_ies_config()
 IES_NAME = os.getenv('CLI_IES_NAME')
 BASE_PATH = '/' + IES_NAME if IES_NAME else '/'
 APPLICATION_ROOT = os.getenv('APPLICATION_ROOT', '/')

@@ -14,7 +14,7 @@ from utils.model import prepare_data, verify_data, execute_model
 from views.auth import login_required
 from services.API import get, post, put
 
-from utils.mixins import update_state, save_file, save_execution, save_preparation, get_now_date, obtener_file_excel, obtener_nombre_conjunto
+from utils.mixins import update_status, save_file, save_execution, save_preparation, get_now_date, get_excel_file, get_dataset_name
 
 model_logger = logging.getLogger('model_logger')
 error_logger = logging.getLogger('error_logger')
@@ -40,15 +40,15 @@ def raw():
 
 @Dataset.route('/processed')
 @Dataset.route('/processed/')
-@Dataset.route('/processed/<conjunto>')
+@Dataset.route('/processed/<dataset>')
 @login_required
-def processed(conjunto=None):
-    if conjunto:
-        return get_list('processed', str(conjunto))
+def processed(dataset=None):
+    if dataset:
+        return get_list('processed', str(dataset))
     return get_list('processed')
 
 
-def get_list(status, conjunto=None):
+def get_list(status, dataset=None):
     user = session.get('user', {'correo': ''}).get('correo')
     status_p, body_p = get('programs')
     status_c, body_c = get(
@@ -56,8 +56,8 @@ def get_list(status, conjunto=None):
     )
 
     if status_c and status_p:
-        if conjunto:
-            body_c = [d for d in body_c if conjunto in d['name']]
+        if dataset:
+            body_c = [d for d in body_c if dataset in d['name']]
         return render_template(
             endopoint+status.replace(' ', '_')+'.html',
             sets=body_c,
@@ -82,14 +82,14 @@ def download(status, name):
 
     status_c, body_c = get('sets/'+name)
     if not status_c:
-        return render_template('utils/message.html', message='No existe ese conjunto')
+        return render_template('utils/message.html', message='No existe ese dataset')
 
     if status.lower() == 'raw':
         name = 'C '+name
     elif status.lower() == 'processed':
         name = 'P '+name
     else:
-        return render_template('utils/message.html', message='Estado del conjunto incorrecto')
+        return render_template('utils/message.html', message='Estado del dataset incorrecto')
 
     ruta = upload_folder+'/'+status.lower()+'/'+name
 
@@ -101,8 +101,8 @@ def download(status, name):
         return render_template('utils/message.html', message='No se encontro el file a donwload')
 
 
-@Dataset.route('/crear')
-@Dataset.route('/crear/')
+@Dataset.route('/create')
+@Dataset.route('/create/')
 @login_required
 def post_create():
     periods = DataIES.get_periods_origen()
@@ -110,7 +110,7 @@ def post_create():
     status_p, body_p = get('programs')
 
     if status_f and status_p and periods:
-        return render_template(endopoint+'crear.html', faculties=body_f, programs=body_p)
+        return render_template(endopoint+'create.html', faculties=body_f, programs=body_p)
     elif not status_f and not status_p:
         error = {**body_f, **body_p}
     elif not status_f:
@@ -120,7 +120,7 @@ def post_create():
     return render_template('utils/message.html', message='No se pudieron cargar las programs y las faculties', submensaje=error)
 
 
-@Dataset.route('crear/periods/program/<int:program>')
+@Dataset.route('create/periods/program/<int:program>')
 @login_required
 def get_periods_program(program):
     status, body = get(
@@ -130,54 +130,54 @@ def get_periods_program(program):
     return jsonify([])
 
 
-@Dataset.route('/detalle', methods=['POST'])
+@Dataset.route('/detail', methods=['POST'])
 @login_required
-def detalle():
+def detail():
     # Obtener Lo valores del form
     body = dict(request.values)
-    conjunto = literal_eval(body['conjunto'])
+    dataset = literal_eval(body['dataset'])
     # Consultas para mostrar info
     status_f, body_f = get('faculties')
     status_p, body_p = get('programs')
     status_u, body_u = get('users')
 
-    if status_p and status_f and status_u and conjunto:
-        return render_template(endopoint+'detail.html', faculties=body_f, programs=body_p, users=body_u, c=conjunto)
+    if status_p and status_f and status_u and dataset:
+        return render_template(endopoint+'detail.html', faculties=body_f, programs=body_p, users=body_u, c=dataset)
     elif not status_f and not status_p and not status_u:
         error = {**body_f, **body_p, **body_u}
     elif not status_f:
         error = body_f
     elif not status_p:
         error = body_p
-    elif not conjunto:
-        return render_template('utils/message.html', message='No se encontro un conjunto para detallar')
+    elif not dataset:
+        return render_template('utils/message.html', message='No se encontro un dataset para detallar')
     else:
         error = body_u
-    return render_template('utils/message.html', message='No se pudieron cargar los datos para detallar el conjunto', submensaje=error)
+    return render_template('utils/message.html', message='No se pudieron cargar los datos para detallar el dataset', submensaje=error)
 
 
-@Dataset.route('/crear', methods=['POST'])
-@Dataset.route('/crear/', methods=['POST'])
+@Dataset.route('/create', methods=['POST'])
+@Dataset.route('/create/', methods=['POST'])
 @login_required
-def post_save(conjunto=None):
-    if not conjunto:
+def post_save(dataset=None):
+    if not dataset:
         # Obtener Lo valores del form
-        conjunto = dict(request.values)
-    # Preparar conjunto para la insercion
-    del conjunto['faculty']
+        dataset = dict(request.values)
+    # Preparar dataset para la insercion
+    del dataset['faculty']
 
     # TODO NEW! version 2 v2.0.0
-    session['period_closed'] = (conjunto.get('period_closed') == 'on')
+    session['period_closed'] = (dataset.get('period_closed') == 'on')
     if session.get('period_closed'):
-        del conjunto['period_closed']
+        del dataset['period_closed']
 
-    conjunto['status'] = 'Raw'
-    conjunto['initialPeriod'] = int(conjunto['initialPeriod'])
-    conjunto['finalPeriod'] = int(conjunto['finalPeriod'])
-    conjunto['program'] = int(conjunto['program'])
-    conjunto['manager'] = session.get('user', {}).get('email')
+    dataset['status'] = 'Raw'
+    dataset['initialPeriod'] = int(dataset['initialPeriod'])
+    dataset['finalPeriod'] = int(dataset['finalPeriod'])
+    dataset['program'] = int(dataset['program'])
+    dataset['manager'] = session.get('user', {}).get('email')
 
-    tipo = conjunto.get('tipo', 'consulta')
+    tipo = dataset.get('tipo', 'consulta')
     file = request.files.get('file')
     ruta = upload_folder+'/raw'
 
@@ -194,11 +194,11 @@ def post_save(conjunto=None):
         # VERIFICACION de formato
         data = pd.read_excel(file)
         validacion, mensaje_error, data_verificada, initialPeriod = verify_data(
-            data, conjunto.get('initialPeriod'), conjunto.get('finalPeriod'), conjunto.get('program'))
-        conjunto['initialPeriod'] = initialPeriod
+            data, dataset.get('initialPeriod'), dataset.get('finalPeriod'), dataset.get('program'))
+        dataset['initialPeriod'] = initialPeriod
 
-        # Obtener name del conjunto desde el api
-        name, numero = obtener_nombre_conjunto(conjunto)
+        # Obtener name del dataset desde el api
+        name, numero = get_dataset_name(dataset)
         if not name:
             return numero
         file_save = 'C ' + name + '.xlsx'
@@ -212,7 +212,7 @@ def post_save(conjunto=None):
                 )
             except Exception as e:
                 error_logger.error(e)
-                return render_template('utils/message.html', message='Ocurrió un error guardando el conjunto de datos')
+                return render_template('utils/message.html', message='Ocurrió un error guardando el dataset de datos')
         else:
             return render_template('utils/message.html', message='Incorrecto el formato de la fuente de datos', submensaje=mensaje_error)
 
@@ -220,10 +220,10 @@ def post_save(conjunto=None):
     # elif tipo == 'consulta':
     else:
         # Obtener datos de los students en ese programs y periods
-        endpoint_conjunto = 'desertion/students/dataset/{}/{}/{}'
-        endpoint_conjunto_values = endpoint_conjunto.format(
-            conjunto['program'], conjunto['initialPeriod'], conjunto['finalPeriod'])
-        status, body = get(endpoint_conjunto_values)
+        endpoint_dataset = 'desertion/students/dataset/{}/{}/{}'
+        endpoint_dataset_values = endpoint_dataset.format(
+            dataset['program'], dataset['initialPeriod'], dataset['finalPeriod'])
+        status, body = get(endpoint_dataset_values)
         if status:
             data = pd.DataFrame(body)
         else:
@@ -231,11 +231,11 @@ def post_save(conjunto=None):
 
         # VERIFICACION de formato
         validacion, mensaje_error, data_verificada, initialPeriod = verify_data(
-            data, conjunto.get('initialPeriod'), conjunto.get('finalPeriod'), conjunto.get('program'))
-        conjunto['initialPeriod'] = initialPeriod
+            data, dataset.get('initialPeriod'), dataset.get('finalPeriod'), dataset.get('program'))
+        dataset['initialPeriod'] = initialPeriod
 
-        # Obtener name del conjunto desde el api
-        name, numero = obtener_nombre_conjunto(conjunto)
+        # Obtener name del dataset desde el api
+        name, numero = get_dataset_name(dataset)
         if not name:
             return numero
         file_save = 'C ' + name + '.xlsx'
@@ -250,16 +250,16 @@ def post_save(conjunto=None):
                 )
             except Exception as e:
                 error_logger.error(e)
-                return render_template('utils/message.html', message='Ocurrió un error guardando el conjunto de datos')
+                return render_template('utils/message.html', message='Ocurrió un error guardando el dataset de datos')
         else:
             return render_template('utils/message.html', message='Incorrecto el formato de la fuente de datos', submensaje=mensaje_error)
     # else:
     #     return render_template('utils/message.html', message='Formulario incorrecto', submensaje='Verifica el form de creacion o notifica al Administrador del sistema')
 
-    # Guardar registro de conjunto en la BD
-    conjunto['name'] = name
-    conjunto['numero'] = numero
-    status, body = post('sets', conjunto)
+    # Guardar registro de dataset en la BD
+    dataset['name'] = name
+    dataset['numero'] = numero
+    status, body = post('sets', dataset)
 
     # TODO DEPRECATED! version 1 v1.5.0
     # if status:
@@ -268,45 +268,45 @@ def post_save(conjunto=None):
     # TODO NEW! version 2 v2.0.0
     if status:
         # preparar() luego de post_save()
-        return preparar(conjunto)
+        return preparar(dataset)
 
-    return render_template('utils/message.html', message='No se pudo save el conjunto', submensaje=body)
+    return render_template('utils/message.html', message='No se pudo save el dataset', submensaje=body)
 
 
 @Dataset.route('/preparar', methods=['POST'])
 @login_required
-def preparar(conjunto=None):
-    if not conjunto:
+def preparar(dataset=None):
+    if not dataset:
         # Obtener Lo valores del form
         body = dict(request.values)
-        conjunto = literal_eval(body['conjunto'])
+        dataset = literal_eval(body['dataset'])
 
-    name = conjunto['name']
+    name = dataset['name']
 
-    # Actualizar conjunto de datos de crudo a in progress
-    act_state = update_state(name, 'In Progress')
-    if act_state:
-        return act_state
+    # Actualizar dataset de datos de crudo a in progress
+    act_status = update_status(name, 'In Progress')
+    if act_status:
+        return act_status
 
     # Crear prepraracion
     preparation = {}
-    preparation['conjunto'] = conjunto['name']
+    preparation['dataset'] = dataset['name']
     preparation['preparador'] = session.get('user', {}).get('email')
-    preparation['fechaInicial'] = get_now_date()
-    # Obtener numero de preparation para el conjunto
+    preparation['startDate'] = get_now_date()
+    # Obtener numero de preparation para el dataset
     status_p, body_p = get('preparations/name/'+name)
     if status_p:
         preparation['numero'] = body_p['numero']
         preparation['name'] = body_p['name']
     else:
-        return render_template('utils/message.html', message='No se pudo obtener el consecutivo de la preparación para este conjunto', submensaje=body_p)
+        return render_template('utils/message.html', message='No se pudo get el consecutivo de la preparación para este dataset', submensaje=body_p)
 
     ########### PREPARAR ############
 
     # Obtener file crudo
     file_crudo = 'C '+name
     ruta = upload_folder+'/raw/'+file_crudo
-    exito, data_cruda = obtener_file_excel(ruta)
+    exito, data_cruda = get_excel_file(ruta)
     if not exito:
         return data_cruda
 
@@ -337,56 +337,56 @@ def preparar(conjunto=None):
 
     ########### FIN PREPARAR ############
 
-    # Actualizar conjunto de datos de crudo a processed
-    act_state = update_state(name, 'Processed')
-    if act_state:
-        return act_state
+    # Actualizar dataset de datos de crudo a processed
+    act_status = update_status(name, 'Processed')
+    if act_status:
+        return act_status
 
     # TODO DEPRECATED! version 1 v1.5.0
-    # return redirect(url_for('Dataset.processed', conjunto=conjunto['name']))
+    # return redirect(url_for('Dataset.processed', dataset=dataset['name']))
 
     # TODO NEW! version 2 v2.0.0
     # ejecutar() luego de preparar()
-    return ejecutar(conjunto)
+    return ejecutar(dataset)
 
 
 @Dataset.route('/ejecutar', methods=['POST'])
 @login_required
-def ejecutar(conjunto=None):
+def ejecutar(dataset=None):
     execution_saved = False
 
-    if not conjunto:
+    if not dataset:
         # Obtener Lo valores del form
         body = dict(request.values)
-        conjunto = literal_eval(body['conjunto'])
+        dataset = literal_eval(body['dataset'])
 
-    name = conjunto['name']
+    name = dataset['name']
 
-    # Actualizar conjunto de datos de crudo a processed
-    act_state = update_state(name, 'In Progress')
-    if act_state:
-        return act_state
+    # Actualizar dataset de datos de crudo a processed
+    act_status = update_status(name, 'In Progress')
+    if act_status:
+        return act_status
 
     # Crear prepraracion
     execution = {}
-    execution['conjunto'] = conjunto['name']
+    execution['dataset'] = dataset['name']
     execution['executor'] = session.get('user', {}).get('email')
-    execution['fechaInicial'] = get_now_date()
+    execution['startDate'] = get_now_date()
 
-    # Obtener numero de ejecución para el conjunto
+    # Obtener numero de ejecución para el dataset
     status_p, body_p = get('executions/name/'+name)
     if status_p:
         execution['name'] = body_p['name']
         execution['numero'] = body_p['numero']
     else:
-        return render_template('utils/message.html', message='No se pudo obtener el consecutivo de la preparación para este conjunto', submensaje=body_p)
+        return render_template('utils/message.html', message='No se pudo get el consecutivo de la preparación para este dataset', submensaje=body_p)
 
     ########### EJECUTAR ############
 
     # Obtener file processed
     file_procesado = 'P '+name
     ruta = upload_folder+'/processed/'+file_procesado
-    exito, data_preparada = obtener_file_excel(ruta)
+    exito, data_preparada = get_excel_file(ruta)
     if not exito:
         return data_preparada
 
@@ -415,16 +415,16 @@ def ejecutar(conjunto=None):
         execution_saved = True
         if not exito:
             return pagina_error
-        act_state = update_state(name, 'Processed')
-        if act_state:
-            return act_state
+        act_status = update_status(name, 'Processed')
+        if act_status:
+            return act_status
         return render_template('utils/message.html', message='La ejecución falló', submensaje=error_spa)
 
     if not resultados_model:
-        # Actualizar conjunto de datos de crudo a processed
-        act_state = update_state(name, 'Processed')
-        if act_state:
-            return act_state
+        # Actualizar dataset de datos de crudo a processed
+        act_status = update_status(name, 'Processed')
+        if act_status:
+            return act_status
         return render_template('utils/message.html', message='La ejecución falló', submensaje=resultados_desertores)
 
     # Guardar registro de los desertores en la BD del ies
@@ -432,7 +432,7 @@ def ejecutar(conjunto=None):
     # Actualizar los results a ultimo
     endpoint_ultimo = 'desertion/results/ultimo/{}/{}'
     endpoint_ultimo_values = endpoint_ultimo.format(
-        conjunto['program'], conjunto['finalPeriod']
+        dataset['program'], dataset['finalPeriod']
     )
     status_update, body_update = put(endpoint_ultimo_values, {})
 
@@ -445,9 +445,9 @@ def ejecutar(conjunto=None):
             'desertion/results', resultados_insert
         )
         if not status_update or not status_insert:
-            act_state = update_state(name, 'Processed')
-            if act_state:
-                return act_state
+            act_status = update_status(name, 'Processed')
+            if act_status:
+                return act_status
 
             if not status_insert:
                 error_logger.error(
@@ -459,7 +459,7 @@ def ejecutar(conjunto=None):
 
             return render_template('utils/message.html', message='Ocurrió un error insertando y/o actualizando los results'), 500
 
-        state_execution = 'Exitosa'
+        status_execution = 'Exitosa'
         # Guardar results de desertotres en Upload folder desertores
         file_desertores = 'D '+execution['name']+'.json'
         ruta = upload_folder+'/deserters/'+file_desertores
@@ -476,25 +476,25 @@ def ejecutar(conjunto=None):
             'Revise si hay students ó desertores suficientes en el program', 'warning'
         )
         resultados_model.pop('deserters')
-        state_execution = 'Fallida'
+        status_execution = 'Fallida'
     # Guardar registro de ejecución en la BD
     if not execution_saved:
         exito, pagina_error = save_execution(
-            execution=execution, results=resultados_model, status=state_execution)
+            execution=execution, results=resultados_model, status=status_execution)
         if not exito:
-            act_state = update_state(name, 'Processed')
-            if act_state:
-                return act_state
+            act_status = update_status(name, 'Processed')
+            if act_status:
+                return act_status
             return pagina_error
 
     ########### FIN EJECUTAR ############
-    # Actualizar conjunto de datos de crudo a processed
-    act_state = update_state(name, 'Processed')
-    if act_state:
-        return act_state
+    # Actualizar dataset de datos de crudo a processed
+    act_status = update_status(name, 'Processed')
+    if act_status:
+        return act_status
 
     # TODO DEPRECATED! version 1 v1.5.0
-    # return redirect(url_for('Result.executions', conjunto=name))
+    # return redirect(url_for('Result.executions', dataset=name))
 
     # TODO NEW! version 2 v2.0.0
-    return redirect(url_for('Analista.models', model=name))
+    return redirect(url_for('Analyst.models', model=name))

@@ -19,9 +19,9 @@ def get_list():
         return render_template('admin/'+endopoint+'list.html', faculties=[], error=body)
 
 
-@Faculty.route('/detalle', methods=['POST'])
+@Faculty.route('/detail', methods=['POST'])
 @only_admin
-def detalle():
+def detail():
     body = dict(request.values)
     faculty = literal_eval(body['faculty'])
     return render_template('admin/'+endopoint+'detail.html', f=faculty)

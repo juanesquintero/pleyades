@@ -16,9 +16,9 @@ def get_list():
     return render_template('admin/'+endopoint+'list.html', programs=[], error=body)
 
 
-@Student.route('/detalle', methods=['POST'])
+@Student.route('/detail', methods=['POST'])
 @only_admin
-def detalle():
+def detail():
     form = dict(request.values)
     idprograma = form.get('idprograma')
     program = form.get('program')

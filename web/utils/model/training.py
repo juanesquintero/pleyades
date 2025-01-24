@@ -6,7 +6,7 @@ from .prediction import predict_classifier
 from .model import save_classifirer
 
 
-def execute_model(data, conjunto, no_desertion=False):
+def execute_model(data, dataset, no_desertion=False):
     initial_data = data
     data['registro'] = data['registro'].astype(int)
 
@@ -24,12 +24,12 @@ def execute_model(data, conjunto, no_desertion=False):
     basic_info['period_a_predict_mas_1'] = f'{period_a_predict} + 1'
 
     if len(data_a_predict) <= 0:
-        return False, 'No hay suficientes datos en el periodo final, revisa el conjunto.'
+        return False, 'No hay suficientes datos en el periodo final, revisa el dataset.'
 
     ''' FASE 1 '''
 
     cv_split = model_selection.ShuffleSplit(
-        n_splits=10, test_size=.3, train_size=.7, random_state=42
+        n_splits=10, test_size=.3, train_size=.7, random_status=42
     )
     AML_columns = [
         'Nombre',
@@ -46,8 +46,8 @@ def execute_model(data, conjunto, no_desertion=False):
 
     for alg in AML:
         try:
-            AML_nombre = alg.__class__.__name__
-            AML_compare.loc[row_index, 'Nombre'] = AML_nombre
+            AML_name = alg.__class__.__name__
+            AML_compare.loc[row_index, 'Nombre'] = AML_name
             AML_compare.loc[row_index, 'Parametros'] = str(alg.get_params())
             cv_results = model_selection.cross_validate(
                 alg,
@@ -68,7 +68,7 @@ def execute_model(data, conjunto, no_desertion=False):
             AML_compare.loc[row_index,
                             'Tiempo'] = cv_results['fit_time'].mean()
             alg.fit(data[col_preparadas], data[Target])
-            AML_predict[AML_nombre] = alg.predict(data[col_preparadas])
+            AML_predict[AML_name] = alg.predict(data[col_preparadas])
             AML_compare.loc[row_index, 'objeto'] = alg
             row_index += 1
         except:
@@ -88,10 +88,10 @@ def execute_model(data, conjunto, no_desertion=False):
     )
 
     if not result.get('resultado').any().any() and not no_desertion:
-        execute_model(initial_data, conjunto, True)
+        execute_model(initial_data, dataset, True)
 
     # Guardar clasificador
-    save_classifirer(mejor_clasificador, conjunto)
+    save_classifirer(mejor_clasificador, dataset)
 
     precision_model = AML_best['Precision Media de Prueba'].tolist()[0] * 100
 

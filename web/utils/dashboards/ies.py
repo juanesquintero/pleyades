@@ -32,7 +32,7 @@ def agregar_indicador(anterior, actual, fig, i, j, mode):
     return fig
 
 
-def crear_indicador(data, variable, i, j, fig, tipo):
+def create_indicador(data, variable, i, j, fig, tipo):
     # Indicador
     period_anterior = data.loc[len(
         data)-2, variable]*100 if len(data)-2 > 0 else None
@@ -82,7 +82,7 @@ def miniserie_program_row(data, fig, i, dict_periods):
             showline=False,
             tickvals=[statistics.mean(data['desertion'])],
             ticktext=[
-                '<b>{}</b>       '.format(data['program_nombre_corto'][0])],
+                '<b>{}</b>       '.format(data['program_name_corto'][0])],
             tickfont=dict(
                 color='black',
                 # size=15
@@ -146,7 +146,7 @@ def indicadores_program_row(data, fig, i):
     fig.update_yaxes(
         showline=False,
         tickvals=x,
-        ticktext=['<b>{}</b>       '.format(data['program_nombre_corto'][0])],
+        ticktext=['<b>{}</b>       '.format(data['program_name_corto'][0])],
         tickfont=dict(color='black'),
         fixedrange=True,
         row=i, col=1
@@ -159,10 +159,10 @@ def indicadores_program_row(data, fig, i):
         row=i, col=1
     )
 
-    fig = crear_indicador(data, 'mat_hombre', i, 2, fig, 'number+delta')
-    fig = crear_indicador(data, 'mat_mujer', i, 3, fig, 'number+delta')
-    fig = crear_indicador(data, 'mat_total', i, 4, fig, 'number+delta')
-    fig = crear_indicador(data, 'desertion', i, 5, fig, 'number+delta')
+    fig = create_indicador(data, 'mat_hombre', i, 2, fig, 'number+delta')
+    fig = create_indicador(data, 'mat_mujer', i, 3, fig, 'number+delta')
+    fig = create_indicador(data, 'mat_total', i, 4, fig, 'number+delta')
+    fig = create_indicador(data, 'desertion', i, 5, fig, 'number+delta')
 
     return fig
 
@@ -198,9 +198,9 @@ class IES:
             data_anterior = self.data_anterior
             data_actual = self.data_actual
 
-            variables_nombre = ['insc_total', 'admi_total', 'mat_total']
+            variables_name = ['insc_total', 'admi_total', 'mat_total']
             variables_indicadores = []
-            for v in variables_nombre:
+            for v in variables_name:
                 variables_indicadores.append(
                     [data_anterior[v][0], data_actual[v][0]])
 
@@ -272,7 +272,7 @@ class IES:
             data_facultyes = self.df_IES.dropna(subset=['faculty'], axis=0)
 
             data_facultyes = data_facultyes[[
-                'faculty', 'program', 'program_nombre_corto', 'mat_total', 'admi_total', 'insc_total', 'mat_nuevos_total']]
+                'faculty', 'program', 'program_name_corto', 'mat_total', 'admi_total', 'insc_total', 'mat_nuevos_total']]
             data_facultyes = data_facultyes.groupby(
                 ['faculty'], as_index=False).sum()
             data_facultyes = data_facultyes.sort_values(
@@ -407,7 +407,7 @@ class IES:
                 subset=['faculty'], axis=0)
 
             data_facultyes = data_facultyes[[
-                'faculty', 'program', 'program_nombre_corto', 'mat_total', 'admi_total', 'insc_total', 'mat_nuevos_total']]
+                'faculty', 'program', 'program_name_corto', 'mat_total', 'admi_total', 'insc_total', 'mat_nuevos_total']]
             data_facultyes = data_facultyes.groupby(
                 ['faculty'], as_index=False).sum()
             data_facultyes = data_facultyes.sort_values(
@@ -536,7 +536,7 @@ class IES:
             for i, p in enumerate(list_programs):
                 data = Data.get_program(p['idprograma'])
                 data = data[['periodo', 'program',
-                             'program_nombre_corto', 'idprograma', 'desertion']]
+                             'program_name_corto', 'idprograma', 'desertion']]
                 data = data.dropna().reset_index()
                 # data['periodo'] = data['periodo'].astype(str)
                 fig = miniserie_program_row(data, fig, i+1, dict_periods)

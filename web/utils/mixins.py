@@ -144,7 +144,7 @@ def save_execution(execution, results, status):
     return True, 'ERROR'
 
 
-def get_set_name(dataset):
+def get_dataset_name(dataset):
     # Get dataset name from the API
     status_n, body_n = post('sets/name', dataset)
     if status_n:

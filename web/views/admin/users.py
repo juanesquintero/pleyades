@@ -18,13 +18,13 @@ def get_list():
     return render_template('admin/'+endopoint+'list.html', users=[], error=body)
 
 
-@User.route('/crear')
+@User.route('/create')
 @only_admin
 def post_create():
-    return render_template('admin/'+endopoint+'crear.html')
+    return render_template('admin/'+endopoint+'create.html')
 
 
-@User.route('/crear', methods=['POST'])
+@User.route('/create', methods=['POST'])
 @only_admin
 def post_save():
     usuario = dict(request.values)

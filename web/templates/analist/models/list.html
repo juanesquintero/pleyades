@@ -51,7 +51,7 @@
     <tbody>
       {% for m in models %} {% if m.status=='Exitosa' and m.results.tipo ==
       'Entrenamiento' %}
-      {% dataset info_array = m.conjunto.split(' ')[1:] %}
+      {% set info_array = m.conjunto.split(' ')[1:] %}
       <tr>
         <td>
           <h6 >
@@ -89,7 +89,7 @@
         </td>
 
         <td>
-          {% dataset proc = m.results.desercion_prevista * 100 %}
+          {% set proc = m.results.desercion_prevista * 100 %}
 
           <center>
             ~ {{ '%0.0f' % proc|float }}% {% if m.results.desercion_prevista >
@@ -113,7 +113,7 @@
             <!-- Entrenamiento-->
             <div class="btn-group" role="group" aria-label="Basic example">
               <form
-                action="{{url_for('Analista.trainings')}}"
+                action="{{url_for('Analyst.trainings')}}"
                 method="GET"
               >
                 <input type="hidden" name="model" value="{{m.conjunto}}" />
@@ -134,7 +134,7 @@
             &nbsp;&nbsp;
 
             <!-- PREDECIR -->
-            <form action="{{url_for('Analista.predict')}}" method="POST">
+            <form action="{{url_for('Analyst.predict')}}" method="POST">
               <input type="hidden" name="model" value="{{m}}" />
               <!-- Boton para predict con un model -->
               <button
@@ -161,7 +161,7 @@
 
 
             <!-- DESCARGAR-->
-            <!-- <form action="{{url_for('Analista.download')}}" method="POST">
+            <!-- <form action="{{url_for('Analyst.download')}}" method="POST">
               <input type="hidden" name="model" value="{{m.conjunto}}" />
               <button
                 type="submit"
@@ -193,7 +193,7 @@
 <br />
 
 <a
-  href="{{url_for('Analista.train') }}"
+  href="{{url_for('Analyst.train') }}"
   type="button"
   class="btn btn-dark text-white my-primary mt-4"
 >
@@ -206,7 +206,7 @@
   $(".submit").click(function () {
     handleModal(
       "Su model aparecera cuando acabe el proceso (recuerde refrescar la página)",
-      "{{url_for('Analista.predictions')}}"
+      "{{url_for('Analyst.predictions')}}"
     );
   });
 </script>

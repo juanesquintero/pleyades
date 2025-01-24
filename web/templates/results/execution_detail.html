@@ -74,7 +74,7 @@
     <div class="col ml-2">
       <h5 class="mb-3 font-weight-bold">Resultados</h5>
             
-      {% dataset fileds = [
+      {% set fileds = [
         'faculty',
         'program',
         'period_a_predict',
@@ -100,7 +100,7 @@
               
               {% if 'desertion' in key %}
               
-                {% dataset deser = (value * 100)|float %}
+                {% set deser = (value * 100)|float %}
                 {{ '%0.1f' % deser }} %
 
                 {% if deser > 15 or  deser < 0.3 %}

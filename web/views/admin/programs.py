@@ -18,9 +18,9 @@ def get_list():
         return render_template('admin/'+endopoint+'list.html', programs=[], error=body)
 
 
-@Program.route('/detalle', methods=['POST'])
+@Program.route('/detail', methods=['POST'])
 @only_admin
-def detalle():
+def detail():
     status_f, body_f = get('faculties')
     body = dict(request.values)
     program = literal_eval(body['program'])

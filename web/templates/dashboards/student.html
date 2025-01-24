@@ -117,7 +117,7 @@
 
                                     {% if ' ' in estudiante.celular_telefono %}
 
-                                    {% dataset list_numbers = estudiante.celular_telefono.split(' ') %}
+                                    {% set list_numbers = estudiante.celular_telefono.split(' ') %}
 
                                     {% for number in list_numbers %}
 

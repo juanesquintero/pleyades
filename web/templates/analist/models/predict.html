@@ -8,7 +8,7 @@
 
 <form
   id="conjuntoForm"
-  action="{{url_for('Analista.predict_model')}}"
+  action="{{url_for('Analyst.predict_model')}}"
   method="POST"
   enctype="multipart/form-data"
   data-toggle="validator"
@@ -58,7 +58,7 @@
           Periodos de Entrenamiento
         </label>
 
-        {% dataset periods = model.conjunto.split(' ')[1:3] %}
+        {% set periods = model.conjunto.split(' ')[1:3] %}
 
         <div class="d-flex">
           <input

@@ -4,18 +4,18 @@ import pickle
 models_folder = os.getcwd()+'/uploads/models'
 
 
-def save_classifirer(mejor_clasificador, conjunto=''):
-    clf_file = f'{models_folder}/{conjunto}.pkl'
+def save_classifirer(mejor_clasificador, dataset=''):
+    clf_file = f'{models_folder}/{dataset}.pkl'
     with open(clf_file, 'wb') as file:
         pickle.dump(mejor_clasificador, file)
     pickle.dump(
         mejor_clasificador,
-        open(f'{models_folder}/{conjunto}.sav', 'wb')
+        open(f'{models_folder}/{dataset}.sav', 'wb')
     )
 
 
-def load_classifer(conjunto):
-    clf_file = f'{models_folder}/{conjunto}.pkl'
+def load_classifer(dataset):
+    clf_file = f'{models_folder}/{dataset}.pkl'
     with open(clf_file, 'rb') as file:
         clf = pickle.load(file)
     clf = pickle.load(open(clf_file, 'rb'))

@@ -60,16 +60,16 @@ def get_list(status: str):
 @only_admin
 def post_edit():
     body = dict(request.values)
-    conjunto = literal_eval(body["conjunto"])
+    dataset = literal_eval(body["dataset"])
     status_p, body_p = get("programs")
     if status_p:
         return render_template(
-            "admin/" + endopoint + "editar.html", c=conjunto, programs=body_p
+            "admin/" + endopoint + "editar.html", c=dataset, programs=body_p
         )
     else:
         return render_template(
             "utils/message.html",
-            message="No se obtener los programs",
+            message="No se get los programs",
             submensaje=body_p,
         )
 
@@ -77,16 +77,16 @@ def post_edit():
 @DatasetAdmin.route("/update", methods=["POST"])
 @only_admin
 def update():
-    conjunto = dict(request.values)
-    name = conjunto.pop("name")
+    dataset = dict(request.values)
+    name = dataset.pop("name")
 
-    status, body = put("datasets/" + name, conjunto)
+    status, body = put("datasets/" + name, dataset)
     if status:
         return redirect(url_for("DatasetAdmin.raw"))
 
     return render_template(
         "utils/message.html",
-        message="No se pudo update la conjunto",
+        message="No se pudo update la dataset",
         submensaje=body,
     )
 
@@ -95,16 +95,16 @@ def update():
 @only_admin
 def post_delete():
     body = dict(request.values)
-    conjunto = literal_eval(body["conjunto"])
+    dataset = literal_eval(body["dataset"])
     status_p, body_p = get("programs")
     if status_p:
         return render_template(
-            "admin/" + endopoint + "delete.html", c=conjunto, programs=body_p
+            "admin/" + endopoint + "delete.html", c=dataset, programs=body_p
         )
     else:
         return render_template(
             "utils/message.html",
-            message="No se obtener los programs",
+            message="No se get los programs",
             submensaje=body_p,
         )
 
@@ -112,8 +112,8 @@ def post_delete():
 @DatasetAdmin.route("/remove", methods=["POST"])
 @only_admin
 def remove():
-    conjunto = dict(request.values)
-    name = conjunto.pop("name")
+    dataset = dict(request.values)
+    name = dataset.pop("name")
     status, body = delete("datasets/" + name)
     if status:
         # Eliminar files relacionados en el servidor
@@ -122,7 +122,7 @@ def remove():
         )
         if not (exito):
             return pagina_error
-        if conjunto["status"] == "Processed":
+        if dataset["status"] == "Processed":
             exito, pagina_error = remove_file(
                 upload_folder + "/processed/" + "P " + name + ".xls"
             )
@@ -133,7 +133,7 @@ def remove():
     else:
         return render_template(
             "utils/message.html",
-            message="No se pudo Eliminar el conjunto",
+            message="No se pudo Eliminar el dataset",
             submensaje=body,
         )
 

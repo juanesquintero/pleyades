@@ -46,13 +46,13 @@ color_cluster_map = {
 
 
 def data_series(codigo):
-    name = gastos[gastos['codigo_pais'] == codigo]['nombre_pais'].values[0]
+    name = gastos[gastos['codigo_pais'] == codigo]['name_pais'].values[0]
     gastos_pais = gastos[gastos['codigo_pais'] == codigo].loc[:, '2008':'2018']
     inscrp_pais = inscripciones[inscripciones['codigo_pais']
                                 == codigo].loc[:, '2008':'2018']
     data = pd.DataFrame({
         'codigo_pais': codigo,
-        'nombre_pais': name,
+        'name_pais': name,
         'periods': periods,
         'gastos': gastos_pais.values[0],
         'inscripciones': inscrp_pais.values[0],
@@ -66,7 +66,7 @@ def series(df, y_variable, y_titulo, color):
         x="periods",
         y=y_variable,
         color='codigo_pais',
-        custom_data=['nombre_pais'],
+        custom_data=['name_pais'],
         color_discrete_map={
           df['codigo_pais'][0]: color,
         },
@@ -144,7 +144,7 @@ def data_clusters():
 
     # Conjunto para graficar
     data = pd.DataFrame({
-        'nombre_pais': gastos['nombre_pais'],
+        'name_pais': gastos['name_pais'],
         'codigo_pais': gastos['codigo_pais'],
         'gastos': gastos['promedio'],
         'inscripciones': inscripciones['promedio'],
@@ -190,7 +190,7 @@ def clusters(data=df_clusters):
         x="gastos",
         y="inscripciones",
         text="codigo_pais",
-        custom_data=['codigo_pais', 'nombre_pais', 'gastos', 'inscripciones'],
+        custom_data=['codigo_pais', 'name_pais', 'gastos', 'inscripciones'],
         color='categoria',
         color_discrete_map=color_cluster_map,
     )
@@ -242,7 +242,7 @@ def mapa(data=df_clusters):
         data_frame=data,
         locations='codigo_pais',
         scope="world",
-        custom_data=['codigo_pais', 'nombre_pais', 'gastos', 'inscripciones'],
+        custom_data=['codigo_pais', 'name_pais', 'gastos', 'inscripciones'],
         color='categoria',
         color_discrete_map=color_cluster_map,
     )

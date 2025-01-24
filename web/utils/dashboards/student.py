@@ -20,7 +20,7 @@ colores = CONSTANTS.colores
 def students_program(program: str):
     try:
         data = Data.get_students_program(program)
-        data = data[['documento', 'nombre_completo']]
+        data = data[['documento', 'name_completo']]
         students = data.drop_duplicates()
         return students.to_dict(orient='records')
     except Exception as e:
@@ -191,7 +191,7 @@ class Student:
             # Dataframe del program
             data = self.df_ESTUDIANTE
             promedios = {}
-            # Para obtener los promeios de los diferentes programs
+            # Para get los promeios de los diferentes programs
             # for p in self.programs_estudiante:
             #     estu = data.query("program == '{}'".format(p))
             #     estu = estu.sort_values(by=['REGISTRO'], ascending=[True])
@@ -222,14 +222,14 @@ class Student:
 
             # Serie por promedios de un program
             for i, program in enumerate(self.promedios_estudiante.keys()):
-                nombre_program = self.promedios_estudiante[program]['program']
+                name_program = self.promedios_estudiante[program]['program']
                 del self.promedios_estudiante[program]['program']
                 df = pd.DataFrame(self.promedios_estudiante[program])
 
                 fig.add_trace(go.Scatter(
                     x=df['REGISTRO'],
                     y=df['promedio'],
-                    name=nombre_program,
+                    name=name_program,
                     mode='markers+lines+text',
                     text=list(df['promedio']),
                     textposition='top center',

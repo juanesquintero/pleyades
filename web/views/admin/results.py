@@ -21,20 +21,20 @@ upload_folder = os.getcwd()+'/uploads'
 
 @ResultAdmin.route('/')
 @ResultAdmin.route('/preparations')
-@ResultAdmin.route('/preparations/<conjunto>')
+@ResultAdmin.route('/preparations/<dataset>')
 @only_admin
-def preparations(conjunto=None):
-    if conjunto:
-        return list_set('preparations', conjunto)
+def preparations(dataset=None):
+    if dataset:
+        return list_set('preparations', dataset)
     return get_list('preparations')
 
 
 @ResultAdmin.route('/executions')
-@ResultAdmin.route('/executions/<conjunto>')
+@ResultAdmin.route('/executions/<dataset>')
 @only_admin
-def executions(conjunto=None):
-    if conjunto:
-        return list_set('executions', conjunto)
+def executions(dataset=None):
+    if dataset:
+        return list_set('executions', dataset)
     return get_list('executions')
 
 
@@ -46,8 +46,8 @@ def get_list(results):
         return render_template('admin/'+endopoint+results+'.html', results=[], error=body)
 
 
-def list_set(results, conjunto):
-    status, body = get(results+'/dataset/'+conjunto)
+def list_set(results, dataset):
+    status, body = get(results+'/dataset/'+dataset)
     if status:
         return render_template('admin/'+endopoint+results+'.html', results=body)
     else:
