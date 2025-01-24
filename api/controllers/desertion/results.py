@@ -41,7 +41,7 @@ def post_insert_results():
     data = pd.DataFrame(body)
     data = data[
         [
-            'documento', 'nombre_completo', 'idprograma',
+            'documento', 'name_completo', 'idprograma',
             'prediccion', 'desertor', 'semestre_prediccion'
         ]
     ]

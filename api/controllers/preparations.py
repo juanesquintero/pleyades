@@ -100,8 +100,8 @@ def post():
     if exists(body['name']):
         return {'error': 'preparation ya existe'}, 400
     # Cambiar formato de fechas
-    body['fechaInicial'] = body['fechaInicial'].split('+')[0]
-    body['fechaFinal'] = body['fechaFinal'].split('+')[0]
+    body['startDate'] = body['startDate'].split('+')[0]
+    body['endDate'] = body['endDate'].split('+')[0]
     # Cambiar formato de campo observaciones desde dict a str json para mysql
     body['observaciones'] = str(json.dumps(body['observaciones']))
     # Insert
@@ -184,8 +184,8 @@ def exists(name):
 
 def strdate_to_datetime(query):
     for p in query:
-        p['fechaInicial'] = str(p['fechaInicial'])
-        p['fechaFinal'] = str(p['fechaFinal'])
+        p['startDate'] = str(p['startDate'])
+        p['endDate'] = str(p['endDate'])
         # Cambiar formato de campo results desde str json a json
         if p['observaciones']:
             p['observaciones'] = json.loads(p['observaciones'])

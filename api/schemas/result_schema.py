@@ -6,13 +6,13 @@ post_schema = {
             "type": "object",
             "properties": {
                 "documento":  {"type": "string", "maxLength": 100},
-                "nombre_completo":  {"type": "string", "maxLength": 300},
+                "name_completo":  {"type": "string", "maxLength": 300},
                 "idprograma":  {"type": "integer", "maxLength": 30},
                 "prediccion":  {"type": "integer", "maxLength": 1},
                 "desertor":  {"type": "integer", "maxLength": 1},
                 "semestre_prediccion": {"type": "integer", "maxLength": 30},
             },
-        "required": ["documento", "nombre_completo", "idprograma", "prediccion", "semestre_prediccion", "desertor"],
+        "required": ["documento", "name_completo", "idprograma", "prediccion", "semestre_prediccion", "desertor"],
         "additionalProperties": True
     }
 

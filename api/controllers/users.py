@@ -69,7 +69,7 @@ def create_user(body):
     if body.get('program'):
         if not exists_program(body['program']):
             return {'error': 'program no existe'}, 404
-    if not body['role'] in ['Analista', 'Admin']:
+    if not body['role'] in ['Analyst', 'Admin']:
         return {'error': 'Rol invalido'}, 404
     # Insert
     insert = user_model.insert(body)

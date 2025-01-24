@@ -1,7 +1,7 @@
 from flask import request, jsonify, Blueprint
 from db.ies.db import DB as db_ies
 from db.pleyades.db import Dataset as dataset_model, Execution as execution_model, Preparation as preparation_model
-from schemas.dataset_schema import validate_post_schema, validate_put_schema, validate_nombre_schema
+from schemas.dataset_schema import validate_post_schema, validate_put_schema, validate_name_schema
 from flask_jwt_extended import jwt_required
 from utils.utils import exception, _format
 
@@ -41,8 +41,8 @@ def get_one(name):
 
 @Dataset.route('/status/<status>')
 @jwt_required()
-def get_by_state(status):
-    query = dataset_model.get_state(status)
+def get_by_status(status):
+    query = dataset_model.get_status(status)
     ex = exception(query)
     if ex:
         return ex
@@ -144,7 +144,7 @@ def post2():
 def name():
     body = request.get_json()
     # validate schema
-    if not validate_nombre_schema(body):
+    if not validate_name_schema(body):
         return {'error': 'invalid body content'}, 400
     # sql validations
     if not exists_usuario(body['manager']):
@@ -174,9 +174,9 @@ def name():
     ex = exception(program)
     if ex:
         return ex
-    nombre_corto = program[0]['nombre_corto']
+    name_corto = program[0]['name_corto']
     # Definir el name del student_dataset con la notacion
-    name = nombre_corto+' ' + \
+    name = name_corto+' ' + \
         str(body['initialPeriod'])+' ' + \
         str(body['finalPeriod'])+' '+str(numero)
 
@@ -189,15 +189,15 @@ def delete_many(status):
     if not (status):
         return {'error': 'indique el status por el path'}, 400
     status = status.title()
-    query = dataset_model.get_state(status)
+    query = dataset_model.get_status(status)
     ex = exception(query)
     if ex:
         return ex
     if not query:
         return {'msg': 'Not found'}, 404
 
-    datasets_nombres = [c['name'] for c in query]
-    for student_dataset in datasets_nombres:
+    datasets_names = [c['name'] for c in query]
+    for student_dataset in datasets_names:
         # delete dataset
         delete = dataset_model.delete(dataset)
         # delete results
@@ -207,7 +207,7 @@ def delete_many(status):
         if ex:
             return ex
 
-    return {'msg': 'Datasets eliminados', 'data': datasets_nombres}, 200
+    return {'msg': 'Datasets eliminados', 'data': datasets_names}, 200
 
 
 @Dataset.route('/<name>', methods=['DELETE'])

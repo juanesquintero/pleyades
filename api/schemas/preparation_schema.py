@@ -7,12 +7,12 @@ post_schema = {
         "dataset":  {"type": "string", "maxLength": 200},
         "numero": {"type": "integer", "maxLength": 30},
         "preparador":   {"type": "string", "format": "email", "maxLength": 200},
-        "fechaInicial":  {"type": "string", "format": "date-time"},
-        "fechaFinal":  {"type": ["string", "null"], "format": "date-time"},
+        "startDate":  {"type": "string", "format": "date-time"},
+        "endDate":  {"type": ["string", "null"], "format": "date-time"},
         "status":  {"type": "string", "maxLength": 50, "enum": ["Fallida", "Exitosa"]},
         "observaciones":  {"type": ["object", "null"]},
     },
-    "required": ["name", "numero", "dataset", "preparador", "fechaInicial", "fechaFinal", "status"],
+    "required": ["name", "numero", "dataset", "preparador", "startDate", "endDate", "status"],
     "additionalProperties": False
 }
 

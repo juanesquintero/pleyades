@@ -1,6 +1,6 @@
 from jsonschema import Draft4Validator, draft4_format_checker
 
-nombre_schema = {
+name_schema = {
     "type": "object",
     "properties": {
         "program":  {"type": "integer", "maxLength": 30},
@@ -41,8 +41,8 @@ put_schema = {
 }
 
 
-def validate_nombre_schema(json):
-    return Draft4Validator(nombre_schema, format_checker=draft4_format_checker).is_valid(json)
+def validate_name_schema(json):
+    return Draft4Validator(name_schema, format_checker=draft4_format_checker).is_valid(json)
 
 
 def validate_post_schema(json):

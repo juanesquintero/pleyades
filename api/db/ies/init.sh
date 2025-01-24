@@ -30,7 +30,7 @@ DB_EXISTS=$(echo $SQLCMD_OUTPUT | grep -o "EXISTS")
 if [[ $DB_EXISTS == "EXISTS" ]]; then
     echo -e "\nThe database '$MSSQL_DBNAME' already exists."
 else
-    echo -e "\nCreating the dropout database/schema..."
+    echo -e "\nCreating the desertion database/schema..."
     $sqlcmd_sa -i /tmp/sql/init.sql
 
     echo -e "\nExecuting table creation scripts..."
@@ -39,9 +39,9 @@ else
     echo -e "\nExecuting dependency inserts..."
     $sqlcmd_user -i /tmp/sql/inserts/dependencies.sql
 
-    echo -e "\nExecuting dropout inserts..."
+    echo -e "\nExecuting desertion inserts..."
     $sqlcmd_user -i /tmp/sql/inserts/desertion.sql
 
-    echo -e "\nFinished setting up the dropout database."
+    echo -e "\nFinished setting up the desertion database."
 fi
 

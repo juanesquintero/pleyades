@@ -7,13 +7,13 @@ post_schema = {
         'dataset':  {'type': 'string', 'maxLength': 200},
         'numero': {'type': 'integer', 'maxLength': 30},
         'executor':   {'type': 'string', 'format': 'email', 'maxLength': 200},
-        'fechaInicial':  {'type': 'string', 'format': 'date-time'},
-        'fechaFinal':  {'type': ['string', 'null'], 'format': 'date-time'},
+        'startDate':  {'type': 'string', 'format': 'date-time'},
+        'endDate':  {'type': ['string', 'null'], 'format': 'date-time'},
         'status':  {'type': 'string', 'maxLength': 50, 'enum': ['Fallida', 'Exitosa']},
         'precision_model': {'type': ['number', 'null'], 'maxLength': 5},
         'results':  {'type': 'object'},
     },
-    'required': ['name', 'dataset', 'numero', 'executor', 'fechaInicial', 'fechaFinal', 'status', 'results'],
+    'required': ['name', 'dataset', 'numero', 'executor', 'startDate', 'endDate', 'status', 'results'],
     'additionalProperties': False
 }
 
