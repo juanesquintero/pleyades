@@ -110,7 +110,7 @@ def get_json_file(path):
 
 
 def update_status(name, status):
-    status, body = put('sets/'+name, {'status': status})
+    status, body = put('datasets/'+name, {'status': status})
     if not status:
         return render_template('utils/message.html', message='Could not update the dataset status to '+status, submessage=body)
     else:
@@ -146,7 +146,7 @@ def save_execution(execution, results, status):
 
 def get_dataset_name(dataset):
     # Get dataset name from the API
-    status_n, body_n = post('sets/name', dataset)
+    status_n, body_n = post('datasets/name', dataset)
     if status_n:
         return body_n['name'], body_n['number']
 

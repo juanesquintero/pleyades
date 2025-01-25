@@ -24,7 +24,7 @@ def execute_model(data, dataset, no_desertion=False):
     basic_info['period_a_predict_mas_1'] = f'{period_a_predict} + 1'
 
     if len(data_a_predict) <= 0:
-        return False, 'No hay suficientes datos en el periodo final, revisa el dataset.'
+        return False, 'No hay suficientes datos en el period final, revisa el dataset.'
 
     ''' FASE 1 '''
 

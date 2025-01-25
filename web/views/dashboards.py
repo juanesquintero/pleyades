@@ -78,16 +78,16 @@ def mundo_dashboard():
 @Tablero.route('/pais')
 def pais_dashboard():
     # Series Por pais
-    periodo = request.args.get('periodo')
-    if not periodo:
-        periodo = '2018'
+    period = request.args.get('period')
+    if not period:
+        period = '2018'
 
-    mapa = to_plotly_json(Pais.mapa(periodo))
+    mapa = to_plotly_json(Pais.mapa(period))
     barras = to_plotly_json(Pais.barras())
-    pastel = to_plotly_json(Pais.pastel(periodo))
-    genero = to_plotly_json(Pais.genero(periodo))
-    indicadores = to_plotly_json(Pais.indicadores(periodo))
-    indicadores2 = to_plotly_json(Pais.indicadores2(periodo))
+    pastel = to_plotly_json(Pais.pastel(period))
+    genero = to_plotly_json(Pais.genero(period))
+    indicadores = to_plotly_json(Pais.indicadores(period))
+    indicadores2 = to_plotly_json(Pais.indicadores2(period))
 
     return render_template(
         endopoint+'nacional.html',
@@ -97,8 +97,8 @@ def pais_dashboard():
         genero_plot=genero,
         indicadores_plot=indicadores,
         indicadores2_plot=indicadores2,
-        periodos_list=periods,
-        periodo=int(periodo),
+        periods_list=periods,
+        period=int(period),
     )
 
 
@@ -106,18 +106,18 @@ def pais_dashboard():
 @Tablero.route('/region')
 def region_dashboard():
 
-    periodo = request.args.get('periodo')
+    period = request.args.get('period')
     dpto = request.args.get('dpto')
 
-    if not periodo:
-        periodo = '2018'
+    if not period:
+        period = '2018'
     if not dpto:
         dpto = 'ANTIOQUIA'
 
     dptos = Region.dptos
 
     # Mapa dpto
-    mapa = Region.mapa(dpto, periodo)
+    mapa = Region.mapa(dpto, period)
     mapa = to_plotly_json(mapa) if mapa else None
 
     # Barras verticales retencion
@@ -125,15 +125,15 @@ def region_dashboard():
     barras = to_plotly_json(barras)if barras else None
 
     # Pastel sector IES matricula
-    pastel = Region.pastel(dpto, periodo)
+    pastel = Region.pastel(dpto, period)
     pastel = to_plotly_json(pastel) if pastel else None
 
     # Barras genero matricula
-    genero = Region.genero(dpto, periodo)
+    genero = Region.genero(dpto, period)
     genero = to_plotly_json(genero) if genero else None
 
     # Indicadores departamento
-    indicadores_dpto = Region.indicadores_dpto(dpto, periodo)
+    indicadores_dpto = Region.indicadores_dpto(dpto, period)
     indicadores_dpto = to_plotly_json(
         indicadores_dpto) if indicadores_dpto else None
 
@@ -143,7 +143,7 @@ def region_dashboard():
         indicadores_ies) if indicadores_ies else None
 
     # Barras horizontales desertion (Solo Antioquia)
-    barras_ies = Region.barras_ies(dpto, periodo)
+    barras_ies = Region.barras_ies(dpto, period)
     barras_ies = to_plotly_json(barras_ies) if barras_ies else None
 
     if cant_ies:
@@ -156,10 +156,10 @@ def region_dashboard():
 
     return render_template(
         endopoint+'regional.html',
-        periodo=int(periodo),
+        period=int(period),
         dpto=str(dpto),
 
-        periodos_list=periods,
+        periods_list=periods,
         dptos_list=dptos,
         ies_size=ies_size,
 
@@ -180,15 +180,15 @@ def region_dashboard():
 @login_required
 def ies_dashboard():
 
-    periodo = request.args.get('periodo')
+    period = request.args.get('period')
     periods = DataIES.get_periods()
 
     try:
-        periodo = int(periodo)
+        period = int(period)
     except Exception as e:
-        periodo = max(periods)
+        period = max(periods)
 
-    ies = IES(periodo)
+    ies = IES(period)
 
     # Indicadores IES
     indicadores1 = ies.indicadores1()
@@ -231,9 +231,9 @@ def ies_dashboard():
 
     return render_template(
         endopoint+'institucional.html',
-        periodo=int(periodo),
+        period=int(period),
 
-        periodos_list=periods,
+        periods_list=periods,
 
         name_ies=get_ies_config().get('name'),
 
@@ -259,16 +259,16 @@ def ies_dashboard():
 @login_required
 def program_dashboard():
 
-    periods = DataIES.get_periods_origen()
-    programs = DataIES.get_programs_origen()
+    periods = DataIES.get_periods_origin()
+    programs = DataIES.get_programs_origin()
 
-    periodo = request.args.get('periodo')
+    period = request.args.get('period')
     program = request.args.get('program')
 
     try:
-        periodo = int(periodo)
+        period = int(period)
     except Exception as e:
-        periodo = max(periods)
+        period = max(periods)
 
     programs_id = [str(p['idprograma']) for p in programs]
     if not (program in programs_id):
@@ -278,19 +278,19 @@ def program_dashboard():
             if str(p['idprograma']) == program:
                 program = p
 
-    if not DataIES.check_IES_period_program(periodo, program['idprograma']):
+    if not DataIES.check_ies_period_program(period, program['idprograma']):
         return render_template(
             endopoint+'program.html',
             notfound=True,
-            periodo=int(periodo),
+            period=int(period),
             program=program['idprograma'],
             name_program=program['program'],
-            periodos_list=periods,
+            periods_list=periods,
             programs_list=programs,
         )
 
     program_graph = Program(
-        periodo=periodo, program=program['idprograma'], periods=periods)
+        period=period, program=program['idprograma'], periods=periods)
 
     # Indicadores Program
     indicadores = program_graph.indicadores()
@@ -309,20 +309,20 @@ def program_dashboard():
     barras = to_plotly_json(barras) if barras else None
     if cant_periods:
         if cant_periods < 10:
-            periodos_size = cant_periods*2.5*10
+            periods_size = cant_periods*2.5*10
         else:
-            periodos_size = cant_periods*1.3*10
+            periods_size = cant_periods*1.3*10
     else:
-        periodos_size = 0
+        periods_size = 0
 
     return render_template(
         endopoint+'program.html',
-        periodo=int(periodo),
+        period=int(period),
         program=program['idprograma'],
 
         name_program=program['program'],
         name_ies=os.getenv('CLI_IES_NAME'),
-        periodos_list=periods,
+        periods_list=periods,
         programs_list=programs,
 
         indicadores_plot=indicadores,
@@ -330,7 +330,7 @@ def program_dashboard():
         pastel_plot=pastel,
         barras_plot=barras,
 
-        periodos_size=periodos_size,
+        periods_size=periods_size,
     )
 
 
@@ -341,7 +341,7 @@ def student_dashboard():
     periods = DataIES.get_periods()
     programs = DataIES.get_programs()
 
-    periodo = request.args.get('periodo')
+    period = request.args.get('period')
     program = request.args.get('program')
     documento = request.args.get('documento')
 
@@ -359,7 +359,7 @@ def student_dashboard():
     if not documento:
         return render_template(
             endopoint+'buscar_estudiante.html',
-            periodos_list=periods,
+            periods_list=periods,
             programs_list=programs,
         )
 
@@ -372,16 +372,16 @@ def student_dashboard():
             endopoint+'estudiante.html',
             estudiante=None,
             documento=documento,
-            periodo=periodo,
+            period=period,
             program=program,
         )
 
     try:
         # Obtener los graficos del students por documento identificacion
         estudiante = Student(identificacion=documento,
-                             program=program, periodo=periodo)
+                             program=program, period=period)
 
-        info, periodos_estudiante, programs_estudiante = estudiante.get_estudiante()
+        info, periods_estudiante, programs_estudiante = estudiante.get_estudiante()
 
         # Serie promedio acumulado
         serie_promedio = estudiante.serie_promedio()
@@ -401,7 +401,7 @@ def student_dashboard():
             estudiante=None,
             documento=documento,
             program=program,
-            periodo=periodo,
+            period=period,
         )
 
     # Validar los periods y programs
@@ -410,20 +410,20 @@ def student_dashboard():
             for p in programs:
                 if str(p['idprograma']) == str(info['idprograma']):
                     program = p
-        if not periodo:
-            periodo = int(info['REGISTRO'])
+        if not period:
+            period = int(info['REGISTRO'])
 
     return render_template(
         endopoint+'estudiante.html',
 
-        periodos_list=sorted(periodos_estudiante),
+        periods_list=sorted(periods_estudiante),
         programs_list=programs_estudiante,
 
         estudiante=info,
 
         documento=documento,
         program=program,
-        periodo=periodo,
+        period=period,
 
         serie_promedio_plot=serie_promedio,
         creditos_a_plot=creditos_a,

@@ -14,7 +14,7 @@ def predict(data_a_predict, period_a_predict, basic_info):
 
     if len(data_a_predict) < 3:
         raise Exception(
-            f'Hay muy pocos registros para el periodo {
+            f'Hay muy pocos registros para el period {
                 period_a_predict} (menos de 3)', True
         )
 
@@ -71,7 +71,7 @@ def predict_classifier(data_a_predict, period_a_predict, mejor_clasificador):
         )
     except Exception as excep:
         model_logger.error(excep)
-        flash('Por favor intente con otro periodo o program', 'warning')
+        flash('Por favor intente con otro period o program', 'warning')
         raise Exception('<b>Ocurrió un error al ejecutar la predicción!</b>')
     total_students_analizados = len(predc_sem_act['documento'].unique())
     potenciales_desertores = predc_sem_act.query('prediccion == 1 & desertor == 0').drop_duplicates(

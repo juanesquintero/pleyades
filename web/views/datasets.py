@@ -23,7 +23,7 @@ load_dotenv()
 
 Dataset = Blueprint('Dataset', __name__)
 
-endopoint = 'sets/'
+endopoint = 'datasets/'
 
 upload_folder = os.getcwd()+'/uploads'
 
@@ -52,7 +52,7 @@ def get_list(status, dataset=None):
     user = session.get('user', {'correo': ''}).get('correo')
     status_p, body_p = get('programs')
     status_c, body_c = get(
-        f'sets/manager/{user}?status={status}'
+        f'datasets/manager/{user}?status={status}'
     )
 
     if status_c and status_p:
@@ -60,7 +60,7 @@ def get_list(status, dataset=None):
             body_c = [d for d in body_c if dataset in d['name']]
         return render_template(
             endopoint+status.replace(' ', '_')+'.html',
-            sets=body_c,
+            datasets=body_c,
             programs=body_p
         )
 
@@ -72,7 +72,7 @@ def get_list(status, dataset=None):
         error = body_p
     return render_template(
         endopoint+status.replace(' ', '_')+'.html',
-        sets=[],
+        datasets=[],
         error=error
     )
 
@@ -80,7 +80,7 @@ def get_list(status, dataset=None):
 @Dataset.route('/donwload/<status>/<name>')
 def download(status, name):
 
-    status_c, body_c = get('sets/'+name)
+    status_c, body_c = get('datasets/'+name)
     if not status_c:
         return render_template('utils/message.html', message='No existe ese dataset')
 
@@ -95,28 +95,31 @@ def download(status, name):
 
     if os.path.exists(ruta+'.xlsx'):
         return send_file(ruta+'.xlsx', as_attachment=True)
-    elif os.path.exists(ruta+'.xls'):
+
+    if os.path.exists(ruta+'.xls'):
         return send_file(ruta+'.xls', as_attachment=True)
-    else:
-        return render_template('utils/message.html', message='No se encontro el file a donwload')
+
+    return render_template('utils/message.html', message='No se encontro el file a donwload')
 
 
 @Dataset.route('/create')
 @Dataset.route('/create/')
 @login_required
 def post_create():
-    periods = DataIES.get_periods_origen()
+    periods = DataIES.get_periods_origin()
     status_f, body_f = get('faculties')
     status_p, body_p = get('programs')
 
     if status_f and status_p and periods:
         return render_template(endopoint+'create.html', faculties=body_f, programs=body_p)
-    elif not status_f and not status_p:
+
+    if not status_f and not status_p:
         error = {**body_f, **body_p}
     elif not status_f:
         error = body_f
     else:
         error = body_p
+
     return render_template('utils/message.html', message='No se pudieron cargar las programs y las faculties', submensaje=error)
 
 
@@ -124,7 +127,8 @@ def post_create():
 @login_required
 def get_periods_program(program):
     status, body = get(
-        'desertion/students/periods/program/{}'.format(program))
+        'desertion/students/periods/program/{}'.format(program)
+    )
     if status:
         return jsonify(body)
     return jsonify([])
@@ -143,17 +147,26 @@ def detail():
 
     if status_p and status_f and status_u and dataset:
         return render_template(endopoint+'detail.html', faculties=body_f, programs=body_p, users=body_u, c=dataset)
-    elif not status_f and not status_p and not status_u:
+
+    if not status_f and not status_p and not status_u:
         error = {**body_f, **body_p, **body_u}
     elif not status_f:
         error = body_f
     elif not status_p:
         error = body_p
     elif not dataset:
-        return render_template('utils/message.html', message='No se encontro un dataset para detallar')
+        return render_template(
+            'utils/message.html',
+            message='No se encontro un dataset para detallar'
+        )
     else:
         error = body_u
-    return render_template('utils/message.html', message='No se pudieron cargar los datos para detallar el dataset', submensaje=error)
+
+    return render_template(
+        'utils/message.html',
+        message='No se pudieron cargar los datos para detallar el dataset',
+        submensaje=error
+    )
 
 
 @Dataset.route('/create', methods=['POST'])
@@ -167,7 +180,7 @@ def post_save(dataset=None):
     del dataset['faculty']
 
     # TODO NEW! version 2 v2.0.0
-    session['period_closed'] = (dataset.get('period_closed') == 'on')
+    session['period_closed'] = dataset.get('period_closed') == 'on'
     if session.get('period_closed'):
         del dataset['period_closed']
 
@@ -189,13 +202,20 @@ def post_save(dataset=None):
         # Guardar file de excel
 
         if extension not in ['.xls', '.xlsx']:
-            return render_template('utils/message.html', message='Extension de file incorrecta: '+str(extension), submensaje='Solo se permiten files excel .xls & xlsx')
+            return render_template(
+                'utils/message.html',
+                message='Extension de file incorrecta: '+str(extension),
+                submensaje='Solo se permiten files excel .xls & xlsx'
+            )
 
         # VERIFICACION de formato
         data = pd.read_excel(file)
-        validacion, mensaje_error, data_verificada, initialPeriod = verify_data(
-            data, dataset.get('initialPeriod'), dataset.get('finalPeriod'), dataset.get('program'))
-        dataset['initialPeriod'] = initialPeriod
+        validacion, mensaje_error, data_verificada, initial_period = verify_data(
+            data, dataset.get('initialPeriod'),
+            dataset.get('finalPeriod'),
+            dataset.get('program')
+        )
+        dataset['initialPeriod'] = initial_period
 
         # Obtener name del dataset desde el api
         name, numero = get_dataset_name(dataset)
@@ -212,9 +232,16 @@ def post_save(dataset=None):
                 )
             except Exception as e:
                 error_logger.error(e)
-                return render_template('utils/message.html', message='Ocurrió un error guardando el dataset de datos')
+                return render_template(
+                    'utils/message.html',
+                    message='Ocurrió un error guardando el dataset de datos'
+                )
         else:
-            return render_template('utils/message.html', message='Incorrecto el formato de la fuente de datos', submensaje=mensaje_error)
+            return render_template(
+                'utils/message.html',
+                message='Incorrecto el formato de la fuente de datos',
+                submensaje=mensaje_error
+            )
 
     ############# CONSULTA ##############
     # elif tipo == 'consulta':
@@ -227,12 +254,15 @@ def post_save(dataset=None):
         if status:
             data = pd.DataFrame(body)
         else:
-            return render_template('utils/message.html', message='Consulta fallida a la base de datos')
+            return render_template(
+                'utils/message.html',
+                message='Consulta fallida a la base de datos'
+            )
 
         # VERIFICACION de formato
-        validacion, mensaje_error, data_verificada, initialPeriod = verify_data(
+        validacion, mensaje_error, data_verificada, initial_period = verify_data(
             data, dataset.get('initialPeriod'), dataset.get('finalPeriod'), dataset.get('program'))
-        dataset['initialPeriod'] = initialPeriod
+        dataset['initialPeriod'] = initial_period
 
         # Obtener name del dataset desde el api
         name, numero = get_dataset_name(dataset)
@@ -250,16 +280,23 @@ def post_save(dataset=None):
                 )
             except Exception as e:
                 error_logger.error(e)
-                return render_template('utils/message.html', message='Ocurrió un error guardando el dataset de datos')
+                return render_template(
+                    'utils/message.html',
+                    message='Ocurrió un error guardando el dataset de datos'
+                )
         else:
-            return render_template('utils/message.html', message='Incorrecto el formato de la fuente de datos', submensaje=mensaje_error)
+            return render_template(
+                'utils/message.html',
+                message='Incorrecto el formato de la fuente de datos',
+                submensaje=mensaje_error
+            )
     # else:
     #     return render_template('utils/message.html', message='Formulario incorrecto', submensaje='Verifica el form de creacion o notifica al Administrador del sistema')
 
     # Guardar registro de dataset en la BD
     dataset['name'] = name
     dataset['numero'] = numero
-    status, body = post('sets', dataset)
+    status, body = post('datasets', dataset)
 
     # TODO DEPRECATED! version 1 v1.5.0
     # if status:
@@ -270,7 +307,11 @@ def post_save(dataset=None):
         # preparar() luego de post_save()
         return preparar(dataset)
 
-    return render_template('utils/message.html', message='No se pudo save el dataset', submensaje=body)
+    return render_template(
+        'utils/message.html',
+        message='No se pudo save el dataset',
+        submensaje=body
+    )
 
 
 @Dataset.route('/preparar', methods=['POST'])
@@ -299,7 +340,11 @@ def preparar(dataset=None):
         preparation['numero'] = body_p['numero']
         preparation['name'] = body_p['name']
     else:
-        return render_template('utils/message.html', message='No se pudo get el consecutivo de la preparación para este dataset', submensaje=body_p)
+        return render_template(
+            'utils/message.html',
+            message='No se pudo get el consecutivo de la preparación para este dataset',
+            submensaje=body_p
+        )
 
     ########### PREPARAR ############
 
@@ -318,7 +363,7 @@ def preparar(dataset=None):
         model_logger.error(traceback.format_exc())
         observaciones = {'error': str(e)}
         exito, pagina_error = save_preparation(
-            preparation, observaciones, 'Fallida')
+            preparation, observaciones, 'Failed')
         if not exito:
             return pagina_error
         return render_template('utils/message.html', message='la preparación falló')
@@ -331,7 +376,7 @@ def preparar(dataset=None):
         return pagina_error
 
     # Guardar registro de preparation en la BD
-    exito, pagina_error = save_preparation(preparation, None, 'Exitosa')
+    exito, pagina_error = save_preparation(preparation, None, 'Successful')
     if not exito:
         return pagina_error
 
@@ -411,7 +456,7 @@ def ejecutar(dataset=None):
 
         results = {'error': error_spa}
         exito, pagina_error = save_execution(
-            execution, results, 'Fallida')
+            execution, results, 'Failed')
         execution_saved = True
         if not exito:
             return pagina_error
@@ -459,7 +504,7 @@ def ejecutar(dataset=None):
 
             return render_template('utils/message.html', message='Ocurrió un error insertando y/o actualizando los results'), 500
 
-        status_execution = 'Exitosa'
+        status_execution = 'Successful'
         # Guardar results de desertotres en Upload folder desertores
         file_desertores = 'D '+execution['name']+'.json'
         ruta = upload_folder+'/deserters/'+file_desertores
@@ -476,7 +521,7 @@ def ejecutar(dataset=None):
             'Revise si hay students ó desertores suficientes en el program', 'warning'
         )
         resultados_model.pop('deserters')
-        status_execution = 'Fallida'
+        status_execution = 'Failed'
     # Guardar registro de ejecución en la BD
     if not execution_saved:
         exito, pagina_error = save_execution(

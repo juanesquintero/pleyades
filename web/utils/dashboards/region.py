@@ -26,8 +26,8 @@ with open(data_folder+'/Colombia.geo.json') as file:
 df_municipios = pd.read_excel(
     data_folder+'/region.xlsx', sheet_name='municipios_mat'
 )
-df_IES = pd.read_excel(data_folder+'/region.xlsx', sheet_name='IES_mat')
-df_IES_des = pd.read_excel(data_folder+'/region.xlsx', sheet_name='IES_des')
+df_ies = pd.read_excel(data_folder+'/region.xlsx', sheet_name='IES_mat')
+df_ies_des = pd.read_excel(data_folder+'/region.xlsx', sheet_name='IES_des')
 df_dpto_IES = pd.read_excel(data_folder+'/region.xlsx', sheet_name='dpto_IES')
 df_dpto_cob = pd.read_excel(data_folder+'/region.xlsx', sheet_name='dpto_cob')
 df_dpto_des = pd.read_excel(data_folder+'/region.xlsx', sheet_name='dpto_des')
@@ -55,7 +55,7 @@ for loc in counties['features']:
 ############################################################### MAPA ####################################################################
 
 
-def mapa(dpto, periodo):
+def mapa(dpto, period):
     try:
         # Agregar las ubicaciones del geo json
         locs = []
@@ -87,8 +87,8 @@ def mapa(dpto, periodo):
         # Dataframe del departamento
         df = pd.DataFrame({
             'dpto': [dpto],
-            'IES': df_dpto_IES[df_dpto_IES['departamento'] == dpto]['cant_IES_2018'],
-            'matricula': df_dpto_mat[df_dpto_mat['departamento'] == dpto][str(periodo)],
+            'IES': df_dpto_IES[df_dpto_IES['departamento'] == dpto]['canties_2018'],
+            'matricula': df_dpto_mat[df_dpto_mat['departamento'] == dpto][str(period)],
         })
 
         # Figure
@@ -122,21 +122,21 @@ def mapa(dpto, periodo):
         # Añadir municipios
         municipios = df_municipios[df_municipios['departamento'] == dpto]
         municipios = municipios[['municipio',
-                                 'latitud', 'longitud', str(periodo)]]
+                                 'latitud', 'longitud', str(period)]]
 
         # Generar tamaño de municipio dependiendo de su matricula para ese año
-        municipios = municipios[municipios[str(periodo)] != 0]
+        municipios = municipios[municipios[str(period)] != 0]
         municipios = municipios.dropna()
-        tercio = int(len(municipios[str(periodo)])/3)
+        tercio = int(len(municipios[str(period)])/3)
 
-        matriculas = list(municipios[str(periodo)])
+        matriculas = list(municipios[str(period)])
         matriculas = sorted(matriculas, reverse=True)
         g1 = [matriculas.pop(matriculas.index(max(matriculas)))]
         g2 = matriculas[:tercio]
         g3 = matriculas[tercio:]
 
         sizes = np.zeros(len(municipios))
-        for i, m in enumerate(municipios[str(periodo)]):
+        for i, m in enumerate(municipios[str(period)]):
             if m in g3:
                 sizes[i] = 4
             elif m in g2:
@@ -146,7 +146,7 @@ def mapa(dpto, periodo):
 
         municipios['size'] = sizes
         municipios['text'] = ['<b>{}</b><br>{}'.format(nom, mat) for nom, mat in zip(
-            municipios['municipio'], municipios[str(periodo)])]
+            municipios['municipio'], municipios[str(period)])]
 
         # Pintar municipios
         fig.add_trace(go.Scattermapbox(
@@ -238,14 +238,14 @@ def barras(dpto):
 ############################################################### PASTEL ####################################################################
 
 
-def pastel(dpto, periodo):
+def pastel(dpto, period):
     try:
         matricula_total = df_dpto_mat[df_dpto_mat['departamento'] == dpto][str(
-            periodo)].values[0]
+            period)].values[0]
         oficial = df_dpto_mat_oficial[df_dpto_mat_oficial['departamento'] == dpto][str(
-            periodo)].values[0]
+            period)].values[0]
         privado = df_dpto_mat_privado[df_dpto_mat_privado['departamento'] == dpto][str(
-            periodo)].values[0]
+            period)].values[0]
 
         df = pd.DataFrame({
             'tipo': ['Privada', 'Publica'],
@@ -288,14 +288,14 @@ def pastel(dpto, periodo):
 ############################################################### BARRAS GENERO ####################################################################
 
 
-def genero(dpto, periodo):
+def genero(dpto, period):
     try:
         matricula_total = df_dpto_mat[df_dpto_mat['departamento'] == dpto][str(
-            periodo)].values[0]
+            period)].values[0]
         hombres = df_dpto_mat_hombres[df_dpto_mat_hombres['departamento'] == dpto][str(
-            periodo)].values[0]
+            period)].values[0]
         mujeres = df_dpto_mat_mujeres[df_dpto_mat_mujeres['departamento'] == dpto][str(
-            periodo)].values[0]
+            period)].values[0]
 
         df = pd.DataFrame({
             'sexo': ['Hombres', 'Mujeres'],
@@ -365,10 +365,10 @@ def agregar_indicador(anterior, actual, fig, i):
     return fig
 
 
-def indicadores_dpto(dpto, periodo):
+def indicadores_dpto(dpto, period):
     try:
 
-        periodo = int(periodo)
+        period = int(period)
 
         df_des = df_dpto_des[df_dpto_des['departamento'] == dpto]
         df_cob = df_dpto_cob[df_dpto_cob['departamento'] == dpto]
@@ -404,14 +404,14 @@ def indicadores_dpto(dpto, periodo):
         # EXCEPTION: index 0 is out of bounds for axis 0 with size 0
         # Traceback (most recent call last):
         # File "D:\juaneschrome\UDEM\9no Semestre\Trabajo de Grado\Segundo Entregable\Aplicacion\web\utils\dashboards\region.py", line 367, in indicadores_dpto
-        #     period_actual = df_var_ind[str(periodo)].values[0]*100
+        #     period_actual = df_var_ind[str(period)].values[0]*100
         # IndexError: index 0 is out of bounds for axis 0 with size 0
 
         # Agregar cada indicador por variable
         for i, df_var_ind in enumerate(variables_indicadores):
-            period_actual = df_var_ind[str(periodo)].values[0]*100
+            period_actual = df_var_ind[str(period)].values[0]*100
             period_anterior = df_var_ind[str(
-                periodo-1)].values[0]*100 if str(periodo-1) in periods else None
+                period-1)].values[0]*100 if str(period-1) in periods else None
             fig = agregar_indicador(period_anterior, period_actual, fig, i+1)
 
         # Personalizar la grafica
@@ -478,7 +478,7 @@ def IES_row(data, fig, i, periods):
 
 def indicadores_ies(dpto):
     try:
-        df = df_IES[df_IES['departamento'] == dpto]
+        df = df_ies[df_ies['departamento'] == dpto]
 
         periods = list(df.loc[:, '2010':'2018'].columns)
         IES = df['name']
@@ -532,30 +532,30 @@ def indicadores_ies(dpto):
 ############################################################################ BARRAS HORIZONTALES IES ##############################################################
 
 
-def barras_ies(dpto, periodo):
+def barras_ies(dpto, period):
 
     try:
 
-        df = df_IES_des[df_IES_des['departamento'] == dpto]
+        df = df_ies_des[df_ies_des['departamento'] == dpto]
 
         if len(df) < 1:
             return None
 
-        df = df[['name_corto', str(periodo)]]
+        df = df[['name_corto', str(period)]]
         cant_ies = len(df)
 
-        df[str(periodo)] = df[str(periodo)].values*100
-        retencion = [(100-d) for d in df[str(periodo)]]
+        df[str(period)] = df[str(period)].values*100
+        retencion = [(100-d) for d in df[str(period)]]
 
-        desertion = df[str(periodo)]
+        desertion = df[str(period)]
 
         minimo = min(desertion)*0.1 if min(desertion)*0.1 > 0 else 0
         maximo = max(desertion)*1.2 if max(desertion)*1.2 < 100 else 100
 
-        df = df.sort_values(by=str(periodo))
+        df = df.sort_values(by=str(period))
 
         fig = go.Figure(go.Bar(
-            x=df[str(periodo)],
+            x=df[str(period)],
             y=df['name_corto'],
             marker=dict(
                 color=CONSTANTS.colores[0],

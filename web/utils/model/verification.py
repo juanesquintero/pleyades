@@ -51,16 +51,16 @@ def verify_data(data, period_inicial, period_final, program):
         msg = 'El dataset tiene resgistros de mas de un program, los models se ejecutan por program'
         return False, msg, None, period_inicial
 
-    # Verificar si en dataset posee los valores de periodo Inicial y Final Correctamente
+    # Verificar si en dataset posee los valores de period Inicial y Final Correctamente
     if not data_verificada['registro'].max() == period_final:
-        msg = f'El dataset no tiene como periodo final {
+        msg = f'El dataset no tiene como period final {
             period_final}, verifique los registros'
         return False, msg, None, period_inicial
 
     if not data_verificada['registro'].min() == period_inicial:
         _period_inicial = period_inicial
         period_inicial = data_verificada['registro'].min()
-        msg = f'El dataset no tiene como periodo inicial {
+        msg = f'El dataset no tiene como period inicial {
             _period_inicial}, se reasignó a <b>{period_inicial}</b>'
         flash(msg, 'warning')
 

@@ -96,7 +96,7 @@ def elimination(data, no_desertion=False):
             'promedio_acumulado > 0.3'
         )
 
-    # Obtener ultimo periodo a predict
+    # Obtener ultimo period a predict
     period_a_predict = data['registro'].max()
 
     if not period_a_predict or math.isnan(period_a_predict):

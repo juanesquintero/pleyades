@@ -28,7 +28,7 @@ def agregar_indicador(anterior, actual, fig, i, j, mode):
     )
     return fig
 
-# Funcion para agregar un grafico por periodo
+# Funcion para agregar un grafico por period
 
 
 def barras_period(df, p, fig, i, azules):
@@ -97,23 +97,23 @@ def barras_period(df, p, fig, i, azules):
 
 class Program:
 
-    def __init__(self, periodo: int, program: int, periods: list):
-        self.df_IES = Data.get_IES_program(program)
+    def __init__(self, period: int, program: int, periods: list):
+        self.df_ies = Data.get_ies_program(program)
         self.df_ESTUDIANTES_total = Data.get_students_program(program)
         self.df_ESTUDIANTES = self.df_ESTUDIANTES_total.query(
-            "REGISTRO == '{}'".format(periodo))
-        self.periodos_list = periods
-        self.periodo = periodo
+            "REGISTRO == '{}'".format(period))
+        self.periods_list = periods
+        self.period = period
         self.program = program
 
         # Obtener data anterior
-        index_period_actual = self.periodos_list.index(self.periodo)
-        self.data_actual = Data.get_IES_period_program(periodo, program)
+        index_period_actual = self.periods_list.index(self.period)
+        self.data_actual = Data.get_ies_period_program(period, program)
 
-        if 0 <= index_period_actual <= len(self.periodos_list):
-            period_anterior = self.periodos_list[index_period_actual-1]
-            if Data.check_IES_period_program(period_anterior, program):
-                self.data_anterior = Data.get_IES_period_program(
+        if 0 <= index_period_actual <= len(self.periods_list):
+            period_anterior = self.periods_list[index_period_actual-1]
+            if Data.check_ies_period_program(period_anterior, program):
+                self.data_anterior = Data.get_ies_period_program(
                     period_anterior, program)
             else:
                 self.data_anterior = self.data_actual
@@ -169,20 +169,20 @@ class Program:
     def radial(self):
         try:
             # Dataframe del program
-            data_ies = self.df_IES
+            data_ies = self.df_ies
 
-            data = data_ies.dropna(subset=['periodo', 'mat_total'], axis=0)
-            periodos_list = sorted(
-                data['periodo'].unique(),  reverse=True)[:12]
-            periods = [int(p) for p in periodos_list]
+            data = data_ies.dropna(subset=['period', 'mat_total'], axis=0)
+            periods_list = sorted(
+                data['period'].unique(),  reverse=True)[:12]
+            periods = [int(p) for p in periods_list]
             matriculas = []
             for i, p in enumerate(periods):
-                mat = data.query("periodo == '{}'".format(p))[
+                mat = data.query("period == '{}'".format(p))[
                     'mat_total'].values[0]
                 matriculas.append(mat)
 
             df_matricula_radial = pd.DataFrame({
-                'periodo': periods,
+                'period': periods,
                 'matricula': matriculas,
                 'teta': np.linspace(10, 350, num=len(periods))
             })
@@ -197,7 +197,7 @@ class Program:
             fig = go.Figure(go.Barpolar(
                 r=df_matricula_radial['matricula'],
                 theta=df_matricula_radial['teta'],
-                text=df_matricula_radial['periodo'],
+                text=df_matricula_radial['period'],
                 hovertext=df_matricula_radial['matricula'],
                 hovertemplate='<b>%{text}</b><br>Matricula: %{hovertext}<extra></extra>',
                 width=[10]*len(periods),

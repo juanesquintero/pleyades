@@ -62,10 +62,10 @@ def create_indicador(data, variable, i, j, fig, tipo):
 def miniserie_program_row(data, fig, i, dict_periods):
     try:
         x_periods = []
-        for p in data['periodo']:
+        for p in data['period']:
             x_periods.append(dict_periods[str(p)])
 
-        periods = [str(p) for p in data['periodo']]
+        periods = [str(p) for p in data['period']]
 
         # Mini Serie de tiempo
         fig.append_trace(go.Scatter(
@@ -169,23 +169,23 @@ def indicadores_program_row(data, fig, i):
 
 # CLASE DE GRAFICOS PARA IES
 class IES:
-    def __init__(self, periodo: int):
-        self.df_IES = Data.get_IES_period(periodo)
-        self.periodos_list = Data.get_periods()
-        self.periodo = periodo
+    def __init__(self, period: int):
+        self.df_ies = Data.get_ies_period(period)
+        self.periods_list = Data.get_periods()
+        self.period = period
 
         # Obtener data anterior
-        index_period_actual = self.periodos_list.index(self.periodo)
-        self.data_actual = Data.get_IES_total_data(int(self.periodo))
+        index_period_actual = self.periods_list.index(self.period)
+        self.data_actual = Data.get_ies_total_data(int(self.period))
 
-        if 0 <= index_period_actual <= len(self.periodos_list):
-            period_anterior = self.periodos_list[index_period_actual-1]
+        if 0 <= index_period_actual <= len(self.periods_list):
+            period_anterior = self.periods_list[index_period_actual-1]
         else:
-            period_anterior = periodo
+            period_anterior = period
 
-        self.data_anterior = Data.get_IES_total_data(int(period_anterior))
+        self.data_anterior = Data.get_ies_total_data(int(period_anterior))
 
-        self.programs_period_actual = Data.get_programs_by_period(periodo)
+        self.programs_period_actual = Data.get_programs_by_period(period)
         self.programs_period_anterior = Data.get_programs_by_period(
             period_anterior)
 
@@ -193,7 +193,7 @@ class IES:
 
     def indicadores1(self,):
         try:
-            period_actual = self.periodo
+            period_actual = self.period
 
             data_anterior = self.data_anterior
             data_actual = self.data_actual
@@ -269,7 +269,7 @@ class IES:
     def barras(self):
         try:
             # Agrupar por Faculties
-            data_facultyes = self.df_IES.dropna(subset=['faculty'], axis=0)
+            data_facultyes = self.df_ies.dropna(subset=['faculty'], axis=0)
 
             data_facultyes = data_facultyes[[
                 'faculty', 'program', 'program_name_corto', 'mat_total', 'admi_total', 'insc_total', 'mat_nuevos_total']]
@@ -402,7 +402,7 @@ class IES:
     def pastel(self,):
         try:
             # Agrupar por Faculties
-            data_facultyes = self.df_IES
+            data_facultyes = self.df_ies
             data_facultyes = data_facultyes.dropna(
                 subset=['faculty'], axis=0)
 
@@ -443,12 +443,12 @@ class IES:
     def indicadores_programs(self):
         try:
 
-            period_actual = self.periodo
+            period_actual = self.period
 
             # Programas
-            data = self.df_IES.dropna(subset=['faculty'], axis=0)
+            data = self.df_ies.dropna(subset=['faculty'], axis=0)
             data = data.sort_values(
-                by=['periodo', 'mat_total'], ascending=[False, False])
+                by=['period', 'mat_total'], ascending=[False, False])
             list_programs = self.programs_period_actual
             cant_programs = len(list_programs)
 
@@ -468,21 +468,21 @@ class IES:
                 # Filtrar por program
                 data = Data.get_program(p['idprograma']).reset_index()
 
-                # Filtrar por periodo actual
-                data = data.sort_values(by=['periodo']).reset_index()
+                # Filtrar por period actual
+                data = data.sort_values(by=['period']).reset_index()
                 data_period_index = data.query(
-                    "periodo == '{}'".format(period_actual))
+                    "period == '{}'".format(period_actual))
 
-                # Verificar si existe REGISTRO para ese periodo
+                # Verificar si existe REGISTRO para ese period
                 if len(data_period_index) > 0:
                     period_index = data_period_index.index[0]
 
-                    # Verificar si existe dato en el periodo anterior
+                    # Verificar si existe dato en el period anterior
                     if period_index-1 in data['index']:
-                        period_anterior = data.loc[period_index-1, 'periodo']
+                        period_anterior = data.loc[period_index-1, 'period']
                         # Obtener registros de los dos ultimos periods a partir del indicado
                         data_period_index = data.query(
-                            "periodo == '{}' | periodo == '{}'".format(period_actual, period_anterior))
+                            "period == '{}' | period == '{}'".format(period_actual, period_anterior))
                         fig = indicadores_program_row(data, fig, cont+1)
                         cont += 1
 
@@ -509,12 +509,12 @@ class IES:
     def miniseries_programs(self):
         try:
             # Programas
-            data = self.df_IES.dropna(subset=['faculty'], axis=0)
+            data = self.df_ies.dropna(subset=['faculty'], axis=0)
             list_programs = self.programs_period_actual
             cant_programs = len(list_programs)
 
             # Periodos
-            list_periods = self.periodos_list
+            list_periods = self.periods_list
 
             dict_periods = {}
             for i, p in enumerate(list_periods):
@@ -535,10 +535,10 @@ class IES:
             # Recorrer arreglo de programs y agregar cada fila con graficos
             for i, p in enumerate(list_programs):
                 data = Data.get_program(p['idprograma'])
-                data = data[['periodo', 'program',
+                data = data[['period', 'program',
                              'program_name_corto', 'idprograma', 'desertion']]
                 data = data.dropna().reset_index()
-                # data['periodo'] = data['periodo'].astype(str)
+                # data['period'] = data['period'].astype(str)
                 fig = miniserie_program_row(data, fig, i+1, dict_periods)
 
             # Personalizar la grafica

@@ -30,13 +30,13 @@ def students_program(program: str):
 
 class Student:
 
-    def __init__(self, identificacion, program=None,  periodo=None, ):
+    def __init__(self, identificacion, program=None,  period=None, ):
         self.df_ESTUDIANTE = Data.get_students_documento(identificacion)
         self.identificacion = identificacion
-        self.periodo = periodo
+        self.period = period
         self.program = program
         self.info = None
-        self.periodos_estudiante = None
+        self.periods_estudiante = None
         self.programs_estudiante = None
         self.promedios_estudiante = None
 
@@ -49,18 +49,18 @@ class Student:
                 subset=['idprograma']).to_json(orient='records'))
             self.programs_estudiante = [
                 {'idprograma': p['idprograma'], 'program': p['program']} for p in programs_student_filter]
-            self.periodos_student_todos = list(data['REGISTRO'].unique())
-            self.periodos_estudiante = list(data['REGISTRO'].unique())
+            self.periods_student_todos = list(data['REGISTRO'].unique())
+            self.periods_estudiante = list(data['REGISTRO'].unique())
 
             # Filtrar Program
             if self.program:
                 data = data.query("idprograma == '{}'".format(
                     self.program['idprograma']))
-                self.periodos_estudiante = list(data['REGISTRO'].unique())
+                self.periods_estudiante = list(data['REGISTRO'].unique())
 
             # Filtrar Periodo
-            if self.periodo:
-                data = data.query("REGISTRO == '{}'".format(self.periodo))
+            if self.period:
+                data = data.query("REGISTRO == '{}'".format(self.period))
 
             # Si hay Registro repetido
             if len(data) > 1:
@@ -69,8 +69,8 @@ class Student:
             self.info = data.to_dict(orient='records')[0]
 
             # Setear perioodo y program si no lo hay
-            if not self.periodo:
-                self.periodo = self.info['REGISTRO']
+            if not self.period:
+                self.period = self.info['REGISTRO']
             if not self.program:
                 self.program = {
                     'idprograma': self.info['idprograma'],
@@ -80,7 +80,7 @@ class Student:
             self.info['fecha_nacimiento'] = str(
                 self.info['fecha_nacimiento'][:-8])
 
-            return self.info, self.periodos_estudiante, self.programs_estudiante
+            return self.info, self.periods_estudiante, self.programs_estudiante
 
         except Exception as e:
             error_logger.error('EXCEPTION: '+str(e), exc_info=True)
@@ -88,10 +88,10 @@ class Student:
 
     def progreso_creditos_reprobados(self,):
         try:
-            creditos_totales = self.info['creditos_program']
+            creditos_totals = self.info['creditos_program']
             creditos_reprobados = self.info['creditos_reprobados_acum']
             creditos_reprobados_porcentaje = float(
-                creditos_reprobados/creditos_totales)
+                creditos_reprobados/creditos_totals)
             fig = go.Figure(go.Bar(
                 y=[''],
                 x=[creditos_reprobados],
@@ -103,8 +103,8 @@ class Student:
                 orientation='h',
                 texttemplate='   <b>{:.0%}</b>'.format(
                     creditos_reprobados_porcentaje),
-                hovertemplate='<b>{}</b> reprobados<br><b>{}</b> totales<extra></extra>'.format(
-                    creditos_reprobados, creditos_totales),
+                hovertemplate='<b>{}</b> reprobados<br><b>{}</b> totals<extra></extra>'.format(
+                    creditos_reprobados, creditos_totals),
                 textposition='outside',
                 textfont=dict(
                     size=20,
@@ -113,9 +113,9 @@ class Student:
             ))
 
             if creditos_reprobados_porcentaje > 0.9:
-                maximo = creditos_totales*1.2
+                maximo = creditos_totals*1.2
             else:
-                maximo = creditos_totales
+                maximo = creditos_totals
 
             fig.update_xaxes(dict(
                 showline=True, linewidth=1, linecolor='black',
@@ -138,9 +138,9 @@ class Student:
 
     def progreso_creditos_aprobados(self,):
         try:
-            creditos_totales = self.info['creditos_program']
+            creditos_totals = self.info['creditos_program']
             creditos_aprobados = self.info['creditos_aprobados_acum']
-            creditos_aprobados_porcentaje = creditos_aprobados/creditos_totales
+            creditos_aprobados_porcentaje = creditos_aprobados/creditos_totals
             fig = go.Figure(go.Bar(
                 y=[''],
                 x=[creditos_aprobados],
@@ -152,8 +152,8 @@ class Student:
                 orientation='h',
                 texttemplate='   <b>{:.0%}</b>'.format(
                     creditos_aprobados_porcentaje),
-                hovertemplate='<b>{}</b> aprobados<br><b>{}</b> totales<extra></extra>'.format(
-                    creditos_aprobados, creditos_totales),
+                hovertemplate='<b>{}</b> aprobados<br><b>{}</b> totals<extra></extra>'.format(
+                    creditos_aprobados, creditos_totals),
                 textposition='outside',
                 textfont=dict(
                     size=20,
@@ -162,9 +162,9 @@ class Student:
             ))
 
             if creditos_aprobados_porcentaje > 0.9:
-                maximo = creditos_totales*1.2
+                maximo = creditos_totals*1.2
             else:
-                maximo = creditos_totales
+                maximo = creditos_totals
 
             fig.update_xaxes(dict(
                 showline=True, linewidth=1, linecolor='black',
@@ -263,7 +263,7 @@ class Student:
                 xaxis=dict(
                     title='Período',
                     showline=True, linewidth=2, linecolor='black', showgrid=True, gridwidth=1, gridcolor='#cccccc',
-                    type='category', categoryorder='array', categoryarray=sorted(self.periodos_student_todos)
+                    type='category', categoryorder='array', categoryarray=sorted(self.periods_student_todos)
                 ),
                 yaxis=dict(
                     title='Promedio',

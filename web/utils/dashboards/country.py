@@ -27,21 +27,21 @@ df_dpto_des = pd.read_excel(data_folder+'/pais.xlsx', sheet_name='dpto_des')
 ########################################################################################## MAPA ###############################################################################################
 
 
-def mapa(periodo):
+def mapa(period):
     # Agregar las ubicaciones del geo json
     locs = []
     for loc in counties['features']:
         loc['id'] = loc['properties']['NOMBRE_DPT']
         locs.append(loc['properties']['NOMBRE_DPT'])
 
-    periodo = str(periodo)
+    period = str(period)
 
-    # Crear el df para el pais en un periodo especifico
+    # Crear el df para el pais en un period especifico
     df = pd.DataFrame({
         'departamento': df_dpto_mat['departamento'],
-        'matricula': df_dpto_mat.loc[:, periodo],
-        'cobertura': [round(cob*100, 2) for cob in df_dpto_cob.loc[:, periodo]],
-        'desertion': [round(des*100, 2) for des in df_dpto_des.loc[:, periodo]],
+        'matricula': df_dpto_mat.loc[:, period],
+        'cobertura': [round(cob*100, 2) for cob in df_dpto_cob.loc[:, period]],
+        'desertion': [round(des*100, 2) for des in df_dpto_des.loc[:, period]],
     })
     df = df.fillna('')
     # Figure
@@ -91,7 +91,7 @@ def barras():
 
     # Barras
     fig.add_trace(go.Bar(
-        x=df_nacional['periodo'],
+        x=df_nacional['period'],
         y=df_nacional['matricula_total'],
         name='Matrícula Total',
         marker=dict(
@@ -103,7 +103,7 @@ def barras():
         secondary_y=False)
 
     fig.add_trace(go.Bar(
-        x=df_nacional['periodo'],
+        x=df_nacional['period'],
         y=df_nacional['poblacion_17_21'],
         name='Población 17-21',
         marker=dict(
@@ -115,7 +115,7 @@ def barras():
         secondary_y=False)
     # Serie
     fig.add_trace(go.Scatter(
-        x=df_nacional['periodo'],
+        x=df_nacional['period'],
         y=df_nacional['cobertura'],
         name='Cobertura',
         mode='markers+lines+text',
@@ -179,9 +179,9 @@ def barras():
 
 
 ########################################################################################## TORTA sector ###############################################################################################
-def pastel(periodo):
+def pastel(period):
 
-    df_filtrado = df_nacional[df_nacional['periodo'] == int(periodo)]
+    df_filtrado = df_nacional[df_nacional['period'] == int(period)]
 
     privada = df_filtrado.loc[:, 'matricula_sector_privado'].values[0]
     oficial = df_filtrado.loc[:, 'matricula_sector_oficial'].values[0]
@@ -230,8 +230,8 @@ def pastel(periodo):
 ########################################################################################## BARRAS genero ###############################################################################################
 
 
-def genero(periodo):
-    df_filtrado = df_nacional[df_nacional['periodo'] == int(periodo)]
+def genero(period):
+    df_filtrado = df_nacional[df_nacional['period'] == int(period)]
     mujeres = df_filtrado.loc[:, 'matricula_mujeres'].values[0]
     hombres = df_filtrado.loc[:, 'matricula_hombres'].values[0]
     total = df_filtrado.loc[:, 'matricula_total'].values[0]
@@ -309,10 +309,10 @@ def agregar_indicador(anterior, actual, fig, i):
     return fig
 
 
-def indicadores(periodo):
+def indicadores(period):
 
-    periodo = int(periodo)
-    df = df_nacional[['periodo', 'desertion', 'graduandos_total']]
+    period = int(period)
+    df = df_nacional[['period', 'desertion', 'graduandos_total']]
 
     # Crear conetenedor de sub graficos
     fig = make_subplots(
@@ -324,16 +324,16 @@ def indicadores(periodo):
     )
 
     # Desercion
-    period_actual = df[df['periodo'] == periodo]['desertion'].values[0]*100
-    period_anterior = df[df['periodo'] == periodo-1]['desertion'].values[0] * \
-        100 if not (periodo == min(df['periodo'])) else None
+    period_actual = df[df['period'] == period]['desertion'].values[0]*100
+    period_anterior = df[df['period'] == period-1]['desertion'].values[0] * \
+        100 if not (period == min(df['period'])) else None
 
     fig = agregar_indicador(period_anterior, period_actual, fig, 1)
 
     # Graduados
-    period_actual = df[df['periodo'] == periodo]['graduandos_total'].values[0]
-    period_anterior = df[df['periodo'] == periodo -
-                         1]['graduandos_total'].values[0] if not (periodo == min(df['periodo'])) else None
+    period_actual = df[df['period'] == period]['graduandos_total'].values[0]
+    period_anterior = df[df['period'] == period -
+                         1]['graduandos_total'].values[0] if not (period == min(df['period'])) else None
 
     fig = agregar_indicador(period_anterior, period_actual, fig, 2)
 
@@ -348,10 +348,10 @@ def indicadores(periodo):
     return fig
 
 
-def indicadores2(periodo):
-    periodo = int(periodo)
+def indicadores2(period):
+    period = int(period)
 
-    df = df_nacional[['periodo', 'inscripcion', 'admicion', 'matricula_total']]
+    df = df_nacional[['period', 'inscripcion', 'admicion', 'matricula_total']]
 
     # Crear conetenedor de sub graficos
     fig = make_subplots(
@@ -364,21 +364,21 @@ def indicadores2(periodo):
     )
 
     # Inscritos
-    period_actual = df[df['periodo'] == periodo]['inscripcion'].values[0]*100
-    period_anterior = df[df['periodo'] == periodo-1]['inscripcion'].values[0] * \
-        100 if not (periodo == min(df['periodo'])) else None
+    period_actual = df[df['period'] == period]['inscripcion'].values[0]*100
+    period_anterior = df[df['period'] == period-1]['inscripcion'].values[0] * \
+        100 if not (period == min(df['period'])) else None
     fig = agregar_indicador(period_anterior, period_actual, fig, 1)
 
     # Admitidos
-    period_actual = df[df['periodo'] == periodo]['admicion'].values[0]
-    period_anterior = df[df['periodo'] == periodo -
-                         1]['admicion'].values[0] if not (periodo == min(df['periodo'])) else None
+    period_actual = df[df['period'] == period]['admicion'].values[0]
+    period_anterior = df[df['period'] == period -
+                         1]['admicion'].values[0] if not (period == min(df['period'])) else None
     fig = agregar_indicador(period_anterior, period_actual, fig, 2)
 
     # Matriculados
-    period_actual = df[df['periodo'] == periodo]['matricula_total'].values[0]
-    period_anterior = df[df['periodo'] == periodo -
-                         1]['matricula_total'].values[0] if not (periodo == min(df['periodo'])) else None
+    period_actual = df[df['period'] == period]['matricula_total'].values[0]
+    period_anterior = df[df['period'] == period -
+                         1]['matricula_total'].values[0] if not (period == min(df['period'])) else None
     fig = agregar_indicador(period_anterior, period_actual, fig, 3)
 
     # Personalizar la grafica

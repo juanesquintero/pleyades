@@ -160,7 +160,7 @@ def remove_execution():
     status, body = delete('executions/'+name)
     if status:
         # Borrar file
-        if execution['status'] == 'Exitosa':
+        if execution['status'] == 'Successful':
             exito, pagina_error = remove_file(
                 upload_folder+'/deserters/'+'D '+name+'.json')
             if not (exito):
