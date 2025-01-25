@@ -45,7 +45,7 @@
       </tr>
     </thead>
     <tbody>
-      {% for e in trainings %} {% if e.status=='Exitosa' and e.results.tipo == 'Entrenamiento' %}
+      {% for e in trainings %} {% if e.status=='Successful' and e.results.tipo == 'Entrenamiento' %}
       {% set info_array = e.conjunto.split(' ')[1:] %}
       <tr>
         <td>

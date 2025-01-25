@@ -49,7 +49,7 @@
       </tr>
     </thead>
     <tbody>
-      {% for m in models %} {% if m.status=='Exitosa' and m.results.tipo ==
+      {% for m in models %} {% if m.status=='Successful' and m.results.tipo ==
       'Entrenamiento' %}
       {% set info_array = m.conjunto.split(' ')[1:] %}
       <tr>

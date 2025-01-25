@@ -49,8 +49,8 @@
             <div class="col-sm-3">
                 <label >Estado</label>
                 <select name="status" id="rol" class="form-control input-sm" maxlength="30" required>
-                    <option value="Exitosa" key="1" {% if e.status=='Exitosa' %} selected {% endif %}> Exitosa </option>
-                    <option value="Fallida" key="2" {% if e.status=='Fallida' %} selected {% endif %}> Fallida </option>
+                    <option value="Successful" key="1" {% if e.status=='Successful' %} selected {% endif %}> Successful </option>
+                    <option value="Failed" key="2" {% if e.status=='Failed' %} selected {% endif %}> Failed </option>
                 </select>
             </div>
             <div class="col-sm-9">

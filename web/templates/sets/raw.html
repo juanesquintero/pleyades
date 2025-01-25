@@ -1,6 +1,6 @@
 {% include 'components/header.html' %}
 
-{% with menu='sets' %}
+{% with menu='datasets' %}
     {% include 'components/sidebar.html' %}
 {% endwith %}
 
@@ -55,7 +55,7 @@
     </thead>
     <tbody>
 
-      {% for c in sets %}
+      {% for c in datasets %}
       <tr>
         <td>
           <center>{{ c.name }}</center>
@@ -117,7 +117,7 @@
 
 {% if error %}
 <br>
-{% with titulo='No se pudieron cargar los sets',error=error %}
+{% with titulo='No se pudieron cargar los datasets',error=error %}
 {% include "components/alert.html" %}
 {% endwith %}
 <br>
