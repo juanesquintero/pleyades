@@ -18,11 +18,11 @@ msg_error = {'msg': 'Not found'}, 404
 ##########################################################  VWDATADESERCION ##########################################################
 
 
-@Student.route('/dataset/<int:program>/<int:periodoInicio>/<int:periodoFin>')
+@Student.route('/dataset/<int:program>/<int:periodInicio>/<int:periodFin>')
 @jwt_required()
-def get_set_estudiantes(program, periodoInicio, periodoFin):
+def get_set_estudiantes(program, periodInicio, periodFin):
     sql = f'SELECT * FROM {table} WHERE idprograma={program} AND REGISTRO >= {
-        periodoInicio} AND REGISTRO <= {periodoFin} ORDER BY REGISTRO;'
+        periodInicio} AND REGISTRO <= {periodFin} ORDER BY REGISTRO;'
     query = db.select(sql)
     ex = exception(query)
     if ex:
@@ -32,10 +32,10 @@ def get_set_estudiantes(program, periodoInicio, periodoFin):
     return jsonify(_format(query))
 
 
-@Student.route('/periodo/<int:periodo>')
+@Student.route('/period/<int:period>')
 @jwt_required()
-def get_period(periodo):
-    sql = f'SELECT * FROM {table} WHERE REGISTRO={periodo};'
+def get_period(period):
+    sql = f'SELECT * FROM {table} WHERE REGISTRO={period};'
     query = db.select(sql)
     ex = exception(query)
     if ex:
@@ -58,11 +58,11 @@ def get_program(program):
     return jsonify(_format(query))
 
 
-@Student.route('/program/<int:program>/<int:periodo>')
+@Student.route('/program/<int:program>/<int:period>')
 @jwt_required()
-def get_period_program(program, periodo):
+def get_period_program(program, period):
     sql = f'SELECT * FROM {table} WHERE REGISTRO={
-        periodo} and idprograma={program}'
+        period} and idprograma={program}'
     query = db.select(sql)
     ex = exception(query)
     if ex:
@@ -96,8 +96,8 @@ def get_periods():
         return ex
     if not query:
         return msg_error
-    periodos_list = [int(p['REGISTRO']) for p in query]
-    periods = sorted(periodos_list)
+    periods_list = [int(p['REGISTRO']) for p in query]
+    periods = sorted(periods_list)
 
     if not periods:
         return msg_error
@@ -117,8 +117,8 @@ def get_periods_program(program):
 
     if not query:
         return msg_error
-    periodos_list = [int(p.get('REGISTRO')) for p in query]
-    periods = sorted(periodos_list)
+    periods_list = [int(p.get('REGISTRO')) for p in query]
+    periods = sorted(periods_list)
 
     if not periods:
         return msg_error

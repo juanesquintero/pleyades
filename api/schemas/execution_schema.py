@@ -9,7 +9,7 @@ post_schema = {
         'executor':   {'type': 'string', 'format': 'email', 'maxLength': 200},
         'startDate':  {'type': 'string', 'format': 'date-time'},
         'endDate':  {'type': ['string', 'null'], 'format': 'date-time'},
-        'status':  {'type': 'string', 'maxLength': 50, 'enum': ['Fallida', 'Exitosa']},
+        'status':  {'type': 'string', 'maxLength': 50, 'enum': ['Failed', 'Successful']},
         'precision_model': {'type': ['number', 'null'], 'maxLength': 5},
         'results':  {'type': 'object'},
     },
@@ -22,7 +22,7 @@ put_schema = {
     'minProperties': 1,
     'properties': {
         'results':  {'type': 'object'},
-        'status':  {'type': 'string', 'maxLength': 50, 'enum': ['Fallida', 'Exitosa']},
+        'status':  {'type': 'string', 'maxLength': 50, 'enum': ['Failed', 'Successful']},
     },
     'additionalProperties': False
 }

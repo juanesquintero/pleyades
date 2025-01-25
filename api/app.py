@@ -119,7 +119,7 @@ def app_routes(app):
     app.register_blueprint(Faculty, url_prefix=base_path+'faculties')
     app.register_blueprint(Program, url_prefix=base_path+'programs')
     app.register_blueprint(User, url_prefix=base_path+'users')
-    app.register_blueprint(Dataset, url_prefix=base_path+'sets')
+    app.register_blueprint(Dataset, url_prefix=base_path+'datasets')
     app.register_blueprint(Preparation, url_prefix=base_path+'preparations')
     app.register_blueprint(Execution, url_prefix=base_path+'executions')
     app.register_blueprint(IES, url_prefix=base_path+'desertion/institute')

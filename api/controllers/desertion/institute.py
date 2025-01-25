@@ -10,16 +10,16 @@ import json
 IES = Blueprint('IES', __name__)
 
 db = DB.getInstance()
-table = 'VWDATADESERCION'
+SQL_VIEW = 'VWDATADESERCION'
 msg_error = {'msg': 'Not found'}, 404
 
 ##########################################################  VWDATADESERCIONINSTITUCION ##########################################################
 
 
-@IES.route('/<int:periodo>')
+@IES.route('/<int:period>')
 @jwt_required()
-def get_period(periodo: int):
-    sql = 'SELECT * FROM {} WHERE periodo={};'.format(table, periodo)
+def get_period(period: int):
+    sql = 'SELECT * FROM {} WHERE periodo={};'.format(SQL_VIEW, period)
     query = db.select(sql)
     ex = exception(query)
     if ex:
@@ -29,10 +29,10 @@ def get_period(periodo: int):
     return jsonify(_format(query))
 
 
-@IES.route('/totales/<int:periodo>')
+@IES.route('/totals/<int:period>')
 @jwt_required()
-def get_totales_period(periodo: int):
-    sql = 'SELECT sum(desertores) AS desertores, avg(desertion) AS desertion, sum(egresados) AS egresados, sum(mat_hombre) AS mat_hombre, sum(mat_mujer) AS mat_mujer, sum(mat_total) AS mat_total, sum(admi_hombre) AS admi_hombre, sum(admi_mujer) AS admi_mujer, sum(admi_total) AS admi_total, sum(insc_hombre) AS insc_hombre, sum(insc_mujer) AS insc_mujer, sum(insc_total) AS insc_total, sum(mat_nuevos_hombre) AS mat_nuevos_hombre, sum(mat_nuevos_mujer) AS mat_nuevos_mujer, sum(mat_nuevos_total) AS mat_nuevos_total FROM {} WHERE periodo={};'.format(table, periodo)
+def get_totals_period(period: int):
+    sql = 'SELECT sum(desertores) AS desertores, avg(desertion) AS desertion, sum(egresados) AS egresados, sum(mat_hombre) AS mat_hombre, sum(mat_mujer) AS mat_mujer, sum(mat_total) AS mat_total, sum(admi_hombre) AS admi_hombre, sum(admi_mujer) AS admi_mujer, sum(admi_total) AS admi_total, sum(insc_hombre) AS insc_hombre, sum(insc_mujer) AS insc_mujer, sum(insc_total) AS insc_total, sum(mat_nuevos_hombre) AS mat_nuevos_hombre, sum(mat_nuevos_mujer) AS mat_nuevos_mujer, sum(mat_nuevos_total) AS mat_nuevos_total FROM {} WHERE periodo={};'.format(SQL_VIEW, period)
     query = db.select(sql)
     ex = exception(query)
     if ex:
@@ -45,7 +45,7 @@ def get_totales_period(periodo: int):
 @IES.route('/program/<int:program>')
 @jwt_required()
 def get_program(program: int):
-    sql = "SELECT * FROM {} WHERE idprograma={};".format(table, program)
+    sql = "SELECT * FROM {} WHERE idprograma={};".format(SQL_VIEW, program)
     query = db.select(sql)
     ex = exception(query)
     if ex:
@@ -55,11 +55,11 @@ def get_program(program: int):
     return jsonify(_format(query))
 
 
-@IES.route('/program/<int:program>/<int:periodo>')
+@IES.route('/program/<int:program>/<int:period>')
 @jwt_required()
-def get_period_program(program: int, periodo: int):
+def get_period_program(program: int, period: int):
     sql = "SELECT * FROM {} WHERE periodo={} and idprograma={}".format(
-        table, periodo, program)
+        SQL_VIEW, period, program)
     query = db.select(sql)
     ex = exception(query)
     if ex:
@@ -73,15 +73,15 @@ def get_period_program(program: int, periodo: int):
 @jwt_required()
 def get_periods():
     # Obtener datos desde la bd SQL server
-    sql = 'SELECT DISTINCT periodo FROM {};'.format(table)
+    sql = 'SELECT DISTINCT period FROM {};'.format(SQL_VIEW)
     query = db.select(sql)
     ex = exception(query)
     if ex:
         return ex
     if not query:
         return msg_error
-    periodos_list = [int(p['periodo']) for p in query]
-    periods = sorted(periodos_list)
+    periods_list = [int(p['period']) for p in query]
+    periods = sorted(periods_list)
     if not periods:
         return msg_error
     return jsonify(_format(periods))
@@ -91,7 +91,7 @@ def get_periods():
 @jwt_required()
 def get_programs():
     # Obtener datos desde la bd SQL server
-    sql = 'SELECT DISTINCT idprograma, programa FROM {};'.format(table)
+    sql = 'SELECT DISTINCT idprograma, programa FROM {};'.format(SQL_VIEW)
     query = db.select(sql)
     ex = exception(query)
     if ex:
@@ -109,12 +109,12 @@ def get_programs():
     return jsonify(_format(programs))
 
 
-@IES.route('/programs/<int:periodo>')
+@IES.route('/programs/<int:period>')
 @jwt_required()
-def get_programs_by_period(periodo: int):
+def get_programs_by_period(period: int):
     # Obtener datos desde la bd SQL server
     sql = 'SELECT DISTINCT idprograma, programa FROM {} WHERE periodo={};'.format(
-        table, periodo)
+        SQL_VIEW, period)
     query = db.select(sql)
     ex = exception(query)
     if ex:
