@@ -64,12 +64,12 @@ def execution_detail():
     status, body = get('executions/'+execution)
 
     if status and success:
-        del body['model_precision']
+        del body['model_accuracy']
         del body['number']
         return render_template(endpoint+'execution_detail.html', deserters=deserters, results=body.pop('results'), execution=body)
     elif status and not success:
         if body['status'] == 'Failed':
-            del body['model_precision']
+            del body['model_accuracy']
             del body['number']
             return render_template(
                 endpoint+'execution_detail.html',

@@ -20,18 +20,18 @@ def get_list():
 @only_admin
 def detail():
     form = dict(request.values)
-    idprograma = form.get('idprograma')
-    program = form.get('program')
-    status, body = get(f'desertion/students/program/{idprograma}')
+    program_id = form.get('id')
+    program_name = form.get('name')
+    status, body = get(f'desertion/students/program/{program_id}')
     if status:
         return render_template(
             'admin/'+endopoint+'detail.html',
             students=body,
-            program=program
+            program=program_name
         )
     return render_template(
         'admin/'+endopoint+'detail.html',
         students=[],
         error=body,
-        program=program
+        program=program_name
     )

@@ -18,7 +18,7 @@ post_schema = {
     "type": "object",
     "properties": {
         "name": {"type": "string", "maxLength": 200},
-        "numero": {"type": "integer", "maxLength": 30},
+        "number": {"type": "integer", "maxLength": 30},
         "program":  {"type": "integer", "maxLength": 30},
         "manager":   {"type": "string", "format": "email", "maxLength": 200},
         "tipo":  {"type": "string", "maxLength": 50},

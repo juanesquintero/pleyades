@@ -155,8 +155,8 @@ def name():
         return {'error': 'status invalido'}, 400
     if not body['tipo'] in ['consulta', 'excel']:
         return {'error': 'tipo invalido'}, 400
-    # Obtener el numero consecutivo para el student_dataset de datos
-    query = dataset_model.get_numero(
+    # Obtener el number consecutivo para el student_dataset de datos
+    query = dataset_model.get_number(
         body['program'],
         body['initialPeriod'],
         body['finalPeriod']
@@ -165,9 +165,9 @@ def name():
     if ex:
         return ex
     if query:
-        numero = query[0].get('numero')+1
+        number = query[0].get('number')+1
     else:
-        numero = 1
+        number = 1
     # Obtener la sigla del name del program
     program = db_ies.select(
         'SELECT * FROM VWPROGRAMADESERCION WHERE codigo={};'.format(str(body['program'])))
@@ -178,9 +178,9 @@ def name():
     # Definir el name del student_dataset con la notacion
     name = name_corto+' ' + \
         str(body['initialPeriod'])+' ' + \
-        str(body['finalPeriod'])+' '+str(numero)
+        str(body['finalPeriod'])+' '+str(number)
 
-    return {'name': name, 'numero': numero}, 200
+    return {'name': name, 'number': number}, 200
 
 
 @Dataset.route('/todos/<status>', methods=['DELETE'])

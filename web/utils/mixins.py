@@ -129,7 +129,7 @@ def save_preparation(preparation, observations, status):
 def save_execution(execution, results, status):
 
     # Save execution record
-    execution['model_precision'] = results.get('precision', None)
+    execution['model_accuracy'] = results.get('accuracy', None)
     execution['endDate'] = get_now_date()
     execution['results'] = dict(results)
     execution['status'] = status

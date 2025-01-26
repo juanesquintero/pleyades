@@ -73,16 +73,16 @@ def get_by_usuario(preparador):
 def name(dataset):
     if not exists_set(dataset):
         return {'error': 'dataset no existe'}, 400
-    # Obtener el numero consecutivo para el student_set de datos
+    # Obtener el number consecutivo para el student_set de datos
     query = preparation_model.get_consecutivo(dataset)
     ex = exception(query)
     if ex:
         return ex
     if query:
-        numero = query[0].get('numero')+1
+        number = query[0].get('number')+1
     else:
-        numero = 1
-    return {'name': dataset+'.'+str(numero), 'numero': numero}, 200
+        number = 1
+    return {'name': dataset+'.'+str(number), 'number': number}, 200
 
 
 @Preparation.route('', methods=['POST'])

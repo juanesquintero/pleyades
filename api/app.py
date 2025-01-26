@@ -26,6 +26,8 @@ def create_app():
     app = Flask(__name__)
 
     with app.app_context():
+        # disable JWT subject verification (avoid Error: Subject must be a string)
+        app.config['JWT_VERIFY_SUB'] = False
         app.config['JSON_SORT_KEYS'] = False
         app.config['JWT_SECRET_KEY'] = os.getenv('JWT_KEY')
 

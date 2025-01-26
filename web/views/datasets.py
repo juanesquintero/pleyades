@@ -218,9 +218,9 @@ def post_save(dataset=None):
         dataset['initialPeriod'] = initial_period
 
         # Obtener name del dataset desde el api
-        name, numero = get_dataset_name(dataset)
+        name, number = get_dataset_name(dataset)
         if not name:
-            return numero
+            return number
         file_save = 'C ' + name + '.xlsx'
 
         if validacion:
@@ -265,9 +265,9 @@ def post_save(dataset=None):
         dataset['initialPeriod'] = initial_period
 
         # Obtener name del dataset desde el api
-        name, numero = get_dataset_name(dataset)
+        name, number = get_dataset_name(dataset)
         if not name:
-            return numero
+            return number
         file_save = 'C ' + name + '.xlsx'
 
         if validacion:
@@ -295,7 +295,7 @@ def post_save(dataset=None):
 
     # Guardar registro de dataset en la BD
     dataset['name'] = name
-    dataset['numero'] = numero
+    dataset['number'] = number
     status, body = post('datasets', dataset)
 
     # TODO DEPRECATED! version 1 v1.5.0
@@ -334,10 +334,10 @@ def preparar(dataset=None):
     preparation['dataset'] = dataset['name']
     preparation['preparador'] = session.get('user', {}).get('email')
     preparation['startDate'] = get_now_date()
-    # Obtener numero de preparation para el dataset
+    # Obtener number de preparation para el dataset
     status_p, body_p = get('preparations/name/'+name)
     if status_p:
-        preparation['numero'] = body_p['numero']
+        preparation['number'] = body_p['number']
         preparation['name'] = body_p['name']
     else:
         return render_template(
@@ -418,11 +418,11 @@ def ejecutar(dataset=None):
     execution['executor'] = session.get('user', {}).get('email')
     execution['startDate'] = get_now_date()
 
-    # Obtener numero de ejecución para el dataset
+    # Obtener number de ejecución para el dataset
     status_p, body_p = get('executions/name/'+name)
     if status_p:
         execution['name'] = body_p['name']
-        execution['numero'] = body_p['numero']
+        execution['number'] = body_p['number']
     else:
         return render_template('utils/message.html', message='No se pudo get el consecutivo de la preparación para este dataset', submensaje=body_p)
 
