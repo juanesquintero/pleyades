@@ -139,9 +139,7 @@ def exists(email):
 
 
 def auth_login(email, password):
-    query = user_model.get_login(email, password)
-
-    if query:
-        return True, query
-
-    return False, None
+    return user_model.get_login(
+        email,
+        password
+    )
