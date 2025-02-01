@@ -1,5 +1,5 @@
 from flask import request, jsonify, Blueprint
-from flask_jwt_extended import (create_access_token)
+from flask_jwt_extended import create_access_token
 import datetime as dt
 from hashlib import md5
 
@@ -23,18 +23,18 @@ def login():
 
     user = auth_login(email, clave_md5)
 
-    if user == (False, None):
+    if not user:
         return jsonify({
             'msg': 'Incorrect email or password'
         }), 401
 
-    if user[0] is True:
-        access_token = create_access_token(
-            identity=user[1], expires_delta=dt.timedelta(hours=3)
-        )
-        return jsonify(access_token=access_token), 200
+    print(user)
 
-    return user[1]
+    access_token = create_access_token(
+        identity=user,
+        expires_delta=dt.timedelta(hours=3)
+    )
+    return jsonify(access_token=access_token), 200
 
 
 @Auth.route('/singup', methods=['POST'])
