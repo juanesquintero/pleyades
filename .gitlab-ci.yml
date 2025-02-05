@@ -27,34 +27,42 @@ before_script:
     - echo "Running Python job..."
     - pip install --upgrade pip
 
-web-test:
+.web-base-job:
   extends: .default-python-job
-  stage: test
   before_script:
     - python -m venv venv-web
     - source venv-web/bin/activate
     - pip install -r web/requirements.txt
-    - pip install -r web/requirements-dev.txt
   cache:
     key: "$CI_COMMIT_REF_SLUG-web"
     paths:
       - venv-web/
+
+.api-base-job:
+  extends: .default-python-job
+  before_script:
+    - python -m venv venv-api
+    - source venv-api/bin/activate
+    - pip install -r api/requirements.txt
+  cache:
+    key: "$CI_COMMIT_REF_SLUG-api"
+    paths:
+      - venv-api/
+
+web-test:
+  extends: .web-base-job
+  stage: test
+  before_script:
+    - pip install -r web/requirements-dev.txt
   script:
     - echo "Testing web app..."
     - pytest web/tests
 
 api-test:
-  extends: .default-python-job
+  extends: .api-base-job
   stage: test
   before_script:
-    - python -m venv venv-api
-    - source venv-api/bin/activate
-    - pip install -r api/requirements.txt
     - pip install -r api/requirements-dev.txt
-  cache:
-    key: "$CI_COMMIT_REF_SLUG-api"
-    paths:
-      - venv-api/
   script:
     - echo "Testing API app..."
     - pytest api/tests
