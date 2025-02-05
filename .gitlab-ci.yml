@@ -67,11 +67,17 @@ api-test:
     - echo "Testing API app..."
     - pytest api/tests
 
-apps-build:
-  extends: .default-python-job
+web-build:
+  extends: .web-base-job
   stage: build
   script:
-    - echo "Building app..."
+    - echo "Building web app..."
+
+api-build:
+  extends: .api-base-job
+  stage: build
+  script:
+    - echo "Building api app..."
 
 server-deploy:
   stage: deploy
