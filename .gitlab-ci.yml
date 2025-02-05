@@ -1,0 +1,24 @@
+# Gitlab CI/CD Variables needed for this pipeline
+
+
+stages:
+  - test
+  - build
+  - deploy
+
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+cache:
+  paths:
+    - .cache/pip
+    - venv/
+
+before_script:
+  - echo "Starting pipeline..."
+  - echo "Logging in to AWS..."
+
+
+.global_rules:
+  rules:
+    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main" || $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "develop"'
