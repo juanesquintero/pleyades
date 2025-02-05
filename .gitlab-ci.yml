@@ -18,6 +18,11 @@ before_script:
   - echo "Starting pipeline..."
   - echo "Logging in to AWS..."
 
+apps-build:
+  stage: build
+  image: python:3.12-slim
+  script:
+    - echo "Building app..."
 
 server-deploy:
   stage: deploy
