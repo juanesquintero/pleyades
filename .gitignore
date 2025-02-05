@@ -14,3 +14,7 @@ sqlserver-data
 !redis_data/.gitkeep
 redis_data/*
 .codegpt
+venv
+venv
+venv-web
+venv-api
