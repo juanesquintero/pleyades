@@ -1,4 +1,4 @@
-FROM python:3.13-slim AS base
+FROM python:3.13-slim AS production
 
 WORKDIR /app
 
@@ -37,7 +37,7 @@ EXPOSE 80
 
 
 #######################  DEVELOPMENT  #######################
-FROM base AS development
+FROM production AS development
 
 ENV PYTHONUNBUFFERED=1
 ENV FLASK_DEBUG=1

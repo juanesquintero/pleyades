@@ -1,4 +1,4 @@
-FROM python:3.13-slim as base
+FROM python:3.13-slim as production
 
 WORKDIR /app
 
@@ -54,6 +54,6 @@ EXPOSE 80
 
 
 #######################  DEVELOPMENT  #######################
-FROM base as development
+FROM production as development
 
 RUN pip install --no-cache-dir --upgrade  -r /app/requirements-dev.txt
