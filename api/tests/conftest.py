@@ -1,5 +1,5 @@
 import pytest
-from my_project import create_app
+from api.app import create_app
 
 @pytest.fixture()
 def app():
@@ -13,8 +13,3 @@ def app():
 @pytest.fixture()
 def client(app):
     return app.test_client()
-
-
-@pytest.fixture()
-def runner(app):
-    return app.test_cli_runner()
