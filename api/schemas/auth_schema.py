@@ -1,4 +1,4 @@
-from jsonschema import Draft4Validator, draft4_format_checker
+from jsonschema import Draft4Validator
 
 login_schema = {
     "type": "object",
@@ -12,4 +12,7 @@ login_schema = {
 
 
 def validate_login_schema(json):
-    return Draft4Validator(login_schema, format_checker=draft4_format_checker).is_valid(json)
+    return Draft4Validator(
+        login_schema,
+        format_checker=Draft4Validator.FORMAT_CHECKER
+    ).is_valid(json)
