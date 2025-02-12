@@ -56,7 +56,7 @@ services:
       - dev-net
     depends_on:
       - db
-    command: python -m debugpy --listen 0.0.0.0:5679 --wait-for-client run.py --celery
+    command: python -m debugpy --listen 0.0.0.0:5679 --wait-for-client run.py
 
   celery:
     container_name: pleyades-celery

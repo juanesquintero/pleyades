@@ -6,7 +6,7 @@ from app import create_app, create_celery_app
 def start_flask_app(app: Flask):
     ### Start the Flask application.###
     print("Starting Flask server...")
-    app.run(host='0.0.0.0', port=80, debug=True, use_reloader=True)
+    app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=True)
 
 
 def start_celery_worker(app: Flask):
