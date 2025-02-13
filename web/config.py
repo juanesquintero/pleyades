@@ -6,10 +6,13 @@ import datetime
 from dotenv import load_dotenv
 from redis import Redis
 
-from utils.mixins import get_ies_config
+from web.utils.mixins import get_ies_config
 
 # Config root path and language
-locale.setlocale(locale.LC_ALL, 'es_MX.UTF-8')
+try:
+    locale.setlocale(locale.LC_ALL, 'es_MX.UTF-8')
+except locale.Error:
+    locale.setlocale(locale.LC_ALL, 'C')  # Fallback to a default locale
 sys.path.append('./')
 load_dotenv()
 
