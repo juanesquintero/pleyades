@@ -15,8 +15,6 @@ cache:
     - venv-web/
     - venv-api/
 
-before_script:
-  - echo "Starting pipeline..."
 
 .default-python-job:
   image: python:3.13.2-slim
@@ -52,18 +50,16 @@ before_script:
 web-test:
   extends: .web-base-job
   stage: test
-  before_script:
-    - pip install -r web/requirements-dev.txt
   script:
+    - pip install -r web/requirements-dev.txt
     - echo "Testing web app..."
     - pytest web/tests
 
 api-test:
   extends: .api-base-job
   stage: test
-  before_script:
-    - pip install -r api/requirements-dev.txt
   script:
+    - pip install -r api/requirements-dev.txt
     - echo "Testing API app..."
     - pytest api/tests
 
