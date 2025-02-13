@@ -5,7 +5,7 @@ import logging
 import pandas as pd
 from flask import render_template
 from datetime import datetime
-from services.API import post, put, get
+from web.services.API import post, put, get
 
 error_logger = logging.getLogger('error_logger')
 

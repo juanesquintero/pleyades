@@ -1,7 +1,7 @@
 import logging
 import pandas as pd
 from flask import flash
-from utils.constants import col_preparadas
+from web.utils.constants import col_preparadas
 from .model import load_classifer
 from .preparation import elimination_predict
 

@@ -2,7 +2,7 @@ import math
 import pandas as pd
 import warnings
 from flask import session
-from utils.constants import (
+from web.utils.constants import (
     columns_to_remove_nulls,
     columns_to_remove_1,
     columns_to_remove_1_past,

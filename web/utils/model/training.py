@@ -1,6 +1,6 @@
 import pandas as pd
 from sklearn import model_selection
-from utils.constants import AML, col_preparadas
+from web.utils.constants import AML, col_preparadas
 from .preparation import elimination
 from .prediction import predict_classifier
 from .model import save_classifirer

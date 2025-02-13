@@ -1,6 +1,6 @@
 import logging
 from flask import flash
-from utils.constants import conditions
+from web.utils.constants import conditions
 
 
 model_logger = logging.getLogger('model_logger')
