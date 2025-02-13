@@ -5,7 +5,7 @@ from flask import session
 
 dotenv.load_dotenv()
 
-api_path = 'http://api/'
+api_path = 'http://api:5000/'
 # api_path = 'http://api/' + os.getenv('CLI_IES_NAME') + '/'
 error_logger = logging.getLogger('error_logger')
 timeout = 60000
