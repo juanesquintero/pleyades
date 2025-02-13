@@ -19,7 +19,7 @@ before_script:
   - echo "Starting pipeline..."
 
 .default-python-job:
-  image: python:3.12-slim
+  image: python:3.13.2-slim
   cache:
     paths:
       - .cache/pip/
