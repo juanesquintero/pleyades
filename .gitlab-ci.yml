@@ -23,7 +23,7 @@ before_script:
   cache:
     paths:
       - .cache/pip/
-  script:
+  before_script:
     - echo "Running Python job..."
     - pip install --upgrade pip
 
