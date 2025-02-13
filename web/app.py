@@ -4,10 +4,10 @@ from flask_session import Session
 
 from celery import Celery, Task
 
-from views import add_routes
+from web.views import add_routes
 
 
-def create_app(config_object='config') -> Flask:
+def create_app(config_object='web.config') -> Flask:
     """Application Factory Function."""
     app = Flask(__name__, template_folder='templates',
                 static_url_path='/static')
