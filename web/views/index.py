@@ -1,6 +1,6 @@
 import traceback
 from flask import render_template, session, Blueprint
-from tasks.test import sleep_task
+from web.tasks.test import sleep_task
 from celery.result import AsyncResult
 
 

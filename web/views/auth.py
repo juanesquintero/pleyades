@@ -3,7 +3,7 @@ import dotenv
 import jwt
 from functools import wraps
 from flask import session, request, Blueprint, render_template
-from services.API import post
+from web.services.API import post
 
 dotenv.load_dotenv()
 

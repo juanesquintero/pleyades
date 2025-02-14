@@ -2,9 +2,9 @@ import os
 import pandas as pd
 from dotenv import load_dotenv
 from flask import request, session, Blueprint, render_template, send_file
-from views.auth import login_required
-from services.API import get
-from utils.mixins import save_file, get_json_file, set_date_format
+from web.views.auth import login_required
+from web.services.API import get
+from web.utils.mixins import save_file, get_json_file, set_date_format
 
 load_dotenv()
 

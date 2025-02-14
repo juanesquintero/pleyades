@@ -1,15 +1,14 @@
-from flask import Flask
-# Import controllers
-from views.index import Index
-from views.errors import Error
-from views.auth import Auth
-from views.analist import Analyst
-from views.datasets import Dataset
-from views.results import Result
-from views.admin import ResultAdmin, DatasetAdmin, Faculty, Program, Student, User
-# from views.dashboards import Tablero
-from flask import session
 import datetime
+from flask import Flask, session
+# Import controllers
+from web.views.index import Index
+from web.views.errors import Error
+from web.views.auth import Auth
+from web.views.analist import Analyst
+from web.views.datasets import Dataset
+from web.views.results import Result
+from web.views.admin import ResultAdmin, DatasetAdmin, Faculty, Program, Student, User
+# from web.views.dashboards import Tablero
 
 
 def add_route_config(app: Flask):

@@ -6,12 +6,12 @@ from ast import literal_eval
 from dotenv import load_dotenv
 from flask import request, session, Blueprint, render_template, send_file, redirect, url_for, jsonify, flash
 
-import utils.model as Model
-from services.API import get, post
-import views.datasets as datasets
-from views.auth import login_required
-import utils.dashboards.data_ies as DataIES
-from utils.mixins import save_file, save_execution, get_now_date, get_execution_name
+import web.utils.model as Model
+from web.services.API import get, post
+import web.views.datasets as datasets
+from web.views.auth import login_required
+import web.utils.dashboards.data_ies as DataIES
+from web.utils.mixins import save_file, save_execution, get_now_date, get_execution_name
 
 load_dotenv()
 
