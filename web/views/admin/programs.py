@@ -1,7 +1,7 @@
 from flask import request, Blueprint, render_template
 from ast import literal_eval
-from views.auth import only_admin
-from services.API import get
+from web.views.auth import only_admin
+from web.services.API import get
 
 Program = Blueprint('Program', __name__)
 
