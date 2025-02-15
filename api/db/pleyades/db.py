@@ -169,7 +169,7 @@ class Dataset(db.Model, SerializerMixin):
 class Preparation(db.Model, SerializerMixin):
     __tablename__ = 'preparations'
     serialize_only = (
-        'preparer',
+        'processor',
         'dataset',
         'name',
         'number',
@@ -180,7 +180,7 @@ class Preparation(db.Model, SerializerMixin):
         'duration'
     )
 
-    preparer = db.Column(db.String, nullable=False)
+    processor = db.Column(db.String, nullable=False)
     dataset = db.Column(db.String, nullable=False)
     name = db.Column(db.String, primary_key=True, nullable=False)
     number = db.Column(db.Integer, nullable=False)
@@ -213,9 +213,9 @@ class Preparation(db.Model, SerializerMixin):
         return [row.to_dict() for row in query.order_by(Preparation.number.desc()).all()]
 
     @staticmethod
-    def get_preparer(preparer):
+    def get_preparer(processor):
         query = Preparation.query.filter(
-            Preparation.preparer == preparer).all()
+            Preparation.processor == processor).all()
         return [row.to_dict() for row in query]
 
     @staticmethod

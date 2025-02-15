@@ -34,7 +34,7 @@ def executions(dataset=None):
 
 
 def get_list(results):
-    role = 'preparer' if results == 'preparations' else 'executor'
+    role = 'processor' if results == 'preparations' else 'executor'
     status, body = get(results+'/'+role+'/'+session.get('user')['email'])
     if status:
         return render_template(endpoint+results+'.html', results=set_date_format(body))

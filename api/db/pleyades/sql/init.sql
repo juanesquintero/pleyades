@@ -27,7 +27,7 @@ CREATE TABLE datasets (
 
 -- table preparations
 CREATE TABLE preparations (
-	preparer VARCHAR (200) NOT NULL ,
+	processor VARCHAR (200) NOT NULL ,
 	dataset VARCHAR (200) NOT NULL ,
 	name VARCHAR (250) NOT NULL ,
 	number INT (30) NOT NULL ,
@@ -108,7 +108,7 @@ ALTER TABLE preparations ADD(
 -- For preparations(fk_Preparation_User) 
 ALTER TABLE preparations ADD(
 	CONSTRAINT fk_Preparation_User
-	FOREIGN KEY ( preparer )
+	FOREIGN KEY ( processor )
 	REFERENCES users ( email )
 	ON DELETE CASCADE
     ON UPDATE CASCADE
