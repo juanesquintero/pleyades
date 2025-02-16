@@ -1,4 +1,5 @@
 import json
+from api.utils.constants import Roles
 from flask import request, jsonify, Blueprint
 from schemas.execution_schema import validate_post_schema, validate_put_schema
 from flask_jwt_extended import jwt_required
@@ -102,7 +103,7 @@ def post():
     if not validate_post_schema(body):
         return {'error': 'invalid body content'}, 400
     # sql validations
-    if not exists_user(body['executor']):
+    if not exists_user(body[Roles.EXECUTOR]):
         return {'error': 'user does not exist'}, 404
     if not exists_set(body['data_set']):
         return {'error': 'data_set does not exist'}, 404

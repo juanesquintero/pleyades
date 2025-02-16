@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+from web.utils.constants import Roles
 from dotenv import load_dotenv
 from flask import request, session, Blueprint, render_template, send_file
 from web.views.auth import login_required
@@ -34,7 +35,7 @@ def executions(dataset=None):
 
 
 def get_list(results):
-    role = 'processor' if results == 'preparations' else 'executor'
+    role = Roles.PROCESSOR if results == 'preparations' else Roles.EXECUTOR
     status, body = get(results+'/'+role+'/'+session.get('user')['email'])
     if status:
         return render_template(endpoint+results+'.html', results=set_date_format(body))

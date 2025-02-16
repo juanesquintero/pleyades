@@ -1,4 +1,5 @@
 import traceback
+from api.utils.constants import Roles
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.dialects.mysql import JSON
 from sqlalchemy import update
@@ -169,7 +170,7 @@ class Dataset(db.Model, SerializerMixin):
 class Preparation(db.Model, SerializerMixin):
     __tablename__ = 'preparations'
     serialize_only = (
-        'processor',
+        Roles.PROCESSOR,
         'dataset',
         'name',
         'number',
@@ -249,7 +250,7 @@ class Preparation(db.Model, SerializerMixin):
 class Execution(db.Model, SerializerMixin):
     __tablename__ = 'executions'
     serialize_only = (
-        'executor',
+        Roles.EXECUTOR,
         'dataset',
         'name',
         'number',

@@ -3,6 +3,7 @@ import pandas as pd
 import os
 import json
 import logging
+from web.utils.constants import Roles
 import web.utils.dashboards.data_ies as DataIES
 
 from flask import request, session, Blueprint, render_template, redirect, send_file, url_for, jsonify, flash
@@ -415,7 +416,7 @@ def ejecutar(dataset=None):
     # Crear prepraracion
     execution = {}
     execution['dataset'] = dataset['name']
-    execution['executor'] = session.get('user', {}).get('email')
+    execution[Roles.EXECUTOR] = session.get('user', {}).get('email')
     execution['startDate'] = get_now_date()
 
     # Obtener number de ejecución para el dataset
