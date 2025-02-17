@@ -1,9 +1,9 @@
 FROM python:3.13.2-slim as production
 
-WORKDIR /app
+WORKDIR /api
 
-RUN apt-get update \
-  && apt-get upgrade \
+RUN apt-get update -y \
+  && apt-get upgrade -y \
   && apt-get install -y \
   gnupg  \
   g++  \
@@ -39,10 +39,10 @@ RUN apt-get install -y python3-pymysql
 RUN pip install --upgrade pip
 
 # Copy resources
-COPY . /app
+COPY . /api
 
 # Install requirements
-RUN pip install --no-cache-dir --upgrade  --default-timeout=300 -r /app/requirements.txt
+RUN pip install --no-cache-dir --upgrade  --default-timeout=300 -r /api/requirements.txt
 
 
 #······················ OS config ······················
@@ -56,4 +56,4 @@ EXPOSE 80
 #######################  DEVELOPMENT  #######################
 FROM production as development
 
-RUN pip install --no-cache-dir --upgrade  -r /app/requirements-dev.txt
+RUN pip install --no-cache-dir --upgrade  -r /api/requirements-dev.txt
