@@ -32,19 +32,19 @@ services:
       dockerfile: ./Dockerfile
     image: pleyades-web:1.0.0
     volumes:
-      - ./web:/app
-      - ./ies.json:/app/ies.json
+      - ./web:/web
+      - ./ies.json:/web/ies.json
     env_file:
       - ./web/.env
     environment:
       - FLASK_DEBUG=0
-      - FLASK_APP=__init__:app
+      - FLASK_APP=__init__:web
       - CLI_IES_NAME=${IES_CLIENT}
     networks:
       - deploy-net
     links:
       - api:api
-    command: gunicorn __init__:app --preload --bind 0.0.0.0:80 --workers 3 --timeout=5400
+    command: gunicorn __init__:web --preload --bind 0.0.0.0:80 --workers 3 --timeout=5400
     depends_on:
       - api
 
@@ -62,10 +62,10 @@ services:
       - FLASK_APP=__init__:create_app()
       - CLI_IES_NAME=${IES_CLIENT}
     volumes:
-      - ./api:/app
+      - ./api:/api
     networks:
       - deploy-net
-    command: gunicorn wsgi:app --bind 0.0.0.0:80 --workers 3 --timeout=5400
+    command: gunicorn wsgi:api --bind 0.0.0.0:80 --workers 3 --timeout=5400
 
 networks:
   deploy-net:
