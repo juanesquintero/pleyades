@@ -7,13 +7,13 @@
 </small>
 <br>
 
-# Montaje
-Clonar el repositorio
+# Setup
+Clone the repository
 ```console
 $ git clone https://gitlab.com/pleyades1/pleyades-educatic.git
 ```
 
-Crear los .env desde los .env.template 
+Create the .env files from the .env.template 
 
 ###  /.env
 ```env
@@ -21,13 +21,13 @@ IES_CLIENT=ies_client_short_name
 DB_ROOT_PWD=pleyades_db_root_password
 PUBLIC_PORT=pleyades_server_public_port
 ```
-<small>"DB_ROOT_PWD" es opcional (es necesaria solo si la bd de Pleyades MySQL esta dockerizada)</small>
+<small>"DB_ROOT_PWD" is optional (only needed if the Pleyades MySQL database is containerized)</small>
 
-Institución de Educación Superior (IES) - Cliente de Educatic
+Institución de Educación Superior (IES) - Educatic Client
 
-<small>"IES_CLIENT" es el acronimo de la IES
+<small>"IES_CLIENT" is the acronym of the IES
 
-Revisar el archivo "ies.json" ahií podra encontrar los posibles valores del nombre corto del cliente ies</small>
+Check the "ies.json" file to find the possible values for the client's short name</small>
 
 <br>
 
@@ -56,49 +56,48 @@ JWT_KEY=ies_pleyades_jwt_secret
 ```
 
 
-### Inicializar base de datos
+### Initialize database
 
-
-Si la base de datos de mysql para Pleyades no se encuentra contenerizada;
-por favor correr el siguiente archivo .sql, antes de correr el comando de ejecución 
+If the MySQL database for Pleyades is not containerized;
+please run the following .sql file before running the execution command
 ```
 api/db/pleyades/sql/init.sql
 ```
-Si se usara la base de datos en Docker contenerizada, este proceso es automatico;
+If the database will be used in a Docker container, this process is automatic;
 
 <br>
 
-# Ejecución
+# Execution
 
-Exportar las variables de entorno /.env
+Export the environment variables from /.env
 ```console
 $ export $(cat .env | xargs)
 ```
 
-Modo desarrollo 
+Development mode 
 ```console
 $ docker-compose up -d
 ```
 
-Modo producción 
+Production mode 
 ```console
 $ docker-compose -f docker-compose.prod.yml up -d
 ```
 
-... incluyendo la base de datos dockerizada
+... including the containerized database
 ```console
 $ docker-compose up db db-ies -d
 $ docker-compose -f docker-compose.prod.yml up -d
 ```
 
-Evidenciar contenedores corriendo
+Show running containers
 ```console
 $ docker ps -a
 ```
 
 <small>
 
-Conectar contenedores productivos (pleyades-api) con bases de datos locales de desarrollo.
+Connect production containers (pleyades-api) with local development databases.
 
 ```console
 $ docker-compose up -d
@@ -109,41 +108,41 @@ $ docker network connect pleyades-dev_dev-net pleyades-api
 </small> 
 
 
-# Detención 
+# Stopping 
 
 
-### Contenedores de desarrollo
+### Development containers
 
-Parar 
+Stop 
 ```console
 docker-compose stop
 ```
 
-Eliminar 
+Remove 
 ```console
 docker-compose rm -f
 ```
 
-## Contenedores Productivos
-Parar
+## Production Containers
+Stop
 ```console
 docker-compose -f docker-compose.prod.yml stop
 ```
-Eliminar 
+Remove 
 ```console
 docker-compose -f docker-compose.prod.yml rm -f
 ```
 
-# Revisar errores (logs)
+# Check errors (logs)
 
-Errores en la ejecucion de contenedores, revisar los logs de Docker
+For container execution errors, check the Docker logs
 ```console
 $ docker logs --tail 50 pleyades-web
 $              ...         pleyades-api
 $              ...         pleyades-nginx
 ```
 
-Errores de la aplicacion corriendo, revisar los siguientes logs 
+For application errors, check the following logs 
 ```console
 $ tail -n 50 api/logs/ERRORS.log
 $     ...    api/logs/GENERALS.log
@@ -152,7 +151,7 @@ $     ...    web/logs/GENERALS.log
 ```
 
 
-# Aplicar cambios 
+# Apply changes 
 ```console
 $ git pull origin develop
 $ docker-compose -f docker-compose.prod.yml stop &&
@@ -160,12 +159,12 @@ docker-compose -f docker-compose.prod.yml rm -f &&
 docker-compose -f docker-compose.prod.yml up -d
 ````
 
-# Eliminar imagenes de Docker para actualización 
-Producción
+# Remove Docker images for update 
+Production
 ```console
 $ docker-compose -f docker-compose.prod.yml down --rmi all
 ```
-Desarrollo
+Development
 ```console
 $ docker-compose down --rmi all
 ```
@@ -175,10 +174,10 @@ $ docker-compose down --rmi all
 
 
 
-# Instalación Docker (Engine)
+# Docker Installation (Engine)
 
 
-### Desktop (Escritorio)
+### Desktop
 
 Mac 
 https://docs.docker.com/desktop/install/mac-install/
@@ -189,7 +188,7 @@ https://docs.docker.com/desktop/install/linux-install/
 Windows
 https://docs.docker.com/desktop/windows/install/
 
-### Server (consola)
+### Server (console)
 #### Ubuntu
 
 https://www.digitalocean.com/community/tutorials/como-instalar-y-usar-docker-en-ubuntu-18-04-1-es
@@ -204,7 +203,7 @@ $ sudo apt-get upgrade
 $ sudo apt install docker.io
 ```
 
-# Instalación Docker Compose 
+# Docker Compose Installation 
 ### Unix
 ```console
 $ sudo curl -L https://github.com/docker/compose/releases/download/v2.4.1/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
@@ -213,7 +212,7 @@ $ sudo curl -L https://github.com/docker/compose/releases/download/v2.4.1/docker
 ### Windows
 https://github.com/docker/compose/releases/download/v2.4.1/docker-compose-windows-x86_64.exe
 
-Remplazar el docker-compose.exe de las siguientes rutas:
+Replace the docker-compose.exe in the following paths:
 
 ```console
 C:\Program Files\Docker\Docker\resources\bin
