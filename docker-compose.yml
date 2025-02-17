@@ -10,8 +10,8 @@ services:
       dockerfile: ./Dockerfile
       target: development
     volumes:
-      - ./ies.json:/app/ies.json
-      - ./web:/app
+      - ./ies.json:/web/ies.json
+      - ./web:/web
     env_file:
       - ./web/.env
     environment:
@@ -39,7 +39,7 @@ services:
       dockerfile: ./Dockerfile
       target: development
     volumes:
-      - ./api:/app
+      - ./api:/api
     env_file:
       - ./api/.env
     environment:
@@ -63,8 +63,8 @@ services:
     restart: on-failure
     image: pleyades-web:1.0.0
     volumes:
-      - ./ies.json:/app/ies.json
-      - ./web:/app
+      - ./ies.json:/web/ies.json
+      - ./web:/web
     env_file:
       - ./web/.env
     environment:
