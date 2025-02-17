@@ -16,6 +16,7 @@ services:
       - ./web/.env
     environment:
       - CLI_IES_NAME=${IES_CLIENT}
+      - PYTHONPATH=/web
     ports:
       - 5001:5000
       - 5678:5678
@@ -46,6 +47,7 @@ services:
       - FLASK_DEBUG=1
       - FLASK_APP=run.py
       - CLI_IES_NAME=${IES_CLIENT}
+      - PYTHONPATH=/api
     ports:
       - 8001:5000
       - 5679:5679
@@ -69,6 +71,7 @@ services:
       - ./web/.env
     environment:
       - CLI_IES_NAME=${IES_CLIENT}
+      - PYTHONPATH=/web
     links:
       - redis
     networks:
