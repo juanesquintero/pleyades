@@ -28,7 +28,7 @@ df_dpto_des = pd.read_excel(data_folder+'/pais.xlsx', sheet_name='dpto_des')
 
 
 def mapa(period):
-    # Agregar las ubicaciones del geo json
+    # Agregar the ubicaciones del geo json
     locs = []
     for loc in counties['features']:
         loc['id'] = loc['properties']['NOMBRE_DPT']
@@ -337,7 +337,7 @@ def indicadores(period):
 
     fig = agregar_indicador(period_anterior, period_actual, fig, 2)
 
-    # Personalizar la grafica
+    # Personalizar the grafica
     fig.update_layout(
         paper_bgcolor='#fff',
         plot_bgcolor='#fff',
@@ -381,7 +381,7 @@ def indicadores2(period):
                          1]['matricula_total'].values[0] if not (period == min(df['period'])) else None
     fig = agregar_indicador(period_anterior, period_actual, fig, 3)
 
-    # Personalizar la grafica
+    # Personalizar the grafica
     fig.update_layout(
         paper_bgcolor='#fff',
         plot_bgcolor='#fff',

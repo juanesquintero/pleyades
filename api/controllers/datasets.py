@@ -168,14 +168,14 @@ def name():
         number = query[0].get('number')+1
     else:
         number = 1
-    # Obtener la sigla del name del program
+    # Obtener the sigla del name del program
     program = db_ies.select(
         'SELECT * FROM VWPROGRAMADESERCION WHERE codigo={};'.format(str(body['program'])))
     ex = exception(program)
     if ex:
         return ex
     name_corto = program[0]['name_corto']
-    # Definir el name del student_dataset con la notacion
+    # Definir el name del student_dataset con the notacion
     name = name_corto+' ' + \
         str(body['initialPeriod'])+' ' + \
         str(body['finalPeriod'])+' '+str(number)

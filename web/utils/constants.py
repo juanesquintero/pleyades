@@ -1,5 +1,5 @@
 # Algoritmos comunes para clasificación
-# Apoyo para la validación cruzada
+# Apoyo para the validación cruzada
 from sklearn import svm, tree, linear_model, neighbors, naive_bayes, ensemble, discriminant_analysis
 
 colores = [

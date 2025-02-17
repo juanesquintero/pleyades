@@ -68,7 +68,7 @@ def result(endpoint, status, body):
         if '/desertion/' in endpoint:
             if msg == 'Not found' or status == 404:
                 raise Exception(
-                    'No se encontraron concidencias, por favor revise la base de datos',
+                    'Can Not encontraron concidencias, por favor revise the base de datos',
                     status=404
                 )
 

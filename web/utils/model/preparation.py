@@ -71,7 +71,7 @@ def prepare_data(data):
     #     ) else 1
     # data['etnia'] = data.apply(etnia_fn, axis=1)
 
-    # corregir tipos y name de la base de datos de deserción
+    # corregir tipos y name de the base de datos de deserción
     data_preparada = data.rename(columns={'REGISTRO': 'registro'})
     data_preparada['registro'] = data_preparada['registro'].astype(int)
 
@@ -106,7 +106,7 @@ def elimination(data, no_desertion=False):
     data_a_predict = data.query(f'registro >= {period_a_predict}')
     data = data.query(f'registro < {period_a_predict}')
 
-    # Insertar el N% de la data a predict en entrenamiento
+    # Insertar el N% de the data a predict en entrenamiento
     period_closed = session.get('period_closed')
 
     # 75% sin cerrar/ 15% cerrado
@@ -132,7 +132,7 @@ def elimination(data, no_desertion=False):
 def elimination_predict(data):
     warnings.filterwarnings('ignore')
 
-    # Rellenar la edad con promedio por semestre(nivel)
+    # Rellenar the edad con promedio por semestre(nivel)
     average = data.groupby('semestre')['edad'].mean()
     for indice_row, row in data.loc[data.edad.isnull()].iterrows():
         data.loc[indice_row, 'edad'] = average[row['semestre']]

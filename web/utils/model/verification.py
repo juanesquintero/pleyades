@@ -19,7 +19,7 @@ def assign_types(data):
 def verify_data(data, period_inicial, period_final, program):
     columns = list(conditions.keys())
 
-    # Verificar si dataset tiene columns en str y la primera fila
+    # Verificar si dataset tiene columns en str y the primera fila
     try:
         data.columns = map(str.lower, data.columns)
     except Exception as excep:
@@ -30,31 +30,31 @@ def verify_data(data, period_inicial, period_final, program):
     if not len(data) > 0:
         return False, 'El dataset no tiene registros (esta vacio)', None, period_inicial
 
-    # Verificar Si todas las columns existen
+    # Verificar Si todas the columns existen
     if not all(col in data.columns for col in columns):
-        return False, 'El dataset ingresado no posee las columns requeridas', None, period_inicial
+        return False, 'El dataset ingresado no posee the columns requeridas', None, period_inicial
 
     if not len(data.columns) == len(columns):
-        msg = 'El dataset ingresado tiene mas columns de las requeridas'
+        msg = 'El dataset ingresado tiene mas columns de the requeridas'
         return False, msg, None, period_inicial
 
-    # Verificar si los tipos de datos de colunma son correctos
+    # Verificar si the tipos de datos de colunma son correctos
     try:
         data_verificada = assign_types(data)
     except Exception as excep:
         model_logger.error(excep)
-        msg = 'El dataset ingresado no tiene los tipos de dato por column requeridos'
+        msg = 'El dataset ingresado no tiene the tipos de dato por column requeridos'
         return False, msg, None, period_inicial
 
-    # Verificar si en dataset posee mas de un  valor en la column program
+    # Verificar si en dataset posee mas de un  valor en the column program
     if not len(dataset(data_verificada['program'].tolist())) == 1:
-        msg = 'El dataset tiene resgistros de mas de un program, los models se ejecutan por program'
+        msg = 'El dataset tiene resgistros de mas de un program, the models se ejecutan por program'
         return False, msg, None, period_inicial
 
-    # Verificar si en dataset posee los valores de period Inicial y Final Correctamente
+    # Verificar si en dataset posee the valores de period Inicial y Final Correctamente
     if not data_verificada['registro'].max() == period_final:
         msg = f'El dataset no tiene como period final {
-            period_final}, verifique los registros'
+            period_final}, verifique the registros'
         return False, msg, None, period_inicial
 
     if not data_verificada['registro'].min() == period_inicial:
@@ -65,7 +65,7 @@ def verify_data(data, period_inicial, period_final, program):
         flash(msg, 'warning')
 
     if not (data_verificada['idprograma'] == program).all():
-        msg = 'El dataset no pertenece al program indicado, verifique los registros'
+        msg = 'El dataset no pertenece al program indicado, verifique the registros'
         return False, msg, None, period_inicial
 
     # Verificacion correcta

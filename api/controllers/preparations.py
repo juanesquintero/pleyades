@@ -33,7 +33,7 @@ def get_one(name):
     if ex:
         return ex
     if not (query):
-        return {'msg': 'No existe la preparación'}, 404
+        return {'msg': 'No existe the preparación'}, 404
     query = strdate_to_datetime([query])
     return jsonify(query[0])
 

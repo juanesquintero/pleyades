@@ -60,7 +60,7 @@ def login():
         session['headers'] = None
         # Obtener token
         token = body.get('access_token')
-        # Setear usuario de la session
+        # Setear usuario de the session
         user = jwt.decode(
             token,
             os.getenv('JWT_KEY'),

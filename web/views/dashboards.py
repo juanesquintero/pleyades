@@ -345,7 +345,7 @@ def student_dashboard():
     program = request.args.get('program')
     documento = request.args.get('documento')
 
-    # Obtener la lista de students de un program
+    # Obtener the lista de students de un program
     if program and not documento:
         students_program = Estudiante_file.students_program(program)
         return render_template(
@@ -377,7 +377,7 @@ def student_dashboard():
         )
 
     try:
-        # Obtener los graficos del students por documento identificacion
+        # Obtener the graficos del students por documento identificacion
         estudiante = Student(identificacion=documento,
                              program=program, period=period)
 
@@ -404,7 +404,7 @@ def student_dashboard():
             period=period,
         )
 
-    # Validar los periods y programs
+    # Validar the periods y programs
     if info:
         if not program:
             for p in programs:

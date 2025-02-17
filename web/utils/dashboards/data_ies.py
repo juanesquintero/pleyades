@@ -86,4 +86,4 @@ def validate(status, body, df=False):
         if df:
             return pd.DataFrame(body)
         return body
-    raise Exception('Consulta fallida a la base de datos de Deserción')
+    raise Exception('Consulta fallida a the base de datos de Deserción')

@@ -156,4 +156,4 @@ def app_errors(app, error_logger):
     @app.errorhandler(Exception)
     def handle_exception(e):
         exception(e)
-        return {'error': 'Excepción, Ha ocurrido un error en la ejecución del servidor.'}, 500
+        return {'error': 'Excepción, Ha ocurrido un error en the ejecución del servidor.'}, 500

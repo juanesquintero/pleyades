@@ -56,13 +56,13 @@ def list_set(results, dataset):
 ########################################################### PREPARACIONES ###################################################################
 
 
-@ResultAdmin.route('/preparations/editar', methods=['POST'])
+@ResultAdmin.route('/preparations/edit', methods=['POST'])
 @only_admin
-def editar_preparation():
+def edit_preparation():
     body = dict(request.values)
     preparation = literal_eval(body['preparation'])
     preparation['observaciones'] = json.dumps(preparation['observaciones'])
-    return render_template('admin/'+endopoint+'preparation_editar.html', p=preparation)
+    return render_template('admin/'+endopoint+'preparation_edit.html', p=preparation)
 
 
 @ResultAdmin.route('/preparations/update', methods=['POST'])
@@ -78,13 +78,13 @@ def update_preparation():
                 preparation['observaciones'].replace("'", '"'))
             preparation['observaciones'] = dict(preparation['observaciones'])
         except:
-            return render_template('utils/message.html', message='No se pudo update la preparación', submensaje='Error con el campo observaciones no es un json o nulo')
+            return render_template('utils/message.html', message='Can Not update the preparation', submensaje='Error con el campo observaciones no es un json o nulo')
 
     status, body = put('preparations/'+name, preparation)
     if status:
         return redirect(url_for('ResultAdmin.preparations'))
     else:
-        return render_template('utils/message.html', message='No se pudo update la preparación', submensaje=body)
+        return render_template('utils/message.html', message='Can Not update the preparation', submensaje=body)
 
 
 @ResultAdmin.route('/preparations/delete', methods=['POST'])
@@ -92,7 +92,7 @@ def update_preparation():
 def delete_preparation():
     body = dict(request.values)
     preparation = literal_eval(body['preparation'])
-    return render_template('admin/'+endopoint+'preparation_borrar.html', p=preparation)
+    return render_template('admin/'+endopoint+'preparation_delete.html', p=preparation)
 
 
 @ResultAdmin.route('/preparations/remove', methods=['POST'])
@@ -104,18 +104,18 @@ def remove_preparation():
     if status:
         return redirect(url_for('ResultAdmin.preparations'))
 
-    return render_template('utils/message.html', message='No se pudo Eliminar la preparación', submensaje=body)
+    return render_template('utils/message.html', message='Can Not delete the preparación', submensaje=body)
 
 ########################################################### EJECUCIONES ###################################################################
 
 
-@ResultAdmin.route('/executions/editar', methods=['POST'])
+@ResultAdmin.route('/executions/edit', methods=['POST'])
 @only_admin
-def editar_execution():
+def edit_execution():
     body = dict(request.values)
     execution = literal_eval(body['execution'])
     execution['results'] = json.dumps(execution['results'])
-    return render_template('admin/'+endopoint+'execution_editar.html', e=execution)
+    return render_template('admin/'+endopoint+'execution_edit.html', e=execution)
 
 
 @ResultAdmin.route('/executions/update', methods=['POST'])
@@ -130,7 +130,7 @@ def update_execution():
     except:
         return render_template(
             'utils/message.html',
-            message='No se pudo update la ejecución', submensaje='Error con el campo results no es un json'
+            message='Can Not update the execution', submensaje='Error: field results is not JSON type '
         )
 
     status, body = put('executions/'+name, execution)
@@ -139,7 +139,7 @@ def update_execution():
 
     return render_template(
         'utils/message.html',
-        message='No se pudo update la ejecución',
+        message='Can Not update the execution',
         submensaje=body
     )
 
@@ -169,4 +169,4 @@ def remove_execution():
 
         return redirect(url_for('ResultAdmin.executions'))
 
-    return render_template('utils/message.html', message='No se pudo Eliminar la ejecución', submensaje=body)
+    return render_template('utils/message.html', message='Can Not delete execution', submensaje=body)

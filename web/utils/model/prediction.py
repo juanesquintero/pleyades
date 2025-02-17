@@ -72,7 +72,7 @@ def predict_classifier(data_a_predict, period_a_predict, mejor_clasificador):
     except Exception as excep:
         model_logger.error(excep)
         flash('Por favor intente con otro period o program', 'warning')
-        raise Exception('<b>Ocurrió un error al ejecutar la predicción!</b>')
+        raise Exception('<b>Ocurrió un error al ejecutar the predicción!</b>')
     total_students_analizados = len(predc_sem_act['documento'].unique())
     potenciales_desertores = predc_sem_act.query('prediccion == 1 & desertor == 0').drop_duplicates(
         subset=['documento'],
@@ -95,7 +95,7 @@ def predict_classifier(data_a_predict, period_a_predict, mejor_clasificador):
         str, copy=False
     )
 
-    # Setear results para insertar en la BD
+    # Setear results para insertar en the BD
     potenciales_desertores['semestre_prediccion'] = period_a_predict
 
     # Filtar desertores si desercio alta
@@ -115,7 +115,7 @@ def predict_classifier(data_a_predict, period_a_predict, mejor_clasificador):
 
     potenciales_desertores.drop(['index'], axis=1, inplace=True)
 
-    # Reasignar el tipo de la column documento
+    # Reasignar el tipo de the column documento
     resultados_desertores['documento'] = resultados_desertores['documento'].astype(
         str, copy=False)
     resultados_desertores = resultados_desertores[[

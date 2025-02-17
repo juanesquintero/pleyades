@@ -27,4 +27,4 @@ def detail():
     if status_f and body:
         return render_template('admin/'+endopoint+'detail.html', p=program, faculties=body_f,)
     else:
-        return render_template('utils/message.html', message='No se pudieron cargar las programs y las faculties', submensaje=body_f)
+        return render_template('utils/message.html', message='Could Not load the programs y the faculties', submensaje=body_f)

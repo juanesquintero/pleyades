@@ -15,7 +15,7 @@ error_logger = logging.getLogger('error_logger')
 
 #################################### FUNCIONES GLOBALES #############################################
 
-# Funcion para agregar un indicador a la figura
+# Funcion para agregar un indicador a the figura
 def agregar_indicador(anterior, actual, fig, i, j, mode):
     if anterior == 0:
         anterior = actual/2
@@ -152,7 +152,7 @@ class Program:
                 fig = agregar_indicador(
                     period_anterior, period_actual, fig, 1, i+1, 'number+delta')
 
-            # Personalizar la grafica
+            # Personalizar the grafica
             fig.update_layout(
                 paper_bgcolor='#fff',
                 plot_bgcolor='#fff',
@@ -241,7 +241,7 @@ class Program:
             data = data.sort_values(by='estrato_residencia', ascending=False)
             estratos_str = sorted(data['estrato_residencia'].unique())
 
-            # Quitar el ESTRATO de la column
+            # Quitar el ESTRATO de the column
             estratos = []
             for e in estratos_str:
                 if any(char.isdigit() for char in e):
@@ -249,7 +249,7 @@ class Program:
 
             students = [len(data.query(
                 "estrato_residencia == 'ESTRATO {}'".format(e))) for e in estratos]
-            # TODO organizar el orden de los estratos
+            # TODO organizar el orden de the estratos
             estratos_str = ['Estrato {}'.format(e) for e in estratos]
             if len(estratos) <= 0:
                 raise Exception('No hay estratos')
@@ -261,7 +261,7 @@ class Program:
                 hole=.25,
                 color_discrete_sequence=px.colors.sequential.ice[3:],
             )
-            # Personalizar la grafica
+            # Personalizar the grafica
             fig.update_layout(
                 paper_bgcolor='#fff',
                 plot_bgcolor='#fff',
@@ -284,7 +284,7 @@ class Program:
     def barras(self):
         try:
             # Dataframe del program
-            # TODO hacer el filtro por codigo o name de program en la tabla VWDATADESERCION
+            # TODO hacer el filtro por codigo o name de program en the tabla VWDATADESERCION
             data = pd.DataFrame(self.df_ESTUDIANTES_total.loc[:, [
                                 'semestre', 'REGISTRO', 'desertor']])
             data[['desertor']] = data[['desertor']
@@ -310,7 +310,7 @@ class Program:
                 # horizontal_spacing = 0.3,
             )
 
-            # Definir el mayor numeto de niveles-semestres para ese program en todos los periods
+            # Definir el mayor numeto de niveles-semestres para ese program en todos the periods
             niveles = []
             for p in periods:
                 data_period = data.query("REGISTRO == '{}'".format(p))
@@ -320,14 +320,14 @@ class Program:
             if cant_niveles <= 0:
                 raise Exception('No hay niveles')
 
-            # Recorrer los periods y reliazar las graficas
+            # Recorrer the periods y reliazar the graficas
             for i, p in enumerate(periods):
                 data_period = data.query("REGISTRO == '{}'".format(p))
                 data_period = data_period.sort_values(
                     by='semestre', ascending=True)
                 data_period = data_period.head(cant_niveles)
 
-                # llenar los demas semestres para que queden con el maximo de todos
+                # llenar the demas semestres para que queden con el maximo de todos
                 if len(data_period) < cant_niveles:
 
                     for j in range(1, cant_niveles+1):

@@ -36,7 +36,7 @@ def execute_model(data, dataset, no_desertion=False):
         'objeto',
         'Parametros',
         'Precision Media de Prueba',
-        'STD de la Precision * 3',
+        'STD de the Precision * 3',
         'Tiempo'
     ]
     AML_compare = pd.DataFrame(columns=AML_columns)
@@ -60,10 +60,10 @@ def execute_model(data, dataset, no_desertion=False):
                 row_index,
                 'Precision Media de Prueba'
             ] = cv_results['test_score'].mean()
-            # Si es una muestra aleatoria sin sesgo, entonces la media +/- 3*(desviación estándar), deberían capturar el 99.7% de los subsets
+            # Si es una muestra aleatoria sin sesgo, entonces the media +/- 3*(desviación estándar), deberían capturar el 99.7% de the subsets
             AML_compare.loc[
                 row_index,
-                'STD de la Precision * 3'
+                'STD de the Precision * 3'
             ] = cv_results['test_score'].std()*3
             AML_compare.loc[row_index,
                             'Tiempo'] = cv_results['fit_time'].mean()

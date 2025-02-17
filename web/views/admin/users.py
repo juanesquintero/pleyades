@@ -32,18 +32,18 @@ def post_save():
     if status:
         return redirect(url_for('User.get_list'))
     else:
-        return render_template('utils/message.html', message='No se pudo save el User', submensaje=body)
+        return render_template('utils/message.html', message='Can Not pudo save el User', submensaje=body)
 
 
-@User.route('/editar', methods=['POST'])
+@User.route('/edit', methods=['POST'])
 @only_admin
 def post_edit():
     body = dict(request.values)
     usuario = literal_eval(body['usuario'])
     if usuario:
-        return render_template('admin/'+endopoint+'editar.html', u=usuario)
+        return render_template('admin/'+endopoint+'edit.html', u=usuario)
     else:
-        return render_template('utils/message.html', message='No se pudo cargar el usuario')
+        return render_template('utils/message.html', message='Can Not pudo cargar el usuario')
 
 
 @User.route('/update', methods=['POST'])
@@ -59,7 +59,7 @@ def update():
     if status:
         return redirect(url_for('User.get_list'))
 
-    return render_template('utils/message.html', message='No se pudo update el User', submensaje=body)
+    return render_template('utils/message.html', message='Can Not pudo update el User', submensaje=body)
 
 
 @User.route('/delete', methods=['POST'])
@@ -70,7 +70,7 @@ def remove():
     if usuario:
         return render_template('admin/'+endopoint+'delete.html', u=usuario)
     else:
-        return render_template('utils/message.html', message='No se pudo update el User')
+        return render_template('utils/message.html', message='Can Not pudo update el User')
 
 
 @User.route('/remove', methods=['POST'])
@@ -82,4 +82,4 @@ def post_delete():
     if status:
         return redirect(url_for('User.get_list'))
     else:
-        return render_template('utils/message.html', message='No se pudo Eliminar el User', submensaje=body)
+        return render_template('utils/message.html', message='Can Not pudo Eliminar el User', submensaje=body)

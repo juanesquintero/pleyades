@@ -23,7 +23,7 @@ def raw():
     return get_list("raw")
 
 
-@DatasetAdmin.route("/enproceso")
+@DatasetAdmin.route("/in-progress")
 @only_admin
 def in_progress():
     return get_list("in progress")
@@ -56,7 +56,7 @@ def get_list(status: str):
     )
 
 
-@DatasetAdmin.route("/editar", methods=["POST"])
+@DatasetAdmin.route("/edit", methods=["POST"])
 @only_admin
 def post_edit():
     body = dict(request.values)
@@ -64,12 +64,12 @@ def post_edit():
     status_p, body_p = get("programs")
     if status_p:
         return render_template(
-            "admin/" + endopoint + "editar.html", c=dataset, programs=body_p
+            "admin/" + endopoint + "edit.html", c=dataset, programs=body_p
         )
     else:
         return render_template(
             "utils/message.html",
-            message="No se get los programs",
+            message="Can Not get the programs",
             submensaje=body_p,
         )
 
@@ -86,7 +86,7 @@ def update():
 
     return render_template(
         "utils/message.html",
-        message="No se pudo update la dataset",
+        message="Can Not update the dataset",
         submensaje=body,
     )
 
@@ -104,7 +104,7 @@ def post_delete():
     else:
         return render_template(
             "utils/message.html",
-            message="No se get los programs",
+            message="Can Not get the programs",
             submensaje=body_p,
         )
 
@@ -133,7 +133,7 @@ def remove():
     else:
         return render_template(
             "utils/message.html",
-            message="No se pudo Eliminar el dataset",
+            message="Can Not Eliminar el dataset",
             submensaje=body,
         )
 
@@ -152,7 +152,7 @@ def delete_todos():
 
     return render_template(
         "utils/message.html",
-        message="No se pudo Eliminar los datasets",
+        message="Can Not delete the datasets",
         submensaje=body,
     )
 

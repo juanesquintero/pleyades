@@ -12,7 +12,7 @@ Result = Blueprint('Result', __name__)
 
 db = DB.getInstance()
 table = 'TBLDES_RESULTADO_PREDICCION'
-msg_error = {'msg': 'No se puedo completar la operación'}, 500
+msg_error = {'msg': 'Can Not puedo completar the operación'}, 500
 msg_exito = {'msg': 'Operación completada con exito!'}, 200
 
 ##########################################################  TBLDES_RESULTADO_PREDICCION ##########################################################

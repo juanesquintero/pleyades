@@ -119,7 +119,7 @@ def series_pais(codigo_pais):
 
 
 def grupos_clusters(data):
-    # Escalar valores en ambos ejes de 0-1 para que ambos ejes influyan en la descision de clusters
+    # Escalar valores en ambos ejes de 0-1 para que ambos ejes influyan en the descision de clusters
     data['gastos'] = data['gastos'] / np.max(data['gastos'])
     data['inscripciones'] = data['inscripciones'] / \
         np.max(data['inscripciones'])
@@ -137,7 +137,7 @@ def grupos_clusters(data):
 
 
 def data_clusters():
-    # Sacar promedios de la ultima decada
+    # Sacar promedios de the ultima decada
     inscripciones['promedio'] = inscripciones.loc[:,
                                                   '2008':'2018'].mean(axis=1)
     gastos['promedio'] = gastos.loc[:, '2008':'2018'].mean(axis=1)

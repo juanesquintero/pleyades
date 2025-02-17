@@ -72,7 +72,7 @@ def get_period_program(program: int, period: int):
 @IES.route('/periods')
 @jwt_required()
 def get_periods():
-    # Obtener datos desde la bd SQL server
+    # Obtener datos desde the bd SQL server
     sql = 'SELECT DISTINCT period FROM {};'.format(SQL_VIEW)
     query = db.select(sql)
     ex = exception(query)
@@ -90,7 +90,7 @@ def get_periods():
 @IES.route('/programs')
 @jwt_required()
 def get_programs():
-    # Obtener datos desde la bd SQL server
+    # Obtener datos desde the bd SQL server
     sql = 'SELECT DISTINCT idprograma, programa FROM {};'.format(SQL_VIEW)
     query = db.select(sql)
     ex = exception(query)
@@ -112,7 +112,7 @@ def get_programs():
 @IES.route('/programs/<int:period>')
 @jwt_required()
 def get_programs_by_period(period: int):
-    # Obtener datos desde la bd SQL server
+    # Obtener datos desde the bd SQL server
     sql = 'SELECT DISTINCT idprograma, programa FROM {} WHERE periodo={};'.format(
         SQL_VIEW, period)
     query = db.select(sql)

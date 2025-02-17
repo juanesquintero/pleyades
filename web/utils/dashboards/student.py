@@ -40,7 +40,7 @@ class Student:
         self.programs_estudiante = None
         self.promedios_estudiante = None
 
-    # Funcion para agregar un indicador a la figura
+    # Funcion para agregar un indicador a the figura
     def get_estudiante(self,):
         try:
             # Dataframe del program
@@ -191,7 +191,7 @@ class Student:
             # Dataframe del program
             data = self.df_ESTUDIANTE
             promedios = {}
-            # Para get los promeios de los diferentes programs
+            # Para get the promeios de the diferentes programs
             # for p in self.programs_estudiante:
             #     estu = data.query("program == '{}'".format(p))
             #     estu = estu.sort_values(by=['REGISTRO'], ascending=[True])

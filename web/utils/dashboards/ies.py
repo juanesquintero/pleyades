@@ -16,7 +16,7 @@ error_logger = logging.getLogger('error_logger')
 # Data source
 
 #################################### FUNCIONES GLOBALES #############################################
-# Funcion para agregar un indicador a la figura
+# Funcion para agregar un indicador a the figura
 
 
 def agregar_indicador(anterior, actual, fig, i, j, mode):
@@ -56,7 +56,7 @@ def create_indicador(data, variable, i, j, fig, tipo):
     )
     return fig
 
-# Funcion para agregar un REGISTRO de programs a la lista de graficos
+# Funcion para agregar un REGISTRO de programs a the lista de graficos
 
 
 def miniserie_program_row(data, fig, i, dict_periods):
@@ -129,7 +129,7 @@ def miniserie_program_row(data, fig, i, dict_periods):
         error_logger.error('EXCEPTION: '+str(e), exc_info=True)
         return None
 
-# Funcion para agregar un REGISTRO de programs a la lista de graficos
+# Funcion para agregar un REGISTRO de programs a the lista de graficos
 
 
 def indicadores_program_row(data, fig, i):
@@ -220,7 +220,7 @@ class IES:
                 fig = agregar_indicador(
                     period_anterior, period_actual, fig, 1, j+1, 'number+delta')
 
-            # Personalizar la grafica
+            # Personalizar the grafica
             fig.update_layout(
                 paper_bgcolor='#fff',
                 plot_bgcolor='#fff',
@@ -253,7 +253,7 @@ class IES:
             fig = agregar_indicador(
                 egresados_period_anterior, egresados_period_actual, fig, 1, 2, 'number')
 
-            # Personalizar la grafica
+            # Personalizar the grafica
             fig.update_layout(
                 paper_bgcolor='#fff',
                 plot_bgcolor='#fff',
@@ -419,7 +419,7 @@ class IES:
                 color_discrete_sequence=px.colors.sequential.ice[3:],
                 hole=.3
             )
-            # Personalizar la grafica
+            # Personalizar the grafica
             fig.update_layout(
                 paper_bgcolor='#fff',
                 plot_bgcolor='#fff',
@@ -480,13 +480,13 @@ class IES:
                     # Verificar si existe dato en el period anterior
                     if period_index-1 in data['index']:
                         period_anterior = data.loc[period_index-1, 'period']
-                        # Obtener registros de los dos ultimos periods a partir del indicado
+                        # Obtener registros de the dos ultimos periods a partir del indicado
                         data_period_index = data.query(
                             "period == '{}' | period == '{}'".format(period_actual, period_anterior))
                         fig = indicadores_program_row(data, fig, cont+1)
                         cont += 1
 
-            # Personalizar la grafica
+            # Personalizar the grafica
             fig.update_layout(
                 paper_bgcolor='#fff',
                 plot_bgcolor='#fff',
@@ -541,7 +541,7 @@ class IES:
                 # data['period'] = data['period'].astype(str)
                 fig = miniserie_program_row(data, fig, i+1, dict_periods)
 
-            # Personalizar la grafica
+            # Personalizar the grafica
             fig.update_layout(
                 paper_bgcolor='#fff',
                 plot_bgcolor='#fff',

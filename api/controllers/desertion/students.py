@@ -88,7 +88,7 @@ def get_documento(documento):
 @Student.route('/periods')
 @jwt_required()
 def get_periods():
-    # Obtener datos desde la bd SQL server
+    # Obtener datos desde the bd SQL server
     sql = f'SELECT DISTINCT REGISTRO FROM {table};'
     query = db.select(sql)
     ex = exception(query)
@@ -107,7 +107,7 @@ def get_periods():
 @Student.route('/periods/program/<int:program>')
 @jwt_required()
 def get_periods_program(program):
-    # Obtener datos desde la bd SQL server
+    # Obtener datos desde the bd SQL server
     sql = f'SELECT DISTINCT REGISTRO FROM {table} WHERE idprograma={program};'
     query = db.select(sql)
 
@@ -129,7 +129,7 @@ def get_periods_program(program):
 @Student.route('/programs')
 @jwt_required()
 def get_programs():
-    # Obtener datos desde la bd SQL server
+    # Obtener datos desde the bd SQL server
     sql = f'SELECT DISTINCT idprograma, program FROM {table};'
     query = db.select(sql)
     ex = exception(query)

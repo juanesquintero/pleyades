@@ -57,7 +57,7 @@ for loc in counties['features']:
 
 def mapa(dpto, period):
     try:
-        # Agregar las ubicaciones del geo json
+        # Agregar the ubicaciones del geo json
         locs = []
         dptos = []
         for loc in counties['features']:
@@ -67,7 +67,7 @@ def mapa(dpto, period):
                 loc['id'] = loc['properties']['NOMBRE_DPT']
                 locs.append(loc['properties']['NOMBRE_DPT'])
 
-                # Obtener las coordenadas de ese departamento
+                # Obtener the coordenadas de ese departamento
                 coords = loc['geometry']['coordinates']
 
                 while type(coords[0][0]) is list:
@@ -388,7 +388,7 @@ def indicadores_dpto(dpto, period):
             horizontal_spacing=0.2,
         )
 
-        # Funcion para agregar un indicador a la figura
+        # Funcion para agregar un indicador a the figura
         def agregar_indicador(anterior, actual, fig, i):
             fig.append_trace(go.Indicator(
                 mode="number+delta",
@@ -414,7 +414,7 @@ def indicadores_dpto(dpto, period):
                 period-1)].values[0]*100 if str(period-1) in periods else None
             fig = agregar_indicador(period_anterior, period_actual, fig, i+1)
 
-        # Personalizar la grafica
+        # Personalizar the grafica
         fig.update_layout(
             paper_bgcolor='#fff',
             plot_bgcolor='#fff',
@@ -428,7 +428,7 @@ def indicadores_dpto(dpto, period):
 
 
 ############################################################### INDICADORES IES ####################################################################
-# Funcion para agregar un REGISTRO de IES a la lista
+# Funcion para agregar un REGISTRO de IES a the lista
 def IES_row(data, fig, i, periods):
 
     # Mini Serie de tiempo
@@ -490,7 +490,7 @@ def indicadores_ies(dpto):
             matricula_ies = df[df['name'] == ies].loc[:, '2010':'2018']
             matriculas.append(matricula_ies.values[0])
 
-        # Arreglo con los datos de cada IES
+        # Arreglo con the datos de cada IES
         dfs = []
         for ies, m in zip(IES_sigla, matriculas):
             dfs.append(pd.DataFrame({
@@ -514,7 +514,7 @@ def indicadores_ies(dpto):
         for i in range(cant_ies):
             fig = IES_row(dfs[i], fig, i+1, periods)
 
-        # # Personalizar la grafica
+        # # Personalizar the grafica
         fig.update_layout(
             paper_bgcolor='#fff',
             plot_bgcolor='#fff',
