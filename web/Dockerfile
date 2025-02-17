@@ -1,6 +1,6 @@
 FROM python:3.13.2-slim AS production
 
-WORKDIR /app
+WORKDIR /web
 
 # Update and install need packages
 RUN apt-get -y update && apt-get -y upgrade
@@ -25,12 +25,12 @@ ENV TIME_ZONE=$TIMEZONE
 RUN pip install --upgrade pip setuptools wheel
 
 # Copy resources
-COPY . /app
+COPY . /web
 
 # Install requirements
-RUN pip install --no-cache-dir --no-build-isolation --upgrade --default-timeout=300 -r /app/requirements.txt
+RUN pip install --no-cache-dir --no-build-isolation --upgrade --default-timeout=300 -r /web/requirements.txt
 
-WORKDIR /app
+WORKDIR /web
 
 # Expose port
 EXPOSE 80
@@ -44,4 +44,4 @@ ENV FLASK_DEBUG=1
 ENV FLASK_APP=run.py
 ENV TEMPLATES_AUTO_RELOAD=1
 
-RUN pip install --no-cache-dir --upgrade  -r /app/requirements-dev.txt
+RUN pip install --no-cache-dir --upgrade  -r /web/requirements-dev.txt
