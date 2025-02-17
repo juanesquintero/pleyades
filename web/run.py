@@ -1,5 +1,5 @@
-from flask import Flask
 import argparse
+from flask import Flask
 from app import create_app, create_celery_app
 
 
