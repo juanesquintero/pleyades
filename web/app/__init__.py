@@ -1,16 +1,22 @@
+# import os
+# import sys
+
+# sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from flask import Flask, request, g
 from flask_babel import Babel, _
 from flask_session import Session
-
 from celery import Celery, Task
-
 from web.views import add_routes
 
 
 def create_app(config_object='web.config') -> Flask:
     """Application Factory Function."""
-    app = Flask(__name__, template_folder='templates',
-                static_url_path='/static')
+    app = Flask(
+        __name__,
+        template_folder='templates',
+        static_url_path='/static'
+    )
 
     # Load configuration
     app.config.from_object(config_object)
