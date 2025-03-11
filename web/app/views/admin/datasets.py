@@ -2,10 +2,10 @@ import os
 from flask import request, Blueprint, render_template, redirect, url_for
 from dotenv import load_dotenv
 from ast import literal_eval
-from web.views.auth import only_admin
-from web.services.API import get, put, delete
+from web.app.views.auth import only_admin
+from web.app.services.API import get, put, delete
 
-from web.utils.mixins import *
+from web.app.utils.mixins import *
 
 load_dotenv()
 

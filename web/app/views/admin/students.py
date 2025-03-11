@@ -1,6 +1,6 @@
 from flask import request, Blueprint, render_template
-from web.views.auth import only_admin
-from web.services.API import get
+from web.app.views.auth import only_admin
+from web.app.services.API import get
 
 Student = Blueprint('Student', __name__)
 

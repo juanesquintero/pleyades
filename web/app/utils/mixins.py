@@ -5,7 +5,7 @@ import logging
 import pandas as pd
 from flask import render_template
 from datetime import datetime
-from web.services.API import post, put, get
+from web.app.services.API import post, put, get
 
 error_logger = logging.getLogger('error_logger')
 
@@ -168,7 +168,7 @@ def get_ies_config():
     # Get IES definition
     ies_name = os.getenv('CLI_IES_NAME')
     base_dir = os.path.dirname(os.path.abspath(__file__))
-    with open(f'{base_dir}/../ies.json', 'r') as json_file:
+    with open(f'{base_dir}/../../ies.json', 'r') as json_file:
         try:
             IES = json.load(json_file).get(ies_name)
             return IES

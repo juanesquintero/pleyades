@@ -1,11 +1,11 @@
 import os
 import pandas as pd
-from web.utils.constants import Roles
+from web.app.utils.constants import Roles
 from dotenv import load_dotenv
 from flask import request, session, Blueprint, render_template, send_file
-from web.views.auth import login_required
-from web.services.API import get
-from web.utils.mixins import save_file, get_json_file, set_date_format
+from web.app.views.auth import login_required
+from web.app.services.API import get
+from web.app.utils.mixins import save_file, get_json_file, set_date_format
 
 load_dotenv()
 

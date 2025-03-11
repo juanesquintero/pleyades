@@ -403,7 +403,7 @@ def indicadores_dpto(dpto, period):
         # TODO Arreglar esta funcion para Bogota
         # EXCEPTION: index 0 is out of bounds for axis 0 with size 0
         # Traceback (most recent call last):
-        # File "D:\juaneschrome\UDEM\9no Semestre\Trabajo de Grado\Segundo Entregable\Aplicacion\web\utils\dashboards\region.py", line 367, in indicadores_dpto
+        # File "D:\juaneschrome\UDEM\9no Semestre\Trabajo de Grado\Segundo Entregable\Aplicacion\web.app.utils\dashboards\region.py", line 367, in indicadores_dpto
         #     period_actual = df_var_ind[str(period)].values[0]*100
         # IndexError: index 0 is out of bounds for axis 0 with size 0
 

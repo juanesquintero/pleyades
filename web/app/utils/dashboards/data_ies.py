@@ -1,6 +1,6 @@
 import logging
 import pandas as pd
-from web.services.API import get
+from web.app.services.API import get
 
 ies_route = 'desertion/institute/'
 students_route = 'desertion/students/'

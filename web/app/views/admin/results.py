@@ -5,10 +5,10 @@ from dotenv import load_dotenv
 from flask import request, Blueprint, render_template, redirect, url_for
 
 
-from web.views.auth import only_admin
-from web.services.API import get, put, delete
+from web.app.views.auth import only_admin
+from web.app.services.API import get, put, delete
 
-from web.utils.mixins import remove_file
+from web.app.utils.mixins import remove_file
 
 load_dotenv()
 

@@ -3,19 +3,19 @@ import pandas as pd
 import os
 import json
 import logging
-from web.utils.constants import Roles
-import web.utils.dashboards.data_ies as DataIES
+from web.app.utils.constants import Roles
+import web.app.utils.dashboards.data_ies as DataIES
 
 from flask import request, session, Blueprint, render_template, redirect, send_file, url_for, jsonify, flash
 from dotenv import load_dotenv
 from ast import literal_eval
 from deep_translator import GoogleTranslator
 
-from web.utils.model import prepare_data, verify_data, execute_model
-from web.views.auth import login_required
-from web.services.API import get, post, put
+from web.app.utils.model import prepare_data, verify_data, execute_model
+from web.app.views.auth import login_required
+from web.app.services.API import get, post, put
 
-from web.utils.mixins import update_status, save_file, save_execution, save_preparation, get_now_date, get_excel_file, get_dataset_name
+from web.app.utils.mixins import update_status, save_file, save_execution, save_preparation, get_now_date, get_excel_file, get_dataset_name
 
 model_logger = logging.getLogger('model_logger')
 error_logger = logging.getLogger('error_logger')

@@ -2,7 +2,7 @@ from flask import Flask, request, g
 from flask_babel import Babel, _
 from flask_session import Session
 from celery import Celery, Task
-from web.views import add_routes
+from web.app.views import add_routes
 
 
 def create_app(config_object='web.config') -> Flask:

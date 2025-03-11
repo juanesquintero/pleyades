@@ -4,16 +4,16 @@ import plotly
 import numpy as np
 from flask import request, Blueprint, render_template, jsonify
 
-from web.views.auth import login_required
-from web.utils.mixins import get_ies_config
+from web.app.views.auth import login_required
+from web.app.utils.mixins import get_ies_config
 
 # Importar dashboards de plotly para cada nivel
 import utils.dashboards.mundo as Mundo
 import utils.dashboards.pais as Pais
 import utils.dashboards.region as Region
-import web.utils.dashboards.data_ies as DataIES
-from web.utils.dashboards.ies import IES
-from web.utils.dashboards.program import Program
+import web.app.utils.dashboards.data_ies as DataIES
+from web.app.utils.dashboards.ies import IES
+from web.app.utils.dashboards.program import Program
 import utils.dashboards.estudiante as Estudiante_file
 
 

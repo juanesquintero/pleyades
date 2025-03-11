@@ -1,8 +1,8 @@
 from flask import request, Blueprint, render_template, redirect, url_for
 from ast import literal_eval
 
-from web.views.auth import only_admin
-from web.services.API import get, post, put, delete
+from web.app.views.auth import only_admin
+from web.app.services.API import get, post, put, delete
 
 User = Blueprint('User', __name__, template_folder='/users')
 

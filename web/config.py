@@ -6,7 +6,7 @@ import datetime
 from dotenv import load_dotenv
 from redis import Redis
 
-from web.utils.mixins import get_ies_config
+from web.app.utils.mixins import get_ies_config
 
 # Config root path and language
 try:
