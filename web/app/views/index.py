@@ -19,9 +19,9 @@ def contact():
     return render_template('utils/contact.html', ies=ies), 200
 
 
-@Index.route('/task/schedule/')
-@Index.route('/task/schedule/<int:seconds>')
-def set_schedule_task(seconds: int = 5):
+@Index.route('/_/tasks/schedule/')
+@Index.route('/_/tasks/schedule/<int:seconds>')
+def set_schedule_task(seconds: int = 15):
     try:
         result = sleep_task.delay(seconds)
     except Exception as e:
@@ -30,8 +30,8 @@ def set_schedule_task(seconds: int = 5):
     return {"result_id": result.id}
 
 
-@Index.route('/task/result/<int:id>')
-def get_task_result(id: int) -> dict[str, object]:
+@Index.route('/_/tasks/result/<id>')
+def get_task_result(id: str) -> dict[str, object]:
     result = AsyncResult(id)
     return {
         "ready": result.ready(),
