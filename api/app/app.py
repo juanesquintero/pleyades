@@ -14,8 +14,7 @@ sys.path.append('..')
 
 load_dotenv()
 
-# ies_name = os.getenv('CLI_IES_NAME')
-# base_path = ('/' + ies_name) if ies_name else '/'
+
 base_path = '/'
 
 db = SQLAlchemy()
@@ -26,10 +25,6 @@ def create_app():
     app = Flask(__name__)
 
     with app.app_context():
-        # disable JWT subject verification (avoid Error: Subject must be a string)
-        app.config['JWT_VERIFY_SUB'] = False
-        app.config['JSON_SORT_KEYS'] = False
-        app.config['JWT_SECRET_KEY'] = os.getenv('JWT_KEY')
 
         # DB config
         app_db(app)
@@ -54,18 +49,6 @@ def create_app():
 
 
 def app_db(app):
-    _user = os.getenv('MYSQL_USER')
-    _password = os.getenv('MYSQL_PASSWORD')
-    _database = os.getenv('MYSQL_DATABASE')
-    _host = os.getenv('MYSQL_SERVER')
-    _port = os.getenv('MYSQL_SERVER_PORT')
-
-    str_conn = 'mysql+pymysql://{}:{}@{}:{}/{}'.format(
-        _user, _password, _host, _port, _database)
-
-    app.config['SQLALCHEMY_DATABASE_URI'] = str_conn
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
     db.app = app
     db.init_app(app)
 
