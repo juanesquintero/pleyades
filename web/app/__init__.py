@@ -1,16 +1,10 @@
-# import os
-# import sys
-
-# sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 from flask import Flask, request, g
 from flask_babel import Babel, _
 from flask_session import Session
 from celery import Celery, Task
-from web.app.views import add_routes
 
 
-def create_app(config_object='web.config') -> Flask:
+def create_app(config_object: str = 'web.config') -> Flask:
     """Application Factory Function."""
     app = Flask(
         __name__,
@@ -21,24 +15,26 @@ def create_app(config_object='web.config') -> Flask:
     # Load configuration
     app.config.from_object(config_object)
 
+    create_celery_app(app)
+
     # Register routes
+    from web.app.views import add_routes
     add_routes(app)
 
     # Set up Babel for localization
-    def get_locale():
-        # if a user is logged in, use the locale from the user settings
+    def get_locale() -> str | None:
+        """Determine the user's preferred locale."""
         user = getattr(g, 'user', None)
         if user is not None:
             return user.locale
-        # otherwise try to guess the language from the user accept
-        # header the browser transmits.  We support de/fr/en in this
-        # example.  The best match wins.
         return request.accept_languages.best_match(['de', 'fr', 'en'])
 
-    def get_timezone():
+    def get_timezone() -> str | None:
+        """Determine the user's preferred timezone."""
         user = getattr(g, 'user', None)
         if user is not None:
             return user.timezone
+        return None
 
     babel = Babel(
         app,
@@ -46,25 +42,28 @@ def create_app(config_object='web.config') -> Flask:
         timezone_selector=get_timezone
     )
 
-    # Init user session
-    sess = Session()
-    sess.init_app(app)
+    # Initialize user session
+    Session(app)
 
     return app
 
 
 # Entry point for Celery initialization
 def create_celery_app(flask_app: Flask) -> Celery:
+    """Initialize and configure Celery with Flask app context support."""
     class FlaskTask(Task):
-        """Initialize Celery with Flask App Context."""
-
         def __call__(self, *args: object, **kwargs: object) -> object:
             with flask_app.app_context():
                 return self.run(*args, **kwargs)
 
+    # Initialize Celery with the Flask app name and custom task class
     celery_app = Celery(flask_app.name, task_cls=FlaskTask)
-    celery_app.config_from_object(flask_app.config["CELERY"])
+    celery_app.config_from_object(flask_app.config.get("CELERY"))
+    # Set the Celery app as the default
     celery_app.set_default()
+    # Store the Celery app in Flask's extensions for easy access
     flask_app.extensions["celery"] = celery_app
+    # Autodiscover tasks
+    celery_app.autodiscover_tasks(packages=["web.app.tasks"], force=True)
 
     return celery_app
