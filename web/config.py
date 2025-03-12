@@ -66,6 +66,9 @@ CELERY = dict(
     result_backend=REDIS_PATH,
     task_ignore_result=True,
 )
+CELERY_BROKER_URL = f'{REDIS_PATH}/0'
+CELERY_RESULT_BACKEND = f'{REDIS_PATH}/0'
+
 #### END ASYNC TASKS CONFIG ####
 
 #### CUSTOM APP CONFIG ####
