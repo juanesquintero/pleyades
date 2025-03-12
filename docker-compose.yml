@@ -16,7 +16,7 @@ services:
       - ./web/.env
     environment:
       - CLI_IES_NAME=${IES_CLIENT}
-      - PYTHONPATH=/web
+      - PYTHONPATH=/
     ports:
       - 5001:5000
       - 5678:5678
@@ -27,9 +27,8 @@ services:
       - dev-net
     depends_on:
       - api
-      - celery
+      - redis
     command: python -m debugpy --listen 0.0.0.0:5678 --wait-for-client run.py
-    # python run.py --celery
 
   api:
     container_name: pleyades-api_dev
@@ -47,7 +46,7 @@ services:
       - FLASK_DEBUG=1
       - FLASK_APP=run.py
       - CLI_IES_NAME=${IES_CLIENT}
-      - PYTHONPATH=/api
+      - PYTHONPATH=/
     ports:
       - 8001:5000
       - 5679:5679
@@ -64,6 +63,10 @@ services:
     container_name: pleyades-celery
     restart: on-failure
     image: pleyades-web:1.0.0
+    build:
+      context: ./web
+      dockerfile: ./Dockerfile
+      target: development
     volumes:
       - ./ies.json:/web/ies.json
       - ./web:/web
@@ -71,7 +74,7 @@ services:
       - ./web/.env
     environment:
       - CLI_IES_NAME=${IES_CLIENT}
-      - PYTHONPATH=/web
+      - PYTHONPATH=/
     links:
       - redis
     networks:
@@ -79,6 +82,7 @@ services:
       - deploy-net
     depends_on:
       - redis
+      - web
     command: python run.py --celery
 
   redis:
@@ -86,10 +90,13 @@ services:
     restart: on-failure
     image: redis:latest
     volumes:
-      - ./redis_data:/data
+      - ./redis/data:/data
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
     networks:
       - dev-net
       - deploy-net
+    command: redis-server /usr/local/etc/redis/redis.conf
+
 
   db:
     container_name: pleyades-db
