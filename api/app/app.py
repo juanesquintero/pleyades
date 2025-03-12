@@ -1,28 +1,25 @@
+import sys
+import logging
 import traceback
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 from flask import Flask, jsonify
-from dotenv import load_dotenv
-import logging
-import os
-import sys
+
 sys.path.append('.')
 sys.path.append('..')
 
 
-load_dotenv()
-
-
-base_path = '/'
-
 db = SQLAlchemy()
 
 
-def create_app():
+def create_app(config_object: str = 'api.config') -> Flask:
     # Flask app config
     app = Flask(__name__)
+
+    # Load configuration
+    app.config.from_object(config_object)
 
     with app.app_context():
 
@@ -43,7 +40,7 @@ def create_app():
         app_routes(app)
 
         # ERRORS
-        app_errors(app, app_logging())
+        app_errors(app)
 
         return app
 
@@ -64,24 +61,8 @@ def app_db(app):
     app.config['DB'] = {'execute': execute, 'query': query}
 
 
-def app_logging():
-    LOG_FORMAT = '%(levelname)s %(asctime)s - %(message)s'
-
-    # GENERAL (ALL) LOGS
-    logging.basicConfig(filename=os.getcwd()+'/logs/GENERALS.log',
-                        level=logging.DEBUG, format=LOG_FORMAT)
-
-    # ERROR LOGS
-    error_logger = logging.getLogger('error_logger')
-    error_logger.setLevel(logging.ERROR)
-    file_handler = logging.FileHandler(os.getcwd()+'/logs/ERRORS.log')
-    file_handler.setFormatter(logging.Formatter(LOG_FORMAT))
-    error_logger.addHandler(file_handler)
-
-    return error_logger
-
-
 def app_routes(app):
+    base_path = app.config.get('BASE_PATH', '/')
 
     @app.route(base_path)
     def index():
@@ -116,7 +97,7 @@ def app_routes(app):
     )
 
 
-def app_errors(app, error_logger):
+def app_errors(app):
     def exception(e):
         message, exception_info = f'EXCEPTION: {e}', traceback.format_exc()
         if exception_info:
