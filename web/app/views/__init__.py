@@ -8,6 +8,7 @@ from web.app.views.analist import Analyst
 from web.app.views.datasets import Dataset
 from web.app.views.results import Result
 from web.app.views.admin import ResultAdmin, DatasetAdmin, Faculty, Program, Student, User
+from web.app.views.tasks import Tasks
 # from web.app.views.dashboards import Tablero
 
 
@@ -44,3 +45,4 @@ def add_routes(app: Flask):
     app.register_blueprint(DatasetAdmin, url_prefix='/admin/datasets')
     app.register_blueprint(ResultAdmin, url_prefix='/admin/results')
     # app.register_blueprint(Tablero, url_prefix='#deprecated/#dashboards')
+    app.register_blueprint(Tasks, url_prefix='/_/tasks')
