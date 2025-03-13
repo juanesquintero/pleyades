@@ -12,7 +12,8 @@ from web.app.utils.mixins import get_ies_config
 try:
     locale.setlocale(locale.LC_ALL, 'es_MX.UTF-8')
 except locale.Error:
-    locale.setlocale(locale.LC_ALL, 'C')  # Fallback to a default locale
+    locale.setlocale(locale.LC_ALL, 'es_ES.UTF-8')
+
 sys.path.append('./')
 load_dotenv()
 
