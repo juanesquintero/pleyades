@@ -96,8 +96,6 @@ services:
       - dev-net
       - deploy-net
     command: redis-server /usr/local/etc/redis/redis.conf
-
-
   db:
     container_name: pleyades-db
     restart: on-failure
@@ -110,8 +108,8 @@ services:
       - MYSQL_ALLOW_EMPTY_PASSWORD=1
       - MYSQL_ROOT_PASSWORD=${DB_ROOT_PWD}
     volumes:
-      - ./api/db/pleyades/dev:/var/lib/mysql
-      - ./api/db/pleyades/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./db/pleyades/dev:/var/lib/mysql
+      - ./db/pleyades/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - dev-net
       - deploy-net
@@ -121,7 +119,7 @@ services:
     restart: on-failure
     image: pleyades-db-ies:1.0.0
     build:
-      context: ./api/db/ies
+      context: ./db/ies
       dockerfile: ./Dockerfile
     healthcheck:
       test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "$MSSQL_SA_PASSWORD" -Q "SELECT 1"
@@ -131,9 +129,9 @@ services:
     ports:
       - 1433:1433
     env_file:
-      - ./api/db/ies/.env
+      - ./db/ies/.env
     volumes:
-      - ./api/db/ies/sqlserver-data:/var/opt/mssql
+      - ./db/ies/sqlserver-data:/var/opt/mssql
     networks:
       - dev-net
       - deploy-net
