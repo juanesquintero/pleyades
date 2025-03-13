@@ -1,6 +1,6 @@
 import argparse
 from flask import Flask
-from app import create_app, create_celery_app
+from app.main import create_app, create_celery_app
 
 
 def start_flask_app(app: Flask):
