@@ -28,6 +28,7 @@ def create_app(config_object: str = 'api.config') -> Flask:
 
         # Other config
         CORS(app)
+
         jwt = JWTManager(app)
 
         @jwt.expired_token_loader
@@ -69,16 +70,18 @@ def app_routes(app):
         return jsonify({'api': 'Pleyades'}), 200
 
     # Import Controllers
-    from controllers.auth import Auth
-    from controllers.faculties import Faculty
-    from controllers.programs import Program
-    from controllers.users import User
-    from controllers.datasets import Dataset
-    from controllers.preparations import Preparation
-    from controllers.executions import Execution
-    from controllers.desertion.institute import IES
-    from controllers.desertion.students import Student
-    from controllers.desertion.results import Result
+    from app.controllers import (
+        Auth,
+        Faculty,
+        Program,
+        User,
+        Dataset,
+        Preparation,
+        Execution,
+        IES,
+        Student,
+        Result,
+    )
 
     # Register routes
     app.register_blueprint(Auth, url_prefix=base_path+'auth')
