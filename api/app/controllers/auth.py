@@ -3,8 +3,8 @@ from flask_jwt_extended import create_access_token
 import datetime as dt
 from hashlib import md5
 
-from schemas.auth_schema import validate_login_schema
-from controllers.users import auth_login, create_user
+from app.schemas.auth_schema import validate_login_schema
+from app.controllers.users import auth_login, create_user
 
 Auth = Blueprint('auth', __name__)
 
@@ -28,10 +28,8 @@ def login():
             'msg': 'Incorrect email or password'
         }), 401
 
-    print(user)
-
     access_token = create_access_token(
-        identity=user,
+        identity=str(user),
         expires_delta=dt.timedelta(hours=3)
     )
     return jsonify(access_token=access_token), 200

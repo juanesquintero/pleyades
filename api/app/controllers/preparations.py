@@ -1,12 +1,12 @@
 from flask import request, jsonify, Blueprint
 from flask_jwt_extended import jwt_required
 import json
-from schemas.preparation_schema import validate_post_schema, validate_put_schema
-from db.pleyades.db import Preparation as preparation_model
-from utils.utils import exception, _format
+from app.schemas.preparation_schema import validate_post_schema, validate_put_schema
+from app.db.pleyades.db import Preparation as preparation_model
+from app.utils.utils import exception, _format
 # Relaciones
-from controllers.datasets import exists as exists_set
-from controllers.users import exists as exists_usuario
+from app.controllers.datasets import exists as exists_set
+from app.controllers.users import exists as exists_usuario
 
 Preparation = Blueprint('Preparation', __name__)
 

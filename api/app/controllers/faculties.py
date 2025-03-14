@@ -1,8 +1,8 @@
-from utils.utils import exception, _format
-from db.ies.db import DB
+from app.utils.utils import exception, _format
+from app.db.ies.db import DB
 from flask_jwt_extended import jwt_required
 from flask import request, jsonify, Blueprint
-from schemas.faculty_schema import validate_post_schema, validate_put_schema
+from app.schemas.faculty_schema import validate_post_schema, validate_put_schema
 
 
 Faculty = Blueprint('faculty', __name__)

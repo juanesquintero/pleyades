@@ -1,13 +1,13 @@
 from flask import request, jsonify, Blueprint
-from schemas.user_schema import validate_post_schema, validate_put_schema
-from db.pleyades.db import User as user_model
+from app.schemas.user_schema import validate_post_schema, validate_put_schema
+from app.db.pleyades.db import User as user_model
 from flask_jwt_extended import jwt_required
 from hashlib import md5
-from utils.utils import exception, _format
+from app.utils.utils import exception, _format
 
 # Relaciones
-from controllers.faculties import exists as exists_faculty
-from controllers.programs import exists as exists_program
+from app.controllers.faculties import exists as exists_faculty
+from app.controllers.programs import exists as exists_program
 
 User = Blueprint('User', __name__)
 
@@ -79,14 +79,14 @@ def create_user(body):
     return {'msg': 'User created'}, 200
 
 
-@ User.route('/', methods=['POST'])
-@ jwt_required()
+@User.route('/', methods=['POST'])
+@jwt_required()
 def post2():
     return post()
 
 
-@ User.route('/<email>', methods=['PUT'])
-@ jwt_required()
+@User.route('/<email>', methods=['PUT'])
+@jwt_required()
 def put(email):
     body = request.get_json()
     if not email:
@@ -114,8 +114,8 @@ def put(email):
     return {'msg': 'User actualizado'}, 200
 
 
-@ User.route('/<email>', methods=['DELETE'])
-@ jwt_required()
+@User.route('/<email>', methods=['DELETE'])
+@jwt_required()
 def delete_one(email):
     if not email:
         return {'error': 'indique el email por el path'}, 404

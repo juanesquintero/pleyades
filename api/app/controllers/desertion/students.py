@@ -3,9 +3,9 @@ import pandas as pd
 from flask_jwt_extended import jwt_required
 from flask import request, jsonify, Blueprint
 
-from db.ies.db import DB
-from utils.utils import exception, _format
-from controllers.programs import exists as exists_program
+from app.db.ies.db import DB
+from app.utils.utils import exception, _format
+from app.controllers.programs import exists as exists_program
 
 Student = Blueprint('Student', __name__)
 

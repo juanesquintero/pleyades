@@ -1,13 +1,13 @@
 from flask import request, jsonify, Blueprint
-from db.ies.db import DB as db_ies
-from db.pleyades.db import Dataset as dataset_model, Execution as execution_model, Preparation as preparation_model
-from schemas.dataset_schema import validate_post_schema, validate_put_schema, validate_name_schema
+from app.db.ies.db import DB as db_ies
+from app.db.pleyades.db import Dataset as dataset_model, Execution as execution_model, Preparation as preparation_model
+from app.schemas.dataset_schema import validate_post_schema, validate_put_schema, validate_name_schema
 from flask_jwt_extended import jwt_required
-from utils.utils import exception, _format
+from app.utils.utils import exception, _format
 
 # Relaciones
-from controllers.programs import exists as exists_program
-from controllers.users import exists as exists_usuario
+from app.controllers.programs import exists as exists_program
+from app.controllers.users import exists as exists_usuario
 
 Dataset = Blueprint('Dataset', __name__)
 execute = None

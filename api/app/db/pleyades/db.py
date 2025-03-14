@@ -1,10 +1,10 @@
 import traceback
-from api.utils.constants import Roles
+from api.app.utils.constants import Roles
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.dialects.mysql import JSON
 from sqlalchemy import update
 from sqlalchemy.ext.hybrid import hybrid_property
-from app import db
+from api.app.main import db
 
 
 class DTO():

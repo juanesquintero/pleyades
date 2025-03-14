@@ -1,10 +1,10 @@
 from flask import request, jsonify, Blueprint
-from db.ies.db import DB
-from schemas.program_schema import validate_post_schema, validate_put_schema
+from app.db.ies.db import DB
+from app.schemas.program_schema import validate_post_schema, validate_put_schema
 from flask_jwt_extended import jwt_required
-from utils.utils import exception, _format, _format
+from app.utils.utils import exception, _format, _format
 # Relaciones
-from controllers.faculties import exists as exists_faculty
+from app.controllers.faculties import exists as exists_faculty
 
 Program = Blueprint('Program', __name__)
 db = DB.getInstance()

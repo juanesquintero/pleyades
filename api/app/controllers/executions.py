@@ -1,13 +1,13 @@
 import json
-from api.utils.constants import Roles
+from api.app.utils.constants import Roles
 from flask import request, jsonify, Blueprint
-from schemas.execution_schema import validate_post_schema, validate_put_schema
+from app.schemas.execution_schema import validate_post_schema, validate_put_schema
 from flask_jwt_extended import jwt_required
-from utils.utils import exception, _format
-from db.pleyades.db import Execution as execution_model
+from app.utils.utils import exception, _format
+from app.db.pleyades.db import Execution as execution_model
 # Relationships
-from controllers.datasets import exists as exists_set
-from controllers.users import exists as exists_user
+from app.controllers.datasets import exists as exists_set
+from app.controllers.users import exists as exists_user
 
 Execution = Blueprint('Execution', __name__)
 

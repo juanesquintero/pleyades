@@ -1,6 +1,6 @@
 from jsonschema import Draft4Validator
 
-from api.utils.constants import Roles
+from api.app.utils.constants import Roles
 
 post_schema = {
     'type': 'object',
