@@ -11,9 +11,9 @@ flask_session/
 web/ies.json
 sqlserver-data
 .idea
-!redis/.gitkeep
-redis/data/*
-redis/redis.conf
+!db/redis/.gitkeep
+db/redis/data/*
+db/redis/redis.conf
 .codegpt
 venv
 venv
