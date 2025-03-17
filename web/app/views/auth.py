@@ -1,6 +1,8 @@
 import os
 import dotenv
+import ast
 import jwt
+
 from functools import wraps
 from flask import session, request, Blueprint, render_template
 from web.app.services.API import post
@@ -66,7 +68,9 @@ def login():
             os.getenv('JWT_KEY'),
             algorithms=["HS256"],
         ).get('sub')
-        session['user'] = user
+
+        session['user'] = ast.literal_eval(user)
+
         # Definir objeto request para realizar peticiones  al API
         session['headers'] = {'Authorization': 'Bearer ' + token}
         session.permanent = True
