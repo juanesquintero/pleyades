@@ -1,5 +1,5 @@
 from flask import request, jsonify, Blueprint
-from app.db.ies.db import DB
+from api.app.db.ies import DB
 from flask_jwt_extended import jwt_required
 from app.utils.utils import exception, _format
 import pandas as pd

@@ -1,6 +1,6 @@
 from flask import request, jsonify, Blueprint
 from app.schemas.user_schema import validate_post_schema, validate_put_schema
-from app.db.pleyades.db import User as user_model
+from api.app.db.pleyades import User as user_model
 from flask_jwt_extended import jwt_required
 from hashlib import md5
 from app.utils.utils import exception, _format

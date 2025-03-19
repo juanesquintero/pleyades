@@ -3,7 +3,7 @@ import pandas as pd
 from flask_jwt_extended import jwt_required
 from flask import request, jsonify, Blueprint
 
-from app.db.ies.db import DB
+from api.app.db.ies import DB
 from app.utils.utils import exception, _format
 from app.controllers.programs import exists as exists_program
 

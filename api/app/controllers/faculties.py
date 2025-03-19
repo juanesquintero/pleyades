@@ -1,5 +1,5 @@
 from app.utils.utils import exception, _format
-from app.db.ies.db import DB
+from api.app.db.ies import DB
 from flask_jwt_extended import jwt_required
 from flask import request, jsonify, Blueprint
 from app.schemas.faculty_schema import validate_post_schema, validate_put_schema
