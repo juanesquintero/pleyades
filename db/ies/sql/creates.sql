@@ -108,10 +108,10 @@ END
 IF OBJECT_ID('TBLDES_RESULTADO_PREDICCION', 'U') IS NULL
 BEGIN
 CREATE TABLE TBLDES_RESULTADO_PREDICCION (
-  documento VARCHAR(50) NOT NULL, 
-  nombre_completo VARCHAR(300) NOT NULL, 
-  desertor INT NOT NULL, 
-  prediccion INT NOT NULL, 
+  documento VARCHAR(50) NOT NULL,
+  nombre_completo VARCHAR(300) NOT NULL,
+  desertor INT NOT NULL,
+  prediccion INT NOT NULL,
   semestre_prediccion INT NOT NULL,
   idprograma VARCHAR(30) NOT NULL,
   blnultimo INT NULL);
