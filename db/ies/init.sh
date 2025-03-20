@@ -23,9 +23,14 @@ done
 
 ## Check if database exists
 echo -e "\nChecking if the database $MSSQL_DBNAME exists..."
+
 SQL_QUERY="IF DB_ID(N''$MSSQL_DBNAME'') IS NOT NULL PRINT 'EXISTS'"
+
 SQLCMD_OUTPUT=$(/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "$MSSQL_SA_PASSWORD" -Q "$SQL_QUERY" -W)
+
 DB_EXISTS=$(echo $SQLCMD_OUTPUT | grep -o "EXISTS")
+
+echo "DB_EXISTS: $DB_EXISTS"
 
 if [[ $DB_EXISTS == "EXISTS" ]]; then
     echo -e "\nThe database '$MSSQL_DBNAME' already exists."
