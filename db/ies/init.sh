@@ -13,6 +13,12 @@ echo "MSSQL_DBNAME: $MSSQL_DBNAME"
 echo "Current user: $(whoami)"
 ls -ld /var/opt/mssql
 
+## Check if the environment variable is set to true
+if [[ "$DATA_INSERTED" == "true" ]]; then
+    echo -e "\nData already inserted. Skipping creates and inserts."
+    exit 0
+fi
+
 ## Wait for SQL Server to be ready
 echo -e "\nWaiting for SQL Server to be ready..."
 for i in {1..20}; do
@@ -48,5 +54,8 @@ else
     $sqlcmd_user -i /tmp/sql/inserts/desertion.sql
 
     echo -e "\nFinished setting up the desertion database."
-fi
 
+    # Set the environment variable to true after successful insertion
+    export DATA_INSERTED="true"
+    echo -e "\nDATA_INSERTED set to true."
+fi
