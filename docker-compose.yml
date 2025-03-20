@@ -147,6 +147,8 @@ services:
       - ./db/ies/.env
     volumes:
       - ./db/ies/sqlserver-data:/var/opt/mssql
+      - ./db/ies/init.sh:/tmp/init.sh
+      - ./db/ies/sql:/tmp/sql
     networks:
       - dev-net
       - deploy-net
