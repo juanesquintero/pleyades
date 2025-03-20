@@ -2,16 +2,13 @@
 
 ###
 
-GET http://localhost:8001/datasets
+GET http://localhost:8001/preparations
 Authorization: Bearer {{token}}
 
 ###
 
-GET http://localhost:8001/datasets/status/raw
+GET http://localhost:8001/preparations/1
 Authorization: Bearer {{token}}
 
 ###
-
-GET http://localhost:8001/datasets/status/processed
-Authorization: Bearer {{token}}
 
