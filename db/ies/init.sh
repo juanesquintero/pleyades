@@ -5,10 +5,10 @@ sqlcmd_sa=$sqlcmd" sa -P $MSSQL_SA_PASSWORD"
 sqlcmd_user=$sqlcmd" $MSSQL_DBUSER -P $MSSQL_DBUSERPWD"
 
 ## Debugging: Print variables
-echo -e "\n\nMSSQL_SA_PASSWORD: $MSSQL_SA_PASSWORD"
-echo "MSSQL_DBUSER: $MSSQL_DBUSER"
-echo "MSSQL_DBUSERPWD: $MSSQL_DBUSERPWD"
-echo -e "MSSQL_DBNAME: $MSSQL_DBNAME\n\n"
+# echo -e "\n\nMSSQL_SA_PASSWORD: $MSSQL_SA_PASSWORD"
+# echo "MSSQL_DBUSER: $MSSQL_DBUSER"
+# echo "MSSQL_DBUSERPWD: $MSSQL_DBUSERPWD"
+# echo -e "MSSQL_DBNAME: $MSSQL_DBNAME\n\n"
 
 echo "Current user: $(whoami)"
 ls -ld /var/opt/mssql
