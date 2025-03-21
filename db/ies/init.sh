@@ -5,15 +5,16 @@ sqlcmd_sa=$sqlcmd" sa -P $MSSQL_SA_PASSWORD"
 sqlcmd_user=$sqlcmd" $MSSQL_DBUSER -P $MSSQL_DBUSERPWD"
 
 ## Debugging: Print variables
-echo -e "\nMSSQL_SA_PASSWORD: $MSSQL_SA_PASSWORD"
+echo -e "\n\nMSSQL_SA_PASSWORD: $MSSQL_SA_PASSWORD"
 echo "MSSQL_DBUSER: $MSSQL_DBUSER"
 echo "MSSQL_DBUSERPWD: $MSSQL_DBUSERPWD"
-echo "MSSQL_DBNAME: $MSSQL_DBNAME"
+echo -e "MSSQL_DBNAME: $MSSQL_DBNAME\n\n"
 
 echo "Current user: $(whoami)"
 ls -ld /var/opt/mssql
 
 ## Check if the environment variable is set to true
+echo "DATA_INSERTED: $DATA_INSERTED"
 if [[ "$DATA_INSERTED" == "true" ]]; then
     echo -e "\nData already inserted. Skipping creates and inserts."
     exit 0
