@@ -214,7 +214,7 @@ class Preparation(db.Model, SerializerMixin):
         return [row.to_dict() for row in query.order_by(Preparation.number.desc()).all()]
 
     @staticmethod
-    def get_preparer(processor):
+    def get_processor(processor):
         query = Preparation.query.filter(
             Preparation.processor == processor).all()
         return [row.to_dict() for row in query]
