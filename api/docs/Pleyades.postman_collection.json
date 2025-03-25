@@ -742,7 +742,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "  {\r\n    \"codigo\": \"420-2970-01\",\r\n    \"name\": \" civilcita\",\r\n    \"nombre_corto\": \"civi\",\r\n    \"faculty\": \"420\",\r\n    \"nombre_faculty\": \"Faculty de Ingenierias\"\r\n  }",
+							"raw": "  {\r\n    \"codigo\": \"420-2970-01\",\r\n    \"name\": \" civilcita\",\r\n    \"nombre_corto\": \"civi\",\r\n    \"faculty\": \"420\",\r\n    \"nombre_facultad\": \"Faculty de Ingenierias\"\r\n  }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3834,7 +3834,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "  {\r\n    \"codigo\": 29,\r\n    \"name\": \" civilcita\",\r\n    \"nombre_corto\": \"civi\",\r\n    \"faculty\": 2,\r\n    \"nombre_faculty\": \"Faculty de Ingenierias\"\r\n  }",
+											"raw": "  {\r\n    \"codigo\": 29,\r\n    \"name\": \" civilcita\",\r\n    \"nombre_corto\": \"civi\",\r\n    \"faculty\": 2,\r\n    \"nombre_facultad\": \"Faculty de Ingenierias\"\r\n  }",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -5780,7 +5780,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "  {\r\n    \"codigo\": 29,\r\n    \"name\": \" civilcita\",\r\n    \"nombre_corto\": \"civi\",\r\n    \"faculty\": 2,\r\n    \"nombre_faculty\": \"Faculty de Ingenierias\"\r\n  }",
+											"raw": "  {\r\n    \"codigo\": 29,\r\n    \"name\": \" civilcita\",\r\n    \"nombre_corto\": \"civi\",\r\n    \"faculty\": 2,\r\n    \"nombre_facultad\": \"Faculty de Ingenierias\"\r\n  }",
 											"options": {
 												"raw": {
 													"language": "json"
