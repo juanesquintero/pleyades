@@ -39,23 +39,6 @@
         style="cursor: pointer"
       ></div>
     </div>
-
-    <script>
-      function tooglePassword() {
-        const psswdInputEl = document.getElementById("password");
-        const togglePasswordEl = document.getElementById("toggle-password");
-        if (psswdInputEl.type === "password") {
-          psswdInputEl.type = "text";
-          togglePasswordEl.classList.add("fa-eye-slash");
-          togglePasswordEl.classList.remove("fa-eye");
-        } else {
-          psswdInputEl.type = "password";
-          togglePasswordEl.classList.add("fa-eye");
-          togglePasswordEl.classList.remove("fa-eye-slash");
-        }
-      }
-    </script>
-
     {% if message %}
     <div class="alert alert-danger py-0" role="alert">
       <p class="pt-1">{{message}}</p>

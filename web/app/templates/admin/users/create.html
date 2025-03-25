@@ -56,22 +56,13 @@
           />
           &nbsp;
           <div
+            id="toggle-password"
             class="align-self-center fa fa-eye ml-1"
-            onclick="password()"
+            onclick="tooglePassword()"
             style="cursor: pointer"
           ></div>
         </div>
       </div>
-      <script>
-        function password() {
-          var x = document.getElementById("clave");
-          if (x.type === "password") {
-            x.type = "text";
-          } else {
-            x.type = "password";
-          }
-        }
-      </script>
     </div>
     <!--Boton para validar campos-->
     <br />
