@@ -17,13 +17,8 @@
             <div class="col-sm-3">
                 <label>Rol</label>
                 <select name="rol" id="rol" class="form-control input-sm" >
-                    {% if u.rol=='Admin' %}
-                    <option value="Admin" key="1" selected> Admin </option>
-                    <option value="Analista" key="2"> Analista </option>
-                    {% else %}
-                    <option value="Admin" key="1" > Admin </option>
-                    <option value="Analista" key="2" selected> Analista </option>
-                    {% endif %}
+                    <option value="Admin" key="1" {% if u.role=='Admin' %} selected {% endif %}>Admin</option>
+                    <option value="Analista" key="2" {% if u.role=='Analista' %} selected {% endif %}> Analista </option>
                 </select>
             </div>
         </div>
