@@ -72,3 +72,17 @@ $(document).ready(function () {
 // });
 
 
+// Toogle password
+function tooglePassword() {
+    const psswdInputEl = document.getElementById("password");
+    const togglePasswordEl = document.getElementById("toggle-password");
+    if (psswdInputEl.type === "password") {
+        psswdInputEl.type = "text";
+        togglePasswordEl.classList.add("fa-eye-slash");
+        togglePasswordEl.classList.remove("fa-eye");
+    } else {
+        psswdInputEl.type = "password";
+        togglePasswordEl.classList.add("fa-eye");
+        togglePasswordEl.classList.remove("fa-eye-slash");
+    }
+}
